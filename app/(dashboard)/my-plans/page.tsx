@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+/* framer-motion removed – using plain HTML + CSS transitions */
 import {
   FolderOpen,
   Calendar,
@@ -150,23 +150,6 @@ function formatWeekRange(weekStart: string): string {
 
 /* ── Stagger animation variants ── */
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 24, scale: 0.96 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 260, damping: 20 },
-  },
-};
 
 /* ── Component ── */
 
@@ -296,9 +279,7 @@ export default function MyPlansPage() {
     return (
       <div className="space-y-8">
         {/* Gradient banner header */}
-        <motion.div
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10"
         >
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA4KSIvPjwvc3ZnPg==')] opacity-60" />
@@ -315,41 +296,32 @@ export default function MyPlansPage() {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Empty state card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
+        <div
           className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] py-24 px-6"
         >
           {/* Floating animated icon */}
           <div className="relative">
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            <div
               className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C] shadow-[0_8px_40px_rgba(0,108,53,0.25)]"
             >
               <FolderOpen className="h-14 w-14 text-white" />
-            </motion.div>
+            </div>
 
             {/* Pulsing sparkles */}
-            <motion.div
-              animate={{ scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            <div
               className="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg"
             >
               <Sparkles className="h-5 w-5 text-white" />
-            </motion.div>
+            </div>
 
-            <motion.div
-              animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            <div
               className="absolute -bottom-1 -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#00A352] to-[#006C35] shadow-md"
             >
               <Sparkles className="h-4 w-4 text-white" />
-            </motion.div>
+            </div>
           </div>
 
           <p className="mt-8 text-2xl font-bold text-[#004D26]">
@@ -371,7 +343,7 @@ export default function MyPlansPage() {
               ? "\u0627\u0630\u0647\u0628 \u0625\u0644\u0649 \u0627\u0644\u0645\u062E\u0637\u0637"
               : "Go to Planner"}
           </a>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -383,9 +355,7 @@ export default function MyPlansPage() {
   return (
     <div className="space-y-8">
       {/* ── Gradient Banner Header ── */}
-      <motion.div
-        initial={{ opacity: 0, y: -16 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10"
       >
         {/* Decorative dot pattern */}
@@ -407,10 +377,7 @@ export default function MyPlansPage() {
           </div>
 
           {/* Count badge */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
+          <div
             className="flex items-center gap-2 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 px-5 py-3"
           >
             <FolderOpen className="h-6 w-6 text-white" />
@@ -424,15 +391,12 @@ export default function MyPlansPage() {
                   ? "plan"
                   : "plans"}
             </span>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── Plan Cards Grid ── */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
+      <div
         className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
         {plans.map((plan, i) => {
@@ -451,11 +415,8 @@ export default function MyPlansPage() {
           const glowClass = CARD_GLOW_COLORS[accentIdx];
 
           return (
-            <motion.div
+            <div
               key={plan.id}
-              variants={cardVariants}
-              whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              layout
               className={cn(
                 "group relative overflow-hidden rounded-2xl border-2 bg-white transition-all duration-300",
                 glowClass,
@@ -632,22 +593,14 @@ export default function MyPlansPage() {
                   )}
                 </div>
               </div>
-            </motion.div>
+            </div>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* ── Expanded Plan Detail View ── */}
-      <AnimatePresence>
-        {expandedPlan && (
-          <motion.div
-            key={expandedPlan.id}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
+      {expandedPlan && (
+        <div className="overflow-hidden">
             <div className="rounded-2xl border-2 border-[#006C35]/20 bg-[#F8FBF8] overflow-hidden">
               {/* ── Gradient header bar ── */}
               <div className="relative overflow-hidden bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-6 py-6 lg:px-8 lg:py-8">
@@ -698,10 +651,7 @@ export default function MyPlansPage() {
 
               {/* ── Day cards grid ── */}
               <div className="p-6 lg:p-8">
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="show"
+                <div
                   className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 >
                   {expandedPlan.plan_data?.days?.map((day, i) => {
@@ -712,13 +662,8 @@ export default function MyPlansPage() {
                     const emoji = PLATFORM_EMOJI[platformKey] ?? day.platform?.charAt(0)?.toUpperCase() ?? "?";
 
                     return (
-                      <motion.div
+                      <div
                         key={day.dayIndex}
-                        variants={cardVariants}
-                        whileHover={{
-                          y: -6,
-                          transition: { duration: 0.25 },
-                        }}
                         className="group/day overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white transition-all duration-300 hover:border-[#006C35]/30 hover:shadow-[0_8px_30px_rgba(0,108,53,0.12)]"
                       >
                         {/* Platform-colored top bar */}
@@ -777,14 +722,8 @@ export default function MyPlansPage() {
                           {day.hashtags && day.hashtags.length > 0 && (
                             <div className="mt-4 flex flex-wrap gap-2">
                               {day.hashtags.slice(0, 5).map((tag, tagIdx) => (
-                                <motion.span
+                                <span
                                   key={tag}
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{
-                                    delay: tagIdx * 0.04,
-                                    type: "spring",
-                                  }}
                                   className={cn(
                                     "rounded-xl px-3 py-1 text-sm font-semibold",
                                     HASHTAG_PILL_COLORS[
@@ -793,7 +732,7 @@ export default function MyPlansPage() {
                                   )}
                                 >
                                   {tag}
-                                </motion.span>
+                                </span>
                               ))}
                               {day.hashtags.length > 5 && (
                                 <span className="rounded-xl bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1 text-sm font-medium text-[#5A8A6A]">
@@ -837,15 +776,14 @@ export default function MyPlansPage() {
                             </div>
                           )}
                         </div>
-                      </motion.div>
+                      </div>
                     );
                   })}
-                </motion.div>
+                </div>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 }

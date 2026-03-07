@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Hash, Loader2, Copy, TrendingUp, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
@@ -109,10 +108,7 @@ export default function HashtagsPage() {
   return (
     <div className="space-y-10">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+      <div
         className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
       >
         {/* Decorative floating shapes */}
@@ -120,14 +116,12 @@ export default function HashtagsPage() {
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
         <div className="absolute top-4 right-8 flex gap-2">
           {["#️⃣", "🔥", "🚀"].map((em, i) => (
-            <motion.span
+            <span
               key={i}
-              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
               className="text-2xl md:text-3xl"
             >
               {em}
-            </motion.span>
+            </span>
           ))}
         </div>
         <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
@@ -138,13 +132,10 @@ export default function HashtagsPage() {
           {th.pageSub}
           <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
         </p>
-      </motion.div>
+      </div>
 
       {/* ===== TRENDING KSA SECTION ===== */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.15 }}
+      <div
       >
         <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
           {/* Top accent bar */}
@@ -160,14 +151,9 @@ export default function HashtagsPage() {
           <CardContent className="p-5 sm:p-8 pt-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {TRENDING_PLACEHOLDER.map((t, i) => (
-                <motion.button
+                <button
                   key={t.tag}
                   type="button"
-                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
-                  whileHover={{ scale: 1.06, y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
-                  whileTap={{ scale: 0.97 }}
                   onClick={() => { navigator.clipboard.writeText(t.tag); toast.success("Copied " + t.tag); }}
                   className={cn(
                     "relative flex flex-col items-center gap-3 rounded-2xl border-2 border-white/20 p-5 text-white transition-all duration-300 cursor-pointer overflow-hidden bg-gradient-to-br",
@@ -185,18 +171,15 @@ export default function HashtagsPage() {
                     {t.category}
                   </span>
                   <Copy className="absolute top-3 right-3 h-4 w-4 text-white/60 group-hover:text-white transition-colors" />
-                </motion.button>
+                </button>
               ))}
             </div>
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
 
       {/* ===== GENERATE HASHTAG SETS ===== */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
+      <div
       >
         <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
           {/* Top accent bar */}
@@ -217,24 +200,16 @@ export default function HashtagsPage() {
 
           <CardContent className="space-y-8 p-5 sm:p-8 pt-4">
             {/* ── Platform Selector Cards ── */}
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
+            <div
             >
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
                 {PLATFORM_OPTIONS.map((p, i) => {
                   const selected = platform === p.id;
                   return (
-                    <motion.button
+                    <button
                       key={p.id}
                       type="button"
                       onClick={() => setPlatform(p.id)}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.35 + i * 0.05, type: "spring", stiffness: 200 }}
-                      whileHover={{ scale: 1.08, y: -4 }}
-                      whileTap={{ scale: 0.95 }}
                       className={cn(
                         "relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 p-4 py-5 transition-all duration-300 cursor-pointer",
                         selected
@@ -244,9 +219,7 @@ export default function HashtagsPage() {
                     >
                       {/* Selection ring */}
                       {selected && (
-                        <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
+                        <div
                           className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
                         >
                           <div className="h-4 w-4 rounded-full bg-[#006C35] flex items-center justify-center">
@@ -254,7 +227,7 @@ export default function HashtagsPage() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           </div>
-                        </motion.div>
+                        </div>
                       )}
                       <span className="text-3xl leading-none">{p.emoji}</span>
                       <span className={cn(
@@ -263,20 +236,17 @@ export default function HashtagsPage() {
                       )}>
                         {p.label}
                       </span>
-                    </motion.button>
+                    </button>
                   );
                 })}
               </div>
-            </motion.div>
+            </div>
 
             {/* Gradient divider */}
             <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
 
             {/* ── Topic Input ── */}
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
+            <div
               className="relative"
             >
               <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none z-10">
@@ -289,13 +259,10 @@ export default function HashtagsPage() {
                 onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
                 className="h-16 pl-14 rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40"
               />
-            </motion.div>
+            </div>
 
             {/* ── Generate Button ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
+            <div
             >
               <Button
                 onClick={handleGenerate}
@@ -312,23 +279,16 @@ export default function HashtagsPage() {
                 <span className="relative z-10">{th.generate}</span>
                 {!generating && <Sparkles className="ml-3 h-7 w-7 relative z-10" />}
               </Button>
-            </motion.div>
+            </div>
 
             {/* ── Result Sets ── */}
             {sets && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+              <div
                 className="grid gap-6 sm:grid-cols-3"
               >
                 {SET_CONFIGS.map((cfg, setIdx) => (
-                  <motion.div
+                  <div
                     key={cfg.key}
-                    initial={{ opacity: 0, y: 24, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: setIdx * 0.12, type: "spring", stiffness: 150 }}
-                    whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
                     className="rounded-2xl bg-white border-2 border-[#D4EBD9] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                   >
                     {/* Gradient accent bar at top */}
@@ -351,11 +311,8 @@ export default function HashtagsPage() {
                       {/* Tags as colorful pills */}
                       <div className="flex flex-wrap gap-2">
                         {sets[cfg.key].map((tag, tagIdx) => (
-                          <motion.span
+                          <span
                             key={tag}
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: setIdx * 0.12 + tagIdx * 0.04, type: "spring", stiffness: 300 }}
                             className={cn(
                               "rounded-full px-4 py-2 text-base font-bold cursor-pointer hover:scale-105 transition-transform",
                               TAG_PILL_COLORS[tagIdx % TAG_PILL_COLORS.length]
@@ -363,15 +320,12 @@ export default function HashtagsPage() {
                             onClick={() => { navigator.clipboard.writeText(tag); toast.success("Copied " + tag); }}
                           >
                             {tag}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
 
                       {/* Copy All button */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: setIdx * 0.12 + 0.3 }}
+                      <div
                         className="mt-5"
                       >
                         <Button
@@ -388,22 +342,19 @@ export default function HashtagsPage() {
                           <Copy className="mr-2 h-5 w-5 relative z-10" />
                           <span className="relative z-10">{th.copyAll}</span>
                         </Button>
-                      </motion.div>
+                      </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             )}
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
 
       {/* ===== BRAND HASHTAGS ===== */}
       {brandHashtags.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.45 }}
+        <div
         >
           <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
             {/* Top accent bar */}
@@ -419,14 +370,9 @@ export default function HashtagsPage() {
             <CardContent className="p-5 sm:p-8 pt-2">
               <div className="flex flex-wrap gap-4">
                 {brandHashtags.map((tag, i) => (
-                  <motion.button
+                  <button
                     key={tag}
                     type="button"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
-                    whileHover={{ scale: 1.08, y: -4, boxShadow: "0 12px 30px rgba(0,108,53,0.2)" }}
-                    whileTap={{ scale: 0.95 }}
                     onClick={() => { navigator.clipboard.writeText(tag); toast.success("Copied"); }}
                     className="relative rounded-2xl bg-gradient-to-br from-[#F0F7F2] to-white border-2 border-[#006C35]/20 px-7 py-4 text-xl font-extrabold text-[#006C35] hover:border-[#006C35]/50 transition-all duration-300 cursor-pointer overflow-hidden group"
                   >
@@ -436,12 +382,12 @@ export default function HashtagsPage() {
                       {tag}
                       <Copy className="h-5 w-5 text-[#5A8A6A] group-hover:text-[#006C35] transition-colors" />
                     </span>
-                  </motion.button>
+                  </button>
                 ))}
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       )}
     </div>
   );

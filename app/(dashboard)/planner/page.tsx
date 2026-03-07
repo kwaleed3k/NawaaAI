@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+/* framer-motion removed – using plain HTML + CSS transitions */
 import { Calendar, Sparkles, Save, Download, Loader2, Clock, Hash, CheckCircle2, Circle, Target, TrendingUp, Globe } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore, type Company } from "@/lib/store";
@@ -198,10 +198,7 @@ export default function PlannerPage() {
   return (
     <div className="space-y-10">
       {/* ===== PAGE HEADER ===== */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+      <div
         className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
       >
         {/* Decorative floating shapes */}
@@ -209,14 +206,12 @@ export default function PlannerPage() {
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
         <div className="absolute top-4 right-8 flex gap-2">
           {["\u2728", "\uD83D\uDCC5", "\uD83D\uDE80"].map((em, i) => (
-            <motion.span
+            <span
               key={i}
-              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
               className="text-2xl md:text-3xl"
             >
               {em}
-            </motion.span>
+            </span>
           ))}
         </div>
         <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
@@ -227,118 +222,87 @@ export default function PlannerPage() {
           {tp.pageSub}
           <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
         </p>
-      </motion.div>
+      </div>
 
-      {/* ===== Premium Loading Overlay (KEPT AS-IS) ===== */}
-      <AnimatePresence>
-        {generating && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#F8FBF8]/95 backdrop-blur-md"
-          >
-            <div className="w-full max-w-2xl mx-auto px-6">
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="rounded-3xl border-2 border-[#D4EBD9] bg-white p-10 shadow-2xl"
-              >
-                {/* Main spinning logo */}
-                <div className="flex justify-center mb-8">
-                  <div className="relative">
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                      className="h-32 w-32 rounded-full border-4 border-dashed border-[#D4EBD9]"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_0_40px_rgba(0,108,53,0.3)]"
-                      >
-                        <Sparkles className="h-10 w-10 text-white" />
-                      </motion.div>
-                    </div>
-                    {/* Orbiting icons */}
-                    {[Calendar, Target, TrendingUp, Globe].map((Icon, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "linear", delay: i * 1.5 }}
-                        className="absolute inset-0"
-                        style={{ transformOrigin: "center center" }}
-                      >
-                        <div
-                          className="absolute flex h-10 w-10 items-center justify-center rounded-xl shadow-md"
-                          style={{
-                            top: "-20px",
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            backgroundColor: i % 2 === 0 ? "#F0F7F2" : "#FFF8E7",
-                          }}
-                        >
-                          <Icon className="h-5 w-5" style={{ color: i % 2 === 0 ? "#006C35" : "#C9A84C" }} />
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Loading message */}
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={loadingMsgIndex}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -15 }}
-                    className="text-center text-2xl font-bold text-[#004D26] font-['Cairo'] mb-3"
-                  >
-                    {loadingMessages[loadingMsgIndex]}
-                  </motion.p>
-                </AnimatePresence>
-
-                <p className="text-center text-base text-[#5A8A6A] mb-8">
-                  {locale === "ar" ? "\u0646\u0628\u0646\u064A \u0644\u0643 \u062E\u0637\u0629 \u0645\u062D\u062A\u0648\u0649 \u0627\u062D\u062A\u0631\u0627\u0641\u064A\u0629" : "Building your professional content plan"}
-                </p>
-
-                {/* Progress bar */}
-                <div className="h-3 rounded-full bg-[#F0F7F2] overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "95%" }}
-                    transition={{ duration: 25, ease: "easeInOut" }}
+      {/* ===== Premium Loading Overlay ===== */}
+      {generating && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#F8FBF8]/95 backdrop-blur-md"
+        >
+          <div className="w-full max-w-2xl mx-auto px-6">
+            <div
+              className="rounded-3xl border-2 border-[#D4EBD9] bg-white p-10 shadow-2xl"
+            >
+              {/* Main spinning logo */}
+              <div className="flex justify-center mb-8">
+                <div className="relative">
+                  <div
+                    className="h-32 w-32 rounded-full border-4 border-dashed border-[#D4EBD9] animate-spin"
+                    style={{ animationDuration: '8s' }}
                   />
-                </div>
-
-                {/* Bottom floating elements */}
-                <div className="mt-8 flex justify-center gap-4">
-                  {["\uD83D\uDCCA", "\uD83D\uDCF1", "\uD83C\uDFAF", "\u2728", "\uD83D\uDE80"].map((emoji, i) => (
-                    <motion.span
-                      key={i}
-                      animate={{ y: [0, -8, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.25 }}
-                      className="text-2xl"
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div
+                      className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_0_40px_rgba(0,108,53,0.3)]"
                     >
-                      {emoji}
-                    </motion.span>
+                      <Sparkles className="h-10 w-10 text-white" />
+                    </div>
+                  </div>
+                  {/* Orbiting icons */}
+                  {[Calendar, Target, TrendingUp, Globe].map((Icon, i) => (
+                    <div
+                      key={i}
+                      className="absolute inset-0"
+                      style={{ transformOrigin: "center center" }}
+                    >
+                      <div
+                        className="absolute flex h-10 w-10 items-center justify-center rounded-xl shadow-md"
+                        style={{
+                          top: "-20px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          backgroundColor: i % 2 === 0 ? "#F0F7F2" : "#FFF8E7",
+                        }}
+                      >
+                        <Icon className="h-5 w-5" style={{ color: i % 2 === 0 ? "#006C35" : "#C9A84C" }} />
+                      </div>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
+
+              {/* Loading message */}
+              <p
+                key={loadingMsgIndex}
+                className="text-center text-2xl font-bold text-[#004D26] font-['Cairo'] mb-3"
+              >
+                {loadingMessages[loadingMsgIndex]}
+              </p>
+
+              <p className="text-center text-base text-[#5A8A6A] mb-8">
+                {locale === "ar" ? "\u0646\u0628\u0646\u064A \u0644\u0643 \u062E\u0637\u0629 \u0645\u062D\u062A\u0648\u0649 \u0627\u062D\u062A\u0631\u0627\u0641\u064A\u0629" : "Building your professional content plan"}
+              </p>
+
+              {/* Progress bar */}
+              <div className="h-3 rounded-full bg-[#F0F7F2] overflow-hidden">
+                <div
+                  className="h-full w-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] transition-all duration-700"
+                />
+              </div>
+
+              {/* Bottom elements */}
+              <div className="mt-8 flex justify-center gap-4">
+                {["\uD83D\uDCCA", "\uD83D\uDCF1", "\uD83C\uDFAF", "\u2728", "\uD83D\uDE80"].map((emoji, i) => (
+                  <span key={i} className="text-2xl">{emoji}</span>
+                ))}
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
 
       {!plan ? (
         /* ===== SETUP CARD ===== */
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <div
         >
           <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
             {/* Card top accent bar */}
@@ -357,10 +321,7 @@ export default function PlannerPage() {
 
             <CardContent className="space-y-8 p-5 sm:p-8 pt-4">
               {/* ── Section 1: Company ── */}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
+              <div
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-sm">
@@ -387,16 +348,13 @@ export default function PlannerPage() {
                     </svg>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Gradient divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
 
               {/* ── Section 2: Platform Cards ── */}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
+              <div
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 shadow-sm">
@@ -408,15 +366,10 @@ export default function PlannerPage() {
                   {PLATFORMS.map((p, i) => {
                     const selected = platforms.includes(p.id);
                     return (
-                      <motion.button
+                      <button
                         key={p.id}
                         type="button"
                         onClick={() => togglePlatform(p.id)}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.4 + i * 0.05, type: "spring", stiffness: 200 }}
-                        whileHover={{ scale: 1.08, y: -4 }}
-                        whileTap={{ scale: 0.95 }}
                         className={cn(
                           "relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 p-4 py-5 transition-all duration-300 cursor-pointer",
                           selected
@@ -425,18 +378,13 @@ export default function PlannerPage() {
                         )}
                       >
                         {/* Selection checkmark */}
-                        <AnimatePresence>
-                          {selected && (
-                            <motion.div
-                              initial={{ scale: 0, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              exit={{ scale: 0, opacity: 0 }}
-                              className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
-                            >
-                              <CheckCircle2 className="h-5 w-5 text-[#006C35]" />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        {selected && (
+                          <div
+                            className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
+                          >
+                            <CheckCircle2 className="h-5 w-5 text-[#006C35]" />
+                          </div>
+                        )}
                         <span className="text-3xl leading-none">{p.emoji}</span>
                         <span className={cn(
                           "text-sm font-bold leading-tight text-center",
@@ -444,7 +392,7 @@ export default function PlannerPage() {
                         )}>
                           {p.label}
                         </span>
-                      </motion.button>
+                      </button>
                     );
                   })}
                 </div>
@@ -455,16 +403,13 @@ export default function PlannerPage() {
                 >
                   {platforms.length === PLATFORMS.length ? tp.clearAll : tp.selectAll}
                 </button>
-              </motion.div>
+              </div>
 
               {/* Gradient divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
 
               {/* ── Section 3: Week Start ── */}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
+              <div
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-sm">
@@ -478,16 +423,13 @@ export default function PlannerPage() {
                   onChange={(e) => setWeekStart(e.target.value)}
                   className="rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 h-14 text-lg text-[#0A1F0F] outline-none transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
                 />
-              </motion.div>
+              </div>
 
               {/* Gradient divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
 
               {/* ── Section 4: Language Toggle ── */}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
+              <div
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-sm">
@@ -523,16 +465,13 @@ export default function PlannerPage() {
                     {tp.arabic}
                   </Button>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Gradient divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
 
               {/* ── Section 5: Special Focus ── */}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.7 }}
+              <div
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-rose-400 to-rose-600 shadow-sm">
@@ -546,16 +485,13 @@ export default function PlannerPage() {
                   placeholder={tp.focusPlaceholder}
                   className="min-h-[120px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all"
                 />
-              </motion.div>
+              </div>
 
               {/* Gradient divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
               {/* ── Generate Button ── */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
+              <div
               >
                 <Button
                   onClick={handleGenerate}
@@ -568,50 +504,38 @@ export default function PlannerPage() {
                   {tp.generatePlan}
                   <Sparkles className="ml-3 h-7 w-7" />
                 </Button>
-              </motion.div>
+              </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       ) : (
         /* ===== GENERATED PLAN VIEW ===== */
         <>
           {/* Week Theme Banner */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+          <div
             className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#004D26] via-[#006C35] to-[#00A352] p-8 shadow-xl"
           >
             <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
             <div className="absolute bottom-0 left-0 h-20 w-40 rounded-full bg-white/5 blur-xl" />
             <div className="relative z-10">
-              <motion.h2
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
+              <h2
                 className="text-3xl md:text-4xl font-extrabold text-white font-['Cairo'] drop-shadow-lg"
               >
                 {outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
+              </h2>
+              <p
                 className="mt-2 text-lg text-white/70 flex items-center gap-2"
               >
                 <Calendar className="h-5 w-5 text-[#E8D5A0]" />
                 {weekStart && plan.days?.[0]?.date
                   ? `${format(parseISO(plan.days[0].date), "MMM d")} \u2013 ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}`
                   : weekStart}
-              </motion.p>
+              </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Action Buttons Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+          <div
             className="flex flex-wrap gap-3"
           >
             <Button
@@ -636,7 +560,7 @@ export default function PlannerPage() {
               <Download className="mr-2 h-5 w-5" />
               {tp.exportPDF}
             </Button>
-          </motion.div>
+          </div>
 
           {/* Day Cards Grid */}
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
@@ -644,12 +568,8 @@ export default function PlannerPage() {
               const platformCfg = getPlatformConfig(day.platform);
               const isCompleted = completedDays.has(day.dayIndex);
               return (
-                <motion.div
+                <div
                   key={day.dayIndex}
-                  initial={{ opacity: 0, y: 24, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: i * 0.08, type: "spring", stiffness: 150 }}
-                  whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
                   className={cn(
                     "group relative rounded-2xl border-2 bg-white overflow-hidden transition-all duration-300",
                     isCompleted
@@ -699,18 +619,15 @@ export default function PlannerPage() {
                     {/* Hashtags as colorful pills */}
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {day.hashtags?.slice(0, 4).map((tag, tagIdx) => (
-                        <motion.span
+                        <span
                           key={tag}
-                          initial={{ opacity: 0, scale: 0.7 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.08 + tagIdx * 0.04, type: "spring" }}
                           className={cn(
                             "rounded-full px-3 py-1 text-xs font-bold",
                             HASHTAG_COLORS[tagIdx % HASHTAG_COLORS.length]
                           )}
                         >
                           {tag}
-                        </motion.span>
+                        </span>
                       ))}
                     </div>
 
@@ -724,7 +641,7 @@ export default function PlannerPage() {
                     )}
 
                     {/* Mark as done button */}
-                    <motion.button
+                    <button
                       type="button"
                       onClick={() => {
                         setCompletedDays((prev) => {
@@ -734,7 +651,6 @@ export default function PlannerPage() {
                           return next;
                         });
                       }}
-                      whileTap={{ scale: 0.95 }}
                       className={cn(
                         "mt-4 w-full h-12 rounded-2xl border-2 text-base font-bold flex items-center justify-center gap-2 transition-all duration-300",
                         isCompleted
@@ -742,55 +658,33 @@ export default function PlannerPage() {
                           : "border-[#D4EBD9] bg-white text-[#5A8A6A] hover:border-[#006C35]/40 hover:bg-[#F0F7F2]"
                       )}
                     >
-                      <AnimatePresence mode="wait">
-                        {isCompleted ? (
-                          <motion.span
-                            key="done"
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            exit={{ scale: 0 }}
-                            className="flex items-center gap-2"
-                          >
-                            <CheckCircle2 className="h-5 w-5" />
-                            {locale === "ar" ? "\u062A\u0645 \u2728" : "Done \u2728"}
-                          </motion.span>
-                        ) : (
-                          <motion.span
-                            key="todo"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="flex items-center gap-2"
-                          >
-                            <Circle className="h-5 w-5" />
-                            {locale === "ar" ? "\u062A\u062D\u062F\u064A\u062F \u0643\u0645\u0646\u062C\u0632" : "Mark as done"}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                    </motion.button>
+                      {isCompleted ? (
+                        <span className="flex items-center gap-2">
+                          <CheckCircle2 className="h-5 w-5" />
+                          {locale === "ar" ? "\u062A\u0645 \u2728" : "Done \u2728"}
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Circle className="h-5 w-5" />
+                          {locale === "ar" ? "\u062A\u062D\u062F\u064A\u062F \u0643\u0645\u0646\u062C\u0632" : "Mark as done"}
+                        </span>
+                      )}
+                    </button>
                   </div>
 
-                  {/* Completion overlay shimmer */}
-                  <AnimatePresence>
-                    {isCompleted && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
-                      />
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+                  {/* Completion overlay bar */}
+                  {isCompleted && (
+                    <div
+                      className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
 
           {/* Generate New button */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+          <div
           >
             <Button
               variant="outline"
@@ -799,7 +693,7 @@ export default function PlannerPage() {
             >
               {tp.generateNew}
             </Button>
-          </motion.div>
+          </div>
         </>
       )}
 

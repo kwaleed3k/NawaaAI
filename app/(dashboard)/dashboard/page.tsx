@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
 import {
   Building2,
   Calendar,
@@ -51,67 +50,7 @@ const PLATFORM_CONFIG: Record<string, { emoji: string; gradient: string; text: s
 };
 
 /* ---------- Animation variants ---------- */
-const container: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 120, damping: 14 } },
-};
-
-const floatingVariant: Variants = {
-  animate: {
-    y: [0, -8, 0],
-    transition: { duration: 3, repeat: Infinity, ease: "easeInOut" as const },
-  },
-};
-
-/* ---------- Floating sparkle/particle component ---------- */
-function FloatingParticles() {
-  const particles = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    size: Math.random() * 6 + 2,
-    delay: Math.random() * 4,
-    duration: Math.random() * 3 + 3,
-    opacity: Math.random() * 0.4 + 0.1,
-  }));
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full"
-          style={{
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            background: `radial-gradient(circle, ${p.id % 3 === 0 ? "#C9A84C" : p.id % 3 === 1 ? "#00A352" : "#3B82F6"}, transparent)`,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            opacity: [p.opacity, p.opacity * 2.5, p.opacity],
-            scale: [1, 1.5, 1],
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export default function DashboardPage() {
   const { user, selectedCompany, setSelectedCompany, locale } = useAppStore();
@@ -266,15 +205,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
+    <div
       className="space-y-10 w-full pb-12"
       style={{ backgroundColor: "#F8FBF8" }}
     >
       {/* ================= HERO WELCOME SECTION ================= */}
-      <motion.div variants={item}>
+      <div>
         <div
           className="relative overflow-hidden rounded-2xl border-2 p-8 md:p-10 lg:p-12"
           style={{
@@ -292,79 +228,60 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* Floating sparkle particles */}
-          <FloatingParticles />
-
           <div className="relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+            <div
               className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 backdrop-blur-sm"
             >
               <Sparkles className="h-4 w-4 text-yellow-200" />
               <span className="text-lg font-medium text-white/90">
                 {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI
               </span>
-            </motion.div>
+            </div>
 
             <h1 className="font-cairo text-2xl font-extrabold text-white sm:text-4xl md:text-5xl lg:text-6xl drop-shadow-lg">
               {t.greeting}, {displayName} {"\ud83d\udc4b"}
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+            <p
               className="mt-4 text-xl md:text-2xl font-medium text-white/80"
             >
               {formatDate(new Date())}
-            </motion.p>
+            </p>
 
             {/* Decorative floating elements */}
-            <motion.div
-              variants={floatingVariant}
-              animate="animate"
+            <div
               className="absolute -top-2 right-8 hidden text-6xl opacity-20 md:block"
             >
               {"\u2728"}
-            </motion.div>
-            <motion.div
-              variants={floatingVariant}
-              animate="animate"
+            </div>
+            <div
               style={{ animationDelay: "1s" }}
               className="absolute bottom-4 right-24 hidden text-4xl opacity-15 md:block"
             >
               {"\ud83c\udf1f"}
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ================= STAT CARDS ================= */}
-      <motion.div variants={item} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full">
         {statItems.map((s, idx) => (
-          <motion.div
+          <div
             key={s.label}
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: 0.15 + idx * 0.1, type: "spring", stiffness: 120 }}
-            whileHover={{ y: -6, scale: 1.03 }}
           >
             <GlowCard glowColor={s.glowColor} className="!bg-white !border-2 !border-[#D4EBD9] !rounded-2xl">
               <CardContent className="flex flex-col items-center gap-4 p-5 sm:p-7 text-center">
                 {/* Gradient icon circle with bounce */}
-                <motion.div
+                <div
                   className={cn(
                     "flex items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg",
                     s.gradient
                   )}
                   style={{ height: 72, width: 72, boxShadow: `0 8px 24px ${s.shadowColor}` }}
-                  whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 400 }}
                 >
                   <s.icon className="h-9 w-9 text-white" />
-                </motion.div>
+                </div>
 
                 {/* Big animated number */}
                 <AnimatedCounter
@@ -379,12 +296,12 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </GlowCard>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
 
       {/* ================= LATEST PLAN -- Calendar-style ================= */}
-      <motion.div variants={item}>
+      <div>
         <Card className="overflow-hidden rounded-2xl border-2 bg-white shadow-sm" style={{ borderColor: "#D4EBD9" }}>
           <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 p-5 sm:p-7">
             <div className="flex items-center gap-3">
@@ -416,12 +333,8 @@ export default function DashboardPage() {
                 {days.map((d, i) => {
                   const pc = getPlatformConfig(d.platform);
                   return (
-                    <motion.div
+                    <div
                       key={i}
-                      initial={{ opacity: 0, y: 16, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: i * 0.07, type: "spring", stiffness: 120 }}
-                      whileHover={{ y: -6, scale: 1.05 }}
                       className="group relative overflow-hidden rounded-2xl border-2 p-5 text-center transition-all duration-300 hover:shadow-lg"
                       style={{ borderColor: "#D4EBD9", backgroundColor: "#FFFFFF" }}
                     >
@@ -439,13 +352,11 @@ export default function DashboardPage() {
                       </p>
 
                       {/* Platform emoji */}
-                      <motion.div
+                      <div
                         className="my-3 text-3xl"
-                        whileHover={{ scale: 1.3, rotate: [0, -15, 15, 0] }}
-                        transition={{ type: "spring", stiffness: 400 }}
                       >
                         {pc.emoji}
-                      </motion.div>
+                      </div>
 
                       {/* Topic */}
                       <p className="text-lg font-semibold leading-snug" style={{ color: "#0A1F0F" }}>
@@ -461,19 +372,17 @@ export default function DashboardPage() {
                       >
                         {d.platform}
                       </span>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>
             ) : (
               <div className="flex flex-col items-center py-16 text-center">
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                <div
                   className="mb-4 text-5xl"
                 >
                   {"\ud83d\udcc5"}
-                </motion.div>
+                </div>
                 <p className="text-xl font-medium" style={{ color: "#5A8A6A" }}>
                   {t.noPlansYet}
                 </p>
@@ -481,21 +390,17 @@ export default function DashboardPage() {
             )}
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
 
       {/* ================= QUICK ACTIONS ================= */}
-      <motion.div variants={item}>
+      <div>
         <h2 className="mb-6 font-cairo text-3xl font-extrabold" style={{ color: "#004D26" }}>
           {t.quickActions}
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {quickActions.map((action, idx) => (
-            <motion.div
+            <div
               key={action.href}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + idx * 0.1, type: "spring" }}
-              whileHover={{ y: -8, scale: 1.02 }}
             >
               <Link href={action.href} className="block">
                 <div
@@ -514,15 +419,14 @@ export default function DashboardPage() {
                   />
 
                   {/* Icon circle */}
-                  <motion.div
+                  <div
                     className={cn(
                       "mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg",
                       action.gradient
                     )}
-                    whileHover={{ rotate: 12, scale: 1.1 }}
                   >
                     <action.icon className="h-8 w-8 text-white" />
-                  </motion.div>
+                  </div>
 
                   {/* Title */}
                   <h3 className="text-2xl font-bold mb-2" style={{ color: "#004D26" }}>
@@ -541,13 +445,13 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* ================= COMPANIES CAROUSEL ================= */}
-      <motion.div variants={item}>
+      <div>
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-cairo text-3xl font-extrabold" style={{ color: "#004D26" }}>
             {t.yourCompanies}
@@ -564,12 +468,8 @@ export default function DashboardPage() {
 
         <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-nawaa">
           {companies.map((c, idx) => (
-            <motion.div
+            <div
               key={c.id}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.08 }}
-              whileHover={{ y: -6, scale: 1.03 }}
               className="min-w-[300px] shrink-0"
             >
               <div
@@ -638,15 +538,11 @@ export default function DashboardPage() {
                   </div>
                 </Link>
               </div>
-            </motion.div>
+            </div>
           ))}
 
           {/* Add company card */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: companies.length * 0.08 }}
-            whileHover={{ y: -6, scale: 1.03 }}
+          <div
             className="min-w-[300px] shrink-0"
           >
             <Link
@@ -654,13 +550,11 @@ export default function DashboardPage() {
               className="flex h-full min-h-[240px] flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 transition-all duration-300 hover:border-[#006C35] hover:bg-[#F0F7F2] hover:shadow-lg"
               style={{ borderColor: "#D4EBD9", backgroundColor: "#FFFFFF" }}
             >
-              <motion.div
+              <div
                 className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35]/10 to-[#00A352]/10"
-                whileHover={{ scale: 1.15, rotate: 90 }}
-                transition={{ type: "spring", stiffness: 300 }}
               >
                 <Plus className="h-10 w-10" style={{ color: "#006C35" }} />
-              </motion.div>
+              </div>
               <span className="text-xl font-bold" style={{ color: "#004D26" }}>
                 {t.addCompany}
               </span>
@@ -668,12 +562,12 @@ export default function DashboardPage() {
                 {locale === "ar" ? "\u0627\u0636\u0641 \u0639\u0644\u0627\u0645\u062a\u0643 \u0627\u0644\u062a\u062c\u0627\u0631\u064a\u0629" : "Add your brand"}
               </span>
             </Link>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ================= RECENT IMAGES -- Masonry-style ================= */}
-      <motion.div variants={item}>
+      <div>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div
@@ -708,12 +602,8 @@ export default function DashboardPage() {
               .filter((item) => item.url)
               .slice(0, 5)
               .map((imageItem, idx) => (
-                <motion.div
+                <div
                   key={imageItem.key}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.06, type: "spring" }}
-                  whileHover={{ scale: 1.03 }}
                   className="group relative aspect-square overflow-hidden rounded-2xl border-2 shadow-sm transition-all duration-300 hover:shadow-xl"
                   style={{ borderColor: "#D4EBD9" }}
                 >
@@ -728,15 +618,13 @@ export default function DashboardPage() {
 
                       {/* Hover overlay */}
                       <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          whileHover={{ scale: 1.1 }}
+                        <div
                           className="flex items-center gap-2 rounded-2xl bg-white px-6 py-3 font-bold shadow-lg"
                           style={{ color: "#004D26" }}
                         >
                           <Eye className="h-5 w-5" />
                           <span className="text-lg">{locale === "ar" ? "\u0639\u0631\u0636" : "View"}</span>
-                        </motion.div>
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -747,7 +635,7 @@ export default function DashboardPage() {
                       <ImageIcon className="h-12 w-12" style={{ color: "#5A8A6A" }} />
                     </div>
                   )}
-                </motion.div>
+                </div>
               ))}
           </div>
         ) : (
@@ -755,19 +643,17 @@ export default function DashboardPage() {
             className="flex flex-col items-center rounded-2xl border-2 py-16 text-center"
             style={{ borderColor: "#D4EBD9", backgroundColor: "#FFFFFF" }}
           >
-            <motion.div
-              animate={{ y: [0, -8, 0], rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
+            <div
               className="mb-4 text-5xl"
             >
               {"\ud83c\udfa8"}
-            </motion.div>
+            </div>
             <p className="text-xl font-medium" style={{ color: "#5A8A6A" }}>
               {t.noImagesYet}
             </p>
           </div>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

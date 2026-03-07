@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+/* framer-motion removed – using plain HTML + CSS transitions */
 import { Sparkles, Loader2, Download, ImageIcon, Maximize2, ImagePlus, X, Upload, Check, Camera, Paintbrush, MessageSquare } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore, type Company } from "@/lib/store";
@@ -21,18 +21,7 @@ type ContentPlanRow = {
 };
 
 /* ── Animation variants ── */
-const container: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 120, damping: 14 } },
-};
 
 /* ── Platform emoji map for day buttons ── */
 const PLATFORM_EMOJI: Record<string, string> = {
@@ -252,15 +241,11 @@ export default function VisionStudioPage() {
   }
 
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
+    <div
       className="space-y-10"
     >
       {/* ===== PAGE HEADER BANNER ===== */}
-      <motion.div
-        variants={item}
+      <div
         className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
       >
         {/* Decorative floating shapes */}
@@ -268,14 +253,12 @@ export default function VisionStudioPage() {
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
         <div className="absolute top-4 right-8 flex gap-2">
           {["\uD83C\uDFA8", "\u2728", "\uD83D\uDCF8"].map((em, i) => (
-            <motion.span
+            <span
               key={i}
-              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
               className="text-2xl md:text-3xl"
             >
               {em}
-            </motion.span>
+            </span>
           ))}
         </div>
         <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
@@ -286,15 +269,15 @@ export default function VisionStudioPage() {
           {tv.pageSub}
           <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
         </p>
-      </motion.div>
+      </div>
 
       {/* ===== MAIN GRID ===== */}
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-5">
         {/* ── LEFT COLUMN: Controls ── */}
-        <motion.div variants={container} initial="hidden" animate="show" className="space-y-8 lg:col-span-2">
+        <div className="space-y-8 lg:col-span-2">
 
           {/* ── Company Selector ── */}
-          <motion.div variants={item}>
+          <div>
             <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
               <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
               <CardHeader className="p-5 sm:p-8 pb-4">
@@ -323,12 +306,8 @@ export default function VisionStudioPage() {
                 {selectedCompany?.brand_colors?.length ? (
                   <div className="mt-4 flex gap-2.5">
                     {selectedCompany.brand_colors.slice(0, 5).map((hex, i) => (
-                      <motion.div
+                      <div
                         key={i}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: i * 0.08, type: "spring", stiffness: 200 }}
-                        whileHover={{ scale: 1.3, y: -4, boxShadow: "0 8px 20px rgba(0,0,0,0.15)" }}
                         className="h-10 w-10 rounded-full border-2 border-white shadow-md ring-2 ring-[#D4EBD9]"
                         style={{ backgroundColor: hex }}
                       />
@@ -337,10 +316,10 @@ export default function VisionStudioPage() {
                 ) : null}
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* ── Content Day Selector ── */}
-          <motion.div variants={item}>
+          <div>
             <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
               <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C]" />
               <CardHeader className="p-5 sm:p-8 pb-4">
@@ -366,15 +345,10 @@ export default function VisionStudioPage() {
                       const selected = selectedDayIndex === i;
                       const platformEmoji = d.platform ? PLATFORM_EMOJI[d.platform.toLowerCase()] || "\uD83D\uDCC5" : "\uD83D\uDCC5";
                       return (
-                        <motion.button
+                        <button
                           key={i}
                           type="button"
                           onClick={() => setSelectedDayIndex(i)}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.06, type: "spring", stiffness: 200 }}
-                          whileHover={{ scale: 1.06, y: -4 }}
-                          whileTap={{ scale: 0.95 }}
                           className={cn(
                             "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all duration-300 cursor-pointer",
                             selected
@@ -383,44 +357,40 @@ export default function VisionStudioPage() {
                           )}
                         >
                           {selected && (
-                            <motion.div
-                              initial={{ scale: 0, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
+                            <div
                               className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
                             >
                               <div className="h-4 w-4 rounded-full bg-[#C9A84C] flex items-center justify-center">
                                 <Check className="h-3 w-3 text-white" />
                               </div>
-                            </motion.div>
+                            </div>
                           )}
                           <span className="text-2xl leading-none">{platformEmoji}</span>
                           <span className={cn("text-base font-bold leading-tight text-center", selected ? "text-white" : "text-[#004D26]")}>
                             {locale === "ar" ? (d.dayAr || d.dayEn) : (d.dayEn || d.dayAr)}
                           </span>
-                        </motion.button>
+                        </button>
                       );
                     })}
                   </div>
                 ) : null}
 
                 {currentDay ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
+                  <div
                     className="rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-5"
                   >
                     <p className="text-lg font-bold text-[#004D26]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
                     <p className="mt-2 text-base text-[#5A8A6A]">{currentDay.imagePromptHint}</p>
-                  </motion.div>
+                  </div>
                 ) : (
                   <p className="text-lg text-[#5A8A6A]">{tv.noPlan}</p>
                 )}
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* ── Reference Images ── */}
-          <motion.div variants={item}>
+          <div>
             <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
               <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C]" />
               <CardHeader className="p-5 sm:p-8 pb-4">
@@ -441,31 +411,24 @@ export default function VisionStudioPage() {
               <CardContent className="p-5 sm:p-8 pt-2">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {referenceImages.map((img, i) => (
-                    <motion.div
+                    <div
                       key={i}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.08, type: "spring", stiffness: 200 }}
                       className="relative group aspect-square rounded-2xl overflow-hidden border-2 border-[#D4EBD9] shadow-md"
                     >
                       <img src={img.preview} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
-                      <motion.button
+                      <button
                         type="button"
                         onClick={() => removeReferenceImage(i)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
                         className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                       >
                         <X className="h-4 w-4" />
-                      </motion.button>
-                    </motion.div>
+                      </button>
+                    </div>
                   ))}
                   {referenceImages.length < 6 && (
-                    <motion.label
-                      whileHover={{ scale: 1.05, borderColor: "#006C35" }}
-                      whileTap={{ scale: 0.97 }}
+                    <label
                       className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-[#F8FBF8] hover:bg-[#F0F7F2] transition-all duration-300"
                       style={{ borderColor: "#006C35", borderImage: "linear-gradient(135deg, #006C35, #C9A84C) 1" }}
                     >
@@ -480,7 +443,7 @@ export default function VisionStudioPage() {
                         <Upload className="h-6 w-6 text-white" />
                       </div>
                       <span className="text-base font-bold text-[#004D26]">{locale === "ar" ? "\u0625\u0636\u0627\u0641\u0629" : "Add"}</span>
-                    </motion.label>
+                    </label>
                   )}
                 </div>
                 {referenceImages.length > 0 && (
@@ -490,10 +453,10 @@ export default function VisionStudioPage() {
                 )}
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* ── Style Selector ── */}
-          <motion.div variants={item}>
+          <div>
             <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
               <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#006C35] to-[#C9A84C]" />
               <CardHeader className="p-5 sm:p-8 pb-4">
@@ -508,14 +471,9 @@ export default function VisionStudioPage() {
                 {STYLES.map((s, i) => {
                   const selected = style === s.id;
                   return (
-                    <motion.button
+                    <button
                       key={s.id}
                       type="button"
-                      initial={{ opacity: 0, scale: 0.85, y: 15 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      transition={{ delay: i * 0.08, type: "spring", stiffness: 180 }}
-                      whileHover={{ scale: 1.06, y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.1)" }}
-                      whileTap={{ scale: 0.97 }}
                       onClick={() => setStyle(s.id)}
                       className={cn(
                         "relative rounded-2xl border-2 p-6 text-left transition-all duration-300 overflow-hidden",
@@ -526,37 +484,32 @@ export default function VisionStudioPage() {
                     >
                       {/* Selection checkmark */}
                       {selected && (
-                        <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ type: "spring", stiffness: 300 }}
+                        <div
                           className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md z-10"
                         >
                           <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center">
                             <Check className="h-3.5 w-3.5 text-white" />
                           </div>
-                        </motion.div>
+                        </div>
                       )}
                       {/* Selected gradient accent bar */}
                       {selected && (
-                        <motion.div
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: 1 }}
+                        <div
                           className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left"
                         />
                       )}
                       <span className="text-4xl block">{s.emoji}</span>
                       <p className="mt-3 text-xl font-extrabold text-[#004D26]">{s.label}</p>
                       <p className="mt-1 text-base text-[#5A8A6A]">{s.desc}</p>
-                    </motion.button>
+                    </button>
                   );
                 })}
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* ── Language Toggle ── */}
-          <motion.div variants={item}>
+          <div>
             <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md">
                 <Sparkles className="h-5 w-5 text-white" />
@@ -564,7 +517,7 @@ export default function VisionStudioPage() {
               {tv.generateIn}
             </label>
             <div className="flex gap-3">
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex-1">
+              <div className="flex-1">
                 <Button
                   type="button"
                   variant={outputLanguage === "en" ? "default" : "outline"}
@@ -578,8 +531,8 @@ export default function VisionStudioPage() {
                 >
                   <span className="text-2xl mr-2">{"\uD83C\uDDFA\uD83C\uDDF8"}</span> {tv.english}
                 </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex-1">
+              </div>
+              <div className="flex-1">
                 <Button
                   type="button"
                   variant={outputLanguage === "ar" ? "default" : "outline"}
@@ -593,18 +546,16 @@ export default function VisionStudioPage() {
                 >
                   <span className="text-2xl mr-2">{"\uD83C\uDDF8\uD83C\uDDE6"}</span> {tv.arabic}
                 </Button>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* ── Include Logo Toggle ── */}
           {selectedCompany?.logo_url && (
-            <motion.div variants={item}>
-              <motion.button
+            <div>
+              <button
                 type="button"
                 onClick={() => setIncludeLogo(!includeLogo)}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
                 className={cn(
                   "w-full flex items-center gap-5 rounded-2xl border-2 p-6 text-left transition-all duration-300 overflow-hidden relative",
                   includeLogo
@@ -614,9 +565,7 @@ export default function VisionStudioPage() {
               >
                 {/* Gradient border effect when active */}
                 {includeLogo && (
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
+                  <div
                     className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left"
                   />
                 )}
@@ -636,22 +585,20 @@ export default function VisionStudioPage() {
                   "h-8 w-14 rounded-full transition-all duration-300 relative flex-shrink-0",
                   includeLogo ? "bg-gradient-to-r from-[#006C35] to-[#00A352] shadow-inner" : "bg-[#D4EBD9]"
                 )}>
-                  <motion.div
-                    animate={{ x: includeLogo ? 24 : 2 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  <div
                     className={cn(
                       "absolute top-1 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center",
                     )}
                   >
                     {includeLogo && <Check className="h-3.5 w-3.5 text-[#006C35]" />}
-                  </motion.div>
+                  </div>
                 </div>
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
           )}
 
           {/* ── Extra Instructions ── */}
-          <motion.div variants={item}>
+          <div>
             <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-md">
                 <MessageSquare className="h-5 w-5 text-white" />
@@ -664,10 +611,10 @@ export default function VisionStudioPage() {
               placeholder={tv.extraPlaceholder}
               className="min-h-[120px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40 p-5"
             />
-          </motion.div>
+          </div>
 
           {/* ── Generate Button ── */}
-          <motion.div variants={item}>
+          <div>
             <Button
               onClick={handleGenerate}
               disabled={generating || !currentDay}
@@ -683,11 +630,11 @@ export default function VisionStudioPage() {
               <span className="relative z-10">{tv.generate4}</span>
               {!generating && <Sparkles className="ml-3 h-8 w-8 relative z-10" />}
             </Button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* ── RIGHT COLUMN: Image Output ── */}
-        <motion.div variants={item} className="lg:col-span-3">
+        <div className="lg:col-span-3">
           <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
             <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
             <CardHeader className="p-5 sm:p-8 pb-4">
@@ -701,105 +648,76 @@ export default function VisionStudioPage() {
             <CardContent className="p-5 sm:p-8 pt-2">
               {images.length === 0 && !generating ? (
                 /* ── Empty State ── */
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                <div
                   className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] py-28"
                 >
-                  <motion.div
-                    animate={{ y: [0, -8, 0], rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  <div
                     className="flex h-32 w-32 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35]/10 to-[#C9A84C]/10 shadow-inner"
                   >
                     <ImageIcon className="h-16 w-16 text-[#5A8A6A]/50" />
-                  </motion.div>
+                  </div>
                   <p className="mt-8 text-2xl font-bold text-[#004D26]">{tv.imagesHere}</p>
                   <p className="mt-2 text-lg text-[#5A8A6A]">{tv.selectAndGenerate}</p>
-                </motion.div>
+                </div>
               ) : generating ? (
                 /* ── Loading State with Gradient Sweep Skeletons ── */
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 gap-5">
                     {[0, 1, 2, 3].map((i) => (
-                      <motion.div
+                      <div
                         key={i}
-                        initial={{ opacity: 0, scale: 0.85, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ delay: i * 0.15, type: "spring", stiffness: 150 }}
                         className="relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9] shadow-md"
                         style={{ background: "linear-gradient(135deg, #F0F7F2 0%, #F8FBF8 50%, #F0F7F2 100%)" }}
                       >
                         {/* Animated gradient sweep */}
-                        <motion.div
+                        <div
                           className="absolute inset-0"
                           style={{ background: "linear-gradient(90deg, transparent 0%, rgba(0,108,53,0.08) 30%, rgba(201,168,76,0.08) 50%, rgba(0,108,53,0.08) 70%, transparent 100%)" }}
-                          animate={{ x: ["-100%", "200%"] }}
-                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
                         />
                         {/* Gradient accent bar at top */}
                         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
                         {/* Pulsing icon */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <motion.div
-                            animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                          <div
                           >
                             <Sparkles className="h-14 w-14 text-[#C9A84C]/30" />
-                          </motion.div>
+                          </div>
                         </div>
                         {/* Progress dots */}
                         <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                           {[0, 1, 2].map((d) => (
-                            <motion.div
+                            <div
                               key={d}
                               className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-[#006C35] to-[#C9A84C]"
-                              animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }}
-                              transition={{ duration: 1.2, repeat: Infinity, delay: d * 0.3 }}
                             />
                           ))}
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
-                  {/* Funny quote - styled bigger */}
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={loadingQuoteIndex}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      className="text-center py-4"
-                    >
-                      <p className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
-                        {loadingQuotes[loadingQuoteIndex]}
-                      </p>
-                      <div className="mt-4 mx-auto h-2 w-64 rounded-full bg-[#F0F7F2] overflow-hidden border border-[#D4EBD9]">
-                        <motion.div
-                          className="h-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
-                          initial={{ width: "0%" }}
-                          animate={{ width: "100%" }}
-                          transition={{ duration: 3, ease: "linear", repeat: Infinity }}
-                        />
-                      </div>
-                      <p className="mt-2 text-base text-[#5A8A6A]">
-                        {locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u0625\u0646\u0634\u0627\u0621..." : "Creating your visuals..."}
-                      </p>
-                    </motion.div>
-                  </AnimatePresence>
+                  {/* Loading quote */}
+                  <div className="text-center py-4">
+                    <p className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                      {loadingQuotes[loadingQuoteIndex]}
+                    </p>
+                    <div className="mt-4 mx-auto h-2 w-64 rounded-full bg-[#F0F7F2] overflow-hidden border border-[#D4EBD9]">
+                      <div
+                        className="h-full w-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] transition-all duration-700"
+                      />
+                    </div>
+                    <p className="mt-2 text-base text-[#5A8A6A]">
+                      {locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u0625\u0646\u0634\u0627\u0621..." : "Creating your visuals..."}
+                    </p>
+                  </div>
                 </div>
               ) : (
                 /* ── Generated Images Grid ── */
-                <motion.div
-                  variants={container}
-                  initial="hidden"
-                  animate="show"
+                <div
                   className="grid grid-cols-2 gap-5"
                 >
                   {images.map((img, i) => (
-                    <motion.div
+                    <div
                       key={img.id}
-                      variants={item}
-                      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
                       className="group relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-md transition-all duration-300"
                     >
                       {/* Gradient accent bar at top */}
@@ -831,43 +749,36 @@ export default function VisionStudioPage() {
                       )}
                       {img.url && (
                         <div className="absolute inset-0 flex items-center justify-center gap-4 bg-gradient-to-t from-[#004D26]/70 via-[#004D26]/30 to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100">
-                          <motion.button
+                          <button
                             type="button"
                             onClick={() => setLightboxUrl(img.url!)}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
                             className="rounded-2xl bg-white/95 backdrop-blur-sm border-2 border-[#D4EBD9] px-5 py-3 text-lg font-bold text-[#004D26] flex items-center gap-2.5 shadow-xl"
                           >
                             <Maximize2 className="h-5 w-5" /> {tv.fullScreen}
-                          </motion.button>
-                          <motion.a
+                          </button>
+                          <a
                             href={img.url}
                             download
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
                             className="rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-5 py-3 text-lg font-bold text-white flex items-center gap-2.5 shadow-xl"
                           >
                             <Download className="h-5 w-5" />
-                          </motion.a>
+                          </a>
                         </div>
                       )}
                       <span className="absolute bottom-3 left-3 rounded-xl bg-white/95 backdrop-blur-sm border-2 border-[#D4EBD9] px-4 py-2 text-base font-bold text-[#004D26] shadow-md">
                         {img.style_label}
                       </span>
-                    </motion.div>
+                    </div>
                   ))}
-                </motion.div>
+                </div>
               )}
 
               {/* ── Save Button ── */}
               {images.length > 0 && !generating && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                <div
                   className="mt-8 flex justify-end"
                 >
-                  <motion.div whileHover={{ scale: saved ? 1 : 1.04 }} whileTap={{ scale: saved ? 1 : 0.97 }}>
+                  <div>
                     <Button
                       onClick={handleSave}
                       disabled={saved || saving}
@@ -887,64 +798,52 @@ export default function VisionStudioPage() {
                         {saved ? (locale === "ar" ? "\u2713 \u062A\u0645 \u0627\u0644\u062D\u0641\u0638" : "\u2713 Saved") : saving ? (locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u062D\u0641\u0638..." : "Saving...") : (locale === "ar" ? "\u062D\u0641\u0638 \u0627\u0644\u0635\u0648\u0631" : "Save Images")}
                       </span>
                     </Button>
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
               )}
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
 
       {/* ===== LIGHTBOX ===== */}
-      <AnimatePresence>
-        {lightboxUrl && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            onClick={() => setLightboxUrl(null)}
+      {/* ===== LIGHTBOX ===== */}
+      {lightboxUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setLightboxUrl(null)}
+        >
+          {/* Gradient backdrop tint */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#004D26]/90 via-black/80 to-[#004D26]/90 backdrop-blur-md" />
+          <div
+            className="relative max-h-[90vh] max-w-[90vw]"
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Gradient backdrop tint */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#004D26]/90 via-black/80 to-[#004D26]/90 backdrop-blur-md" />
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: 30 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 30 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative max-h-[90vh] max-w-[90vw]"
-              onClick={(e) => e.stopPropagation()}
+            <img
+              src={lightboxUrl}
+              alt=""
+              className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-2 ring-white/20"
+            />
+            <button
+              type="button"
+              onClick={() => setLightboxUrl(null)}
+              className="absolute -top-5 -right-5 flex h-14 w-14 items-center justify-center rounded-full bg-white border-2 border-[#D4EBD9] shadow-xl text-[#004D26] hover:bg-[#F0F7F2] transition-colors"
             >
-              <img
-                src={lightboxUrl}
-                alt=""
-                className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-2 ring-white/20"
-              />
-              <motion.button
-                type="button"
-                onClick={() => setLightboxUrl(null)}
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                className="absolute -top-5 -right-5 flex h-14 w-14 items-center justify-center rounded-full bg-white border-2 border-[#D4EBD9] shadow-xl text-[#004D26] hover:bg-[#F0F7F2] transition-colors"
+              <X className="h-7 w-7" />
+            </button>
+            <div className="absolute bottom-5 right-5 flex gap-3">
+              <a
+                href={lightboxUrl}
+                download
+                className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-7 py-4 text-lg font-extrabold text-white shadow-xl border-2 border-white/20"
+                onClick={(e) => e.stopPropagation()}
               >
-                <X className="h-7 w-7" />
-              </motion.button>
-              <div className="absolute bottom-5 right-5 flex gap-3">
-                <motion.a
-                  href={lightboxUrl}
-                  download
-                  whileHover={{ scale: 1.06 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-7 py-4 text-lg font-extrabold text-white shadow-xl border-2 border-white/20"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Download className="h-6 w-6" /> Download
-                </motion.a>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+                <Download className="h-6 w-6" /> Download
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

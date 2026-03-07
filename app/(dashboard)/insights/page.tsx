@@ -1,22 +1,10 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+/* framer-motion removed – using plain HTML + CSS transitions */
 import { TrendingUp, BarChart3, PieChart, Activity, Sparkles } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { messages } from "@/lib/i18n";
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
-};
 
 export default function InsightsPage() {
   const { locale } = useAppStore();
@@ -96,29 +84,18 @@ export default function InsightsPage() {
   ];
 
   return (
-    <motion.div
+    <div
       className="space-y-10"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
     >
       {/* ── Page Header: Gradient Banner ── */}
-      <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-12">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-12">
         {/* Floating decorative elements */}
-        <motion.div
-          className="pointer-events-none absolute -top-6 -right-6 h-32 w-32 rounded-full bg-white/10"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
+        <div className="pointer-events-none absolute -top-6 -right-6 h-32 w-32 rounded-full bg-white/10" />
+        <div
           className="pointer-events-none absolute bottom-4 left-8 h-20 w-20 rounded-full bg-white/10"
-          animate={{ scale: [1, 1.15, 1], opacity: [0.08, 0.18, 0.08] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         />
-        <motion.div
+        <div
           className="pointer-events-none absolute top-1/2 right-1/4 h-14 w-14 rounded-full bg-white/5"
-          animate={{ y: [0, -10, 0], opacity: [0.05, 0.15, 0.05] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         />
 
         <div className="relative z-10">
@@ -131,57 +108,43 @@ export default function InsightsPage() {
             <Sparkles className="h-5 w-5 text-[#C9A84C]" />
           </p>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── Coming Soon Hero Section ── */}
-      <motion.div variants={itemVariants} className="relative">
+      <div className="relative">
         {/* Animated gradient border wrapper */}
         <div className="relative rounded-2xl p-[3px]">
-          <motion.div
-            className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
           <div className="relative rounded-2xl bg-[#F8FBF8] px-6 py-20 md:px-12 md:py-28">
             <div className="flex flex-col items-center justify-center text-center">
               {/* Animated icon */}
-              <motion.div
+              <div
                 className="relative flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352]"
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
                 <TrendingUp className="text-white" style={{ width: 72, height: 72 }} />
                 {/* Outer ring pulse */}
-                <motion.div
+                <div
                   className="absolute inset-0 rounded-full border-4 border-[#006C35]/30"
-                  animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0, 0.4] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
                 />
-              </motion.div>
+              </div>
 
               {/* Floating emojis */}
               <div className="pointer-events-none absolute inset-0">
-                <motion.span
+                <span
                   className="absolute left-[15%] top-[20%] text-4xl"
-                  animate={{ y: [0, -15, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
                   📊
-                </motion.span>
-                <motion.span
+                </span>
+                <span
                   className="absolute right-[15%] top-[18%] text-4xl"
-                  animate={{ y: [0, -15, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
                 >
                   📈
-                </motion.span>
-                <motion.span
+                </span>
+                <span
                   className="absolute left-1/2 bottom-[12%] -translate-x-1/2 text-4xl"
-                  animate={{ y: [0, -15, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
                 >
                   🎯
-                </motion.span>
+                </span>
               </div>
 
               {/* Coming Soon text */}
@@ -193,21 +156,15 @@ export default function InsightsPage() {
               </p>
 
               {/* ── Preview Metric Cards ── */}
-              <motion.div
+              <div
                 className="mt-14 grid w-full max-w-2xl grid-cols-1 gap-6 sm:grid-cols-3"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
               >
                 {metricCards.map((item, i) => (
-                  <motion.div
+                  <div
                     key={item.label}
-                    variants={itemVariants}
-                    transition={{ delay: 0.3 + i * 0.15 }}
-                    whileHover={{ y: -8, scale: 1.02 }}
                     className={`group cursor-default rounded-2xl border-2 border-[#D4EBD9] bg-white p-6 text-center shadow-md transition-shadow duration-300 ${item.shadowColor}`}
                   >
-                    <motion.div
+                    <div
                       className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconBg}`}
                     >
                       <item.icon
@@ -220,41 +177,32 @@ export default function InsightsPage() {
                             : "#8B5CF6",
                         }}
                       />
-                    </motion.div>
+                    </div>
                     <p className="mt-4 text-xl font-bold text-[#004D26]">{item.label}</p>
                     <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-[#F0F7F2]">
-                      <motion.div
+                      <div
                         className={`h-full rounded-full bg-gradient-to-r ${item.barColor}`}
-                        initial={{ width: "0%" }}
-                        animate={{ width: item.barWidth }}
-                        transition={{ delay: 0.6 + i * 0.2, duration: 1.2, ease: "easeOut" }}
                       />
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── What to Expect Section ── */}
-      <motion.div variants={itemVariants}>
+      <div>
         <h3 className="mb-8 text-center text-3xl font-bold text-[#004D26] md:text-4xl">
           {locale === "ar" ? "ماذا تتوقع" : "What to Expect"}
         </h3>
-        <motion.div
+        <div
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
         >
           {featureCards.map((card, i) => (
-            <motion.div
+            <div
               key={card.title}
-              variants={itemVariants}
-              transition={{ delay: 0.2 + i * 0.12 }}
-              whileHover={{ y: -8, scale: 1.02 }}
               className="group relative cursor-default overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white p-6 shadow-md transition-shadow duration-300 hover:shadow-xl"
             >
               {/* Gradient accent bar at top */}
@@ -267,10 +215,10 @@ export default function InsightsPage() {
               </div>
               <h4 className="mt-5 text-xl font-bold text-[#004D26]">{card.title}</h4>
               <p className="mt-2 text-lg leading-relaxed text-[#5A8A6A]">{card.description}</p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </motion.div>
-    </motion.div>
+        </div>
+      </div>
+    </div>
   );
 }

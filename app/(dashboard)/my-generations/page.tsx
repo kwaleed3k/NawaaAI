@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+/* framer-motion removed – using plain HTML + CSS transitions */
 import { ImageIcon, Trash2, Download, Maximize2, X, Sparkles, Loader2, Calendar } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
@@ -43,29 +43,7 @@ const cardShadowHover = [
 ];
 
 /* ---------- Framer Motion Variants ---------- */
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
 
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.96 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 260,
-      damping: 20,
-    },
-  },
-};
 
 export default function MyGenerationsPage() {
   const supabase = createClient();
@@ -230,10 +208,7 @@ export default function MyGenerationsPage() {
     <div className="min-h-screen bg-[#F8FBF8]">
       <div className="mx-auto max-w-7xl space-y-10">
         {/* ========== Gradient Banner Header ========== */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, type: "spring", stiffness: 200, damping: 20 }}
+        <div
           className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 shadow-lg"
         >
           {/* Decorative floating shapes */}
@@ -254,10 +229,7 @@ export default function MyGenerationsPage() {
             </div>
             {/* Count badge */}
             {generations.length > 0 && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.3 }}
+              <div
                 className="flex items-center gap-3 self-start rounded-2xl border border-white/20 bg-white/15 px-5 py-3 backdrop-blur-sm"
               >
                 <span className="text-lg font-semibold text-white">
@@ -266,44 +238,35 @@ export default function MyGenerationsPage() {
                 <span className="text-lg text-white/70">
                   {locale === "ar" ? "صورة" : "images"}
                 </span>
-              </motion.div>
+              </div>
             )}
           </div>
-        </motion.div>
+        </div>
 
         {/* ========== Empty State ========== */}
         {generations.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          <div
             className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-white py-28"
           >
             {/* Animated floating icon in gradient circle */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            <div
               className="relative"
             >
               <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35]/15 via-[#00A352]/10 to-[#C9A84C]/15">
                 <ImageIcon className="h-16 w-16 text-[#00A352]" />
               </div>
               {/* Pulsing sparkles */}
-              <motion.div
-                animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.1, 0.8] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              <div
                 className="absolute -right-2 -top-2"
               >
                 <Sparkles className="h-7 w-7 text-[#C9A84C]" />
-              </motion.div>
-              <motion.div
-                animate={{ opacity: [0.3, 0.9, 0.3], scale: [0.9, 1.2, 0.9] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              </div>
+              <div
                 className="absolute -bottom-1 -left-3"
               >
                 <Sparkles className="h-5 w-5 text-[#00A352]" />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             <p className="mt-8 text-2xl font-bold text-[#004D26]">{noGenerations}</p>
             <p className="mt-2 text-lg text-[#5A8A6A]/70">{noGenerationsSub}</p>
@@ -314,19 +277,16 @@ export default function MyGenerationsPage() {
               <Sparkles className="mr-2 h-6 w-6" />
               {locale === "ar" ? "افتح استوديو الرؤية" : "Open Vision Studio"}
             </a>
-          </motion.div>
+          </div>
         ) : (
           /* ========== Generation Cards Grid ========== */
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
+          <div
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {generations.map((gen, idx) => {
               const accentIdx = idx % 4;
               return (
-                <motion.div key={gen.id} variants={cardVariants}>
+                <div key={gen.id}>
                   <Card
                     className={cn(
                       "group relative overflow-hidden border-2 border-[#D4EBD9] bg-white rounded-2xl transition-all duration-500",
@@ -360,9 +320,7 @@ export default function MyGenerationsPage() {
                           )}
                         </div>
                         {/* Delete button with hover animation */}
-                        <motion.div
-                          whileHover={{ scale: 1.15 }}
-                          whileTap={{ scale: 0.9 }}
+                        <div
                         >
                           <Button
                             variant="ghost"
@@ -378,7 +336,7 @@ export default function MyGenerationsPage() {
                               <Trash2 className="h-4 w-4" />
                             )}
                           </Button>
-                        </motion.div>
+                        </div>
                       </div>
                     </CardHeader>
 
@@ -411,97 +369,80 @@ export default function MyGenerationsPage() {
                             />
                             {/* Gradient hover overlay */}
                             <div className="absolute inset-0 flex items-center justify-center gap-3 bg-gradient-to-t from-[#004D26]/70 via-[#006C35]/40 to-transparent opacity-0 backdrop-blur-[2px] transition-all duration-300 group-hover/img:opacity-100">
-                              <motion.button
+                              <button
                                 type="button"
-                                whileHover={{ scale: 1.15 }}
-                                whileTap={{ scale: 0.9 }}
                                 onClick={() => setLightboxUrl(url)}
                                 className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white/30 bg-white/90 text-[#004D26] shadow-lg transition-colors hover:bg-white"
                                 title={fullScreenLabel}
                               >
                                 <Maximize2 className="h-5 w-5" />
-                              </motion.button>
-                              <motion.button
+                              </button>
+                              <button
                                 type="button"
-                                whileHover={{ scale: 1.15 }}
-                                whileTap={{ scale: 0.9 }}
                                 onClick={() => handleDownload(url)}
                                 className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] text-white shadow-lg transition-shadow hover:shadow-[#00A352]/40"
                                 title={downloadLabel}
                               >
                                 <Download className="h-5 w-5" />
-                              </motion.button>
+                              </button>
                             </div>
                           </div>
                         ))}
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         )}
       </div>
 
       {/* ========== Lightbox Overlay ========== */}
-      <AnimatePresence>
-        {lightboxUrl && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#004D26]/90 via-black/85 to-[#0A1F0F]/90 p-4 backdrop-blur-md"
-            onClick={() => setLightboxUrl(null)}
+      {lightboxUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#004D26]/90 via-black/85 to-[#0A1F0F]/90 p-4 backdrop-blur-md"
+          onClick={() => setLightboxUrl(null)}
+        >
+          <div
+            className="relative max-h-[90vh] max-w-[90vw]"
+            onClick={(e) => e.stopPropagation()}
           >
-            <motion.div
-              initial={{ scale: 0.7, opacity: 0, rotate: -2 }}
-              animate={{ scale: 1, opacity: 1, rotate: 0 }}
-              exit={{ scale: 0.7, opacity: 0, rotate: 2 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative max-h-[90vh] max-w-[90vw]"
-              onClick={(e) => e.stopPropagation()}
+            <img
+              src={lightboxUrl}
+              alt=""
+              className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-1 ring-white/10"
+            />
+
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setLightboxUrl(null)}
+              className="absolute -right-4 -top-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-transparent bg-white text-[#004D26] shadow-xl transition-colors hover:bg-[#F0F7F2]"
+              style={{
+                backgroundClip: "padding-box",
+                borderImage: "linear-gradient(135deg, #006C35, #C9A84C) 1",
+                borderImageSlice: 1,
+              }}
             >
-              <img
-                src={lightboxUrl}
-                alt=""
-                className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-1 ring-white/10"
-              />
+              <X className="h-6 w-6" />
+            </button>
 
-              {/* Close button with gradient border and hover rotate */}
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setLightboxUrl(null)}
-                className="absolute -right-4 -top-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-transparent bg-white text-[#004D26] shadow-xl transition-colors hover:bg-[#F0F7F2]"
-                style={{
-                  backgroundClip: "padding-box",
-                  borderImage: "linear-gradient(135deg, #006C35, #C9A84C) 1",
-                  borderImageSlice: 1,
-                }}
-              >
-                <X className="h-6 w-6" />
-              </motion.button>
-
-              {/* Download button - bigger, gradient, hover scale */}
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownload(lightboxUrl);
-                }}
-                className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-7 py-4 text-lg font-bold text-white shadow-xl transition-shadow hover:shadow-2xl hover:shadow-[#00A352]/30"
-              >
-                <Download className="h-6 w-6" />
-                {downloadLabel}
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {/* Download button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownload(lightboxUrl);
+              }}
+              className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-7 py-4 text-lg font-bold text-white shadow-xl transition-shadow hover:shadow-2xl hover:shadow-[#00A352]/30"
+            >
+              <Download className="h-6 w-6" />
+              {downloadLabel}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

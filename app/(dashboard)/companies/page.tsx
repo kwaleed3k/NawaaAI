@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+/* motion removed – using plain HTML + CSS transitions */
 import { Building2, Plus, Pencil, Trash2, Upload, Loader2, Sparkles, FileText, Clock, Target, Megaphone, Users, Zap, Shield, Flame, Crown, BadgeCheck, Palette, Eye, X, Globe, AlertCircle } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase";
 import { useAppStore, type Company } from "@/lib/store";
@@ -139,11 +139,7 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
   const mixTotal = mix ? Object.values(mix).reduce((a, b) => a + b, 0) : 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-4 space-y-4"
-    >
+    <div className="mt-4 space-y-4">
       {/* Brand Personality */}
       {bp && (
         <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
@@ -157,11 +153,9 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
                 <span className="text-[#5A8A6A]">{d.icon}</span>
                 <span className="w-24 text-sm text-[#004D26]">{d.label}</span>
                 <div className="flex-1 h-3 rounded-full bg-[#F0F7F2] overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${d.value}%` }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="h-full rounded-full bg-gradient-to-r from-[#006C35] to-[#00A352]"
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[#006C35] to-[#00A352] transition-all duration-700"
+                    style={{ width: `${d.value}%` }}
                   />
                 </div>
                 <span className="w-8 text-right text-sm font-medium text-[#C9A84C]">{d.value}</span>
@@ -192,11 +186,9 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
                 </div>
                 <p className="text-sm text-[#5A8A6A] mb-2">{p.description}</p>
                 <div className="h-3 rounded-full bg-[#F0F7F2] overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${p.percentage}%` }}
-                    transition={{ duration: 0.6, delay: i * 0.1 }}
-                    className="h-full rounded-full bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0]"
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] transition-all duration-700"
+                    style={{ width: `${p.percentage}%` }}
                   />
                 </div>
               </div>
@@ -256,13 +248,10 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
           {/* Stacked bar */}
           <div className="h-4 rounded-full overflow-hidden flex mb-3">
             {Object.entries(mix).map(([key, val]) => (
-              <motion.div
+              <div
                 key={key}
-                initial={{ width: 0 }}
-                animate={{ width: `${(val / mixTotal) * 100}%` }}
-                transition={{ duration: 0.6 }}
-                className="h-full first:rounded-l-full last:rounded-r-full"
-                style={{ backgroundColor: mixColors[key] || "#5A8A6A" }}
+                className="h-full first:rounded-l-full last:rounded-r-full transition-all duration-700"
+                style={{ backgroundColor: mixColors[key] || "#5A8A6A", width: `${(val / mixTotal) * 100}%` }}
                 title={`${key}: ${val}%`}
               />
             ))}
@@ -351,7 +340,7 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
           <p className="text-base text-[#0A1F0F]">{vision}</p>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
@@ -628,25 +617,15 @@ export default function CompaniesPage() {
   return (
     <div className="space-y-10">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+      <div
         className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
       >
-        {/* Decorative floating shapes */}
+        {/* Decorative shapes */}
         <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
         <div className="absolute top-4 right-8 flex gap-2">
           {["\uD83C\uDFE2", "\u2728", "\uD83D\uDE80"].map((em, i) => (
-            <motion.span
-              key={i}
-              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-              className="text-2xl md:text-3xl"
-            >
-              {em}
-            </motion.span>
+            <span key={i} className="text-2xl md:text-3xl">{em}</span>
           ))}
         </div>
 
@@ -665,16 +644,13 @@ export default function CompaniesPage() {
           <div className="flex items-center gap-4">
             {/* Count badge */}
             {companies.length > 0 && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 300, delay: 0.3 }}
+              <div
                 className="flex items-center gap-2 rounded-2xl bg-white/20 backdrop-blur-sm px-5 py-3 border border-white/30"
               >
                 <Building2 className="h-6 w-6 text-white" />
                 <span className="text-2xl font-extrabold text-white">{companies.length}</span>
                 <span className="text-lg text-white/80 font-medium">Companies</span>
-              </motion.div>
+              </div>
             )}
 
             <Button
@@ -686,14 +662,11 @@ export default function CompaniesPage() {
             </Button>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ===== EMPTY STATE ===== */}
       {companies.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+        <div
           className="relative flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] via-white to-[#F0F7F2] py-20 px-8 overflow-hidden"
         >
           {/* Background decorative elements */}
@@ -701,30 +674,24 @@ export default function CompaniesPage() {
           <div className="absolute bottom-10 right-10 h-32 w-32 rounded-full bg-[#C9A84C]/5 blur-xl" />
 
           {/* Animated building icon */}
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          <div
             className="relative mb-6"
           >
             <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_0_50px_rgba(0,108,53,0.25)]">
               <Building2 className="h-14 w-14 text-white" />
             </div>
             {/* Pulsing sparkles */}
-            <motion.div
-              animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+            <div
               className="absolute -top-2 -right-2"
             >
               <Sparkles className="h-7 w-7 text-[#C9A84C]" />
-            </motion.div>
-            <motion.div
-              animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
+            </div>
+            <div
               className="absolute -bottom-1 -left-3"
             >
               <Sparkles className="h-5 w-5 text-[#00A352]" />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo'] text-center">
             {tc.noCompanies}
@@ -733,7 +700,7 @@ export default function CompaniesPage() {
             {tc.addFirst}
           </p>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+          <div>
             <Button
               onClick={openAdd}
               className="mt-8 h-16 px-10 text-xl font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] text-white shadow-xl hover:shadow-[0_0_40px_rgba(0,108,53,0.35)] transition-all"
@@ -741,8 +708,8 @@ export default function CompaniesPage() {
               <Plus className="mr-3 h-7 w-7" />
               {tc.addCompany}
             </Button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       ) : (
         /* ===== COMPANY CARDS GRID ===== */
         <div className="grid gap-6 sm:grid-cols-2">
@@ -757,13 +724,9 @@ export default function CompaniesPage() {
             const gradientClass = CARD_GRADIENTS[i % CARD_GRADIENTS.length];
 
             return (
-              <motion.div
+              <div
                 key={c.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08, type: "spring", stiffness: 200, damping: 20 }}
-                whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                className="group"
+                className="group hover:-translate-y-1.5 transition-transform duration-200"
               >
                 <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,108,53,0.15)] hover:border-[#00A352]/40">
                   {/* Top gradient accent bar */}
@@ -772,9 +735,7 @@ export default function CompaniesPage() {
                   <div className="p-8">
                     {/* Logo + Name */}
                     <div className="flex items-center gap-5">
-                      <motion.div
-                        whileHover={{ scale: 1.08, rotate: 2 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                      <div
                         className="relative"
                       >
                         <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C] shadow-lg">
@@ -794,7 +755,7 @@ export default function CompaniesPage() {
                           className="absolute inset-0 -z-10 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"
                           style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
                         />
-                      </motion.div>
+                      </div>
 
                       <div className="min-w-0 flex-1">
                         <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#004D26] truncate leading-tight">{c.name}</h3>
@@ -815,16 +776,13 @@ export default function CompaniesPage() {
                         {keywords.map((kw, ki) => {
                           const style = TAG_STYLES[kw.type];
                           return (
-                            <motion.span
+                            <span
                               key={ki}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: i * 0.05 + ki * 0.03, type: "spring", stiffness: 300 }}
                               className={cn("rounded-xl border px-4 py-2 text-lg font-semibold inline-flex items-center gap-1.5", style.bg, style.border, style.text)}
                             >
                               <span className="text-base">{style.emoji}</span>
                               {kw.label}
-                            </motion.span>
+                            </span>
                           );
                         })}
                       </div>
@@ -837,10 +795,8 @@ export default function CompaniesPage() {
                           <span className="text-lg font-semibold text-[#5A8A6A]">Colors</span>
                           <div className="flex gap-2">
                             {c.brand_colors.slice(0, 5).map((hex, idx) => (
-                              <motion.div
+                              <div
                                 key={idx}
-                                whileHover={{ scale: 1.4, y: -4 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 15 }}
                                 className="h-8 w-8 rounded-xl border-2 border-white shadow-md cursor-pointer ring-1 ring-[#D4EBD9]"
                                 style={{ backgroundColor: hex }}
                                 title={hex}
@@ -852,28 +808,26 @@ export default function CompaniesPage() {
 
                       {/* AI analysis badge */}
                       {c.brand_analysis && Object.keys(c.brand_analysis).length > 0 && (
-                        <motion.span
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
+                        <span
                           className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#C9A84C]/15 to-[#E8D5A0]/15 border border-[#C9A84C]/30 px-3 py-1.5 text-sm font-bold text-[#C9A84C]"
                         >
                           <Sparkles className="h-4 w-4" />
                           AI {locale === "ar" ? "محلل" : "Analyzed"}
-                        </motion.span>
+                        </span>
                       )}
                     </div>
 
                     {/* Actions */}
                     <div className="mt-6 flex gap-3">
-                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
+                      <div className="flex-1">
                         <Button
                           className="h-12 w-full text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-[0_0_25px_rgba(0,108,53,0.3)] rounded-2xl transition-all shadow-md"
                           onClick={() => setViewingCompany(c)}
                         >
                           <Eye className="mr-2 h-5 w-5" /> {tc.viewDetails || "View Details"}
                         </Button>
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                      </div>
+                      <div>
                         <Button
                           variant="outline"
                           className="h-12 px-5 text-lg font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 rounded-2xl transition-all"
@@ -881,29 +835,25 @@ export default function CompaniesPage() {
                         >
                           <Pencil className="h-5 w-5" />
                         </Button>
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                      </div>
+                      <div>
                         <Button
                           className="h-12 px-5 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl shadow-md hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all"
                           onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}
                         >
                           <Trash2 className="h-5 w-5" />
                         </Button>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
 
           {/* ===== ADD COMPANY CARD ===== */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: companies.length * 0.08, type: "spring", stiffness: 200 }}
-            whileHover={{ y: -6, transition: { duration: 0.25 } }}
-            className="group cursor-pointer"
+          <div
+            className="group cursor-pointer hover:-translate-y-1.5 transition-transform duration-200"
             onClick={openAdd}
           >
             <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-white overflow-hidden transition-all duration-300 hover:border-[#00A352] hover:bg-gradient-to-br hover:from-[#F0F7F2] hover:to-[#F8FBF8] hover:shadow-[0_20px_50px_rgba(0,108,53,0.12)]">
@@ -911,18 +861,16 @@ export default function CompaniesPage() {
               <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-[#006C35]/5 blur-2xl group-hover:bg-[#006C35]/10 transition-all" />
               <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-[#C9A84C]/5 blur-2xl group-hover:bg-[#C9A84C]/10 transition-all" />
 
-              <motion.div
-                whileHover={{ rotate: 90, scale: 1.15 }}
-                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              <div
                 className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg group-hover:shadow-[0_0_30px_rgba(0,108,53,0.3)] transition-shadow"
               >
                 <Plus className="h-10 w-10 text-white" />
-              </motion.div>
+              </div>
 
               <p className="mt-5 text-xl font-extrabold text-[#004D26] font-['Cairo']">{tc.addCompany}</p>
               <p className="mt-1 text-lg text-[#5A8A6A]">Build your brand profile</p>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
 
@@ -935,13 +883,11 @@ export default function CompaniesPage() {
             <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-white/10 blur-xl" />
             <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-[#C9A84C]/20 blur-xl" />
             <div className="flex items-center gap-4 relative z-10">
-              <motion.div
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              <div
                 className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30"
               >
                 <Building2 className="h-8 w-8 text-white" />
-              </motion.div>
+              </div>
               <div>
                 <DialogHeader className="p-0 space-y-0">
                   <DialogTitle className="font-['Cairo'] text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
@@ -959,10 +905,7 @@ export default function CompaniesPage() {
 
           <div className="px-4 sm:px-8 py-6 space-y-0">
             {/* ─── Section 1: Basic Info ─── */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+            <section
               className="rounded-2xl bg-white p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
@@ -1038,16 +981,13 @@ export default function CompaniesPage() {
                   </label>
                 </div>
               </div>
-            </motion.section>
+            </section>
 
             {/* Gradient divider */}
             <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
             {/* ─── Section 2: Brand Identity ─── */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+            <section
               className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
@@ -1066,15 +1006,14 @@ export default function CompaniesPage() {
                       <Loader2 className="h-8 w-8 text-[#C9A84C] animate-spin" />
                     </div>
                   ) : form.logo_url ? (
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
+                    <div
                       className="relative"
                     >
                       <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C]">
                         <img src={form.logo_url} alt="" className="h-24 w-24 rounded-[14px] object-cover" />
                       </div>
                       <div className="absolute inset-0 -z-10 rounded-2xl blur-xl opacity-25 bg-[#006C35]" />
-                    </motion.div>
+                    </div>
                   ) : (
                     <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#D4EBD9] bg-white shadow-inner hover:border-[#00A352] transition-colors">
                       <Upload className="h-8 w-8 text-[#5A8A6A]" />
@@ -1094,10 +1033,8 @@ export default function CompaniesPage() {
                 <Label className="text-lg font-bold text-[#004D26] mb-3 block">Brand Colors</Label>
                 <div className="flex flex-wrap gap-3">
                   {form.brand_colors.map((hex, idx) => (
-                    <motion.div
+                    <div
                       key={idx}
-                      whileHover={{ scale: 1.35, y: -5, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
                       className="h-12 w-12 rounded-2xl border-2 border-white cursor-pointer shadow-md ring-2 ring-[#D4EBD9] hover:ring-[#00A352] transition-all"
                       style={{ backgroundColor: hex }}
                       title={hex}
@@ -1120,16 +1057,13 @@ export default function CompaniesPage() {
                   </SelectContent>
                 </Select>
               </div>
-            </motion.section>
+            </section>
 
             {/* Gradient divider */}
             <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#006C35]/30 to-transparent" />
 
             {/* ─── Section 3: Marketing ─── */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+            <section
               className="rounded-2xl bg-white p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
@@ -1176,12 +1110,10 @@ export default function CompaniesPage() {
                       const config = PLATFORM_CARDS[p];
                       const isSelected = form.platforms.includes(p);
                       return (
-                        <motion.button
+                        <button
                           key={p}
                           type="button"
                           onClick={() => togglePlatform(p)}
-                          whileHover={{ scale: 1.05, y: -3 }}
-                          whileTap={{ scale: 0.95 }}
                           className={cn(
                             "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-5 text-lg font-bold transition-all duration-300 shadow-sm overflow-hidden",
                             isSelected
@@ -1192,40 +1124,33 @@ export default function CompaniesPage() {
                           <span className="text-3xl">{config?.emoji ?? "\uD83D\uDCF1"}</span>
                           <span className={cn("text-lg font-extrabold", isSelected ? "text-white" : "")}>{p}</span>
                           {isSelected && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
+                            <div
                               className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/30"
                             >
                               <span className="text-sm text-white font-bold">{"\u2713"}</span>
-                            </motion.div>
+                            </div>
                           )}
-                        </motion.button>
+                        </button>
                       );
                     })}
                   </div>
                 </div>
               </div>
-            </motion.section>
+            </section>
 
             {/* Gradient divider */}
             <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
             {/* ─── Section 4: AI Analysis ─── */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+            <section
               className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
-                <motion.div
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                <div
                   className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg"
                 >
                   <Sparkles className="h-6 w-6 text-[#0A1F0F]" />
-                </motion.div>
+                </div>
                 <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">{tc.analyzeAI}</h3>
               </div>
               <div className="mb-5 flex items-center gap-4">
@@ -1289,7 +1214,7 @@ export default function CompaniesPage() {
                   </span>
                 </div>
               )}
-              <motion.div whileHover={{ scale: getAnalysisCount() >= 3 ? 1 : 1.02 }} whileTap={{ scale: getAnalysisCount() >= 3 ? 1 : 0.98 }}>
+              <div>
                 <Button
                   type="button"
                   onClick={runAnalyze}
@@ -1314,13 +1239,13 @@ export default function CompaniesPage() {
                   )}
                   {getAnalysisCount() >= 3 ? (tc.analysisLimit || "Limit Reached") : tc.analyzeAI}
                 </Button>
-              </motion.div>
+              </div>
               {brandAnalysis && <BrandAnalysisDisplay data={brandAnalysis} locale={locale} />}
-            </motion.section>
+            </section>
 
             {/* ─── Footer Actions ─── */}
             <div className="sticky bottom-0 bg-white/90 backdrop-blur-xl border-t-2 border-[#D4EBD9] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-4 mt-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <div>
                 <Button
                   variant="outline"
                   className="h-14 px-8 text-lg font-bold rounded-2xl border-2 border-[#D4EBD9] text-[#2D5A3D] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 transition-all"
@@ -1328,8 +1253,8 @@ export default function CompaniesPage() {
                 >
                   {tc.cancel}
                 </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              </div>
+              <div>
                 <Button
                   onClick={saveCompany}
                   disabled={saving}
@@ -1337,7 +1262,7 @@ export default function CompaniesPage() {
                 >
                   {saving ? <Loader2 className="h-6 w-6 animate-spin" /> : tc.save}
                 </Button>
-              </motion.div>
+              </div>
             </div>
           </div>
         </DialogContent>
@@ -1368,10 +1293,7 @@ export default function CompaniesPage() {
 
                   <div className="relative z-10 flex items-center gap-4 sm:gap-6 flex-wrap">
                     {/* Logo */}
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 300 }}
+                    <div
                     >
                       <div className="rounded-2xl p-[3px] bg-white/30 backdrop-blur-sm shadow-2xl">
                         <div
@@ -1385,16 +1307,14 @@ export default function CompaniesPage() {
                           )}
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
                     <div>
-                      <motion.h2
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                      <h2
                         className="font-['Cairo'] text-2xl sm:text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg"
                       >
                         {vc.name}
-                      </motion.h2>
+                      </h2>
                       {vc.name_ar && (
                         <p className="mt-1 text-xl text-white/80 font-medium">{vc.name_ar}</p>
                       )}
@@ -1422,10 +1342,7 @@ export default function CompaniesPage() {
                 {/* Body */}
                 <div className="px-4 sm:px-8 py-6 sm:py-8 space-y-8">
                   {/* Company Info Grid */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
+                  <div
                     className="grid gap-6 md:grid-cols-2"
                   >
                     {/* Description */}
@@ -1502,8 +1419,7 @@ export default function CompaniesPage() {
                         <div className="flex flex-wrap gap-3">
                           {vc.brand_colors.map((hex, idx) => (
                             <div key={idx} className="flex flex-col items-center gap-2">
-                              <motion.div
-                                whileHover={{ scale: 1.2, y: -4 }}
+                              <div
                                 className="h-14 w-14 rounded-2xl border-2 border-white shadow-lg ring-2 ring-[#D4EBD9] cursor-pointer"
                                 style={{ backgroundColor: hex }}
                               />
@@ -1513,25 +1429,20 @@ export default function CompaniesPage() {
                         </div>
                       </div>
                     )}
-                  </motion.div>
+                  </div>
 
                   {/* Gradient divider */}
                   <div className="h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
                   {/* AI Analysis Section */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
+                  <div
                   >
                     <div className="flex items-center gap-3 mb-6">
-                      <motion.div
-                        animate={{ rotate: [0, 10, -10, 0] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                      <div
                         className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg"
                       >
                         <Sparkles className="h-6 w-6 text-[#0A1F0F]" />
-                      </motion.div>
+                      </div>
                       <div>
                         <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">
                           {tc.aiAnalysis || "AI Brand Analysis"}
@@ -1564,12 +1475,10 @@ export default function CompaniesPage() {
                       <BrandAnalysisDisplay data={vc.brand_analysis!} locale={locale} />
                     ) : (
                       <div className="rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-[#F8FBF8] p-10 text-center">
-                        <motion.div
-                          animate={{ y: [0, -6, 0] }}
-                          transition={{ duration: 2.5, repeat: Infinity }}
+                        <div
                         >
                           <Sparkles className="h-12 w-12 text-[#D4EBD9] mx-auto mb-4" />
-                        </motion.div>
+                        </div>
                         <p className="text-xl font-bold text-[#5A8A6A]">
                           {tc.noAnalysis || "No AI analysis yet. Edit the company to run one."}
                         </p>
@@ -1582,7 +1491,7 @@ export default function CompaniesPage() {
                         </Button>
                       </div>
                     )}
-                  </motion.div>
+                  </div>
 
                   {/* Bottom actions */}
                   <div className="flex justify-between items-center pt-4 border-t-2 border-[#D4EBD9]">
