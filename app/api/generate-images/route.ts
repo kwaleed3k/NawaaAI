@@ -1,35 +1,176 @@
 import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@/lib/openai";
 import { genAI } from "@/lib/gemini";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import sharp from "sharp";
 
-const PROMPT_BUILDER_SYSTEM = `You are the world's most skilled AI image prompt engineer. You specialize in creating prompts for marketing content for Saudi Arabian brands. You understand brand identity, visual marketing, cultural sensitivity, and what makes content go viral on social media.
+const PROMPT_BUILDER_SYSTEM = `You are an elite commercial photography director and art director who creates prompts for AI image generation. Your goal is to produce images that look like REAL professional photography — NOT AI-generated.
 
-Given a company's brand data, content day details, and style direction, create 4 distinct but cohesive image generation prompts that will produce scroll-stopping social media visuals.
+You specialize in creating marketing content for Saudi Arabian brands that looks indistinguishable from real professional photoshoots.
 
-Rules:
-- Each prompt must incorporate the brand's color palette naturally
-- Prompts must be culturally appropriate for Saudi Arabia (no alcohol, modest clothing when people shown, halal context)
-- Each of the 4 prompts should show a different visual angle/composition of the same concept
-- Prompts should specify: subject, lighting, composition, color grading, mood, style
-- Prompts should end with technical specs: "social media marketing photography, 1:1 square format, professional quality, commercially viable"
-- Do NOT include text/typography in image prompts
+═══ PHOTOREALISM RULES (CRITICAL) ═══
 
-Style translation:
-- "lifestyle": warm golden-hour light, real people in authentic Saudi settings, natural product integration
-- "graphic": flat design elements, strong geometric Saudi patterns, vivid brand colors
-- "luxury": negative space, single hero element, dramatic lighting, marble/gold/premium textures
-- "heritage": mashrabiya shadows, geometric Islamic patterns, traditional elements modernized
+1. CAMERA & LENS: Always specify a real camera + lens combo. Examples:
+   - "Shot on Canon EOS R5, 85mm f/1.4 lens" (portraits)
+   - "Shot on Sony A7IV, 35mm f/1.8 lens" (lifestyle/wide)
+   - "Shot on Hasselblad X2D, 90mm f/2.5 lens" (luxury/product)
+   - "Shot on Fujifilm GFX 100S, 110mm f/2 lens" (editorial)
 
-Return ONLY JSON:
+2. LIGHTING: Always specify realistic lighting setups:
+   - "Natural window light with white reflector fill"
+   - "Golden hour backlight with subtle fill flash"
+   - "Two-point studio lighting, key light at 45°, large softbox"
+   - "Overcast diffused daylight, no harsh shadows"
+
+3. HUMAN FACES: When people appear:
+   - "Clear, sharp facial features with natural skin texture"
+   - "Genuine relaxed expression, not posed or stiff"
+   - "Natural skin tones, subtle pores visible, no airbrushing"
+   - "Eyes in sharp focus with natural catchlights"
+   - Avoid: groups of more than 2-3 people (faces degrade in groups)
+
+4. TEXTURES & DETAILS: Make it tangible:
+   - "Visible fabric weave on clothing"
+   - "Natural wood grain texture on the table"
+   - "Condensation droplets on the cold glass"
+   - "Micro scratches on the metal surface showing real use"
+
+5. IMPERFECTIONS (key to realism):
+   - "Slight depth of field blur on background"
+   - "Natural lens vignetting at edges"
+   - "Subtle film grain, ISO 400 aesthetic"
+   - "One element slightly off-center for natural composition"
+
+6. AVOID these AI tells:
+   - NO "hyper-detailed", "ultra-realistic", "8K", "octane render"
+   - NO "perfect symmetry" or "perfectly centered"
+   - NO glossy/plastic skin on people
+   - NO overly saturated or HDR-looking colors
+   - NO multiple people with all faces visible (keep it 1-2 people max, or show from behind/profile)
+
+═══ BRAND COLOR INTEGRATION ═══
+- Incorporate brand colors through REAL objects: colored packaging, clothing, walls, props, food items, furniture
+- Do NOT apply color filters or unrealistic color grading
+- Colors appear naturally: "wearing a deep green (#006C35) linen shirt", "gold (#C9A84C) accent cushion on the sofa"
+
+═══ TEXT IN IMAGES ═══
+- If the output language is Arabic: you may include SHORT Arabic text (1-3 words max) on a sign, menu, or product label — specify the exact Arabic text in quotes
+- If English: same rule, short English text only
+- NEVER include long sentences — text degrades in AI generation
+- When possible, avoid text entirely and let the visual tell the story
+
+═══ SAUDI CULTURAL CONTEXT ═══
+- Modest clothing always (thobes for men, abayas/modest fashion for women)
+- Settings: modern Riyadh cafes, Jeddah waterfront, desert glamping, luxury malls, coworking spaces, traditional souks modernized
+- Props: Arabic coffee (dallah), dates, oud, Saudi geometric patterns as background elements
+- Architecture: mashrabiya screens, modern Saudi skylines, traditional doors with geometric carvings
+
+═══ STYLE DIRECTIONS ═══
+- "lifestyle": Candid moment photography. Person interacting naturally with product/brand. Shot on 35mm lens, shallow DOF, warm natural light. Think: magazine editorial for a Saudi lifestyle publication.
+- "graphic": Clean flat-lay or product arrangement on textured surface. Top-down or 45° angle. Geometric props that echo Saudi patterns. Shot on 50mm macro, even studio light.
+- "luxury": Single hero product/moment with dramatic negative space. Dark moody background with one precise light source. Shot on medium format, razor-thin DOF. Think: Vogue Arabia ad.
+- "heritage": Modern-traditional fusion. Contemporary subject framed by traditional Saudi architectural elements. Warm tungsten + cool daylight mix. Shot on 24mm wide angle, deep DOF.
+
+═══ OUTPUT FORMAT ═══
+Return ONLY JSON — no explanation:
 {
   "prompts": [
-    { "id": 1, "style_label": "Hero Shot", "prompt": "full detailed prompt here" },
-    { "id": 2, "style_label": "Lifestyle", "prompt": "full detailed prompt here" },
-    { "id": 3, "style_label": "Detail", "prompt": "full detailed prompt here" },
-    { "id": 4, "style_label": "Mood", "prompt": "full detailed prompt here" }
+    { "id": 1, "style_label": "Hero Shot", "prompt": "..." },
+    { "id": 2, "style_label": "Lifestyle", "prompt": "..." },
+    { "id": 3, "style_label": "Close-up", "prompt": "..." },
+    { "id": 4, "style_label": "Atmosphere", "prompt": "..." }
   ]
-}`;
+}
+
+Each prompt must be 80-120 words. No more.`;
+
+async function fetchLogoAsTransparentBase64(logoUrl: string): Promise<string | null> {
+  try {
+    let buffer: Buffer;
+
+    if (logoUrl.startsWith("data:")) {
+      const base64Part = logoUrl.split(",")[1];
+      if (!base64Part) return null;
+      buffer = Buffer.from(base64Part, "base64");
+    } else {
+      const res = await fetch(logoUrl, { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) return null;
+      const arrayBuf = await res.arrayBuffer();
+      buffer = Buffer.from(arrayBuf);
+    }
+
+    const metadata = await sharp(buffer).metadata();
+
+    // If no alpha channel (JPEG etc), make white/light pixels transparent
+    if (metadata.format === "jpeg" || metadata.format === "jpg" || !metadata.hasAlpha) {
+      const { data, info } = await sharp(buffer)
+        .resize(256, 256, { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 0 } })
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+      const pixels = Buffer.from(data);
+      for (let i = 0; i < pixels.length; i += 4) {
+        const r = pixels[i], g = pixels[i + 1], b = pixels[i + 2];
+        if (r > 230 && g > 230 && b > 230) {
+          pixels[i + 3] = 0;
+        }
+      }
+
+      const transparentBuffer = await sharp(pixels, {
+        raw: { width: info.width, height: info.height, channels: 4 },
+      }).png().toBuffer();
+
+      return transparentBuffer.toString("base64");
+    }
+
+    // Already has alpha, just resize
+    const pngBuffer = await sharp(buffer)
+      .resize(256, 256, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .png()
+      .toBuffer();
+
+    return pngBuffer.toString("base64");
+  } catch (err) {
+    console.error("Logo processing error:", err);
+    return null;
+  }
+}
+
+// Try multiple Gemini model names in order of preference
+const GEMINI_MODELS = [
+  "gemini-3-pro-image-preview",
+];
+
+async function generateImageWithGemini(
+  contentParts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }>,
+): Promise<{ base64: string; mimeType: string } | null> {
+  for (const modelName of GEMINI_MODELS) {
+    try {
+      const response = await genAI.models.generateContent({
+        model: modelName,
+        contents: [{ role: "user", parts: contentParts }],
+        config: {
+          responseModalities: ["IMAGE", "TEXT"],
+        },
+      });
+
+      const parts = response.candidates?.[0]?.content?.parts ?? [];
+      const imagePart = parts.find((part: any) => part.inlineData?.data);
+
+      if (imagePart?.inlineData) {
+        return {
+          base64: imagePart.inlineData.data as string,
+          mimeType: (imagePart.inlineData.mimeType as string) || "image/png",
+        };
+      }
+      // Model responded but no image — try next model
+    } catch (err: any) {
+      console.warn(`Model ${modelName} failed:`, err?.message || err);
+      // Try next model
+    }
+  }
+  return null;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +181,9 @@ export async function POST(request: NextRequest) {
       style = "lifestyle",
       additionalInstructions,
       outputLanguage = "ar",
+      includeLogo = false,
+      logoUrl,
+      referenceImages: referenceImagesData = [],
     } = body;
 
     if (!company?.name || !dayContent?.topic) {
@@ -49,25 +193,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Build brand color instruction string
+    const brandColors = (company.brand_colors || []).slice(0, 5);
+    const colorInstruction = brandColors.length
+      ? `BRAND COLORS to integrate through real objects/clothing/props: ${brandColors.join(", ")}. These must appear naturally — on packaging, clothing, walls, furniture, accessories — NOT as color filters.`
+      : "";
+
     const userMsg = [
-      `Company: ${JSON.stringify(company)}`,
-      `Content: ${JSON.stringify(dayContent)}`,
-      `Style: ${style}`,
-      `Output language for any text in scene: ${outputLanguage}`,
-      additionalInstructions ? `Extra: ${additionalInstructions}` : "",
+      `Brand: "${company.name}" — ${company.industry || "general"} industry, ${company.tone || "professional"} tone`,
+      `Content topic: ${dayContent.topic}`,
+      `Platform: ${dayContent.platform || "Instagram"}`,
+      `Visual style direction: ${style}`,
+      `Output language: ${outputLanguage}`,
+      colorInstruction,
+      referenceImagesData.length ? `The client provided ${referenceImagesData.length} reference photo(s) of their actual products/venue/dishes. The generated images MUST capture the same visual style, colors, textures, plating, and atmosphere shown in these reference photos. Think of them as the "real thing" — the AI output should look like professional photos taken in the same setting with the same products.` : "",
+      includeLogo ? "Composition note: leave a clean corner area (bottom-right preferred) where a logo watermark can be overlaid in post-production." : "",
+      additionalInstructions ? `Client notes: ${additionalInstructions}` : "",
     ]
       .filter(Boolean)
       .join("\n");
 
-    // Step 1: Use GPT-4o to build image prompts
+    // Step 1: Use GPT-4o to build photorealistic image prompts
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { role: "system", content: PROMPT_BUILDER_SYSTEM },
         { role: "user", content: userMsg + "\n\nReturn JSON only." },
       ],
-      temperature: 0.8,
-      max_tokens: 1500,
+      temperature: 0.75,
+      max_tokens: 1800,
     });
 
     const text = completion.choices[0]?.message?.content?.trim() || "{}";
@@ -75,76 +229,80 @@ export async function POST(request: NextRequest) {
     const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : text);
     const prompts = parsed.prompts ?? [];
 
-    // Step 2: Generate images with Gemini (Nano Banana Pro)
-    const supabase = await createServerSupabaseClient();
+    if (!prompts.length) {
+      return NextResponse.json({ error: "No prompts generated" }, { status: 500 });
+    }
+
+    // Step 1.5: If includeLogo, fetch and prepare logo with transparent bg
+    let logoBase64: string | null = null;
+    if (includeLogo && logoUrl) {
+      logoBase64 = await fetchLogoAsTransparentBase64(logoUrl);
+    }
+
+    // Step 2: Generate images with Gemini (try multiple models)
     const images: { id: number; style_label: string; url?: string; prompt_used: string }[] = [];
 
+    // Append photorealism booster to every prompt
+    const realisticSuffix = " Photorealistic, shot on a professional camera, natural lighting, real textures, subtle film grain, shallow depth of field.";
+    const colorReminder = brandColors.length
+      ? ` Brand colors (${brandColors.join(", ")}) appear naturally on objects, clothing, or props in the scene.`
+      : "";
+
     for (const p of prompts.slice(0, 4)) {
-      try {
-        const response = await genAI.models.generateContent({
-          model: "gemini-2.5-flash-preview-image-generation",
-          contents: p.prompt,
-          config: {
-            responseModalities: ["IMAGE"],
-            imageConfig: {
-              aspectRatio: "1:1",
-            },
-          },
+      const fullPrompt = p.prompt + colorReminder + realisticSuffix;
+
+      // Build content parts for Gemini
+      const contentParts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
+
+      if (logoBase64) {
+        contentParts.push({
+          text: "Reference: company logo (transparent background). Subtly place this logo in the bottom-right corner of the generated image as a small watermark:",
         });
+        contentParts.push({
+          inlineData: { mimeType: "image/png", data: logoBase64 },
+        });
+      }
 
-        // Extract base64 image from response
-        const parts = response.candidates?.[0]?.content?.parts ?? [];
-        const imagePart = parts.find((part: { inlineData?: { data: string; mimeType: string } }) => part.inlineData);
-
-        if (imagePart?.inlineData) {
-          const base64Data = imagePart.inlineData.data;
-          const mimeType = imagePart.inlineData.mimeType || "image/png";
-          const ext = mimeType.includes("jpeg") ? "jpg" : "png";
-          const fileName = `generated/${company.id || "unknown"}/${Date.now()}-${p.id}.${ext}`;
-
-          // Upload to Supabase Storage
-          const buffer = Buffer.from(base64Data, "base64");
-          const { error: uploadError } = await supabase.storage
-            .from("logos")
-            .upload(fileName, buffer, {
-              contentType: mimeType,
-              upsert: true,
-            });
-
-          if (uploadError) {
-            console.warn("Upload failed for image", p.id, uploadError.message);
-            // Fallback: return as data URI
-            images.push({
-              id: p.id,
-              style_label: p.style_label || `Style ${p.id}`,
-              url: `data:${mimeType};base64,${base64Data}`,
-              prompt_used: p.prompt,
-            });
-            continue;
-          }
-
-          const { data: publicUrlData } = supabase.storage
-            .from("logos")
-            .getPublicUrl(fileName);
-
-          images.push({
-            id: p.id,
-            style_label: p.style_label || `Style ${p.id}`,
-            url: publicUrlData.publicUrl,
-            prompt_used: p.prompt,
+      // Add reference images
+      if (referenceImagesData.length > 0) {
+        contentParts.push({
+          text: "Here are reference photos from the client showing their actual products/venue/dishes. Use these as visual reference — match the style, colors, textures, and atmosphere of these real photos in the generated image:",
+        });
+        for (const refUri of referenceImagesData.slice(0, 4)) {
+          const [header, base64Data] = refUri.split(",");
+          const mimeMatch = header.match(/data:(.*?);/);
+          const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
+          contentParts.push({
+            inlineData: { mimeType, data: base64Data },
           });
         }
-      } catch (imgErr) {
-        console.warn("Image gen failed for", p.id, imgErr);
+      }
+
+      contentParts.push({ text: `Generate this photorealistic marketing image: ${fullPrompt}` });
+
+      const result = await generateImageWithGemini(contentParts);
+
+      if (result) {
+        const dataUri = `data:${result.mimeType};base64,${result.base64}`;
+        images.push({
+          id: p.id,
+          style_label: p.style_label || `Style ${p.id}`,
+          url: dataUri,
+          prompt_used: fullPrompt,
+        });
+      } else {
+        images.push({
+          id: p.id,
+          style_label: p.style_label || `Style ${p.id}`,
+          url: undefined,
+          prompt_used: fullPrompt,
+        });
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      images,
-    });
+    return NextResponse.json({ success: true, images });
   } catch (e) {
-    console.error("generate-images", e);
+    console.error("generate-images error:", e);
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "Image generation failed" },
       { status: 500 }

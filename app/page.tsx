@@ -63,7 +63,7 @@ function DashboardPreview({ isRtl }: { isRtl: boolean }) {
 
   return (
     <div
-      className="animate-float-card rounded-3xl bg-white p-5 border border-[#D4EBD9]"
+      className="animate-float-card rounded-3xl bg-white p-6 border border-[#D4EBD9]"
       style={{
         boxShadow:
           "0 20px 80px rgba(0,163,82,0.18), 0 8px 32px rgba(0,0,0,0.06)",
@@ -71,17 +71,17 @@ function DashboardPreview({ isRtl }: { isRtl: boolean }) {
     >
       {/* Mini header */}
       <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#D4EBD9]">
-        <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center text-white text-xs font-bold">
+        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center text-white text-sm font-bold">
           A
         </div>
         <div>
-          <p className="text-sm font-semibold text-[#0A1F0F]">
+          <p className="text-base font-semibold text-[#0A1F0F]">
             Almarai | المراعي
           </p>
-          <p className="text-[11px] text-[#5A8A6A]">Food & Beverage</p>
+          <p className="text-xs text-[#5A8A6A]">Food & Beverage</p>
         </div>
         <div
-          className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white"
+          className="rounded-full px-3 py-1 text-[11px] font-semibold text-white"
           style={{ marginInlineStart: "auto", backgroundColor: "#006C35" }}
         >
           AI Ready
@@ -90,33 +90,33 @@ function DashboardPreview({ isRtl }: { isRtl: boolean }) {
 
       {/* Week label */}
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-semibold text-[#004D26]">
+        <p className="text-sm font-semibold text-[#004D26]">
           {isRtl ? "خطة المحتوى — الأسبوع 11" : "Content Plan — Week 11"}
         </p>
         <div className="flex gap-1">
-          <div className="h-2 w-2 rounded-full bg-[#00A352]" />
-          <div className="h-2 w-2 rounded-full bg-[#C9A84C]" />
-          <div className="h-2 w-2 rounded-full bg-[#006C35]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#00A352]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#C9A84C]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#006C35]" />
         </div>
       </div>
 
       {/* 3-day grid */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
+      <div className="grid grid-cols-3 gap-2.5 mb-3">
         {days.map((d) => (
           <div
             key={d.day}
-            className="rounded-xl bg-[#F0F7F2] p-2.5 border border-[#D4EBD9]"
+            className="rounded-xl bg-[#F0F7F2] p-3 border border-[#D4EBD9]"
           >
-            <p className="text-[11px] font-bold text-[#004D26] mb-1">
+            <p className="text-xs font-bold text-[#004D26] mb-1">
               {d.day}
             </p>
             <span
-              className="inline-block rounded-full px-2 py-0.5 text-[9px] font-semibold text-white mb-1.5"
+              className="inline-block rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white mb-1.5"
               style={{ backgroundColor: d.color }}
             >
               {d.platform}
             </span>
-            <p className="text-[10px] text-[#5A8A6A] leading-tight">
+            <p className="text-[11px] text-[#5A8A6A] leading-tight">
               {d.topic}
             </p>
           </div>
@@ -124,13 +124,13 @@ function DashboardPreview({ isRtl }: { isRtl: boolean }) {
       </div>
 
       {/* Mini image placeholder */}
-      <div className="rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] p-3 flex items-center gap-2">
-        <ImageIcon className="h-5 w-5 text-white/80" />
+      <div className="rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] p-3.5 flex items-center gap-2.5">
+        <ImageIcon className="h-6 w-6 text-white/80" />
         <div>
-          <p className="text-[11px] font-semibold text-white">
+          <p className="text-xs font-semibold text-white">
             {isRtl ? "صورة مُولّدة بالذكاء" : "AI Generated Visual"}
           </p>
-          <p className="text-[9px] text-white/70">1080 × 1080 · Instagram</p>
+          <p className="text-[10px] text-white/70">1080 × 1080 · Instagram</p>
         </div>
       </div>
     </div>
@@ -156,19 +156,19 @@ function FeatureCard({
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className="landing-card p-8 group"
+      className="landing-card p-10 group"
     >
       <div
-        className="h-20 w-20 rounded-2xl flex items-center justify-center mb-6"
+        className="h-24 w-24 rounded-3xl flex items-center justify-center mb-8"
         style={{
           background: "linear-gradient(135deg, #006C35, #00A352)",
           boxShadow: "0 8px 24px rgba(0,108,53,0.3)",
         }}
       >
-        <Icon className="h-10 w-10 text-white" />
+        <Icon className="h-12 w-12 text-white" />
       </div>
-      <h3 className="text-xl font-bold text-[#0A1F0F] mb-2">{title}</h3>
-      <p className="text-base text-[#5A8A6A] leading-relaxed">{desc}</p>
+      <h3 className="text-2xl font-bold text-[#0A1F0F] mb-2">{title}</h3>
+      <p className="text-lg text-[#5A8A6A] leading-relaxed">{desc}</p>
     </motion.div>
   );
 }
@@ -249,12 +249,12 @@ export default function LandingPage() {
       >
         <div className="mx-3 mt-3 sm:mx-6 sm:mt-4">
           <div className="landing-glass-nav rounded-2xl">
-            <div className="mx-auto flex h-20 max-w-[100rem] w-full items-center justify-between px-5 sm:px-8">
+            <div className="mx-auto flex h-24 max-w-[100rem] w-full items-center justify-between px-5 sm:px-8">
               <Link href="/" className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center shadow-[0_4px_16px_rgba(0,108,53,0.3)]">
-                  <Sparkles className="h-6 w-6 text-white" />
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center shadow-[0_4px_16px_rgba(0,108,53,0.3)]">
+                  <Sparkles className="h-7 w-7 text-white" />
                 </div>
-                <span className="text-xl font-bold text-[#004D26]">
+                <span className="text-2xl font-bold text-[#004D26]">
                   {isRtl ? "نواة" : "Nawaa"}{" "}
                   <span className="text-[#00A352]">AI</span>
                 </span>
@@ -265,14 +265,14 @@ export default function LandingPage() {
                   { href: "#features", label: N.features },
                   {
                     href: "#how-it-works",
-                    label: isRtl ? "كيف يعمل" : "How it Works",
+                    label: L.howItWorks,
                   },
                   { href: "#pricing", label: N.pricing },
                 ].map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-base font-medium text-[#2D5A3D] hover:text-[#006C35] transition-colors"
+                    className="text-lg font-medium text-[#2D5A3D] hover:text-[#006C35] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -283,21 +283,21 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setLocale(locale === "ar" ? "en" : "ar")}
-                  className="rounded-xl border border-[#D4EBD9] px-4 py-2 text-base font-medium text-[#2D5A3D] hover:bg-[#F0F7F2] transition-colors"
+                  className="rounded-xl border border-[#D4EBD9] px-5 py-2.5 text-lg font-medium text-[#2D5A3D] hover:bg-[#F0F7F2] transition-colors"
                 >
                   {locale === "ar" ? "English" : "العربية"}
                 </button>
                 <Link href="/login">
                   <Button
                     variant="ghost"
-                    className="text-[#2D5A3D] hover:text-[#006C35] hover:bg-[#F0F7F2] text-base"
+                    className="text-[#2D5A3D] hover:text-[#006C35] hover:bg-[#F0F7F2] text-lg"
                   >
                     {N.login}
                   </Button>
                 </Link>
                 <Link href="/signup">
                   <Button
-                    className="rounded-xl font-semibold text-white text-base h-12 px-6"
+                    className="rounded-xl font-semibold text-white text-lg h-14 px-8"
                     style={{
                       backgroundColor: "#006C35",
                       boxShadow: "0 4px 16px rgba(0,108,53,0.3)",
@@ -315,7 +315,7 @@ export default function LandingPage() {
       {/* ═══════════════════════════════════
            HERO SECTION
          ═══════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center px-4 sm:px-6 lg:px-10 pt-32 pb-24">
+      <section className="relative min-h-screen flex items-center px-4 sm:px-6 lg:px-10 pt-36 pb-32">
         <div className="mx-auto max-w-[100rem] w-full">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* Left side — 55% */}
@@ -352,7 +352,7 @@ export default function LandingPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35, duration: 0.5 }}
-                className="mt-6 text-xl text-[#2D5A3D] max-w-xl leading-relaxed"
+                className="mt-6 text-2xl text-[#2D5A3D] max-w-xl leading-relaxed"
                 style={{ fontFamily: "var(--font-plus-jakarta)" }}
               >
                 {L.heroSub}
@@ -369,23 +369,21 @@ export default function LandingPage() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="h-14 rounded-[14px] px-10 text-lg font-bold text-white transition-all"
+                    className="h-16 rounded-[14px] px-12 text-xl font-bold text-white transition-all"
                     style={{
                       backgroundColor: "#006C35",
                       boxShadow: "0 8px 32px rgba(0,108,53,0.35)",
                     }}
                   >
-                    {isRtl
-                      ? "ابدأ مجاناً — Start Free"
-                      : "Start Free — ابدأ مجاناً"}
+                    {L.startFreeBilingual}
                   </motion.button>
                 </Link>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="h-14 rounded-[14px] px-8 text-lg font-semibold text-[#006C35] border-2 border-[#D4EBD9] hover:border-[#00A352] hover:bg-[#F0F7F2] transition-all flex items-center gap-3"
+                  className="h-16 rounded-[14px] px-10 text-xl font-semibold text-[#006C35] border-2 border-[#D4EBD9] hover:border-[#00A352] hover:bg-[#F0F7F2] transition-all flex items-center gap-3"
                 >
-                  <Play className="h-7 w-7 fill-[#006C35]" />
+                  <Play className="h-8 w-8 fill-[#006C35]" />
                   {L.watchDemo}
                 </motion.button>
               </motion.div>
@@ -410,26 +408,26 @@ export default function LandingPage() {
                     className="flex items-center gap-4"
                   >
                     {i > 0 && (
-                      <div className="h-10 w-px bg-[#D4EBD9] hidden sm:block" />
+                      <div className="h-12 w-px bg-[#D4EBD9] hidden sm:block" />
                     )}
                     <div
-                      className="h-14 w-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                      className="h-16 w-16 rounded-2xl flex items-center justify-center flex-shrink-0"
                       style={{
                         background: "linear-gradient(135deg, #006C35, #00A352)",
                         boxShadow: "0 6px 20px rgba(0,108,53,0.25)",
                       }}
                     >
-                      <stat.Icon className="h-7 w-7 text-white" />
+                      <stat.Icon className="h-8 w-8 text-white" />
                     </div>
                     <div>
-                      <p className="text-3xl font-bold text-[#006C35] leading-none">
+                      <p className="text-4xl font-bold text-[#006C35] leading-none">
                         <AnimatedCounter
                           end={stat.value}
                           suffix={stat.suffix}
                           duration={2000}
                         />
                       </p>
-                      <p className="text-base text-[#5A8A6A] mt-1 font-medium">
+                      <p className="text-lg text-[#5A8A6A] mt-1 font-medium">
                         {stat.label}
                       </p>
                     </div>
@@ -456,12 +454,12 @@ export default function LandingPage() {
          ═══════════════════════════════════ */}
       <section
         id="features"
-        className="px-4 sm:px-6 lg:px-10 py-24"
+        className="px-4 sm:px-6 lg:px-10 py-32"
         style={{ backgroundColor: "#F0F7F2" }}
       >
         <div className="mx-auto max-w-[100rem] w-full">
           {/* Section header */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-24">
             <motion.span
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -485,7 +483,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="mt-4 text-[#5A8A6A] text-lg max-w-2xl mx-auto"
+              className="mt-4 text-[#5A8A6A] text-xl max-w-2xl mx-auto"
             >
               {L.featuresSub}
             </motion.p>
@@ -509,9 +507,9 @@ export default function LandingPage() {
       {/* ═══════════════════════════════════
            HOW IT WORKS
          ═══════════════════════════════════ */}
-      <section id="how-it-works" className="px-4 sm:px-6 lg:px-10 py-24">
+      <section id="how-it-works" className="px-4 sm:px-6 lg:px-10 py-32">
         <div className="mx-auto max-w-[100rem] w-full">
-          <div className="text-center mb-20">
+          <div className="text-center mb-24">
             <motion.span
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -568,13 +566,13 @@ export default function LandingPage() {
                 className="relative text-center"
               >
                 <div className="step-circle mx-auto mb-6">
-                  <s.icon className="h-10 w-10 text-white" />
+                  <s.icon className="h-12 w-12 text-white" />
                 </div>
-                <span className="inline-block text-2xl font-extrabold text-[#006C35] mb-2">{s.step}</span>
-                <h3 className="text-xl font-bold text-[#0A1F0F] mb-2">
+                <span className="inline-block text-3xl font-extrabold text-[#006C35] mb-2">{s.step}</span>
+                <h3 className="text-2xl font-bold text-[#0A1F0F] mb-2">
                   {s.title}
                 </h3>
-                <p className="text-base text-[#5A8A6A] leading-relaxed max-w-xs mx-auto">
+                <p className="text-lg text-[#5A8A6A] leading-relaxed max-w-xs mx-auto">
                   {s.desc}
                 </p>
               </motion.div>
@@ -588,7 +586,7 @@ export default function LandingPage() {
          ═══════════════════════════════════ */}
       <section className="px-4 sm:px-6 lg:px-10 py-20" style={{ backgroundColor: "#F0F7F2" }}>
         <div className="mx-auto max-w-[100rem] w-full text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#2D5A3D] mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#2D5A3D] mb-10">
             {L.platformTitle}
           </h2>
           <div className="flex flex-wrap justify-center gap-4">
@@ -603,7 +601,7 @@ export default function LandingPage() {
               <motion.span
                 key={p}
                 whileHover={{ scale: 1.08 }}
-                className="rounded-full border-2 border-[#D4EBD9] bg-white px-6 py-3 text-base font-semibold text-[#2D5A3D] cursor-default hover:border-[#00A352] hover:shadow-md transition-all"
+                className="rounded-full border-2 border-[#D4EBD9] bg-white px-8 py-4 text-lg font-semibold text-[#2D5A3D] cursor-default hover:border-[#00A352] hover:shadow-md transition-all"
               >
                 {p}
               </motion.span>
@@ -615,9 +613,9 @@ export default function LandingPage() {
       {/* ═══════════════════════════════════
            PRICING
          ═══════════════════════════════════ */}
-      <section id="pricing" className="px-4 sm:px-6 lg:px-10 py-24">
+      <section id="pricing" className="px-4 sm:px-6 lg:px-10 py-32">
         <div className="mx-auto max-w-[100rem] w-full">
-          <div className="text-center mb-20">
+          <div className="text-center mb-24">
             <motion.span
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -679,7 +677,7 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -6 }}
-                className={`relative overflow-hidden rounded-3xl border-2 p-8 bg-white transition-shadow ${
+                className={`relative overflow-hidden rounded-3xl border-2 p-10 bg-white transition-shadow ${
                   tier.highlight
                     ? "border-[#006C35] shadow-[0_12px_48px_rgba(0,108,53,0.15)]"
                     : "border-[#D4EBD9] hover:border-[#00A352] hover:shadow-lg"
@@ -693,11 +691,11 @@ export default function LandingPage() {
                   </div>
                 )}
                 <div className={tier.highlight ? "pt-4" : ""}>
-                  <h3 className="text-2xl font-bold text-[#0A1F0F]">
+                  <h3 className="text-3xl font-bold text-[#0A1F0F]">
                     {tier.name}
                   </h3>
                   <div className="mt-4 flex items-baseline gap-1">
-                    <span className="text-5xl font-extrabold text-[#006C35]">
+                    <span className="text-6xl font-extrabold text-[#006C35]">
                       {tier.price}
                     </span>
                     {tier.price !== "0" && (
@@ -706,14 +704,14 @@ export default function LandingPage() {
                       </span>
                     )}
                   </div>
-                  <p className="mt-4 text-base text-[#5A8A6A] leading-relaxed">
+                  <p className="mt-4 text-lg text-[#5A8A6A] leading-relaxed">
                     {tier.desc}
                   </p>
                   <Link href="/signup">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`mt-8 w-full h-14 rounded-xl text-base font-bold transition-all ${
+                      className={`mt-8 w-full h-16 rounded-xl text-lg font-bold transition-all ${
                         tier.highlight
                           ? "bg-[#006C35] text-white shadow-[0_8px_24px_rgba(0,108,53,0.3)] hover:shadow-[0_12px_32px_rgba(0,108,53,0.4)]"
                           : "bg-[#F0F7F2] text-[#006C35] border-2 border-[#D4EBD9] hover:bg-[#006C35] hover:text-white"
@@ -759,28 +757,24 @@ export default function LandingPage() {
             />
 
             <h2
-              className="relative text-4xl sm:text-5xl font-bold text-white mb-6"
+              className="relative text-5xl sm:text-6xl font-bold text-white mb-6"
               style={{ fontFamily: "var(--font-cairo)" }}
             >
-              {isRtl
-                ? "جاهز لتحويل تسويقك؟"
-                : "Ready to Transform Your Marketing?"}
+              {L.ctaTitle}
             </h2>
-            <p className="relative text-white/80 text-lg mb-10 max-w-2xl mx-auto">
-              {isRtl
-                ? "انضم لمئات العلامات التجارية السعودية التي تستخدم نواة"
-                : "Join hundreds of Saudi brands already using Nawaa AI"}
+            <p className="relative text-white/80 text-xl mb-10 max-w-2xl mx-auto">
+              {L.ctaSub}
             </p>
             <Link href="/signup">
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative h-14 rounded-[14px] px-12 text-lg font-bold text-[#006C35] bg-white transition-all"
+                className="relative h-16 rounded-[14px] px-14 text-xl font-bold text-[#006C35] bg-white transition-all"
                 style={{
                   boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
                 }}
               >
-                {isRtl ? "ابدأ الآن مجاناً" : "Get Started for Free"}
+                {L.ctaButton}
               </motion.button>
             </Link>
           </motion.div>
@@ -794,28 +788,28 @@ export default function LandingPage() {
         <div className="mx-auto max-w-[100rem] w-full">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center shadow-[0_4px_16px_rgba(0,108,53,0.25)]">
-                <Sparkles className="h-5 w-5 text-white" />
+              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center shadow-[0_4px_16px_rgba(0,108,53,0.25)]">
+                <Sparkles className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-[#004D26]">
+              <span className="text-2xl font-bold text-[#004D26]">
                 {isRtl ? "نواة" : "Nawaa"} AI
               </span>
             </div>
 
-            <p className="text-base text-[#5A8A6A] text-center">
+            <p className="text-lg text-[#5A8A6A] text-center">
               {L.footerBuilt}
             </p>
 
             <div className="flex gap-8">
               <Link
                 href="/login"
-                className="text-base font-medium text-[#5A8A6A] hover:text-[#006C35] transition-colors"
+                className="text-lg font-medium text-[#5A8A6A] hover:text-[#006C35] transition-colors"
               >
                 {N.login}
               </Link>
               <Link
                 href="/signup"
-                className="text-base font-medium text-[#5A8A6A] hover:text-[#006C35] transition-colors"
+                className="text-lg font-medium text-[#5A8A6A] hover:text-[#006C35] transition-colors"
               >
                 {N.signUp}
               </Link>
