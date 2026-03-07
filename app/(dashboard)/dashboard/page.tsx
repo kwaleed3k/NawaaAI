@@ -139,7 +139,7 @@ export default function DashboardPage() {
       const [companiesRes, plansRes, imagesRes, plansCountRes, allImagesRes] = await Promise.all([
         supabase.from("companies").select("*").eq("user_id", u.id).order("created_at", { ascending: false }),
         supabase.from("content_plans").select("*").eq("user_id", u.id).order("created_at", { ascending: false }).limit(1),
-        supabase.from("generated_images").select("*").eq("user_id", u.id).order("created_at", { ascending: false }).limit(4),
+        supabase.from("generated_images").select("*").eq("user_id", u.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("content_plans").select("id", { count: "exact", head: true }).eq("user_id", u.id),
         supabase.from("generated_images").select("image_urls").eq("user_id", u.id),
       ]);
@@ -699,15 +699,14 @@ export default function DashboardPage() {
         </div>
 
         {recentImages.length > 0 ? (
-          <div className="columns-2 gap-5 sm:columns-3 md:columns-4 w-full">
+          <div className="grid grid-cols-5 gap-5 w-full">
             {recentImages
-              .flatMap((img) =>
-                (img.image_urls || []).map((url, idx) => ({
-                  url,
-                  key: `${img.id}-${idx}`,
-                }))
-              )
-              .slice(0, 12)
+              .map((img) => ({
+                url: img.image_urls?.[0],
+                key: img.id,
+              }))
+              .filter((item) => item.url)
+              .slice(0, 5)
               .map((imageItem, idx) => (
                 <motion.div
                   key={imageItem.key}
@@ -715,7 +714,7 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: idx * 0.06, type: "spring" }}
                   whileHover={{ scale: 1.03 }}
-                  className="group relative mb-5 break-inside-avoid overflow-hidden rounded-2xl border-2 shadow-sm transition-all duration-300 hover:shadow-xl"
+                  className="group relative aspect-square overflow-hidden rounded-2xl border-2 shadow-sm transition-all duration-300 hover:shadow-xl"
                   style={{ borderColor: "#D4EBD9" }}
                 >
                   {imageItem.url ? (
@@ -723,7 +722,7 @@ export default function DashboardPage() {
                       <img
                         src={imageItem.url}
                         alt=""
-                        className="w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                       />
 

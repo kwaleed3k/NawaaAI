@@ -16,6 +16,7 @@ export type Company = {
   competitors?: string | null;
   unique_value?: string | null;
   brand_analysis?: Record<string, unknown> | null;
+  analysis_count?: number;
   created_at?: string;
   updated_at?: string;
 };

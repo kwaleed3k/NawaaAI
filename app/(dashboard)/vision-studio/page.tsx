@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Sparkles, Loader2, Download, ImageIcon, Maximize2, ImagePlus, X, Upload } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, Loader2, Download, ImageIcon, Maximize2, ImagePlus, X, Upload, Check, Camera, Paintbrush, MessageSquare } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore, type Company } from "@/lib/store";
 import { messages } from "@/lib/i18n";
@@ -18,6 +18,31 @@ type ContentPlanRow = {
   week_start: string;
   title: string | null;
   plan_data: { days?: Array<{ dayIndex: number; dayEn: string; dayAr: string; topic: string; topicAr?: string; caption?: string; imagePromptHint?: string; platform?: string; contentType?: string }> };
+};
+
+/* ── Animation variants ── */
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 14 } },
+};
+
+/* ── Platform emoji map for day buttons ── */
+const PLATFORM_EMOJI: Record<string, string> = {
+  instagram: "\uD83D\uDCF8",
+  tiktok: "\uD83C\uDFB5",
+  x: "\uD835\uDD4F",
+  snapchat: "\uD83D\uDC7B",
+  linkedin: "\uD83D\uDCBC",
+  youtube: "\uD83C\uDFAC",
+  whatsapp: "\uD83D\uDCAC",
 };
 
 export default function VisionStudioPage() {
@@ -199,7 +224,7 @@ export default function VisionStudioPage() {
         image_urls: urls,
       });
       setSaved(true);
-      toast.success(locale === "ar" ? "تم الحفظ بنجاح" : "Images saved!");
+      toast.success(locale === "ar" ? "\u062A\u0645 \u0627\u0644\u062D\u0641\u0638 \u0628\u0646\u062C\u0627\u062D" : "Images saved!");
     } catch (e) {
       toast.error("Save failed");
     } finally {
@@ -207,368 +232,719 @@ export default function VisionStudioPage() {
     }
   }
 
+  /* ── Loading skeleton ── */
   if (loading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-12 w-80 rounded-xl bg-[#D4EBD9]/50" />
-        <Skeleton className="h-[500px] rounded-2xl bg-white border-2 border-[#D4EBD9]" />
+      <div className="space-y-8">
+        <Skeleton className="h-40 w-full rounded-2xl" style={{ backgroundColor: "#D4EBD9" }} />
+        <div className="grid gap-6 lg:grid-cols-5">
+          <div className="space-y-6 lg:col-span-2">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-44 rounded-2xl" style={{ backgroundColor: "#F0F7F2", border: "2px solid #D4EBD9" }} />
+            ))}
+          </div>
+          <div className="lg:col-span-3">
+            <Skeleton className="h-[500px] rounded-2xl" style={{ backgroundColor: "#F0F7F2", border: "2px solid #D4EBD9" }} />
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-5">
-      <div className="space-y-6 lg:col-span-2">
-        <div>
-          <h1 className="font-['Cairo'] text-3xl font-bold text-[#004D26] md:text-4xl">{tv.pageTitle}</h1>
-          <p className="mt-2 text-lg text-[#5A8A6A]">{tv.pageSub}</p>
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="space-y-10"
+    >
+      {/* ===== PAGE HEADER BANNER ===== */}
+      <motion.div
+        variants={item}
+        className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
+      >
+        {/* Decorative floating shapes */}
+        <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+        <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
+        <div className="absolute top-4 right-8 flex gap-2">
+          {["\uD83C\uDFA8", "\u2728", "\uD83D\uDCF8"].map((em, i) => (
+            <motion.span
+              key={i}
+              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+              className="text-2xl md:text-3xl"
+            >
+              {em}
+            </motion.span>
+          ))}
         </div>
+        <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
+          {tv.pageTitle}
+        </h1>
+        <p className="mt-3 text-lg text-white/80 md:text-xl flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
+          {tv.pageSub}
+          <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
+        </p>
+      </motion.div>
 
-        {/* Company */}
-        <Card className="border-2 border-[#D4EBD9] bg-white shadow-sm">
-          <CardHeader className="p-6">
-            <CardTitle className="text-xl font-semibold text-[#004D26]">{tv.company}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 pt-0">
-            <select value={selectedCompany?.id ?? ""} onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }} className="w-full rounded-xl border-2 border-[#D4EBD9] bg-white px-4 py-3 text-base text-[#0A1F0F] transition-all focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.08)]">
-              {companies.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
-            </select>
-            {selectedCompany?.brand_colors?.length ? (
-              <div className="mt-3 flex gap-2">
-                {selectedCompany.brand_colors.slice(0, 5).map((hex, i) => (
-                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: i * 0.05, type: "spring" }} whileHover={{ scale: 1.3, y: -3 }} className="h-8 w-8 rounded-full border-2 border-[#D4EBD9] shadow-sm" style={{ backgroundColor: hex }} />
-                ))}
-              </div>
-            ) : null}
-          </CardContent>
-        </Card>
+      {/* ===== MAIN GRID ===== */}
+      <div className="grid gap-8 lg:grid-cols-5">
+        {/* ── LEFT COLUMN: Controls ── */}
+        <motion.div variants={container} initial="hidden" animate="show" className="space-y-8 lg:col-span-2">
 
-        {/* Content Day */}
-        <Card className="border-2 border-[#D4EBD9] bg-white shadow-sm">
-          <CardHeader className="p-6"><CardTitle className="text-xl font-semibold text-[#004D26]">{tv.contentDay}</CardTitle></CardHeader>
-          <CardContent className="space-y-3 p-6 pt-0">
-            <select value={selectedPlan?.id ?? ""} onChange={(e) => { const p = plans.find((x) => x.id === e.target.value); setSelectedPlan(p ?? null); setSelectedDayIndex(0); }} className="w-full rounded-xl border-2 border-[#D4EBD9] bg-white px-4 py-3 text-base text-[#0A1F0F] transition-all focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.08)]">
-              {plans.filter((p) => p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
-            </select>
-            {selectedPlan?.plan_data?.days?.length ? (
-              <div className="flex flex-wrap gap-2">
-                {selectedPlan.plan_data.days.map((d, i) => (
-                  <button key={i} type="button" onClick={() => setSelectedDayIndex(i)} className={cn("rounded-xl px-5 py-3 text-base font-medium transition-all", selectedDayIndex === i ? "bg-[#006C35] text-white shadow-md" : "bg-[#F0F7F2] text-[#5A8A6A] border border-[#D4EBD9] hover:border-[#006C35]")}>
-                    {locale === "ar" ? (d.dayAr || d.dayEn) : (d.dayEn || d.dayAr)}
-                  </button>
-                ))}
-              </div>
-            ) : null}
-            {currentDay ? (
-              <div className="rounded-xl border-2 border-[#D4EBD9] bg-[#F8FBF8] p-4">
-                <p className="text-base font-semibold text-[#004D26]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
-                <p className="mt-1.5 text-sm text-[#5A8A6A]">{currentDay.imagePromptHint}</p>
-              </div>
-            ) : (
-              <p className="text-base text-[#5A8A6A]">{tv.noPlan}</p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Reference Images */}
-        <Card className="border-2 border-[#D4EBD9] bg-white shadow-sm">
-          <CardHeader className="p-6">
-            <CardTitle className="text-xl font-semibold text-[#004D26]">
-              {locale === "ar" ? "صور مرجعية" : "Reference Photos"}
-            </CardTitle>
-            <p className="text-sm text-[#5A8A6A] mt-1">
-              {locale === "ar" ? "أضف صور أطباقك، مكانك، أو منتجاتك ليستخدمها الذكاء الاصطناعي" : "Add photos of your dishes, place, or products for AI to reference"}
-            </p>
-          </CardHeader>
-          <CardContent className="p-6 pt-0">
-            <div className="grid grid-cols-3 gap-3">
-              {referenceImages.map((img, i) => (
-                <div key={i} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-[#D4EBD9]">
-                  <img src={img.preview} alt="" className="h-full w-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => removeReferenceImage(i)}
-                    className="absolute top-1.5 right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+          {/* ── Company Selector ── */}
+          <motion.div variants={item}>
+            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+              <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+              <CardHeader className="p-8 pb-4">
+                <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                    <Camera className="h-7 w-7 text-white" />
+                  </div>
+                  {tv.company}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-8 pt-2">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none z-10">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352]">
+                      <Sparkles className="h-4 w-4 text-white" />
+                    </div>
+                  </div>
+                  <select
+                    value={selectedCompany?.id ?? ""}
+                    onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }}
+                    className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white pl-14 pr-4 text-lg text-[#0A1F0F] font-medium transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
                   >
-                    <X className="h-4 w-4" />
-                  </button>
+                    {companies.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+                  </select>
                 </div>
-              ))}
-              {referenceImages.length < 6 && (
-                <label className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#D4EBD9] bg-[#F8FBF8] hover:border-[#006C35] hover:bg-[#F0F7F2] transition-all">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="hidden"
-                    onChange={handleReferenceUpload}
-                  />
-                  <Upload className="h-6 w-6 text-[#5A8A6A] mb-1" />
-                  <span className="text-xs text-[#5A8A6A]">{locale === "ar" ? "إضافة" : "Add"}</span>
-                </label>
-              )}
-            </div>
-            {referenceImages.length > 0 && (
-              <p className="mt-2 text-xs text-[#5A8A6A]">
-                {referenceImages.length}/6 {locale === "ar" ? "صور" : "photos"}
-              </p>
-            )}
-          </CardContent>
-        </Card>
+                {selectedCompany?.brand_colors?.length ? (
+                  <div className="mt-4 flex gap-2.5">
+                    {selectedCompany.brand_colors.slice(0, 5).map((hex, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: i * 0.08, type: "spring", stiffness: 200 }}
+                        whileHover={{ scale: 1.3, y: -4, boxShadow: "0 8px 20px rgba(0,0,0,0.15)" }}
+                        className="h-10 w-10 rounded-full border-2 border-white shadow-md ring-2 ring-[#D4EBD9]"
+                        style={{ backgroundColor: hex }}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </CardContent>
+            </Card>
+          </motion.div>
 
-        {/* Style */}
-        <Card className="border-2 border-[#D4EBD9] bg-white shadow-sm">
-          <CardHeader className="p-6"><CardTitle className="text-xl font-semibold text-[#004D26]">{tv.style}</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-2 gap-3 p-6 pt-0">
-            {STYLES.map((s) => (
-              <motion.button key={s.id} type="button" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} onClick={() => setStyle(s.id)} className={cn("rounded-xl border-2 p-5 text-left transition-all", style === s.id ? "border-[#006C35] bg-[#F0F7F2] shadow-[0_0_20px_rgba(0,108,53,0.08)]" : "border-[#D4EBD9] bg-white hover:border-[#00A352]")}>
-                <span className="text-3xl">{s.emoji}</span>
-                <p className="mt-2 text-lg font-semibold text-[#004D26]">{s.label}</p>
-                <p className="text-base text-[#5A8A6A]">{s.desc}</p>
-              </motion.button>
-            ))}
-          </CardContent>
-        </Card>
+          {/* ── Content Day Selector ── */}
+          <motion.div variants={item}>
+            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+              <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C]" />
+              <CardHeader className="p-8 pb-4">
+                <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
+                    <ImageIcon className="h-7 w-7 text-white" />
+                  </div>
+                  {tv.contentDay}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5 p-8 pt-2">
+                <select
+                  value={selectedPlan?.id ?? ""}
+                  onChange={(e) => { const p = plans.find((x) => x.id === e.target.value); setSelectedPlan(p ?? null); setSelectedDayIndex(0); }}
+                  className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 text-lg text-[#0A1F0F] font-medium transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
+                >
+                  {plans.filter((p) => p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
+                </select>
 
-        {/* Language */}
-        <div>
-          <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tv.generateIn}</label>
-          <div className="flex gap-3">
-            <Button type="button" variant={outputLanguage === "en" ? "default" : "outline"} className={cn("h-12 px-6 rounded-xl text-base", outputLanguage === "en" ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md" : "border-2 border-[#D4EBD9] text-[#2D5A3D]")} onClick={() => setOutputLanguage("en")}>{tv.english}</Button>
-            <Button type="button" variant={outputLanguage === "ar" ? "default" : "outline"} className={cn("h-12 px-6 rounded-xl text-base", outputLanguage === "ar" ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md" : "border-2 border-[#D4EBD9] text-[#2D5A3D]")} onClick={() => setOutputLanguage("ar")}>{tv.arabic}</Button>
-          </div>
-        </div>
+                {selectedPlan?.plan_data?.days?.length ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {selectedPlan.plan_data.days.map((d, i) => {
+                      const selected = selectedDayIndex === i;
+                      const platformEmoji = d.platform ? PLATFORM_EMOJI[d.platform.toLowerCase()] || "\uD83D\uDCC5" : "\uD83D\uDCC5";
+                      return (
+                        <motion.button
+                          key={i}
+                          type="button"
+                          onClick={() => setSelectedDayIndex(i)}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.06, type: "spring", stiffness: 200 }}
+                          whileHover={{ scale: 1.06, y: -4 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={cn(
+                            "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all duration-300 cursor-pointer",
+                            selected
+                              ? "bg-gradient-to-br from-[#006C35] to-[#00A352] border-[#006C35] text-white shadow-lg shadow-[#006C35]/20"
+                              : "bg-[#F8FBF8] border-[#D4EBD9] text-[#5A8A6A] hover:border-[#006C35]/40 hover:bg-[#F0F7F2]"
+                          )}
+                        >
+                          {selected && (
+                            <motion.div
+                              initial={{ scale: 0, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
+                            >
+                              <div className="h-4 w-4 rounded-full bg-[#C9A84C] flex items-center justify-center">
+                                <Check className="h-3 w-3 text-white" />
+                              </div>
+                            </motion.div>
+                          )}
+                          <span className="text-2xl leading-none">{platformEmoji}</span>
+                          <span className={cn("text-base font-bold leading-tight text-center", selected ? "text-white" : "text-[#004D26]")}>
+                            {locale === "ar" ? (d.dayAr || d.dayEn) : (d.dayEn || d.dayAr)}
+                          </span>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                ) : null}
 
-        {/* Include Logo Toggle */}
-        {selectedCompany?.logo_url && (
-          <motion.button
-            type="button"
-            onClick={() => setIncludeLogo(!includeLogo)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={cn(
-              "w-full flex items-center gap-4 rounded-xl border-2 p-5 text-left transition-all",
-              includeLogo
-                ? "border-[#006C35] bg-[#F0F7F2] shadow-[0_0_20px_rgba(0,108,53,0.08)]"
-                : "border-[#D4EBD9] bg-white hover:border-[#00A352]"
-            )}
-          >
-            <div className={cn(
-              "flex h-12 w-12 items-center justify-center rounded-xl transition-colors",
-              includeLogo ? "bg-[#006C35]" : "bg-[#F0F7F2]"
-            )}>
-              <ImagePlus className={cn("h-6 w-6", includeLogo ? "text-white" : "text-[#5A8A6A]")} />
-            </div>
-            <div className="flex-1">
-              <p className={cn("text-base font-semibold", includeLogo ? "text-[#004D26]" : "text-[#5A8A6A]")}>{tv.includeLogo}</p>
-              <p className="text-sm text-[#5A8A6A]">{tv.logoNote}</p>
-            </div>
-            <div className={cn(
-              "h-7 w-12 rounded-full transition-colors relative",
-              includeLogo ? "bg-[#006C35]" : "bg-[#D4EBD9]"
-            )}>
-              <div className={cn(
-                "absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-md transition-transform",
-                includeLogo ? "translate-x-5" : "translate-x-0.5"
-              )} />
-            </div>
-          </motion.button>
-        )}
+                {currentDay ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-5"
+                  >
+                    <p className="text-lg font-bold text-[#004D26]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
+                    <p className="mt-2 text-base text-[#5A8A6A]">{currentDay.imagePromptHint}</p>
+                  </motion.div>
+                ) : (
+                  <p className="text-lg text-[#5A8A6A]">{tv.noPlan}</p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
 
-        {/* Extra */}
-        <div>
-          <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tv.extraInstructions}</label>
-          <Textarea value={additionalInstructions} onChange={(e) => setAdditionalInstructions(e.target.value)} placeholder={tv.extraPlaceholder} className="min-h-[100px] rounded-xl border-2 border-[#D4EBD9] bg-white text-base text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35]" />
-        </div>
-
-        {/* Generate */}
-        <Button onClick={handleGenerate} disabled={generating || !currentDay} className="w-full h-16 rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#004D26] text-xl font-bold hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] transition-all shadow-md">
-          {generating ? <Loader2 className="mr-2.5 h-6 w-6 animate-spin" /> : <Sparkles className="mr-2.5 h-6 w-6" />}
-          {tv.generate4}
-        </Button>
-      </div>
-
-      {/* Image Output */}
-      <div className="lg:col-span-3">
-        <Card className="border-2 border-[#D4EBD9] bg-white shadow-sm">
-          <CardHeader className="p-6"><CardTitle className="text-2xl font-bold text-[#004D26]">{tv.generatedImages}</CardTitle></CardHeader>
-          <CardContent className="p-6 pt-0">
-            {images.length === 0 && !generating ? (
-              <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-[#F8FBF8] py-24">
-                <div className="flex h-28 w-28 items-center justify-center rounded-2xl bg-[#F0F7F2]">
-                  <ImageIcon className="h-14 w-14 text-[#5A8A6A]" />
+          {/* ── Reference Images ── */}
+          <motion.div variants={item}>
+            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+              <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C]" />
+              <CardHeader className="p-8 pb-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#C9A84C] shadow-lg">
+                    <Upload className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                      {locale === "ar" ? "\u0635\u0648\u0631 \u0645\u0631\u062C\u0639\u064A\u0629" : "Reference Photos"}
+                    </CardTitle>
+                    <p className="text-lg text-[#5A8A6A] mt-1">
+                      {locale === "ar" ? "\u0623\u0636\u0641 \u0635\u0648\u0631 \u0623\u0637\u0628\u0627\u0642\u0643\u060C \u0645\u0643\u0627\u0646\u0643\u060C \u0623\u0648 \u0645\u0646\u062A\u062C\u0627\u062A\u0643 \u0644\u064A\u0633\u062A\u062E\u062F\u0645\u0647\u0627 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064A" : "Add photos of your dishes, place, or products for AI to reference"}
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-6 text-xl font-medium text-[#5A8A6A]">{tv.imagesHere}</p>
-                <p className="mt-1 text-base text-[#5A8A6A]/60">{tv.selectAndGenerate}</p>
-              </div>
-            ) : generating ? (
-              <div className="space-y-5">
-                <div className="grid grid-cols-2 gap-4">
-                  {[0, 1, 2, 3].map((i) => (
+              </CardHeader>
+              <CardContent className="p-8 pt-2">
+                <div className="grid grid-cols-3 gap-4">
+                  {referenceImages.map((img, i) => (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.15 }}
-                      className="relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9]"
-                      style={{ background: "linear-gradient(135deg, #F0F7F2 0%, #F8FBF8 50%, #F0F7F2 100%)" }}
+                      transition={{ delay: i * 0.08, type: "spring", stiffness: 200 }}
+                      className="relative group aspect-square rounded-2xl overflow-hidden border-2 border-[#D4EBD9] shadow-md"
                     >
-                      {/* Animated gradient sweep */}
-                      <motion.div
-                        className="absolute inset-0"
-                        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(0,108,53,0.06) 50%, transparent 100%)" }}
-                        animate={{ x: ["-100%", "200%"] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
-                      />
-                      {/* Pulsing icon */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
-                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
-                        >
-                          <Sparkles className="h-12 w-12 text-[#C9A84C]/30" />
-                        </motion.div>
-                      </div>
-                      {/* Progress dots */}
-                      <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-                        {[0, 1, 2].map((d) => (
-                          <motion.div
-                            key={d}
-                            className="h-2 w-2 rounded-full bg-[#006C35]/20"
-                            animate={{ opacity: [0.3, 1, 0.3] }}
-                            transition={{ duration: 1.2, repeat: Infinity, delay: d * 0.3 }}
-                          />
-                        ))}
-                      </div>
+                      <img src={img.preview} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
+                      <motion.button
+                        type="button"
+                        onClick={() => removeReferenceImage(i)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                      >
+                        <X className="h-4 w-4" />
+                      </motion.button>
                     </motion.div>
                   ))}
-                </div>
-                {/* Funny quote */}
-                <motion.div
-                  key={loadingQuoteIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="text-center"
-                >
-                  <p className="text-lg font-semibold text-[#004D26]">
-                    {loadingQuotes[loadingQuoteIndex]}
-                  </p>
-                  <div className="mt-2 mx-auto h-1.5 w-48 rounded-full bg-[#F0F7F2] overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
-                      initial={{ width: "0%" }}
-                      animate={{ width: "100%" }}
-                      transition={{ duration: 3, ease: "linear", repeat: Infinity }}
-                    />
-                  </div>
-                </motion.div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-4">
-                {images.map((img, i) => (
-                  <motion.div key={img.id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1 }} className="group relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9]">
-                    {img.url ? (
-                      <img
-                        src={img.url}
-                        alt={img.style_label}
-                        className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = "none";
-                          const parent = target.parentElement;
-                          if (parent) {
-                            const fallback = document.createElement("div");
-                            fallback.className = "aspect-square w-full flex items-center justify-center bg-[#F0F7F2]";
-                            fallback.innerHTML = '<p class="text-[#5A8A6A] text-center px-4">Image failed to load</p>';
-                            parent.insertBefore(fallback, target);
-                          }
-                        }}
+                  {referenceImages.length < 6 && (
+                    <motion.label
+                      whileHover={{ scale: 1.05, borderColor: "#006C35" }}
+                      whileTap={{ scale: 0.97 }}
+                      className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-[#F8FBF8] hover:bg-[#F0F7F2] transition-all duration-300"
+                      style={{ borderColor: "#006C35", borderImage: "linear-gradient(135deg, #006C35, #C9A84C) 1" }}
+                    >
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handleReferenceUpload}
                       />
-                    ) : (
-                      <div className="aspect-square w-full flex items-center justify-center bg-[#F0F7F2]">
-                        <div className="text-center">
-                          <ImageIcon className="h-10 w-10 text-[#5A8A6A] mx-auto mb-2" />
-                          <p className="text-sm text-[#5A8A6A]">Generation failed</p>
-                        </div>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md mb-2">
+                        <Upload className="h-6 w-6 text-white" />
                       </div>
-                    )}
-                    {img.url && (
-                      <div className="absolute inset-0 flex items-center justify-center gap-3 bg-white/80 backdrop-blur-sm opacity-0 transition-all duration-300 group-hover:opacity-100">
-                        <motion.button type="button" onClick={() => setLightboxUrl(img.url!)} whileHover={{ scale: 1.1 }} className="rounded-xl bg-white border-2 border-[#D4EBD9] px-4 py-2.5 text-base font-medium text-[#004D26] flex items-center gap-2 shadow-md">
-                          <Maximize2 className="h-5 w-5" /> {tv.fullScreen}
-                        </motion.button>
-                        <motion.a href={img.url} download whileHover={{ scale: 1.1 }} className="rounded-xl bg-[#006C35] px-4 py-2.5 text-base font-medium text-white flex items-center gap-2 shadow-md">
-                          <Download className="h-5 w-5" />
-                        </motion.a>
-                      </div>
-                    )}
-                    <span className="absolute bottom-3 left-3 rounded-lg bg-white/90 border border-[#D4EBD9] px-4 py-1.5 text-base font-medium text-[#004D26]">{img.style_label}</span>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-            {images.length > 0 && !generating && (
-              <div className="mt-5 flex justify-end">
-                <Button
-                  onClick={handleSave}
-                  disabled={saved || saving}
-                  className={cn(
-                    "h-14 px-8 rounded-xl text-lg font-bold shadow-md transition-all",
-                    saved
-                      ? "bg-[#D4EBD9] text-[#5A8A6A] cursor-default"
-                      : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-[0_0_25px_rgba(0,108,53,0.3)]"
+                      <span className="text-base font-bold text-[#004D26]">{locale === "ar" ? "\u0625\u0636\u0627\u0641\u0629" : "Add"}</span>
+                    </motion.label>
                   )}
-                >
-                  {saving ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
-                  {saved ? (locale === "ar" ? "\u2713 تم الحفظ" : "\u2713 Saved") : saving ? (locale === "ar" ? "جاري الحفظ..." : "Saving...") : (locale === "ar" ? "حفظ الصور" : "Save Images")}
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                </div>
+                {referenceImages.length > 0 && (
+                  <p className="mt-3 text-base font-semibold text-[#5A8A6A]">
+                    {referenceImages.length}/6 {locale === "ar" ? "\u0635\u0648\u0631" : "photos"}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
 
-      {/* Lightbox */}
-      {lightboxUrl && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-          onClick={() => setLightboxUrl(null)}
-        >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative max-h-[90vh] max-w-[90vw]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={lightboxUrl}
-              alt=""
-              className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl"
+          {/* ── Style Selector ── */}
+          <motion.div variants={item}>
+            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+              <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#006C35] to-[#C9A84C]" />
+              <CardHeader className="p-8 pb-4">
+                <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
+                    <Paintbrush className="h-7 w-7 text-white" />
+                  </div>
+                  {tv.style}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-4 p-8 pt-2">
+                {STYLES.map((s, i) => {
+                  const selected = style === s.id;
+                  return (
+                    <motion.button
+                      key={s.id}
+                      type="button"
+                      initial={{ opacity: 0, scale: 0.85, y: 15 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ delay: i * 0.08, type: "spring", stiffness: 180 }}
+                      whileHover={{ scale: 1.06, y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.1)" }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setStyle(s.id)}
+                      className={cn(
+                        "relative rounded-2xl border-2 p-6 text-left transition-all duration-300 overflow-hidden",
+                        selected
+                          ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/10 via-[#00A352]/5 to-[#C9A84C]/10 shadow-lg shadow-[#006C35]/10"
+                          : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
+                      )}
+                    >
+                      {/* Selection checkmark */}
+                      {selected && (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ type: "spring", stiffness: 300 }}
+                          className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md z-10"
+                        >
+                          <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center">
+                            <Check className="h-3.5 w-3.5 text-white" />
+                          </div>
+                        </motion.div>
+                      )}
+                      {/* Selected gradient accent bar */}
+                      {selected && (
+                        <motion.div
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left"
+                        />
+                      )}
+                      <span className="text-4xl block">{s.emoji}</span>
+                      <p className="mt-3 text-xl font-extrabold text-[#004D26]">{s.label}</p>
+                      <p className="mt-1 text-base text-[#5A8A6A]">{s.desc}</p>
+                    </motion.button>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* ── Language Toggle ── */}
+          <motion.div variants={item}>
+            <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              {tv.generateIn}
+            </label>
+            <div className="flex gap-3">
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex-1">
+                <Button
+                  type="button"
+                  variant={outputLanguage === "en" ? "default" : "outline"}
+                  className={cn(
+                    "w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300",
+                    outputLanguage === "en"
+                      ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#006C35]/20 border-2 border-[#006C35]"
+                      : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35]/40"
+                  )}
+                  onClick={() => setOutputLanguage("en")}
+                >
+                  <span className="text-2xl mr-2">{"\uD83C\uDDFA\uD83C\uDDF8"}</span> {tv.english}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex-1">
+                <Button
+                  type="button"
+                  variant={outputLanguage === "ar" ? "default" : "outline"}
+                  className={cn(
+                    "w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300",
+                    outputLanguage === "ar"
+                      ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#006C35]/20 border-2 border-[#006C35]"
+                      : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35]/40"
+                  )}
+                  onClick={() => setOutputLanguage("ar")}
+                >
+                  <span className="text-2xl mr-2">{"\uD83C\uDDF8\uD83C\uDDE6"}</span> {tv.arabic}
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* ── Include Logo Toggle ── */}
+          {selectedCompany?.logo_url && (
+            <motion.div variants={item}>
+              <motion.button
+                type="button"
+                onClick={() => setIncludeLogo(!includeLogo)}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className={cn(
+                  "w-full flex items-center gap-5 rounded-2xl border-2 p-6 text-left transition-all duration-300 overflow-hidden relative",
+                  includeLogo
+                    ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/5 to-[#C9A84C]/5 shadow-lg shadow-[#006C35]/10"
+                    : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
+                )}
+              >
+                {/* Gradient border effect when active */}
+                {includeLogo && (
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left"
+                  />
+                )}
+                <div className={cn(
+                  "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 shadow-md",
+                  includeLogo
+                    ? "bg-gradient-to-br from-[#006C35] to-[#00A352]"
+                    : "bg-[#F0F7F2]"
+                )}>
+                  <ImagePlus className={cn("h-7 w-7", includeLogo ? "text-white" : "text-[#5A8A6A]")} />
+                </div>
+                <div className="flex-1">
+                  <p className={cn("text-lg font-bold", includeLogo ? "text-[#004D26]" : "text-[#5A8A6A]")}>{tv.includeLogo}</p>
+                  <p className="text-base text-[#5A8A6A]">{tv.logoNote}</p>
+                </div>
+                <div className={cn(
+                  "h-8 w-14 rounded-full transition-all duration-300 relative flex-shrink-0",
+                  includeLogo ? "bg-gradient-to-r from-[#006C35] to-[#00A352] shadow-inner" : "bg-[#D4EBD9]"
+                )}>
+                  <motion.div
+                    animate={{ x: includeLogo ? 24 : 2 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className={cn(
+                      "absolute top-1 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center",
+                    )}
+                  >
+                    {includeLogo && <Check className="h-3.5 w-3.5 text-[#006C35]" />}
+                  </motion.div>
+                </div>
+              </motion.button>
+            </motion.div>
+          )}
+
+          {/* ── Extra Instructions ── */}
+          <motion.div variants={item}>
+            <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-md">
+                <MessageSquare className="h-5 w-5 text-white" />
+              </div>
+              {tv.extraInstructions}
+            </label>
+            <Textarea
+              value={additionalInstructions}
+              onChange={(e) => setAdditionalInstructions(e.target.value)}
+              placeholder={tv.extraPlaceholder}
+              className="min-h-[120px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40 p-5"
             />
-            <button
-              type="button"
-              onClick={() => setLightboxUrl(null)}
-              className="absolute -top-4 -right-4 flex h-12 w-12 items-center justify-center rounded-full bg-white border-2 border-[#D4EBD9] shadow-lg text-[#004D26] hover:bg-[#F0F7F2] transition-colors"
+          </motion.div>
+
+          {/* ── Generate Button ── */}
+          <motion.div variants={item}>
+            <Button
+              onClick={handleGenerate}
+              disabled={generating || !currentDay}
+              className="relative w-full h-20 rounded-2xl bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#004D26] hover:shadow-[0_0_50px_rgba(201,168,76,0.4)] text-2xl font-extrabold transition-all duration-500 shadow-xl border-2 border-[#C9A84C]/30 overflow-hidden group"
             >
-              <X className="h-6 w-6" />
-            </button>
-            <motion.a
-              href={lightboxUrl}
-              download
-              whileHover={{ scale: 1.05 }}
-              className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl bg-[#006C35] px-5 py-3 text-base font-semibold text-white shadow-lg"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Download className="h-5 w-5" /> Download
-            </motion.a>
+              {/* Shimmer overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+              {generating ? (
+                <Loader2 className="mr-3 h-8 w-8 animate-spin relative z-10" />
+              ) : (
+                <Sparkles className="mr-3 h-8 w-8 relative z-10" />
+              )}
+              <span className="relative z-10">{tv.generate4}</span>
+              {!generating && <Sparkles className="ml-3 h-8 w-8 relative z-10" />}
+            </Button>
           </motion.div>
         </motion.div>
-      )}
-    </div>
+
+        {/* ── RIGHT COLUMN: Image Output ── */}
+        <motion.div variants={item} className="lg:col-span-3">
+          <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+            <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+            <CardHeader className="p-8 pb-4">
+              <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                  <ImageIcon className="h-7 w-7 text-white" />
+                </div>
+                {tv.generatedImages}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 pt-2">
+              {images.length === 0 && !generating ? (
+                /* ── Empty State ── */
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] py-28"
+                >
+                  <motion.div
+                    animate={{ y: [0, -8, 0], rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    className="flex h-32 w-32 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35]/10 to-[#C9A84C]/10 shadow-inner"
+                  >
+                    <ImageIcon className="h-16 w-16 text-[#5A8A6A]/50" />
+                  </motion.div>
+                  <p className="mt-8 text-2xl font-bold text-[#004D26]">{tv.imagesHere}</p>
+                  <p className="mt-2 text-lg text-[#5A8A6A]">{tv.selectAndGenerate}</p>
+                </motion.div>
+              ) : generating ? (
+                /* ── Loading State with Gradient Sweep Skeletons ── */
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-5">
+                    {[0, 1, 2, 3].map((i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.85, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ delay: i * 0.15, type: "spring", stiffness: 150 }}
+                        className="relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9] shadow-md"
+                        style={{ background: "linear-gradient(135deg, #F0F7F2 0%, #F8FBF8 50%, #F0F7F2 100%)" }}
+                      >
+                        {/* Animated gradient sweep */}
+                        <motion.div
+                          className="absolute inset-0"
+                          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(0,108,53,0.08) 30%, rgba(201,168,76,0.08) 50%, rgba(0,108,53,0.08) 70%, transparent 100%)" }}
+                          animate={{ x: ["-100%", "200%"] }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+                        />
+                        {/* Gradient accent bar at top */}
+                        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+                        {/* Pulsing icon */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <motion.div
+                            animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                          >
+                            <Sparkles className="h-14 w-14 text-[#C9A84C]/30" />
+                          </motion.div>
+                        </div>
+                        {/* Progress dots */}
+                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                          {[0, 1, 2].map((d) => (
+                            <motion.div
+                              key={d}
+                              className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-[#006C35] to-[#C9A84C]"
+                              animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }}
+                              transition={{ duration: 1.2, repeat: Infinity, delay: d * 0.3 }}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                  {/* Funny quote - styled bigger */}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={loadingQuoteIndex}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      className="text-center py-4"
+                    >
+                      <p className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                        {loadingQuotes[loadingQuoteIndex]}
+                      </p>
+                      <div className="mt-4 mx-auto h-2 w-64 rounded-full bg-[#F0F7F2] overflow-hidden border border-[#D4EBD9]">
+                        <motion.div
+                          className="h-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
+                          initial={{ width: "0%" }}
+                          animate={{ width: "100%" }}
+                          transition={{ duration: 3, ease: "linear", repeat: Infinity }}
+                        />
+                      </div>
+                      <p className="mt-2 text-base text-[#5A8A6A]">
+                        {locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u0625\u0646\u0634\u0627\u0621..." : "Creating your visuals..."}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              ) : (
+                /* ── Generated Images Grid ── */
+                <motion.div
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
+                  className="grid grid-cols-2 gap-5"
+                >
+                  {images.map((img, i) => (
+                    <motion.div
+                      key={img.id}
+                      variants={item}
+                      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+                      className="group relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-md transition-all duration-300"
+                    >
+                      {/* Gradient accent bar at top */}
+                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] z-10" />
+                      {img.url ? (
+                        <img
+                          src={img.url}
+                          alt={img.style_label}
+                          className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const parent = target.parentElement;
+                            if (parent) {
+                              const fallback = document.createElement("div");
+                              fallback.className = "aspect-square w-full flex items-center justify-center bg-[#F0F7F2]";
+                              fallback.innerHTML = '<p class="text-[#5A8A6A] text-center px-4 text-lg">Image failed to load</p>';
+                              parent.insertBefore(fallback, target);
+                            }
+                          }}
+                        />
+                      ) : (
+                        <div className="aspect-square w-full flex items-center justify-center bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2]">
+                          <div className="text-center">
+                            <ImageIcon className="h-12 w-12 text-[#5A8A6A] mx-auto mb-3" />
+                            <p className="text-lg text-[#5A8A6A]">Generation failed</p>
+                          </div>
+                        </div>
+                      )}
+                      {img.url && (
+                        <div className="absolute inset-0 flex items-center justify-center gap-4 bg-gradient-to-t from-[#004D26]/70 via-[#004D26]/30 to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100">
+                          <motion.button
+                            type="button"
+                            onClick={() => setLightboxUrl(img.url!)}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="rounded-2xl bg-white/95 backdrop-blur-sm border-2 border-[#D4EBD9] px-5 py-3 text-lg font-bold text-[#004D26] flex items-center gap-2.5 shadow-xl"
+                          >
+                            <Maximize2 className="h-5 w-5" /> {tv.fullScreen}
+                          </motion.button>
+                          <motion.a
+                            href={img.url}
+                            download
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-5 py-3 text-lg font-bold text-white flex items-center gap-2.5 shadow-xl"
+                          >
+                            <Download className="h-5 w-5" />
+                          </motion.a>
+                        </div>
+                      )}
+                      <span className="absolute bottom-3 left-3 rounded-xl bg-white/95 backdrop-blur-sm border-2 border-[#D4EBD9] px-4 py-2 text-base font-bold text-[#004D26] shadow-md">
+                        {img.style_label}
+                      </span>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* ── Save Button ── */}
+              {images.length > 0 && !generating && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="mt-8 flex justify-end"
+                >
+                  <motion.div whileHover={{ scale: saved ? 1 : 1.04 }} whileTap={{ scale: saved ? 1 : 0.97 }}>
+                    <Button
+                      onClick={handleSave}
+                      disabled={saved || saving}
+                      className={cn(
+                        "relative h-16 px-10 rounded-2xl text-xl font-extrabold shadow-lg transition-all duration-500 border-2 overflow-hidden group",
+                        saved
+                          ? "bg-gradient-to-r from-[#D4EBD9] to-[#F0F7F2] text-[#5A8A6A] border-[#D4EBD9] cursor-default"
+                          : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white border-[#006C35]/30 hover:shadow-[0_0_40px_rgba(0,108,53,0.3)]"
+                      )}
+                    >
+                      {/* Shimmer overlay */}
+                      {!saved && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                      )}
+                      {saving ? <Loader2 className="mr-2.5 h-6 w-6 animate-spin relative z-10" /> : saved ? <Check className="mr-2.5 h-6 w-6 relative z-10" /> : null}
+                      <span className="relative z-10">
+                        {saved ? (locale === "ar" ? "\u2713 \u062A\u0645 \u0627\u0644\u062D\u0641\u0638" : "\u2713 Saved") : saving ? (locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u062D\u0641\u0638..." : "Saving...") : (locale === "ar" ? "\u062D\u0641\u0638 \u0627\u0644\u0635\u0648\u0631" : "Save Images")}
+                      </span>
+                    </Button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* ===== LIGHTBOX ===== */}
+      <AnimatePresence>
+        {lightboxUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            onClick={() => setLightboxUrl(null)}
+          >
+            {/* Gradient backdrop tint */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#004D26]/90 via-black/80 to-[#004D26]/90 backdrop-blur-md" />
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 30 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative max-h-[90vh] max-w-[90vw]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={lightboxUrl}
+                alt=""
+                className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-2 ring-white/20"
+              />
+              <motion.button
+                type="button"
+                onClick={() => setLightboxUrl(null)}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute -top-5 -right-5 flex h-14 w-14 items-center justify-center rounded-full bg-white border-2 border-[#D4EBD9] shadow-xl text-[#004D26] hover:bg-[#F0F7F2] transition-colors"
+              >
+                <X className="h-7 w-7" />
+              </motion.button>
+              <div className="absolute bottom-5 right-5 flex gap-3">
+                <motion.a
+                  href={lightboxUrl}
+                  download
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-7 py-4 text-lg font-extrabold text-white shadow-xl border-2 border-white/20"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Download className="h-6 w-6" /> Download
+                </motion.a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }

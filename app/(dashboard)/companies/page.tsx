@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Building2, Plus, Pencil, Trash2, Upload, Loader2, Sparkles, FileText, Clock, Target, Megaphone, Users, Zap, Shield, Flame, Crown, BadgeCheck } from "lucide-react";
+import { Building2, Plus, Pencil, Trash2, Upload, Loader2, Sparkles, FileText, Clock, Target, Megaphone, Users, Zap, Shield, Flame, Crown, BadgeCheck, Palette, Eye, X, Globe, AlertCircle } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase";
 import { useAppStore, type Company } from "@/lib/store";
 import { cn, truncate } from "@/lib/utils";
@@ -23,7 +23,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { GlowCard } from "@/components/GlowCard";
 import toast from "react-hot-toast";
 import { messages } from "@/lib/i18n";
 
@@ -59,6 +58,36 @@ const PLATFORMS = [
 ];
 
 const FALLBACK_COLORS = ["#006C35", "#00A352", "#C9A84C", "#0B1A0F", "#D0EBDA"];
+
+/* ── Platform config with rich visual data (matches planner/hashtags) ── */
+const PLATFORM_CARDS: Record<string, { emoji: string; selectedBg: string; selectedBorder: string; unselectedBg: string; color: string }> = {
+  "Instagram":    { emoji: "\uD83D\uDCF8", selectedBg: "bg-gradient-to-br from-pink-500 to-rose-500", selectedBorder: "border-pink-400", unselectedBg: "bg-pink-50", color: "text-pink-600" },
+  "X (Twitter)":  { emoji: "\uD835\uDD4F", selectedBg: "bg-gradient-to-br from-slate-700 to-slate-900", selectedBorder: "border-slate-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
+  "TikTok":       { emoji: "\uD83C\uDFB5", selectedBg: "bg-gradient-to-br from-slate-800 to-cyan-500", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
+  "Snapchat":     { emoji: "\uD83D\uDC7B", selectedBg: "bg-gradient-to-br from-yellow-400 to-amber-400", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700" },
+  "LinkedIn":     { emoji: "\uD83D\uDCBC", selectedBg: "bg-gradient-to-br from-blue-500 to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-blue-600" },
+  "YouTube":      { emoji: "\uD83C\uDFAC", selectedBg: "bg-gradient-to-br from-red-500 to-red-700", selectedBorder: "border-red-400", unselectedBg: "bg-red-50", color: "text-red-600" },
+  "WhatsApp":     { emoji: "\uD83D\uDCAC", selectedBg: "bg-gradient-to-br from-green-500 to-emerald-600", selectedBorder: "border-green-400", unselectedBg: "bg-green-50", color: "text-green-700" },
+};
+
+/* ── Card accent gradient rotation ── */
+const CARD_GRADIENTS = [
+  "from-[#006C35] via-[#00A352] to-[#C9A84C]",
+  "from-[#C9A84C] via-[#E8D5A0] to-[#006C35]",
+  "from-rose-500 via-pink-500 to-purple-500",
+  "from-blue-500 via-indigo-500 to-purple-500",
+  "from-amber-500 via-orange-500 to-red-500",
+  "from-emerald-500 via-teal-500 to-cyan-500",
+];
+
+/* ── Tag emoji prefixes and colors ── */
+const TAG_STYLES = {
+  industry:  { emoji: "\uD83C\uDFED", bg: "bg-[#006C35]/10", border: "border-[#006C35]/25", text: "text-[#006C35]" },
+  tone:      { emoji: "\uD83C\uDFA8", bg: "bg-[#C9A84C]/10", border: "border-[#C9A84C]/25", text: "text-[#C9A84C]" },
+  audience:  { emoji: "\uD83C\uDFAF", bg: "bg-[#3B82F6]/10", border: "border-[#3B82F6]/25", text: "text-[#3B82F6]" },
+  platform:  { emoji: "\uD83D\uDCF1", bg: "bg-[#A855F7]/10", border: "border-[#A855F7]/25", text: "text-[#A855F7]" },
+  website:   { emoji: "\uD83C\uDF10", bg: "bg-[#F97316]/10", border: "border-[#F97316]/25", text: "text-[#F97316]" },
+};
 
 /* ─────────── Brand Analysis Visual Display ─────────── */
 
@@ -340,6 +369,7 @@ export default function CompaniesPage() {
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [brandAnalysis, setBrandAnalysis] = useState<Record<string, unknown> | null>(null);
   const [outputLanguage, setOutputLanguage] = useState<"en" | "ar">("ar");
+  const [viewingCompany, setViewingCompany] = useState<Company | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -518,9 +548,20 @@ export default function CompaniesPage() {
     setSaving(false);
   }
 
+  function getAnalysisCount(): number {
+    if (!editingId) return 0;
+    const company = companies.find((c) => c.id === editingId);
+    return company?.analysis_count ?? 0;
+  }
+
   async function runAnalyze() {
     if (!form.name.trim()) {
       toast.error("Save company first or enter a name");
+      return;
+    }
+    const currentCount = getAnalysisCount();
+    if (currentCount >= 3) {
+      toast.error(tc.analysisLimit || "Analysis limit reached (3/3)");
       return;
     }
     setAnalyzing(true);
@@ -548,11 +589,13 @@ export default function CompaniesPage() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Analysis failed");
       setBrandAnalysis(json.analysis);
-      // Save analysis to company record
+      const newCount = currentCount + 1;
+      // Save analysis + count to company record
       if (editingId) {
-        await supabase.from("companies").update({ brand_analysis: json.analysis }).eq("id", editingId);
+        await supabase.from("companies").update({ brand_analysis: json.analysis, analysis_count: newCount }).eq("id", editingId);
+        setCompanies((prev) => prev.map((c) => c.id === editingId ? { ...c, brand_analysis: json.analysis, analysis_count: newCount } : c));
       }
-      toast.success("Brand DNA ready");
+      toast.success(`Brand DNA ready (${newCount}/3 ${tc.analysisRemaining || "analyses used"})`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Analysis failed");
     }
@@ -568,13 +611,14 @@ export default function CompaniesPage() {
     else { toast.success(tc.deleted || "Company deleted"); loadCompanies(); }
   }
 
+  /* ── Loading skeleton ── */
   if (loading) {
     return (
-      <div className="space-y-4">
-        <div className="h-10 w-48 animate-shimmer rounded bg-[#D4EBD9]/50" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="space-y-6">
+        <div className="h-40 animate-shimmer rounded-2xl bg-gradient-to-r from-[#D4EBD9]/50 via-[#F0F7F2] to-[#D4EBD9]/50 border-2 border-[#D4EBD9]" />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 animate-shimmer rounded-2xl bg-[#F0F7F2] border-2 border-[#D4EBD9]" />
+            <div key={i} className="h-72 animate-shimmer rounded-2xl bg-gradient-to-br from-[#F0F7F2] to-white border-2 border-[#D4EBD9]" />
           ))}
         </div>
       </div>
@@ -582,411 +626,620 @@ export default function CompaniesPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="font-['Cairo'] text-3xl font-bold text-[#004D26] md:text-4xl">{tc.pageTitle}</h1>
+    <div className="space-y-10">
+      {/* ===== PAGE HEADER BANNER ===== */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
+      >
+        {/* Decorative floating shapes */}
+        <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+        <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
+        <div className="absolute top-4 right-8 flex gap-2">
+          {["\uD83C\uDFE2", "\u2728", "\uD83D\uDE80"].map((em, i) => (
+            <motion.span
+              key={i}
+              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+              className="text-2xl md:text-3xl"
+            >
+              {em}
+            </motion.span>
+          ))}
         </div>
-        <Button
-          onClick={openAdd}
-          className="h-14 px-6 text-base font-semibold rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#0A1F0F] hover:shadow-[0_0_20px_rgba(201,168,76,0.3)] transition-shadow"
-        >
-          <Plus className="mr-2 h-5 w-5" />
-          {tc.addCompany}
-        </Button>
-      </div>
 
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
+              {tc.pageTitle}
+            </h1>
+            <p className="mt-3 text-lg text-white/80 md:text-xl flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
+              Premium Brand Builder
+              <Building2 className="h-5 w-5 text-[#E8D5A0]" />
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Count badge */}
+            {companies.length > 0 && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, delay: 0.3 }}
+                className="flex items-center gap-2 rounded-2xl bg-white/20 backdrop-blur-sm px-5 py-3 border border-white/30"
+              >
+                <Building2 className="h-6 w-6 text-white" />
+                <span className="text-2xl font-extrabold text-white">{companies.length}</span>
+                <span className="text-lg text-white/80 font-medium">Companies</span>
+              </motion.div>
+            )}
+
+            <Button
+              onClick={openAdd}
+              className="h-14 px-8 text-lg font-bold rounded-2xl bg-white text-[#006C35] hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all shadow-lg"
+            >
+              <Plus className="mr-2 h-6 w-6" />
+              {tc.addCompany}
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ===== EMPTY STATE ===== */}
       {companies.length === 0 ? (
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] py-16"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="relative flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] via-white to-[#F0F7F2] py-20 px-8 overflow-hidden"
         >
-          <Building2 className="h-16 w-16 text-[#5A8A6A]" />
-          <p className="mt-4 text-lg text-[#004D26]">{tc.noCompanies}</p>
-          <p className="text-base text-[#5A8A6A]">{tc.addFirst}</p>
-          <Button onClick={openAdd} className="mt-6 h-12 text-base rounded-xl bg-[#006C35] hover:bg-[#00A352] text-white">
-            {tc.addCompany}
-          </Button>
+          {/* Background decorative elements */}
+          <div className="absolute top-10 left-10 h-24 w-24 rounded-full bg-[#006C35]/5 blur-xl" />
+          <div className="absolute bottom-10 right-10 h-32 w-32 rounded-full bg-[#C9A84C]/5 blur-xl" />
+
+          {/* Animated building icon */}
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="relative mb-6"
+          >
+            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_0_50px_rgba(0,108,53,0.25)]">
+              <Building2 className="h-14 w-14 text-white" />
+            </div>
+            {/* Pulsing sparkles */}
+            <motion.div
+              animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+              className="absolute -top-2 -right-2"
+            >
+              <Sparkles className="h-7 w-7 text-[#C9A84C]" />
+            </motion.div>
+            <motion.div
+              animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
+              className="absolute -bottom-1 -left-3"
+            >
+              <Sparkles className="h-5 w-5 text-[#00A352]" />
+            </motion.div>
+          </motion.div>
+
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo'] text-center">
+            {tc.noCompanies}
+          </h2>
+          <p className="mt-2 text-lg text-[#5A8A6A] text-center max-w-md">
+            {tc.addFirst}
+          </p>
+
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <Button
+              onClick={openAdd}
+              className="mt-8 h-16 px-10 text-xl font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] text-white shadow-xl hover:shadow-[0_0_40px_rgba(0,108,53,0.35)] transition-all"
+            >
+              <Plus className="mr-3 h-7 w-7" />
+              {tc.addCompany}
+            </Button>
+          </motion.div>
         </motion.div>
       ) : (
+        /* ===== COMPANY CARDS GRID ===== */
         <div className="grid gap-6 sm:grid-cols-2">
           {companies.map((c, i) => {
-            const tagColors = [
-              { bg: "bg-[#006C35]/10", border: "border-[#006C35]/25", text: "text-[#006C35]" },
-              { bg: "bg-[#C9A84C]/10", border: "border-[#C9A84C]/25", text: "text-[#C9A84C]" },
-              { bg: "bg-[#3B82F6]/10", border: "border-[#3B82F6]/25", text: "text-[#3B82F6]" },
-              { bg: "bg-[#A855F7]/10", border: "border-[#A855F7]/25", text: "text-[#A855F7]" },
-              { bg: "bg-[#F97316]/10", border: "border-[#F97316]/25", text: "text-[#F97316]" },
-              { bg: "bg-[#EC4899]/10", border: "border-[#EC4899]/25", text: "text-[#EC4899]" },
-            ];
-            const keywords: { label: string; colorIdx: number }[] = [];
-            if (c.industry) keywords.push({ label: c.industry, colorIdx: 0 });
-            if (c.tone) keywords.push({ label: c.tone, colorIdx: 1 });
-            if (c.target_audience) keywords.push({ label: c.target_audience.length > 30 ? c.target_audience.slice(0, 30) + "..." : c.target_audience, colorIdx: 2 });
-            (c.platforms || []).forEach((p, pi) => keywords.push({ label: p, colorIdx: (3 + pi) % tagColors.length }));
-            if (c.website) keywords.push({ label: c.website.replace(/^https?:\/\//, "").replace(/\/$/, ""), colorIdx: 4 });
+            const keywords: { label: string; type: keyof typeof TAG_STYLES }[] = [];
+            if (c.industry) keywords.push({ label: c.industry, type: "industry" });
+            if (c.tone) keywords.push({ label: c.tone, type: "tone" });
+            if (c.target_audience) keywords.push({ label: c.target_audience.length > 30 ? c.target_audience.slice(0, 30) + "..." : c.target_audience, type: "audience" });
+            (c.platforms || []).forEach((p) => keywords.push({ label: p, type: "platform" }));
+            if (c.website) keywords.push({ label: c.website.replace(/^https?:\/\//, "").replace(/\/$/, ""), type: "website" });
+
+            const gradientClass = CARD_GRADIENTS[i % CARD_GRADIENTS.length];
 
             return (
-              <GlowCard
+              <motion.div
                 key={c.id}
-                glowColor={i % 2 === 0 ? "green" : "gold"}
-                className="!bg-white !border-2 !border-[#D4EBD9]"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08, type: "spring", stiffness: 200, damping: 20 }}
+                whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                className="group"
               >
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="p-8"
-                >
-                  {/* Top: gradient accent bar using brand color */}
-                  <div
-                    className="absolute top-0 left-0 right-0 h-2 rounded-t-2xl"
-                    style={{ background: `linear-gradient(90deg, ${c.brand_colors?.[0] ?? "#006C35"}, ${c.brand_colors?.[1] ?? "#00A352"}, ${c.brand_colors?.[2] ?? "#C9A84C"})` }}
-                  />
+                <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,108,53,0.15)] hover:border-[#00A352]/40">
+                  {/* Top gradient accent bar */}
+                  <div className={cn("h-2 w-full bg-gradient-to-r", gradientClass)} />
 
-                  {/* Logo + Name */}
-                  <div className="flex items-center gap-5">
-                    <div className="relative">
-                      <div
-                        className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-3xl font-bold text-white shadow-lg transition-shadow hover:shadow-[0_0_25px_rgba(0,108,53,0.3)]"
-                        style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
+                  <div className="p-8">
+                    {/* Logo + Name */}
+                    <div className="flex items-center gap-5">
+                      <motion.div
+                        whileHover={{ scale: 1.08, rotate: 2 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                        className="relative"
                       >
-                        {c.logo_url ? (
-                          <img src={c.logo_url} alt="" className="h-full w-full rounded-2xl object-cover" />
-                        ) : (
-                          c.name?.charAt(0) ?? "?"
-                        )}
-                      </div>
-                      <div
-                        className="absolute inset-0 -z-10 rounded-2xl blur-xl opacity-25"
-                        style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-['Cairo'] text-2xl font-bold text-[#004D26] truncate">{c.name}</h3>
-                      {c.name_ar && <p className="text-lg text-[#5A8A6A] mt-0.5 truncate">{c.name_ar}</p>}
-                    </div>
-                  </div>
-
-                  {/* Description snippet */}
-                  {c.description && (
-                    <p className="mt-4 text-base text-[#5A8A6A] line-clamp-2 leading-relaxed">
-                      {c.description}
-                    </p>
-                  )}
-
-                  {/* Colorful keyword tags */}
-                  {keywords.length > 0 && (
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {keywords.map((kw, ki) => {
-                        const color = tagColors[kw.colorIdx % tagColors.length];
-                        return (
-                          <motion.span
-                            key={ki}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: i * 0.05 + ki * 0.03, type: "spring", stiffness: 300 }}
-                            className={cn("rounded-xl border px-4 py-2 text-sm font-semibold", color.bg, color.border, color.text)}
+                        <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C] shadow-lg">
+                          <div
+                            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[14px] text-3xl font-extrabold text-white"
+                            style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
                           >
-                            {kw.label}
-                          </motion.span>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {/* Brand color swatches */}
-                  {c.brand_colors?.length ? (
-                    <div className="mt-5 flex items-center gap-2">
-                      <span className="text-sm font-medium text-[#5A8A6A] mr-1">Colors</span>
-                      {c.brand_colors.slice(0, 5).map((hex, idx) => (
-                        <motion.div
-                          key={idx}
-                          whileHover={{ scale: 1.4, y: -3 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                          className="h-9 w-9 rounded-xl border-2 border-white shadow-md cursor-pointer"
-                          style={{ backgroundColor: hex }}
-                          title={hex}
+                            {c.logo_url ? (
+                              <img src={c.logo_url} alt="" className="h-full w-full rounded-[14px] object-cover" />
+                            ) : (
+                              c.name?.charAt(0) ?? "?"
+                            )}
+                          </div>
+                        </div>
+                        {/* Glow behind logo */}
+                        <div
+                          className="absolute inset-0 -z-10 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"
+                          style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
                         />
-                      ))}
-                    </div>
-                  ) : null}
+                      </motion.div>
 
-                  {/* Actions */}
-                  <div className="mt-6 flex gap-3">
-                    <Button
-                      variant="outline"
-                      className="h-12 flex-1 text-base font-semibold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] rounded-xl"
-                      onClick={() => openEdit(c)}
-                    >
-                      <Pencil className="mr-2 h-5 w-5" /> {tc.edit}
-                    </Button>
-                    <Button
-                      className="h-12 px-5 text-base font-semibold bg-red-500 hover:bg-red-600 text-white rounded-xl"
-                      onClick={() => handleDelete(c.id)}
-                    >
-                      <Trash2 className="mr-2 h-5 w-5" /> {tc.delete}
-                    </Button>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#004D26] truncate leading-tight">{c.name}</h3>
+                        {c.name_ar && <p className="text-lg text-[#5A8A6A] mt-1 truncate font-medium">{c.name_ar}</p>}
+                      </div>
+                    </div>
+
+                    {/* Description snippet */}
+                    {c.description && (
+                      <p className="mt-5 text-lg text-[#5A8A6A] line-clamp-2 leading-relaxed">
+                        {c.description}
+                      </p>
+                    )}
+
+                    {/* Colorful keyword tags with emoji */}
+                    {keywords.length > 0 && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {keywords.map((kw, ki) => {
+                          const style = TAG_STYLES[kw.type];
+                          return (
+                            <motion.span
+                              key={ki}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: i * 0.05 + ki * 0.03, type: "spring", stiffness: 300 }}
+                              className={cn("rounded-xl border px-4 py-2 text-lg font-semibold inline-flex items-center gap-1.5", style.bg, style.border, style.text)}
+                            >
+                              <span className="text-base">{style.emoji}</span>
+                              {kw.label}
+                            </motion.span>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Brand color swatches + AI badge */}
+                    <div className="mt-5 flex items-center justify-between">
+                      {c.brand_colors?.length ? (
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-semibold text-[#5A8A6A]">Colors</span>
+                          <div className="flex gap-2">
+                            {c.brand_colors.slice(0, 5).map((hex, idx) => (
+                              <motion.div
+                                key={idx}
+                                whileHover={{ scale: 1.4, y: -4 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                                className="h-8 w-8 rounded-xl border-2 border-white shadow-md cursor-pointer ring-1 ring-[#D4EBD9]"
+                                style={{ backgroundColor: hex }}
+                                title={hex}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ) : <div />}
+
+                      {/* AI analysis badge */}
+                      {c.brand_analysis && Object.keys(c.brand_analysis).length > 0 && (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#C9A84C]/15 to-[#E8D5A0]/15 border border-[#C9A84C]/30 px-3 py-1.5 text-sm font-bold text-[#C9A84C]"
+                        >
+                          <Sparkles className="h-4 w-4" />
+                          AI {locale === "ar" ? "محلل" : "Analyzed"}
+                        </motion.span>
+                      )}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="mt-6 flex gap-3">
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
+                        <Button
+                          className="h-12 w-full text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-[0_0_25px_rgba(0,108,53,0.3)] rounded-2xl transition-all shadow-md"
+                          onClick={() => setViewingCompany(c)}
+                        >
+                          <Eye className="mr-2 h-5 w-5" /> {tc.viewDetails || "View Details"}
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                        <Button
+                          variant="outline"
+                          className="h-12 px-5 text-lg font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 rounded-2xl transition-all"
+                          onClick={(e) => { e.stopPropagation(); openEdit(c); }}
+                        >
+                          <Pencil className="h-5 w-5" />
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                        <Button
+                          className="h-12 px-5 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl shadow-md hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all"
+                          onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </Button>
+                      </motion.div>
+                    </div>
                   </div>
-                </motion.div>
-              </GlowCard>
+                </div>
+              </motion.div>
             );
           })}
+
+          {/* ===== ADD COMPANY CARD ===== */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: companies.length * 0.08, type: "spring", stiffness: 200 }}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+            className="group cursor-pointer"
+            onClick={openAdd}
+          >
+            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-white overflow-hidden transition-all duration-300 hover:border-[#00A352] hover:bg-gradient-to-br hover:from-[#F0F7F2] hover:to-[#F8FBF8] hover:shadow-[0_20px_50px_rgba(0,108,53,0.12)]">
+              {/* Decorative gradients */}
+              <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-[#006C35]/5 blur-2xl group-hover:bg-[#006C35]/10 transition-all" />
+              <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-[#C9A84C]/5 blur-2xl group-hover:bg-[#C9A84C]/10 transition-all" />
+
+              <motion.div
+                whileHover={{ rotate: 90, scale: 1.15 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg group-hover:shadow-[0_0_30px_rgba(0,108,53,0.3)] transition-shadow"
+              >
+                <Plus className="h-10 w-10 text-white" />
+              </motion.div>
+
+              <p className="mt-5 text-xl font-extrabold text-[#004D26] font-['Cairo']">{tc.addCompany}</p>
+              <p className="mt-1 text-lg text-[#5A8A6A]">Build your brand profile</p>
+            </div>
+          </motion.div>
         </div>
       )}
 
+      {/* ===== ADD/EDIT DIALOG ===== */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
         <DialogContent className="sm:max-w-[95vw] lg:max-w-[85vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#D4EBD9] text-[#0A1F0F] scrollbar-nawaa p-0">
           {/* Gradient header bar */}
-          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-8 py-6 rounded-t-lg">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
-                <Building2 className="h-7 w-7 text-white" />
-              </div>
+          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-8 py-7 rounded-t-lg overflow-hidden">
+            {/* Decorative shapes */}
+            <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-white/10 blur-xl" />
+            <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-[#C9A84C]/20 blur-xl" />
+            <div className="flex items-center gap-4 relative z-10">
+              <motion.div
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30"
+              >
+                <Building2 className="h-8 w-8 text-white" />
+              </motion.div>
               <div>
                 <DialogHeader className="p-0 space-y-0">
-                  <DialogTitle className="font-['Cairo'] text-3xl md:text-4xl font-bold text-white drop-shadow-sm">
+                  <DialogTitle className="font-['Cairo'] text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
                     {editingId ? tc.editCompany : tc.addCompany}
                   </DialogTitle>
                 </DialogHeader>
-                <p className="text-white/80 text-sm mt-0.5">Premium Brand Builder</p>
+                <p className="text-white/80 text-lg mt-1 flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#E8D5A0]" />
+                  Premium Brand Builder
+                  <Sparkles className="h-4 w-4 text-[#E8D5A0]" />
+                </p>
               </div>
             </div>
           </div>
 
           <div className="px-8 py-6 space-y-0">
             {/* ─── Section 1: Basic Info ─── */}
-            <section className="rounded-2xl bg-white p-6 lg:p-8">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl bg-white p-6 lg:p-8"
+            >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352]">
-                  <FileText className="h-5 w-5 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                  <Building2 className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl font-bold text-[#004D26]">{tc.basicInfo}</h3>
+                <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">{tc.basicInfo}</h3>
               </div>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.nameEn} {tc.required}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.nameEn} {tc.required}</Label>
                   <Input
                     value={form.name}
                     onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base px-5"
+                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-5 transition-all"
                     placeholder={tc.namePlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.nameAr}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.nameAr}</Label>
                   <Input
                     value={form.name_ar}
                     onChange={(e) => setForm((f) => ({ ...f, name_ar: e.target.value }))}
-                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base px-5"
+                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-5 transition-all"
                     placeholder={tc.nameArPlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.industry}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.industry}</Label>
                   <Select
                     value={form.industry}
                     onValueChange={(v) => setForm((f) => ({ ...f, industry: v }))}
                   >
-                    <SelectTrigger className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] focus:border-[#006C35] rounded-xl text-base px-5">
+                    <SelectTrigger className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] focus:border-[#006C35] rounded-2xl text-lg px-5">
                       <SelectValue placeholder={tc.selectIndustry} />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-2 border-[#D4EBD9]">
+                    <SelectContent className="bg-white border-2 border-[#D4EBD9] rounded-xl">
                       {INDUSTRIES.map((ind) => (
-                        <SelectItem key={ind} value={ind} className="text-[#0A1F0F] text-base py-3">{ind}</SelectItem>
+                        <SelectItem key={ind} value={ind} className="text-[#0A1F0F] text-lg py-3 rounded-xl">{ind}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.website}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.website}</Label>
                   <Input
                     value={form.website}
                     onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
-                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base px-5"
+                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-5 transition-all"
                     placeholder="https://"
                   />
                 </div>
               </div>
               <div className="mt-5">
-                <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.description}</Label>
+                <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.description}</Label>
                 <Textarea
                   value={form.description}
                   onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                  className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base p-5"
+                  className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg p-5 transition-all"
                   rows={5}
                 />
                 <div className="mt-3 flex items-center gap-3">
-                  <label className={cn("cursor-pointer flex items-center gap-2 bg-[#F0F7F2] border border-[#D4EBD9] rounded-xl px-4 py-2.5 hover:border-[#006C35] transition-colors", uploadingPdf && "pointer-events-none opacity-50")}>
+                  <label className={cn("cursor-pointer flex items-center gap-2 bg-gradient-to-r from-[#F0F7F2] to-white border-2 border-[#D4EBD9] rounded-2xl px-5 py-3 hover:border-[#006C35] hover:shadow-md transition-all", uploadingPdf && "pointer-events-none opacity-50")}>
                     <input type="file" accept="application/pdf" className="hidden" onChange={handlePdfUpload} />
                     {uploadingPdf ? (
-                      <Loader2 className="h-5 w-5 text-[#C9A84C] animate-spin" />
+                      <Loader2 className="h-6 w-6 text-[#C9A84C] animate-spin" />
                     ) : (
-                      <FileText className="h-5 w-5 text-[#006C35]" />
+                      <FileText className="h-6 w-6 text-[#006C35]" />
                     )}
-                    <span className="text-base font-medium text-[#006C35]">
+                    <span className="text-lg font-bold text-[#006C35]">
                       {uploadingPdf ? tc.extracting : tc.uploadPdf}
                     </span>
                   </label>
                 </div>
               </div>
-            </section>
+            </motion.section>
 
             {/* Gradient divider */}
-            <div className="my-2 h-1 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
             {/* ─── Section 2: Brand Identity ─── */}
-            <section className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8"
+            >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0]">
-                  <Crown className="h-5 w-5 text-[#0A1F0F]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
+                  <Palette className="h-6 w-6 text-[#0A1F0F]" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl font-bold text-[#004D26]">{tc.brandIdentity}</h3>
+                <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">{tc.brandIdentity}</h3>
               </div>
-              <div className="mb-5">
-                <Label className="text-base font-semibold text-[#004D26] mb-2 block">{tc.logo}</Label>
+
+              {/* Logo upload */}
+              <div className="mb-6">
+                <Label className="text-lg font-bold text-[#004D26] mb-3 block">{tc.logo}</Label>
                 <div className="flex items-center gap-5">
                   {uploadingLogo ? (
                     <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#C9A84C] bg-white shadow-inner">
                       <Loader2 className="h-8 w-8 text-[#C9A84C] animate-spin" />
                     </div>
                   ) : form.logo_url ? (
-                    <div className="relative">
-                      <img src={form.logo_url} alt="" className="h-24 w-24 rounded-2xl object-cover border-2 border-[#D4EBD9] shadow-md" />
-                      <div className="absolute inset-0 -z-10 rounded-2xl blur-lg opacity-20 bg-[#006C35]" />
-                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="relative"
+                    >
+                      <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C]">
+                        <img src={form.logo_url} alt="" className="h-24 w-24 rounded-[14px] object-cover" />
+                      </div>
+                      <div className="absolute inset-0 -z-10 rounded-2xl blur-xl opacity-25 bg-[#006C35]" />
+                    </motion.div>
                   ) : (
-                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#D4EBD9] bg-white shadow-inner">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#D4EBD9] bg-white shadow-inner hover:border-[#00A352] transition-colors">
                       <Upload className="h-8 w-8 text-[#5A8A6A]" />
                     </div>
                   )}
-                  <label className={cn("cursor-pointer bg-white border-2 border-[#D4EBD9] rounded-xl px-5 py-3 hover:border-[#006C35] hover:shadow-md transition-all", uploadingLogo && "pointer-events-none opacity-50")}>
+                  <label className={cn("cursor-pointer bg-white border-2 border-[#D4EBD9] rounded-2xl px-6 py-4 hover:border-[#006C35] hover:shadow-lg transition-all group/upload", uploadingLogo && "pointer-events-none opacity-50")}>
                     <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={handleLogoUpload} />
-                    <span className="text-base font-medium text-[#006C35]">
+                    <span className="text-lg font-bold text-[#006C35] group-hover/upload:text-[#00A352] transition-colors">
                       {uploadingLogo ? tc.uploadingLogo : tc.uploadLogo}
                     </span>
                   </label>
                 </div>
               </div>
-              <div className="mb-5">
-                <Label className="text-base font-semibold text-[#004D26] mb-2 block">Brand Colors</Label>
+
+              {/* Brand Colors */}
+              <div className="mb-6">
+                <Label className="text-lg font-bold text-[#004D26] mb-3 block">Brand Colors</Label>
                 <div className="flex flex-wrap gap-3">
                   {form.brand_colors.map((hex, idx) => (
                     <motion.div
                       key={idx}
-                      whileHover={{ scale: 1.3, y: -4 }}
+                      whileHover={{ scale: 1.35, y: -5, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                      className="h-12 w-12 rounded-xl border-2 border-[#D4EBD9] cursor-pointer shadow-sm"
+                      className="h-12 w-12 rounded-2xl border-2 border-white cursor-pointer shadow-md ring-2 ring-[#D4EBD9] hover:ring-[#00A352] transition-all"
                       style={{ backgroundColor: hex }}
                       title={hex}
                     />
                   ))}
                 </div>
               </div>
+
+              {/* Tone */}
               <div>
-                <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.tone}</Label>
+                <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.tone}</Label>
                 <Select value={form.tone} onValueChange={(v) => setForm((f) => ({ ...f, tone: v }))}>
-                  <SelectTrigger className="h-14 border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] focus:border-[#006C35] rounded-xl text-base px-5">
+                  <SelectTrigger className="h-14 border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] focus:border-[#006C35] rounded-2xl text-lg px-5">
                     <SelectValue placeholder={tc.selectTone} />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-2 border-[#D4EBD9]">
+                  <SelectContent className="bg-white border-2 border-[#D4EBD9] rounded-xl">
                     {TONES.map((t) => (
-                      <SelectItem key={t} value={t} className="text-[#0A1F0F] text-base py-3">{t}</SelectItem>
+                      <SelectItem key={t} value={t} className="text-[#0A1F0F] text-lg py-3 rounded-xl">{t}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-            </section>
+            </motion.section>
 
             {/* Gradient divider */}
-            <div className="my-2 h-1 rounded-full bg-gradient-to-r from-transparent via-[#006C35]/30 to-transparent" />
+            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#006C35]/30 to-transparent" />
 
             {/* ─── Section 3: Marketing ─── */}
-            <section className="rounded-2xl bg-white p-6 lg:p-8">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl bg-white p-6 lg:p-8"
+            >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352]">
-                  <Target className="h-5 w-5 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                  <Megaphone className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl font-bold text-[#004D26]">{tc.marketing}</h3>
+                <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">{tc.marketing}</h3>
               </div>
-              <div className="space-y-5">
+              <div className="space-y-6">
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.targetAudience}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.targetAudience}</Label>
                   <Textarea
                     value={form.target_audience}
                     onChange={(e) => setForm((f) => ({ ...f, target_audience: e.target.value }))}
-                    className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base p-5"
+                    className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg p-5 transition-all"
                     rows={3}
                     placeholder={tc.targetPlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.uniqueValue}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.uniqueValue}</Label>
                   <Textarea
                     value={form.unique_value}
                     onChange={(e) => setForm((f) => ({ ...f, unique_value: e.target.value }))}
-                    className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base p-5"
+                    className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg p-5 transition-all"
                     rows={3}
                     placeholder={tc.uniquePlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-1.5 block">{tc.competitors}</Label>
+                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.competitors}</Label>
                   <Input
                     value={form.competitors}
                     onChange={(e) => setForm((f) => ({ ...f, competitors: e.target.value }))}
-                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-xl text-base px-5"
+                    className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-5 transition-all"
                   />
                 </div>
+
+                {/* Platform selector as emoji cards */}
                 <div>
-                  <Label className="text-base font-semibold text-[#004D26] mb-2 block">{tc.platforms}</Label>
-                  <div className="flex flex-wrap gap-3">
-                    {PLATFORMS.map((p) => (
-                      <motion.button
-                        key={p}
-                        type="button"
-                        onClick={() => togglePlatform(p)}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={cn(
-                          "rounded-xl px-5 py-3 text-base font-medium transition-all shadow-sm",
-                          form.platforms.includes(p)
-                            ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-[0_0_12px_rgba(0,108,53,0.25)]"
-                            : "bg-white text-[#5A8A6A] border-2 border-[#D4EBD9] hover:border-[#006C35] hover:shadow-md"
-                        )}
-                      >
-                        {p}
-                      </motion.button>
-                    ))}
+                  <Label className="text-lg font-bold text-[#004D26] mb-3 block">{tc.platforms}</Label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {PLATFORMS.map((p) => {
+                      const config = PLATFORM_CARDS[p];
+                      const isSelected = form.platforms.includes(p);
+                      return (
+                        <motion.button
+                          key={p}
+                          type="button"
+                          onClick={() => togglePlatform(p)}
+                          whileHover={{ scale: 1.05, y: -3 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={cn(
+                            "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-5 text-lg font-bold transition-all duration-300 shadow-sm overflow-hidden",
+                            isSelected
+                              ? cn(config?.selectedBg ?? "bg-gradient-to-br from-[#006C35] to-[#00A352]", config?.selectedBorder ?? "border-[#006C35]", "text-white shadow-lg")
+                              : cn(config?.unselectedBg ?? "bg-[#F8FBF8]", "border-[#D4EBD9]", config?.color ?? "text-[#5A8A6A]", "hover:border-[#006C35] hover:shadow-md")
+                          )}
+                        >
+                          <span className="text-3xl">{config?.emoji ?? "\uD83D\uDCF1"}</span>
+                          <span className={cn("text-lg font-extrabold", isSelected ? "text-white" : "")}>{p}</span>
+                          {isSelected && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/30"
+                            >
+                              <span className="text-sm text-white font-bold">{"\u2713"}</span>
+                            </motion.div>
+                          )}
+                        </motion.button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
-            </section>
+            </motion.section>
 
             {/* Gradient divider */}
-            <div className="my-2 h-1 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
             {/* ─── Section 4: AI Analysis ─── */}
-            <section className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8"
+            >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0]">
-                  <Sparkles className="h-5 w-5 text-[#0A1F0F]" />
-                </div>
-                <h3 className="font-['Cairo'] text-2xl font-bold text-[#004D26]">{tc.analyzeAI}</h3>
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg"
+                >
+                  <Sparkles className="h-6 w-6 text-[#0A1F0F]" />
+                </motion.div>
+                <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">{tc.analyzeAI}</h3>
               </div>
-              <div className="mb-4 flex items-center gap-3">
-                <Label className="text-base font-semibold text-[#004D26]">{tc.generateIn}</Label>
+              <div className="mb-5 flex items-center gap-4">
+                <Label className="text-lg font-bold text-[#004D26]">{tc.generateIn}</Label>
                 <div className="flex gap-2">
                   <Button
                     type="button"
                     size="sm"
                     variant={outputLanguage === "en" ? "default" : "outline"}
                     className={cn(
-                      "h-11 rounded-xl text-base px-5",
+                      "h-12 rounded-2xl text-lg px-6 font-bold transition-all",
                       outputLanguage === "en"
-                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md"
-                        : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35]"
+                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg"
+                        : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35] hover:shadow-md"
                     )}
                     onClick={() => setOutputLanguage("en")}
                   >
@@ -997,10 +1250,10 @@ export default function CompaniesPage() {
                     size="sm"
                     variant={outputLanguage === "ar" ? "default" : "outline"}
                     className={cn(
-                      "h-11 rounded-xl text-base px-5",
+                      "h-12 rounded-2xl text-lg px-6 font-bold transition-all",
                       outputLanguage === "ar"
-                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md"
-                        : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35]"
+                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg"
+                        : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35] hover:shadow-md"
                     )}
                     onClick={() => setOutputLanguage("ar")}
                   >
@@ -1008,32 +1261,349 @@ export default function CompaniesPage() {
                   </Button>
                 </div>
               </div>
-              <Button
-                type="button"
-                onClick={runAnalyze}
-                disabled={analyzing}
-                className="h-14 text-lg px-8 rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#0A1F0F] font-semibold hover:shadow-[0_0_30px_rgba(201,168,76,0.4)] transition-all shadow-md"
-              >
-                {analyzing ? (
-                  <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                ) : (
-                  <Sparkles className="mr-2 h-6 w-6" />
-                )}
-                {tc.analyzeAI}
-              </Button>
+              {/* Analysis count indicator */}
+              {editingId && (
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex gap-1.5">
+                    {[0, 1, 2].map((i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "h-3 w-10 rounded-full transition-all",
+                          i < getAnalysisCount()
+                            ? "bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0]"
+                            : "bg-[#D4EBD9]"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className={cn(
+                    "text-lg font-bold",
+                    getAnalysisCount() >= 3 ? "text-red-500" : "text-[#5A8A6A]"
+                  )}>
+                    {getAnalysisCount()}/3
+                    {getAnalysisCount() >= 3
+                      ? ` — ${tc.analysisLimit || "Limit reached"}`
+                      : ` ${tc.analysisRemaining || "analyses remaining"}`
+                    }
+                  </span>
+                </div>
+              )}
+              <motion.div whileHover={{ scale: getAnalysisCount() >= 3 ? 1 : 1.02 }} whileTap={{ scale: getAnalysisCount() >= 3 ? 1 : 0.98 }}>
+                <Button
+                  type="button"
+                  onClick={runAnalyze}
+                  disabled={analyzing || getAnalysisCount() >= 3}
+                  className={cn(
+                    "relative h-16 text-xl px-10 rounded-2xl font-extrabold transition-all shadow-xl overflow-hidden",
+                    getAnalysisCount() >= 3
+                      ? "bg-[#D4EBD9] text-[#5A8A6A] cursor-not-allowed opacity-60"
+                      : "bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#0A1F0F] hover:shadow-[0_0_40px_rgba(201,168,76,0.5)]"
+                  )}
+                >
+                  {/* Shimmer effect */}
+                  {getAnalysisCount() < 3 && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite] pointer-events-none" />
+                  )}
+                  {analyzing ? (
+                    <Loader2 className="mr-3 h-7 w-7 animate-spin" />
+                  ) : getAnalysisCount() >= 3 ? (
+                    <AlertCircle className="mr-3 h-7 w-7" />
+                  ) : (
+                    <Sparkles className="mr-3 h-7 w-7" />
+                  )}
+                  {getAnalysisCount() >= 3 ? (tc.analysisLimit || "Limit Reached") : tc.analyzeAI}
+                </Button>
+              </motion.div>
               {brandAnalysis && <BrandAnalysisDisplay data={brandAnalysis} locale={locale} />}
-            </section>
+            </motion.section>
 
             {/* ─── Footer Actions ─── */}
-            <div className="sticky bottom-0 bg-white/80 backdrop-blur-md border-t-2 border-[#D4EBD9] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-3 mt-4">
-              <Button variant="outline" className="h-14 px-8 text-base font-semibold rounded-xl border-2 border-[#D4EBD9] text-[#2D5A3D] hover:bg-[#F0F7F2]" onClick={() => setFormOpen(false)}>
-                {tc.cancel}
-              </Button>
-              <Button onClick={saveCompany} disabled={saving} className="h-14 px-10 text-base font-semibold rounded-xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg hover:shadow-[0_0_25px_rgba(0,108,53,0.3)] transition-all">
-                {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : tc.save}
-              </Button>
+            <div className="sticky bottom-0 bg-white/90 backdrop-blur-xl border-t-2 border-[#D4EBD9] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-4 mt-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Button
+                  variant="outline"
+                  className="h-14 px-8 text-lg font-bold rounded-2xl border-2 border-[#D4EBD9] text-[#2D5A3D] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 transition-all"
+                  onClick={() => setFormOpen(false)}
+                >
+                  {tc.cancel}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Button
+                  onClick={saveCompany}
+                  disabled={saving}
+                  className="h-14 px-12 text-lg font-extrabold rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-xl hover:shadow-[0_0_30px_rgba(0,108,53,0.4)] transition-all"
+                >
+                  {saving ? <Loader2 className="h-6 w-6 animate-spin" /> : tc.save}
+                </Button>
+              </motion.div>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ===== COMPANY DETAIL VIEW DIALOG ===== */}
+      <Dialog open={!!viewingCompany} onOpenChange={(open) => !open && setViewingCompany(null)}>
+        <DialogContent className="sm:max-w-[95vw] lg:max-w-[80vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#D4EBD9] text-[#0A1F0F] scrollbar-nawaa p-0">
+          {viewingCompany && (() => {
+            const vc = viewingCompany;
+            const analysisCount = vc.analysis_count ?? 0;
+            const hasAnalysis = !!vc.brand_analysis && Object.keys(vc.brand_analysis).length > 0;
+
+            return (
+              <>
+                {/* Header with gradient + company logo */}
+                <div className="relative bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-8 py-10 overflow-hidden">
+                  <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+                  <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
+
+                  {/* Close button */}
+                  <button
+                    onClick={() => setViewingCompany(null)}
+                    className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-all"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+
+                  <div className="relative z-10 flex items-center gap-6">
+                    {/* Logo */}
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <div className="rounded-2xl p-[3px] bg-white/30 backdrop-blur-sm shadow-2xl">
+                        <div
+                          className="flex h-24 w-24 md:h-28 md:w-28 shrink-0 items-center justify-center rounded-[14px] text-4xl font-extrabold text-white"
+                          style={{ backgroundColor: vc.brand_colors?.[0] ?? "#006C35" }}
+                        >
+                          {vc.logo_url ? (
+                            <img src={vc.logo_url} alt="" className="h-full w-full rounded-[14px] object-cover" />
+                          ) : (
+                            vc.name?.charAt(0) ?? "?"
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    <div>
+                      <motion.h2
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="font-['Cairo'] text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg"
+                      >
+                        {vc.name}
+                      </motion.h2>
+                      {vc.name_ar && (
+                        <p className="mt-1 text-xl text-white/80 font-medium">{vc.name_ar}</p>
+                      )}
+                      <div className="mt-3 flex flex-wrap items-center gap-3">
+                        {vc.industry && (
+                          <span className="rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 px-4 py-1.5 text-sm font-semibold text-white">
+                            {TAG_STYLES.industry.emoji} {vc.industry}
+                          </span>
+                        )}
+                        {vc.tone && (
+                          <span className="rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 px-4 py-1.5 text-sm font-semibold text-white">
+                            {TAG_STYLES.tone.emoji} {vc.tone}
+                          </span>
+                        )}
+                        {vc.website && (
+                          <span className="rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 px-4 py-1.5 text-sm font-semibold text-white flex items-center gap-1.5">
+                            <Globe className="h-4 w-4" /> {vc.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Body */}
+                <div className="px-8 py-8 space-y-8">
+                  {/* Company Info Grid */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="grid gap-6 md:grid-cols-2"
+                  >
+                    {/* Description */}
+                    {vc.description && (
+                      <div className="md:col-span-2 rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                          <FileText className="h-5 w-5 text-[#00A352]" />
+                          {tc.description}
+                        </h4>
+                        <p className="text-lg text-[#0A1F0F] leading-relaxed whitespace-pre-wrap">{vc.description}</p>
+                      </div>
+                    )}
+
+                    {/* Target Audience */}
+                    {vc.target_audience && (
+                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                          <Users className="h-5 w-5 text-[#3B82F6]" />
+                          {tc.targetAudience}
+                        </h4>
+                        <p className="text-lg text-[#5A8A6A] leading-relaxed">{vc.target_audience}</p>
+                      </div>
+                    )}
+
+                    {/* Unique Value */}
+                    {vc.unique_value && (
+                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                          <Sparkles className="h-5 w-5 text-[#C9A84C]" />
+                          {tc.uniqueValue}
+                        </h4>
+                        <p className="text-lg text-[#5A8A6A] leading-relaxed">{vc.unique_value}</p>
+                      </div>
+                    )}
+
+                    {/* Competitors */}
+                    {vc.competitors && (
+                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                          <Target className="h-5 w-5 text-[#F97316]" />
+                          {tc.competitors}
+                        </h4>
+                        <p className="text-lg text-[#5A8A6A]">{vc.competitors}</p>
+                      </div>
+                    )}
+
+                    {/* Platforms */}
+                    {vc.platforms && vc.platforms.length > 0 && (
+                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                          <Megaphone className="h-5 w-5 text-[#A855F7]" />
+                          {tc.platforms}
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {vc.platforms.map((p) => {
+                            const config = PLATFORM_CARDS[p];
+                            return (
+                              <span key={p} className={cn("rounded-xl px-4 py-2 text-lg font-bold text-white", config?.selectedBg ?? "bg-[#006C35]")}>
+                                {config?.emoji ?? "\uD83D\uDCF1"} {p}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Brand Colors */}
+                    {vc.brand_colors && vc.brand_colors.length > 0 && (
+                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                          <Palette className="h-5 w-5 text-[#EC4899]" />
+                          {tc.brandColors || "Brand Colors"}
+                        </h4>
+                        <div className="flex flex-wrap gap-3">
+                          {vc.brand_colors.map((hex, idx) => (
+                            <div key={idx} className="flex flex-col items-center gap-2">
+                              <motion.div
+                                whileHover={{ scale: 1.2, y: -4 }}
+                                className="h-14 w-14 rounded-2xl border-2 border-white shadow-lg ring-2 ring-[#D4EBD9] cursor-pointer"
+                                style={{ backgroundColor: hex }}
+                              />
+                              <span className="text-xs font-mono font-semibold text-[#5A8A6A]">{hex}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+
+                  {/* Gradient divider */}
+                  <div className="h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+
+                  {/* AI Analysis Section */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <div className="flex items-center gap-3 mb-6">
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg"
+                      >
+                        <Sparkles className="h-6 w-6 text-[#0A1F0F]" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-['Cairo'] text-2xl md:text-3xl font-extrabold text-[#004D26]">
+                          {tc.aiAnalysis || "AI Brand Analysis"}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className="flex gap-1">
+                            {[0, 1, 2].map((i) => (
+                              <div
+                                key={i}
+                                className={cn(
+                                  "h-2.5 w-8 rounded-full transition-all",
+                                  i < analysisCount
+                                    ? "bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0]"
+                                    : "bg-[#D4EBD9]"
+                                )}
+                              />
+                            ))}
+                          </div>
+                          <span className={cn(
+                            "text-sm font-semibold",
+                            analysisCount >= 3 ? "text-red-500" : "text-[#5A8A6A]"
+                          )}>
+                            {analysisCount}/3 {tc.analysisRemaining || "analyses used"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {hasAnalysis ? (
+                      <BrandAnalysisDisplay data={vc.brand_analysis!} locale={locale} />
+                    ) : (
+                      <div className="rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-[#F8FBF8] p-10 text-center">
+                        <motion.div
+                          animate={{ y: [0, -6, 0] }}
+                          transition={{ duration: 2.5, repeat: Infinity }}
+                        >
+                          <Sparkles className="h-12 w-12 text-[#D4EBD9] mx-auto mb-4" />
+                        </motion.div>
+                        <p className="text-xl font-bold text-[#5A8A6A]">
+                          {tc.noAnalysis || "No AI analysis yet. Edit the company to run one."}
+                        </p>
+                        <Button
+                          className="mt-5 h-12 px-8 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#0A1F0F] shadow-lg hover:shadow-[0_0_30px_rgba(201,168,76,0.4)] transition-all"
+                          onClick={() => { setViewingCompany(null); openEdit(vc); }}
+                        >
+                          <Sparkles className="mr-2 h-5 w-5" />
+                          {tc.analyzeAI}
+                        </Button>
+                      </div>
+                    )}
+                  </motion.div>
+
+                  {/* Bottom actions */}
+                  <div className="flex justify-between items-center pt-4 border-t-2 border-[#D4EBD9]">
+                    <Button
+                      variant="outline"
+                      className="h-12 px-6 text-lg font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] rounded-2xl transition-all"
+                      onClick={() => { setViewingCompany(null); openEdit(vc); }}
+                    >
+                      <Pencil className="mr-2 h-5 w-5" /> {tc.edit}
+                    </Button>
+                    <Button
+                      className="h-12 px-8 text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white rounded-2xl shadow-lg hover:shadow-[0_0_25px_rgba(0,108,53,0.3)] transition-all"
+                      onClick={() => setViewingCompany(null)}
+                    >
+                      {tc.close || "Close"}
+                    </Button>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </div>
