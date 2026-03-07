@@ -55,6 +55,14 @@ type ContentPlanRow = {
   };
 };
 
+type CompanyInfo = {
+  id: string;
+  name: string;
+  name_ar: string | null;
+  logo_url: string | null;
+  brand_colors: string[] | null;
+};
+
 /* ── Platform colors ── */
 
 const PLATFORM_COLORS: Record<string, string> = {
@@ -98,6 +106,7 @@ export default function MyPlansPage() {
   const isAr = locale === "ar";
 
   const [plans, setPlans] = useState<ContentPlanRow[]>([]);
+  const [companies, setCompanies] = useState<CompanyInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedPlanId, setExpandedPlanId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -115,17 +124,24 @@ export default function MyPlansPage() {
       setLoading(false);
       return;
     }
-    const { data, error } = await supabase
-      .from("content_plans")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
-    if (error) {
-      toast.error(error.message);
+    const [plansRes, companiesRes] = await Promise.all([
+      supabase
+        .from("content_plans")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("companies")
+        .select("id, name, name_ar, logo_url, brand_colors")
+        .eq("user_id", user.id),
+    ]);
+    if (plansRes.error) {
+      toast.error(plansRes.error.message);
       setPlans([]);
     } else {
-      setPlans((data as ContentPlanRow[]) ?? []);
+      setPlans((plansRes.data as ContentPlanRow[]) ?? []);
     }
+    setCompanies((companiesRes.data as CompanyInfo[]) ?? []);
     setLoading(false);
   }
 
@@ -269,6 +285,8 @@ export default function MyPlansPage() {
             ),
           ];
 
+          const company = companies.find((c) => c.id === plan.company_id);
+
           return (
             <motion.div
               key={plan.id}
@@ -287,6 +305,27 @@ export default function MyPlansPage() {
               <div className="h-1.5 bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C]" />
 
               <div className="p-6">
+                {/* Company badge */}
+                {company && (
+                  <div className="mb-4 flex items-center gap-3">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#D4EBD9]"
+                      style={{ backgroundColor: company.brand_colors?.[0] || "#F0F7F2" }}
+                    >
+                      {company.logo_url ? (
+                        <img src={company.logo_url} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        <span className="text-sm font-bold text-white">
+                          {company.name?.charAt(0) || "?"}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-sm font-semibold text-[#2D5A3D]">
+                      {isAr ? (company.name_ar || company.name) : company.name}
+                    </span>
+                  </div>
+                )}
+
                 {/* Title */}
                 <h3 className="font-['Cairo'] text-lg font-bold text-[#004D26] leading-snug line-clamp-2">
                   {plan.title ??

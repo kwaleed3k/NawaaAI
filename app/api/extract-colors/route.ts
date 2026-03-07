@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as VibrantModule from "node-vibrant";
-const Vibrant = (VibrantModule as any).default || VibrantModule;
+import { Vibrant } from "node-vibrant/node";
 
 const FALLBACK_COLORS = [
   { hex: "#006C35", name: "Primary", role: "dominant" as const },

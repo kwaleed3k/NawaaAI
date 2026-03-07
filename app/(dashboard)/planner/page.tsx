@@ -21,16 +21,18 @@ import { cn } from "@/lib/utils";
 import { exportPlanToPDF } from "@/lib/export-plan-pdf";
 import toast from "react-hot-toast";
 
+/* ── Platform config with rich visual data ── */
 const PLATFORMS = [
-  { id: "instagram", label: "Instagram", color: "bg-pink-500/15 text-pink-600 border-pink-400/40" },
-  { id: "tiktok", label: "TikTok", color: "bg-zinc-200/60 text-zinc-700 border-zinc-400/40" },
-  { id: "x", label: "X", color: "bg-zinc-200/60 text-zinc-700 border-zinc-400/40" },
-  { id: "snapchat", label: "Snapchat", color: "bg-yellow-400/15 text-yellow-700 border-yellow-400/40" },
-  { id: "linkedin", label: "LinkedIn", color: "bg-blue-500/15 text-blue-600 border-blue-400/40" },
-  { id: "youtube", label: "YouTube", color: "bg-red-500/15 text-red-600 border-red-400/40" },
-  { id: "whatsapp", label: "WhatsApp", color: "bg-green-500/15 text-green-700 border-green-400/40" },
+  { id: "instagram", label: "Instagram", emoji: "\uD83D\uDCF8", selectedBg: "bg-gradient-to-br from-pink-500 to-rose-500", selectedBorder: "border-pink-400", unselectedBg: "bg-pink-50", color: "text-pink-600", barColor: "from-pink-500 to-rose-500", pillBg: "bg-pink-100 text-pink-700 border-pink-200" },
+  { id: "tiktok", label: "TikTok", emoji: "\uD83C\uDFB5", selectedBg: "bg-gradient-to-br from-slate-800 to-cyan-500", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", color: "text-slate-700", barColor: "from-slate-800 to-cyan-500", pillBg: "bg-cyan-100 text-cyan-700 border-cyan-200" },
+  { id: "x", label: "X (Twitter)", emoji: "\uD835\uDD4F", selectedBg: "bg-gradient-to-br from-slate-700 to-slate-900", selectedBorder: "border-slate-400", unselectedBg: "bg-slate-50", color: "text-slate-700", barColor: "from-slate-700 to-slate-900", pillBg: "bg-slate-100 text-slate-700 border-slate-200" },
+  { id: "snapchat", label: "Snapchat", emoji: "\uD83D\uDC7B", selectedBg: "bg-gradient-to-br from-yellow-400 to-amber-400", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700", barColor: "from-yellow-400 to-amber-400", pillBg: "bg-yellow-100 text-yellow-700 border-yellow-200" },
+  { id: "linkedin", label: "LinkedIn", emoji: "\uD83D\uDCBC", selectedBg: "bg-gradient-to-br from-blue-500 to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-blue-600", barColor: "from-blue-500 to-blue-700", pillBg: "bg-blue-100 text-blue-700 border-blue-200" },
+  { id: "youtube", label: "YouTube", emoji: "\uD83C\uDFAC", selectedBg: "bg-gradient-to-br from-red-500 to-red-700", selectedBorder: "border-red-400", unselectedBg: "bg-red-50", color: "text-red-600", barColor: "from-red-500 to-red-700", pillBg: "bg-red-100 text-red-700 border-red-200" },
+  { id: "whatsapp", label: "WhatsApp", emoji: "\uD83D\uDCAC", selectedBg: "bg-gradient-to-br from-green-500 to-emerald-600", selectedBorder: "border-green-400", unselectedBg: "bg-green-50", color: "text-green-700", barColor: "from-green-500 to-emerald-600", pillBg: "bg-green-100 text-green-700 border-green-200" },
 ];
 
+/* ── Types ── */
 type PlanDay = {
   dayIndex: number;
   dayEn: string;
@@ -56,6 +58,17 @@ type Plan = {
   weeklyStrategy?: string;
   expectedEngagement?: string;
 };
+
+/* ── Hashtag color rotation ── */
+const HASHTAG_COLORS = [
+  "bg-pink-100 text-pink-700 border border-pink-200",
+  "bg-blue-100 text-blue-700 border border-blue-200",
+  "bg-amber-100 text-amber-700 border border-amber-200",
+  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  "bg-purple-100 text-purple-700 border border-purple-200",
+  "bg-cyan-100 text-cyan-700 border border-cyan-200",
+  "bg-orange-100 text-orange-700 border border-orange-200",
+];
 
 export default function PlannerPage() {
   const supabase = createClient();
@@ -167,6 +180,7 @@ export default function PlannerPage() {
     );
   }
 
+  /* ── Loading state ── */
   if (loadingCompanies) {
     return (
       <div className="space-y-6">
@@ -176,14 +190,46 @@ export default function PlannerPage() {
     );
   }
 
-  return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="font-['Cairo'] text-3xl font-bold text-[#004D26] md:text-4xl">{tp.pageTitle}</h1>
-        <p className="mt-2 text-lg text-[#5A8A6A]">{tp.pageSub}</p>
-      </div>
+  /* ── Helper: get platform config by id ── */
+  function getPlatformConfig(id: string) {
+    return PLATFORMS.find((p) => p.id === id);
+  }
 
-      {/* ── Premium Loading Overlay ── */}
+  return (
+    <div className="space-y-10">
+      {/* ===== PAGE HEADER ===== */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
+      >
+        {/* Decorative floating shapes */}
+        <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+        <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
+        <div className="absolute top-4 right-8 flex gap-2">
+          {["\u2728", "\uD83D\uDCC5", "\uD83D\uDE80"].map((em, i) => (
+            <motion.span
+              key={i}
+              animate={{ y: [0, -6, 0], rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+              className="text-2xl md:text-3xl"
+            >
+              {em}
+            </motion.span>
+          ))}
+        </div>
+        <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
+          {tp.pageTitle}
+        </h1>
+        <p className="mt-3 text-lg text-white/80 md:text-xl flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
+          {tp.pageSub}
+          <Sparkles className="h-5 w-5 text-[#E8D5A0]" />
+        </p>
+      </motion.div>
+
+      {/* ===== Premium Loading Overlay (KEPT AS-IS) ===== */}
       <AnimatePresence>
         {generating && (
           <motion.div
@@ -255,7 +301,7 @@ export default function PlannerPage() {
                 </AnimatePresence>
 
                 <p className="text-center text-base text-[#5A8A6A] mb-8">
-                  {locale === "ar" ? "نبني لك خطة محتوى احترافية" : "Building your professional content plan"}
+                  {locale === "ar" ? "\u0646\u0628\u0646\u064A \u0644\u0643 \u062E\u0637\u0629 \u0645\u062D\u062A\u0648\u0649 \u0627\u062D\u062A\u0631\u0627\u0641\u064A\u0629" : "Building your professional content plan"}
                 </p>
 
                 {/* Progress bar */}
@@ -288,275 +334,495 @@ export default function PlannerPage() {
       </AnimatePresence>
 
       {!plan ? (
-        /* ── Setup Card ── */
-        <Card className="glass rounded-2xl border-2 border-[#D4EBD9] bg-white">
-          <CardHeader className="p-8">
-            <CardTitle className="text-2xl text-[#004D26]">{tp.setup}</CardTitle>
-            <p className="text-lg text-[#5A8A6A]">{tp.setupSub}</p>
-          </CardHeader>
-          <CardContent className="space-y-7 p-8 pt-0">
-            {/* Company Select */}
-            <div>
-              <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tp.company}</label>
-              <div className="relative">
-                <select
-                  value={selectedCompany?.id ?? ""}
-                  onChange={(e) => {
-                    const c = companies.find((x) => x.id === e.target.value);
-                    if (c) setSelectedCompany(c);
-                  }}
-                  className="w-full appearance-none rounded-xl border-2 border-[#D4EBD9] bg-white px-5 py-3.5 pr-12 text-base text-[#0A1F0F] outline-none transition-colors focus:border-[#006C35] focus:ring-1 focus:ring-[#006C35]/30"
-                >
-                  {companies.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-                  <svg className="h-5 w-5 text-[#5A8A6A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+        /* ===== SETUP CARD ===== */
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+            {/* Card top accent bar */}
+            <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+            <CardHeader className="p-8 pb-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                  <Calendar className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">{tp.setup}</CardTitle>
+                  <p className="text-lg text-[#5A8A6A] mt-1">{tp.setupSub}</p>
                 </div>
               </div>
-            </div>
+            </CardHeader>
 
-            {/* Platform Buttons */}
-            <div>
-              <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tp.platforms}</label>
-              <div className="flex flex-wrap gap-3">
-                {PLATFORMS.map((p) => (
-                  <motion.button
-                    key={p.id}
-                    type="button"
-                    onClick={() => togglePlatform(p.id)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={cn(
-                      "rounded-xl px-6 py-3 text-base font-medium border transition-all",
-                      platforms.includes(p.id) ? p.color : "bg-[#F0F7F2] text-[#5A8A6A] border-transparent hover:border-[#D4EBD9]"
-                    )}
+            <CardContent className="space-y-8 p-8 pt-4">
+              {/* ── Section 1: Company ── */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-sm">
+                    <Target className="h-5 w-5 text-white" />
+                  </div>
+                  <label className="text-lg font-bold text-[#004D26]">{tp.company}</label>
+                </div>
+                <div className="relative">
+                  <select
+                    value={selectedCompany?.id ?? ""}
+                    onChange={(e) => {
+                      const c = companies.find((x) => x.id === e.target.value);
+                      if (c) setSelectedCompany(c);
+                    }}
+                    className="w-full appearance-none rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 h-14 pr-12 text-lg text-[#0A1F0F] outline-none transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
                   >
-                    {p.label}
-                  </motion.button>
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={() => setPlatforms(platforms.length === PLATFORMS.length ? [] : PLATFORMS.map((p) => p.id))}
-                className="mt-3 text-sm font-medium text-[#00A352] hover:underline"
+                    {companies.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5">
+                    <svg className="h-5 w-5 text-[#5A8A6A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Gradient divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
+
+              {/* ── Section 2: Platform Cards ── */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
               >
-                {platforms.length === PLATFORMS.length ? tp.clearAll : tp.selectAll}
-              </button>
-            </div>
-
-            {/* Week Start */}
-            <div>
-              <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tp.weekStart}</label>
-              <input
-                type="date"
-                value={weekStart}
-                onChange={(e) => setWeekStart(e.target.value)}
-                className="rounded-xl border-2 border-[#D4EBD9] bg-white px-5 py-3.5 text-base text-[#0A1F0F] outline-none transition-colors focus:border-[#006C35] focus:ring-1 focus:ring-[#006C35]/30"
-              />
-            </div>
-
-            {/* Language Toggle */}
-            <div>
-              <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tp.generateIn}</label>
-              <div className="flex gap-3">
-                <Button
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 shadow-sm">
+                    <Globe className="h-5 w-5 text-white" />
+                  </div>
+                  <label className="text-lg font-bold text-[#004D26]">{tp.platforms}</label>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+                  {PLATFORMS.map((p, i) => {
+                    const selected = platforms.includes(p.id);
+                    return (
+                      <motion.button
+                        key={p.id}
+                        type="button"
+                        onClick={() => togglePlatform(p.id)}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.4 + i * 0.05, type: "spring", stiffness: 200 }}
+                        whileHover={{ scale: 1.08, y: -4 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={cn(
+                          "relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 p-4 py-5 transition-all duration-300 cursor-pointer",
+                          selected
+                            ? `${p.selectedBg} ${p.selectedBorder} text-white shadow-lg shadow-black/10`
+                            : `${p.unselectedBg} border-transparent ${p.color} hover:border-gray-200 grayscale-[40%] opacity-70 hover:opacity-100 hover:grayscale-0`
+                        )}
+                      >
+                        {/* Selection checkmark */}
+                        <AnimatePresence>
+                          {selected && (
+                            <motion.div
+                              initial={{ scale: 0, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0, opacity: 0 }}
+                              className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
+                            >
+                              <CheckCircle2 className="h-5 w-5 text-[#006C35]" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        <span className="text-3xl leading-none">{p.emoji}</span>
+                        <span className={cn(
+                          "text-sm font-bold leading-tight text-center",
+                          selected ? "text-white" : ""
+                        )}>
+                          {p.label}
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+                <button
                   type="button"
-                  variant={outputLanguage === "en" ? "default" : "outline"}
-                  className={cn(
-                    "h-12 px-6 rounded-xl text-base font-medium",
-                    outputLanguage === "en" ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md" : "border-2 border-[#D4EBD9] text-[#2D5A3D] hover:border-[#006C35]"
-                  )}
-                  onClick={() => setOutputLanguage("en")}
+                  onClick={() => setPlatforms(platforms.length === PLATFORMS.length ? [] : PLATFORMS.map((p) => p.id))}
+                  className="mt-3 text-sm font-bold text-[#00A352] hover:underline transition-colors hover:text-[#006C35]"
                 >
-                  {tp.english}
-                </Button>
+                  {platforms.length === PLATFORMS.length ? tp.clearAll : tp.selectAll}
+                </button>
+              </motion.div>
+
+              {/* Gradient divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
+
+              {/* ── Section 3: Week Start ── */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-sm">
+                    <Calendar className="h-5 w-5 text-white" />
+                  </div>
+                  <label className="text-lg font-bold text-[#004D26]">{tp.weekStart}</label>
+                </div>
+                <input
+                  type="date"
+                  value={weekStart}
+                  onChange={(e) => setWeekStart(e.target.value)}
+                  className="rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 h-14 text-lg text-[#0A1F0F] outline-none transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
+                />
+              </motion.div>
+
+              {/* Gradient divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
+
+              {/* ── Section 4: Language Toggle ── */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-sm">
+                    <Globe className="h-5 w-5 text-white" />
+                  </div>
+                  <label className="text-lg font-bold text-[#004D26]">{tp.generateIn}</label>
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant={outputLanguage === "en" ? "default" : "outline"}
+                    className={cn(
+                      "h-14 px-8 rounded-2xl text-lg font-bold transition-all duration-300",
+                      outputLanguage === "en"
+                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#006C35]/20 scale-105"
+                        : "border-2 border-[#D4EBD9] text-[#2D5A3D] hover:border-[#006C35] hover:bg-[#F0F7F2]"
+                    )}
+                    onClick={() => setOutputLanguage("en")}
+                  >
+                    {tp.english}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={outputLanguage === "ar" ? "default" : "outline"}
+                    className={cn(
+                      "h-14 px-8 rounded-2xl text-lg font-bold transition-all duration-300",
+                      outputLanguage === "ar"
+                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#006C35]/20 scale-105"
+                        : "border-2 border-[#D4EBD9] text-[#2D5A3D] hover:border-[#006C35] hover:bg-[#F0F7F2]"
+                    )}
+                    onClick={() => setOutputLanguage("ar")}
+                  >
+                    {tp.arabic}
+                  </Button>
+                </div>
+              </motion.div>
+
+              {/* Gradient divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
+
+              {/* ── Section 5: Special Focus ── */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-rose-400 to-rose-600 shadow-sm">
+                    <Sparkles className="h-5 w-5 text-white" />
+                  </div>
+                  <label className="text-lg font-bold text-[#004D26]">{tp.specialFocus}</label>
+                </div>
+                <Textarea
+                  value={userPrompt}
+                  onChange={(e) => setUserPrompt(e.target.value)}
+                  placeholder={tp.focusPlaceholder}
+                  className="min-h-[120px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all"
+                />
+              </motion.div>
+
+              {/* Gradient divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+
+              {/* ── Generate Button ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+              >
                 <Button
-                  type="button"
-                  variant={outputLanguage === "ar" ? "default" : "outline"}
-                  className={cn(
-                    "h-12 px-6 rounded-xl text-base font-medium",
-                    outputLanguage === "ar" ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md" : "border-2 border-[#D4EBD9] text-[#2D5A3D] hover:border-[#006C35]"
-                  )}
-                  onClick={() => setOutputLanguage("ar")}
+                  onClick={handleGenerate}
+                  disabled={generating}
+                  className="relative w-full h-20 rounded-2xl bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#004D26] hover:shadow-[0_0_50px_rgba(201,168,76,0.4)] text-2xl font-extrabold transition-all duration-500 shadow-xl border-2 border-[#C9A84C]/30 overflow-hidden group"
                 >
-                  {tp.arabic}
+                  {/* Shimmer overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+                  <Sparkles className="mr-3 h-7 w-7" />
+                  {tp.generatePlan}
+                  <Sparkles className="ml-3 h-7 w-7" />
                 </Button>
-              </div>
-            </div>
-
-            {/* Special Focus */}
-            <div>
-              <label className="mb-2.5 block text-base font-semibold text-[#004D26]">{tp.specialFocus}</label>
-              <Textarea
-                value={userPrompt}
-                onChange={(e) => setUserPrompt(e.target.value)}
-                placeholder={tp.focusPlaceholder}
-                className="min-h-[100px] rounded-xl border-2 border-[#D4EBD9] bg-white text-base text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35]"
-              />
-            </div>
-
-            {/* Generate Button */}
-            <Button
-              onClick={handleGenerate}
-              disabled={generating}
-              className="w-full bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#004D26] hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] h-16 rounded-xl text-xl font-bold transition-shadow shadow-md"
-            >
-              <Sparkles className="mr-2.5 h-6 w-6" />
-              {tp.generatePlan}
-            </Button>
-          </CardContent>
-        </Card>
+              </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
       ) : (
+        /* ===== GENERATED PLAN VIEW ===== */
         <>
-          <div className="flex flex-wrap items-center justify-between gap-5">
-            <div>
-              <h2 className="text-3xl font-bold text-[#004D26]">
+          {/* Week Theme Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#004D26] via-[#006C35] to-[#00A352] p-8 shadow-xl"
+          >
+            <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-[#C9A84C]/20 blur-2xl" />
+            <div className="absolute bottom-0 left-0 h-20 w-40 rounded-full bg-white/5 blur-xl" />
+            <div className="relative z-10">
+              <motion.h2
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-3xl md:text-4xl font-extrabold text-white font-['Cairo'] drop-shadow-lg"
+              >
                 {outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}
-              </h2>
-              <p className="mt-1 text-base text-[#5A8A6A]">
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-2 text-lg text-white/70 flex items-center gap-2"
+              >
+                <Calendar className="h-5 w-5 text-[#E8D5A0]" />
                 {weekStart && plan.days?.[0]?.date
-                  ? `${format(parseISO(plan.days[0].date), "MMM d")} – ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}`
+                  ? `${format(parseISO(plan.days[0].date), "MMM d")} \u2013 ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}`
                   : weekStart}
-              </p>
+              </motion.p>
             </div>
+          </motion.div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="h-14 rounded-xl border-2 border-[#D4EBD9] text-base text-[#2D5A3D] hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors px-5"
-                onClick={() => setRefineOpen(true)}
-              >
-                <Sparkles className="mr-2 h-5 w-5" />
-                {tp.refineAI}
-              </Button>
-              <Button
-                variant="outline"
-                className="h-14 rounded-xl border-2 border-[#D4EBD9] text-base text-[#2D5A3D] hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors px-5"
-                onClick={handleSave}
-                disabled={saving}
-              >
-                {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="mr-2 h-5 w-5" />}
-                {tp.savePlan}
-              </Button>
-              <Button
-                className="h-14 rounded-xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-base text-white hover:shadow-[0_0_25px_rgba(0,163,82,0.3)] transition-shadow shadow-md px-5"
-                onClick={handleExportPDF}
-              >
-                <Download className="mr-2 h-5 w-5" />
-                {tp.exportPDF}
-              </Button>
-            </div>
-          </div>
+          {/* Action Buttons Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-wrap gap-3"
+          >
+            <Button
+              className="h-14 rounded-2xl border-2 border-[#C9A84C]/40 bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#004D26] text-lg font-bold hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] transition-all shadow-md px-6"
+              onClick={() => setRefineOpen(true)}
+            >
+              <Sparkles className="mr-2 h-5 w-5" />
+              {tp.refineAI}
+            </Button>
+            <Button
+              className="h-14 rounded-2xl border-2 border-emerald-400/40 bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-bold hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all shadow-md px-6"
+              onClick={handleSave}
+              disabled={saving}
+            >
+              {saving ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Save className="mr-2 h-5 w-5" />}
+              {tp.savePlan}
+            </Button>
+            <Button
+              className="h-14 rounded-2xl border-2 border-blue-400/40 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-lg font-bold hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all shadow-md px-6"
+              onClick={handleExportPDF}
+            >
+              <Download className="mr-2 h-5 w-5" />
+              {tp.exportPDF}
+            </Button>
+          </motion.div>
 
-          {/* Day Cards */}
+          {/* Day Cards Grid */}
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
             {plan.days?.map((day, i) => {
-              const platformStyle = PLATFORMS.find((p) => p.id === day.platform)?.color ?? "bg-[#F0F7F2]";
+              const platformCfg = getPlatformConfig(day.platform);
+              const isCompleted = completedDays.has(day.dayIndex);
               return (
                 <motion.div
                   key={day.dayIndex}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  whileHover={{ y: -6 }}
-                  className="glass rounded-2xl border-2 border-[#D4EBD9] bg-white p-6 transition-colors hover:border-[#006C35]/30"
-                >
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="text-base font-semibold text-[#004D26]">{day.dayAr || day.dayEn}</span>
-                    <span className="text-sm text-[#5A8A6A]">{day.date}</span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={cn("inline-block rounded-lg px-3 py-1 text-sm font-medium", platformStyle)}>
-                      {day.platform}
-                    </span>
-                    <span className="text-sm text-[#5A8A6A]">{day.contentType}</span>
-                  </div>
-                  <p className="text-lg font-semibold text-[#0A1F0F] leading-snug">{outputLanguage === "ar" ? (day.topicAr || day.topic) : (day.topic || day.topicAr)}</p>
-                  <p className="mt-2 line-clamp-4 text-base text-[#2D5A3D] leading-relaxed">
-                    {outputLanguage === "ar" ? (day.captionAr || day.caption) : (day.caption || day.captionAr)}
-                  </p>
-                  {/* Hashtag Tags */}
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {day.hashtags?.slice(0, 3).map((tag, tagIdx) => (
-                      <motion.span
-                        key={tag}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: tagIdx * 0.03, type: "spring" }}
-                        className="rounded-lg bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1.5 text-sm font-medium text-[#006C35]"
-                      >
-                        {tag}
-                      </motion.span>
-                    ))}
-                  </div>
-                  <div className="mt-2 flex items-center gap-1.5 text-base text-[#5A8A6A]">
-                    <Clock className="h-4 w-4" />
-                    <span className="font-semibold text-[#006C35]">{day.postingTime}</span>
-                  </div>
-                  {day.postingTimeReason && (
-                    <p className="mt-1 text-sm text-[#5A8A6A] italic">{day.postingTimeReason}</p>
+                  initial={{ opacity: 0, y: 24, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: i * 0.08, type: "spring", stiffness: 150 }}
+                  whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
+                  className={cn(
+                    "group relative rounded-2xl border-2 bg-white overflow-hidden transition-all duration-300",
+                    isCompleted
+                      ? "border-[#006C35]/50 bg-[#F0FFF4]"
+                      : "border-[#D4EBD9] hover:border-[#006C35]/40"
                   )}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCompletedDays((prev) => {
-                        const next = new Set(prev);
-                        if (next.has(day.dayIndex)) next.delete(day.dayIndex);
-                        else next.add(day.dayIndex);
-                        return next;
-                      });
-                    }}
-                    className={cn(
-                      "mt-4 w-full h-12 rounded-xl border-2 text-base font-medium flex items-center justify-center gap-2 transition-all",
-                      completedDays.has(day.dayIndex)
-                        ? "border-[#006C35] bg-[#006C35]/10 text-[#006C35]"
-                        : "border-[#D4EBD9] bg-white text-[#5A8A6A] hover:border-[#006C35]/40"
+                >
+                  {/* Colored gradient top bar */}
+                  <div className={cn(
+                    "h-1.5 w-full bg-gradient-to-r",
+                    platformCfg?.barColor ?? "from-[#006C35] to-[#00A352]"
+                  )} />
+
+                  <div className="p-5">
+                    {/* Header: Day name + Date badge */}
+                    <div className="mb-3 flex items-center justify-between">
+                      <span className="text-xl font-extrabold text-[#004D26] font-['Cairo']">
+                        {day.dayAr || day.dayEn}
+                      </span>
+                      <span className="rounded-lg bg-[#F0F7F2] border border-[#D4EBD9] px-2.5 py-1 text-xs font-semibold text-[#5A8A6A]">
+                        {day.date}
+                      </span>
+                    </div>
+
+                    {/* Platform badge + content type */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={cn(
+                        "inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-bold border",
+                        platformCfg?.pillBg ?? "bg-[#F0F7F2] text-[#006C35] border-[#D4EBD9]"
+                      )}>
+                        <span className="text-base">{platformCfg?.emoji ?? "\uD83D\uDCF1"}</span>
+                        {day.platform}
+                      </span>
+                      <span className="text-sm text-[#5A8A6A] font-medium">{day.contentType}</span>
+                    </div>
+
+                    {/* Topic */}
+                    <p className="text-lg font-bold text-[#0A1F0F] leading-snug mb-2">
+                      {outputLanguage === "ar" ? (day.topicAr || day.topic) : (day.topic || day.topicAr)}
+                    </p>
+
+                    {/* Caption preview */}
+                    <p className="line-clamp-4 text-base text-[#2D5A3D] leading-relaxed">
+                      {outputLanguage === "ar" ? (day.captionAr || day.caption) : (day.caption || day.captionAr)}
+                    </p>
+
+                    {/* Hashtags as colorful pills */}
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {day.hashtags?.slice(0, 4).map((tag, tagIdx) => (
+                        <motion.span
+                          key={tag}
+                          initial={{ opacity: 0, scale: 0.7 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.08 + tagIdx * 0.04, type: "spring" }}
+                          className={cn(
+                            "rounded-full px-3 py-1 text-xs font-bold",
+                            HASHTAG_COLORS[tagIdx % HASHTAG_COLORS.length]
+                          )}
+                        >
+                          {tag}
+                        </motion.span>
+                      ))}
+                    </div>
+
+                    {/* Posting time */}
+                    <div className="mt-3 flex items-center gap-2 rounded-xl bg-[#FFF8E7] border border-[#E8D5A0]/50 px-3 py-2">
+                      <Clock className="h-4 w-4 text-[#C9A84C]" />
+                      <span className="text-base font-bold text-[#004D26]">{day.postingTime}</span>
+                    </div>
+                    {day.postingTimeReason && (
+                      <p className="mt-1.5 text-sm text-[#5A8A6A] italic px-1">{day.postingTimeReason}</p>
                     )}
-                  >
-                    {completedDays.has(day.dayIndex) ? (
-                      <CheckCircle2 className="h-5 w-5 text-[#006C35]" />
-                    ) : (
-                      <Circle className="h-5 w-5" />
+
+                    {/* Mark as done button */}
+                    <motion.button
+                      type="button"
+                      onClick={() => {
+                        setCompletedDays((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(day.dayIndex)) next.delete(day.dayIndex);
+                          else next.add(day.dayIndex);
+                          return next;
+                        });
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      className={cn(
+                        "mt-4 w-full h-12 rounded-2xl border-2 text-base font-bold flex items-center justify-center gap-2 transition-all duration-300",
+                        isCompleted
+                          ? "border-[#006C35] bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-md"
+                          : "border-[#D4EBD9] bg-white text-[#5A8A6A] hover:border-[#006C35]/40 hover:bg-[#F0F7F2]"
+                      )}
+                    >
+                      <AnimatePresence mode="wait">
+                        {isCompleted ? (
+                          <motion.span
+                            key="done"
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            exit={{ scale: 0 }}
+                            className="flex items-center gap-2"
+                          >
+                            <CheckCircle2 className="h-5 w-5" />
+                            {locale === "ar" ? "\u062A\u0645 \u2728" : "Done \u2728"}
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            key="todo"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="flex items-center gap-2"
+                          >
+                            <Circle className="h-5 w-5" />
+                            {locale === "ar" ? "\u062A\u062D\u062F\u064A\u062F \u0643\u0645\u0646\u062C\u0632" : "Mark as done"}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
+                  </div>
+
+                  {/* Completion overlay shimmer */}
+                  <AnimatePresence>
+                    {isCompleted && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]"
+                      />
                     )}
-                    {completedDays.has(day.dayIndex)
-                      ? (locale === "ar" ? "تم" : "Done")
-                      : (locale === "ar" ? "تحديد كمنجز" : "Mark as done")}
-                  </button>
+                  </AnimatePresence>
                 </motion.div>
               );
             })}
           </div>
 
-          <Button
-            variant="outline"
-            className="h-14 rounded-xl border-2 border-[#D4EBD9] text-base text-[#5A8A6A] hover:text-[#004D26] hover:border-[#006C35] px-6"
-            onClick={() => setPlan(null)}
+          {/* Generate New button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
           >
-            {tp.generateNew}
-          </Button>
+            <Button
+              variant="outline"
+              className="h-14 rounded-2xl border-2 border-[#D4EBD9] text-lg font-bold text-[#5A8A6A] hover:text-[#004D26] hover:border-[#006C35] hover:bg-[#F0F7F2] px-8 transition-all"
+              onClick={() => setPlan(null)}
+            >
+              {tp.generateNew}
+            </Button>
+          </motion.div>
         </>
       )}
 
-      {/* Refine Dialog */}
+      {/* ===== Refine Dialog ===== */}
       <Dialog open={refineOpen} onOpenChange={setRefineOpen}>
-        <DialogContent className="glass-strong border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl text-[#004D26]">{tp.refineAI}</DialogTitle>
+        <DialogContent className="border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] sm:max-w-xl rounded-2xl overflow-hidden">
+          {/* Dialog top accent */}
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C]" />
+          <DialogHeader className="pt-4">
+            <DialogTitle className="text-2xl font-extrabold text-[#004D26] font-['Cairo'] flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-[#C9A84C]" />
+              {tp.refineAI}
+            </DialogTitle>
           </DialogHeader>
-          <p className="text-base text-[#5A8A6A]">{tp.refineTell}</p>
+          <p className="text-lg text-[#5A8A6A]">{tp.refineTell}</p>
           <Textarea
             value={refineText}
             onChange={(e) => setRefineText(e.target.value)}
-            className="min-h-[120px] rounded-xl border-2 border-[#D4EBD9] bg-white text-base text-[#0A1F0F] focus:border-[#006C35]"
+            className="min-h-[120px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all"
             placeholder={tp.refinePlaceholder}
           />
           <Button
-            className="h-14 rounded-xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-base text-white hover:shadow-[0_0_25px_rgba(0,163,82,0.3)] transition-shadow shadow-md"
+            className="h-14 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-lg font-bold text-white hover:shadow-[0_0_30px_rgba(0,163,82,0.3)] transition-all shadow-lg"
             onClick={async () => {
               setRefineOpen(false);
               const focusPrompt = refineText.trim();
