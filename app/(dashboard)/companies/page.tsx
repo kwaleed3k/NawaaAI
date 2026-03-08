@@ -64,8 +64,6 @@ const PLATFORMS = [
   "TikTok",
   "Snapchat",
   "LinkedIn",
-  "YouTube",
-  "WhatsApp",
 ];
 
 const FALLBACK_COLORS = ["#006C35", "#00A352", "#C9A84C", "#0B1A0F", "#D0EBDA"];
@@ -77,8 +75,6 @@ const PLATFORM_CARDS: Record<string, { emoji: string; selectedBg: string; select
   "TikTok":       { emoji: "\uD83C\uDFB5", selectedBg: "bg-gradient-to-br from-slate-800 to-cyan-500", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
   "Snapchat":     { emoji: "\uD83D\uDC7B", selectedBg: "bg-gradient-to-br from-yellow-400 to-amber-400", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700" },
   "LinkedIn":     { emoji: "\uD83D\uDCBC", selectedBg: "bg-gradient-to-br from-blue-500 to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-blue-600" },
-  "YouTube":      { emoji: "\uD83C\uDFAC", selectedBg: "bg-gradient-to-br from-red-500 to-red-700", selectedBorder: "border-red-400", unselectedBg: "bg-red-50", color: "text-red-600" },
-  "WhatsApp":     { emoji: "\uD83D\uDCAC", selectedBg: "bg-gradient-to-br from-green-500 to-emerald-600", selectedBorder: "border-green-400", unselectedBg: "bg-green-50", color: "text-green-700" },
 };
 
 /* ── Card accent gradient rotation ── */
