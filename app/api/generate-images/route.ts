@@ -243,7 +243,7 @@ export async function POST(request: NextRequest) {
       `Visual style direction: ${style}`,
       `Language: ${langDirective}`,
       textDirective,
-      referenceImagesData.length ? `The client provided ${referenceImagesData.length} reference photo(s) of their actual products/venue/dishes. The generated images MUST capture the same visual style, colors, textures, plating, and atmosphere shown in these reference photos. Think of them as the "real thing" — the AI output should look like professional photos taken in the same setting with the same products.` : "",
+      referenceImagesData.length ? `⚠️ REFERENCE PHOTOS PROVIDED (${referenceImagesData.length} photo(s)): The client uploaded real photos of their actual products/venue/dishes. These are NOT just inspiration — they are the REAL thing. The generated images MUST:\n  1. Recreate the SAME environment/setting as closely as possible (same type of space, same decor style, same surfaces and backgrounds)\n  2. Match the exact visual style, lighting mood, color palette, and atmosphere\n  3. Feature the same products/dishes/items with matching textures, plating, and presentation\n  4. Feel like they were taken in the SAME photoshoot session — same photographer, same location, same day\n  5. If it's a place (restaurant, cafe, store), generate images that look like they were shot IN that exact place\n  6. If it's a product/dish, show the same item from different angles or in complementary compositions` : "",
       includeLogo ? "Composition note: leave a clean corner area (bottom-right preferred) where a logo watermark can be overlaid in post-production." : "",
     ]
       .filter(Boolean)
@@ -302,7 +302,7 @@ export async function POST(request: NextRequest) {
       // Add reference images
       if (referenceImagesData.length > 0) {
         contentParts.push({
-          text: "Here are reference photos from the client showing their actual products/venue/dishes. Use these as visual reference — match the style, colors, textures, and atmosphere of these real photos in the generated image:",
+          text: "⚠️ CRITICAL REFERENCE PHOTOS — these are real photos from the client's actual place/products. You MUST replicate the same environment, setting, surfaces, lighting, and vibe as closely as possible. The generated image should look like it was taken in the SAME location during the SAME photoshoot. Match everything: wall colors, table surfaces, decor, plating style, product appearance, spatial layout. Do NOT create a generic scene — recreate THIS specific place/product:",
         });
         for (const refUri of referenceImagesData.slice(0, 4)) {
           const [header, base64Data] = refUri.split(",");
