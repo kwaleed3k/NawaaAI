@@ -27,15 +27,26 @@ import toast from "react-hot-toast";
 import { messages } from "@/lib/i18n";
 
 const INDUSTRIES = [
-  "Food & Beverage",
-  "Fashion",
-  "Real Estate",
-  "Technology",
-  "Healthcare",
-  "Education",
-  "Retail",
-  "Finance",
-  "Other",
+  { en: "Food & Beverage", ar: "أغذية ومشروبات" },
+  { en: "Restaurant & Cafe", ar: "مطاعم وكافيهات" },
+  { en: "Fashion & Apparel", ar: "أزياء وملابس" },
+  { en: "Beauty & Cosmetics", ar: "تجميل ومستحضرات" },
+  { en: "Real Estate", ar: "عقارات" },
+  { en: "Technology", ar: "تقنية" },
+  { en: "Healthcare", ar: "رعاية صحية" },
+  { en: "Education & Training", ar: "تعليم وتدريب" },
+  { en: "Retail & E-commerce", ar: "تجزئة وتجارة إلكترونية" },
+  { en: "Finance & Banking", ar: "مالية وبنوك" },
+  { en: "Tourism & Hospitality", ar: "سياحة وضيافة" },
+  { en: "Fitness & Wellness", ar: "لياقة وصحة" },
+  { en: "Automotive", ar: "سيارات" },
+  { en: "Construction & Engineering", ar: "مقاولات وهندسة" },
+  { en: "Media & Entertainment", ar: "إعلام وترفيه" },
+  { en: "Legal & Consulting", ar: "قانون واستشارات" },
+  { en: "Logistics & Delivery", ar: "لوجستيات وتوصيل" },
+  { en: "Agriculture", ar: "زراعة" },
+  { en: "Non-profit & Government", ar: "غير ربحي وحكومي" },
+  { en: "Other", ar: "أخرى" },
 ];
 
 const TONES = [
@@ -351,6 +362,7 @@ export default function CompaniesPage() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [showCustomIndustry, setShowCustomIndustry] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -414,11 +426,14 @@ export default function CompaniesPage() {
       platforms: [],
     });
     setBrandAnalysis(null);
+    setShowCustomIndustry(false);
     setFormOpen(true);
   }
 
   function openEdit(c: Company) {
     setEditingId(c.id);
+    const isKnownIndustry = INDUSTRIES.some((ind) => ind.en === (c.industry ?? ""));
+    setShowCustomIndustry(!!(c.industry && !isKnownIndustry));
     setForm({
       name: c.name ?? "",
       name_ar: c.name_ar ?? "",
@@ -712,7 +727,7 @@ export default function CompaniesPage() {
         <div className="grid gap-6 sm:grid-cols-2">
           {companies.map((c, i) => {
             const keywords: { label: string; type: keyof typeof TAG_STYLES }[] = [];
-            if (c.industry) keywords.push({ label: c.industry, type: "industry" });
+            if (c.industry) keywords.push({ label: locale === "ar" ? (INDUSTRIES.find((ind) => ind.en === c.industry)?.ar ?? c.industry) : c.industry, type: "industry" });
             if (c.tone) keywords.push({ label: c.tone, type: "tone" });
             if (c.target_audience) keywords.push({ label: c.target_audience.length > 30 ? c.target_audience.slice(0, 30) + "..." : c.target_audience, type: "audience" });
             (c.platforms || []).forEach((p) => keywords.push({ label: p, type: "platform" }));
@@ -928,18 +943,36 @@ export default function CompaniesPage() {
                 <div>
                   <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.industry}</Label>
                   <Select
-                    value={form.industry}
-                    onValueChange={(v) => setForm((f) => ({ ...f, industry: v ?? "" }))}
+                    value={INDUSTRIES.some((ind) => ind.en === form.industry) ? form.industry : form.industry ? "Other" : ""}
+                    onValueChange={(v) => {
+                      if (v === "Other") {
+                        setForm((f) => ({ ...f, industry: "" }));
+                        setShowCustomIndustry(true);
+                      } else {
+                        setForm((f) => ({ ...f, industry: v ?? "" }));
+                        setShowCustomIndustry(false);
+                      }
+                    }}
                   >
                     <SelectTrigger className="h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] focus:border-[#006C35] rounded-2xl text-lg px-5">
                       <SelectValue placeholder={tc.selectIndustry} />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-2 border-[#D4EBD9] rounded-xl">
+                    <SelectContent className="bg-white border-2 border-[#D4EBD9] rounded-xl max-h-80">
                       {INDUSTRIES.map((ind) => (
-                        <SelectItem key={ind} value={ind} className="text-[#0A1F0F] text-lg py-3 rounded-xl">{ind}</SelectItem>
+                        <SelectItem key={ind.en} value={ind.en} className="text-[#0A1F0F] text-lg py-3 rounded-xl">
+                          {locale === "ar" ? ind.ar : ind.en}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                  {showCustomIndustry && (
+                    <Input
+                      value={form.industry}
+                      onChange={(e) => setForm((f) => ({ ...f, industry: e.target.value }))}
+                      placeholder={locale === "ar" ? "اكتب مجال شركتك..." : "Type your industry..."}
+                      className="mt-3 h-14 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-5 transition-all"
+                    />
+                  )}
                 </div>
                 <div>
                   <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.website}</Label>
@@ -1310,7 +1343,7 @@ export default function CompaniesPage() {
                       <div className="mt-3 flex flex-wrap items-center gap-3">
                         {vc.industry && (
                           <span className="rounded-xl bg-white/20 border border-white/30 px-4 py-1.5 text-sm font-semibold text-white">
-                            {TAG_STYLES.industry.emoji} {vc.industry}
+                            {TAG_STYLES.industry.emoji} {locale === "ar" ? (INDUSTRIES.find((ind) => ind.en === vc.industry)?.ar ?? vc.industry) : vc.industry}
                           </span>
                         )}
                         {vc.tone && (
