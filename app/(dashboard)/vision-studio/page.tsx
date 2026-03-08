@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 /* framer-motion removed – using plain HTML + CSS transitions */
-import { Sparkles, Loader2, Download, ImageIcon, Maximize2, ImagePlus, X, Upload, Check, Camera, Paintbrush, MessageSquare } from "lucide-react";
+import { Sparkles, Loader2, Download, ImageIcon, Maximize2, ImagePlus, X, Upload, Check, Camera, Paintbrush, MessageSquare, Type, Building2, Volume2, Globe } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore, type Company } from "@/lib/store";
 import { messages } from "@/lib/i18n";
@@ -40,10 +40,10 @@ export default function VisionStudioPage() {
   const tv = messages[locale].visionStudio;
 
   const STYLES = [
-    { id: "lifestyle", label: tv.lifestyleLabel, emoji: "\uD83D\uDCF8", desc: tv.lifestyleDesc },
-    { id: "graphic", label: tv.graphicLabel, emoji: "\uD83C\uDFA8", desc: tv.graphicDesc },
-    { id: "luxury", label: tv.luxuryLabel, emoji: "\u2728", desc: tv.luxuryDesc },
-    { id: "heritage", label: tv.heritageLabel, emoji: "\uD83C\uDF19", desc: tv.heritageDesc },
+    { id: "lifestyle", label: tv.lifestyleLabel, emoji: "\uD83D\uDCF8", desc: tv.lifestyleDesc, best: tv.lifestyleBest },
+    { id: "graphic", label: tv.graphicLabel, emoji: "\uD83D\uDED2", desc: tv.graphicDesc, best: tv.graphicBest },
+    { id: "luxury", label: tv.luxuryLabel, emoji: "\uD83D\uDC8E", desc: tv.luxuryDesc, best: tv.luxuryBest },
+    { id: "heritage", label: tv.heritageLabel, emoji: "\uD83D\uDD4C", desc: tv.heritageDesc, best: tv.heritageBest },
   ];
 
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -62,6 +62,8 @@ export default function VisionStudioPage() {
   const [saving, setSaving] = useState(false);
   const [loadingQuoteIndex, setLoadingQuoteIndex] = useState(0);
   const [referenceImages, setReferenceImages] = useState<{ file: File; preview: string }[]>([]);
+  const [addTextToImage, setAddTextToImage] = useState(false);
+  const [imageText, setImageText] = useState("");
 
   const loadingQuotesEn = [
     "Brewing pixel magic... \u2615",
@@ -189,7 +191,7 @@ export default function VisionStudioPage() {
         body: JSON.stringify({
           company: companySlim,
           dayContent: { platform: currentDay.platform, contentType: currentDay.contentType, topic: currentDay.topic, topicAr: currentDay.topicAr, caption: currentDay.caption, imagePromptHint: currentDay.imagePromptHint },
-          style, additionalInstructions: additionalInstructions.trim() || undefined, outputLanguage,
+          style, additionalInstructions: additionalInstructions.trim() || undefined, outputLanguage, imageText: addTextToImage && imageText.trim() ? imageText.trim() : undefined,
           includeLogo: includeLogo && !!selectedCompany?.logo_url,
           logoUrl: includeLogo ? selectedCompany?.logo_url : undefined,
           referenceImages: referenceBase64,
@@ -234,16 +236,13 @@ export default function VisionStudioPage() {
     return (
       <div className="space-y-8">
         <Skeleton className="h-40 w-full rounded-2xl" style={{ backgroundColor: "#D4EBD9" }} />
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-5">
-          <div className="space-y-6 lg:col-span-2">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-44 rounded-2xl" style={{ backgroundColor: "#F0F7F2", border: "2px solid #D4EBD9" }} />
-            ))}
-          </div>
-          <div className="lg:col-span-3">
-            <Skeleton className="h-[500px] rounded-2xl" style={{ backgroundColor: "#F0F7F2", border: "2px solid #D4EBD9" }} />
-          </div>
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-44 rounded-2xl" style={{ backgroundColor: "#F0F7F2", border: "2px solid #D4EBD9" }} />
+          ))}
         </div>
+        <Skeleton className="h-20 w-full max-w-2xl mx-auto rounded-2xl" style={{ backgroundColor: "#D4EBD9" }} />
+        <Skeleton className="h-[400px] w-full max-w-5xl mx-auto rounded-2xl" style={{ backgroundColor: "#F0F7F2", border: "2px solid #D4EBD9" }} />
       </div>
     );
   }
@@ -256,17 +255,6 @@ export default function VisionStudioPage() {
       <div
         className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10 shadow-xl"
       >
-        {/* Decorative floating shapes */}
-        <div className="absolute top-4 right-8 flex gap-2">
-          {["\uD83C\uDFA8", "\u2728", "\uD83D\uDCF8"].map((em, i) => (
-            <span
-              key={i}
-              className="text-2xl md:text-3xl"
-            >
-              {em}
-            </span>
-          ))}
-        </div>
         <h1 className="font-['Cairo'] text-4xl font-extrabold text-white md:text-5xl drop-shadow-lg">
           {tv.pageTitle}
         </h1>
@@ -277,244 +265,302 @@ export default function VisionStudioPage() {
         </p>
       </div>
 
-      {/* ===== MAIN GRID ===== */}
-      <div className="grid gap-8 grid-cols-1 lg:grid-cols-5">
-        {/* ── LEFT COLUMN: Controls ── */}
-        <div className="space-y-8 lg:col-span-2">
-
-          {/* ── Company Selector ── */}
-          <div>
-            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
-              <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
-              <CardHeader className="p-5 sm:p-8 pb-4">
-                <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
-                    <Camera className="h-7 w-7 text-white" />
-                  </div>
-                  {tv.company}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-5 sm:p-8 pt-2">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none z-10">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352]">
-                      <Sparkles className="h-4 w-4 text-white" />
-                    </div>
-                  </div>
-                  <select
-                    value={selectedCompany?.id ?? ""}
-                    onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }}
-                    className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white pl-14 pr-4 text-lg text-[#0A1F0F] font-medium transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
-                  >
-                    {companies.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
-                  </select>
+      {/* ===== ROW 1: Company + Content Day ===== */}
+      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+        {/* ── Company Selector ── */}
+        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+          <CardHeader className="p-5 sm:p-8 pb-4">
+            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                <Camera className="h-7 w-7 text-white" />
+              </div>
+              {tv.company}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-5 sm:p-8 pt-2 space-y-5">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none z-10">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352]">
+                  <Sparkles className="h-4 w-4 text-white" />
                 </div>
-                {selectedCompany?.brand_colors?.length ? (
-                  <div className="mt-4 flex gap-2.5">
-                    {selectedCompany.brand_colors.slice(0, 5).map((hex, i) => (
-                      <div
-                        key={i}
-                        className="h-10 w-10 rounded-full border-2 border-white shadow-md ring-2 ring-[#D4EBD9]"
-                        style={{ backgroundColor: hex }}
-                      />
-                    ))}
-                  </div>
-                ) : null}
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+              <select
+                value={selectedCompany?.id ?? ""}
+                onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }}
+                className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white pl-14 pr-4 text-lg text-[#0A1F0F] font-medium transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
+              >
+                {companies.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+              </select>
+            </div>
 
-          {/* ── Content Day Selector ── */}
-          <div>
-            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
-              <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C]" />
-              <CardHeader className="p-5 sm:p-8 pb-4">
-                <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
-                    <ImageIcon className="h-7 w-7 text-white" />
+            {/* ── Company Info Preview ── */}
+            {selectedCompany && (
+              <div className="rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-5 space-y-4">
+                {/* Logo + Name row */}
+                <div className="flex items-center gap-4">
+                  {selectedCompany.logo_url ? (
+                    <img
+                      src={selectedCompany.logo_url}
+                      alt={selectedCompany.name}
+                      className="h-16 w-16 rounded-2xl object-contain border-2 border-[#D4EBD9] bg-white p-1 shadow-sm"
+                    />
+                  ) : (
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-sm">
+                      <Building2 className="h-8 w-8 text-[#5A8A6A]/50" />
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xl font-extrabold text-[#004D26] truncate">{selectedCompany.name}</p>
+                    {selectedCompany.name_ar && (
+                      <p className="text-base font-bold text-[#5A8A6A] truncate" dir="rtl">{selectedCompany.name_ar}</p>
+                    )}
                   </div>
-                  {tv.contentDay}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5 p-5 sm:p-8 pt-2">
-                <select
-                  value={selectedPlan?.id ?? ""}
-                  onChange={(e) => { const p = plans.find((x) => x.id === e.target.value); setSelectedPlan(p ?? null); setSelectedDayIndex(0); }}
-                  className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 text-lg text-[#0A1F0F] font-medium transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
-                >
-                  {plans.filter((p) => p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
-                </select>
+                </div>
 
-                {selectedPlan?.plan_data?.days?.length ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {selectedPlan.plan_data.days.map((d, i) => {
-                      const selected = selectedDayIndex === i;
-                      const platformEmoji = d.platform ? PLATFORM_EMOJI[d.platform.toLowerCase()] || "\uD83D\uDCC5" : "\uD83D\uDCC5";
+                {/* Info chips: Industry + Tone */}
+                <div className="flex flex-wrap gap-2">
+                  {selectedCompany.industry && (
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#D4EBD9] px-3 py-1.5 text-sm font-bold text-[#004D26] shadow-sm">
+                      <Building2 className="h-3.5 w-3.5 text-[#006C35]" />
+                      {selectedCompany.industry}
+                    </span>
+                  )}
+                  {selectedCompany.tone && (
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#D4EBD9] px-3 py-1.5 text-sm font-bold text-[#004D26] shadow-sm">
+                      <Volume2 className="h-3.5 w-3.5 text-[#C9A84C]" />
+                      {selectedCompany.tone}
+                    </span>
+                  )}
+                </div>
+
+                {/* Platforms */}
+                {selectedCompany.platforms?.length ? (
+                  <div className="flex flex-wrap gap-2">
+                    {selectedCompany.platforms.map((p, i) => {
+                      const emoji = PLATFORM_EMOJI[p.toLowerCase()] || "\uD83C\uDF10";
                       return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => setSelectedDayIndex(i)}
-                          className={cn(
-                            "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all duration-300 cursor-pointer",
-                            selected
-                              ? "bg-gradient-to-br from-[#006C35] to-[#00A352] border-[#006C35] text-white shadow-lg shadow-[#006C35]/20"
-                              : "bg-[#F8FBF8] border-[#D4EBD9] text-[#5A8A6A] hover:border-[#006C35]/40 hover:bg-[#F0F7F2]"
-                          )}
-                        >
-                          {selected && (
-                            <div
-                              className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
-                            >
-                              <div className="h-4 w-4 rounded-full bg-[#C9A84C] flex items-center justify-center">
-                                <Check className="h-3 w-3 text-white" />
-                              </div>
-                            </div>
-                          )}
-                          <span className="text-2xl leading-none">{platformEmoji}</span>
-                          <span className={cn("text-base font-bold leading-tight text-center", selected ? "text-white" : "text-[#004D26]")}>
-                            {locale === "ar" ? (d.dayAr || d.dayEn) : (d.dayEn || d.dayAr)}
-                          </span>
-                        </button>
+                        <span key={i} className="inline-flex items-center gap-1 rounded-lg bg-white border border-[#D4EBD9] px-2.5 py-1 text-sm font-semibold text-[#5A8A6A] shadow-sm">
+                          <span className="text-base">{emoji}</span> {p}
+                        </span>
                       );
                     })}
                   </div>
                 ) : null}
 
-                {currentDay ? (
-                  <div
-                    className="rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-5"
-                  >
-                    <p className="text-lg font-bold text-[#004D26]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
-                    <p className="mt-2 text-base text-[#5A8A6A]">{currentDay.imagePromptHint}</p>
-                  </div>
-                ) : (
-                  <p className="text-lg text-[#5A8A6A]">{tv.noPlan}</p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* ── Reference Images ── */}
-          <div>
-            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
-              <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C]" />
-              <CardHeader className="p-5 sm:p-8 pb-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#C9A84C] shadow-lg">
-                    <Upload className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
-                      {locale === "ar" ? "\u0635\u0648\u0631 \u0645\u0631\u062C\u0639\u064A\u0629" : "Reference Photos"}
-                    </CardTitle>
-                    <p className="text-lg text-[#5A8A6A] mt-1">
-                      {locale === "ar" ? "\u0623\u0636\u0641 \u0635\u0648\u0631 \u0623\u0637\u0628\u0627\u0642\u0643\u060C \u0645\u0643\u0627\u0646\u0643\u060C \u0623\u0648 \u0645\u0646\u062A\u062C\u0627\u062A\u0643 \u0644\u064A\u0633\u062A\u062E\u062F\u0645\u0647\u0627 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064A" : "Add photos of your dishes, place, or products for AI to reference"}
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="p-5 sm:p-8 pt-2">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {referenceImages.map((img, i) => (
-                    <div
-                      key={i}
-                      className="relative group aspect-square rounded-2xl overflow-hidden border-2 border-[#D4EBD9] shadow-md"
-                    >
-                      <img src={img.preview} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
-                      <button
-                        type="button"
-                        onClick={() => removeReferenceImage(i)}
-                        className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
+                {/* Brand colors */}
+                {selectedCompany.brand_colors?.length ? (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-bold text-[#5A8A6A]">{locale === "ar" ? "الألوان" : "Colors"}</span>
+                    <div className="flex gap-2">
+                      {selectedCompany.brand_colors.slice(0, 5).map((hex, i) => (
+                        <div
+                          key={i}
+                          className="h-8 w-8 rounded-full border-2 border-white shadow-md ring-2 ring-[#D4EBD9]"
+                          style={{ backgroundColor: hex }}
+                          title={hex}
+                        />
+                      ))}
                     </div>
-                  ))}
-                  {referenceImages.length < 6 && (
-                    <label
-                      className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-[#F8FBF8] hover:bg-[#F0F7F2] transition-all duration-300"
-                      style={{ borderColor: "#006C35", borderImage: "linear-gradient(135deg, #006C35, #C9A84C) 1" }}
-                    >
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="hidden"
-                        onChange={handleReferenceUpload}
-                      />
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md mb-2">
-                        <Upload className="h-6 w-6 text-white" />
-                      </div>
-                      <span className="text-base font-bold text-[#004D26]">{locale === "ar" ? "\u0625\u0636\u0627\u0641\u0629" : "Add"}</span>
-                    </label>
-                  )}
-                </div>
-                {referenceImages.length > 0 && (
-                  <p className="mt-3 text-base font-semibold text-[#5A8A6A]">
-                    {referenceImages.length}/6 {locale === "ar" ? "\u0635\u0648\u0631" : "photos"}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* ── Style Selector ── */}
-          <div>
-            <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
-              <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#006C35] to-[#C9A84C]" />
-              <CardHeader className="p-5 sm:p-8 pb-4">
-                <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
-                    <Paintbrush className="h-7 w-7 text-white" />
                   </div>
-                  {tv.style}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid grid-cols-2 gap-4 p-5 sm:p-8 pt-2">
-                {STYLES.map((s, i) => {
-                  const selected = style === s.id;
+                ) : null}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* ── Content Day Selector ── */}
+        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C]" />
+          <CardHeader className="p-5 sm:p-8 pb-4">
+            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
+                <ImageIcon className="h-7 w-7 text-white" />
+              </div>
+              {tv.contentDay}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5 p-5 sm:p-8 pt-2">
+            <select
+              value={selectedPlan?.id ?? ""}
+              onChange={(e) => { const p = plans.find((x) => x.id === e.target.value); setSelectedPlan(p ?? null); setSelectedDayIndex(0); }}
+              className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 text-lg text-[#0A1F0F] font-medium transition-all focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 hover:border-[#006C35]/40"
+            >
+              {plans.filter((p) => p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
+            </select>
+
+            {selectedPlan?.plan_data?.days?.length ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {selectedPlan.plan_data.days.map((d, i) => {
+                  const selected = selectedDayIndex === i;
+                  const platformEmoji = d.platform ? PLATFORM_EMOJI[d.platform.toLowerCase()] || "\uD83D\uDCC5" : "\uD83D\uDCC5";
                   return (
                     <button
-                      key={s.id}
+                      key={i}
                       type="button"
-                      onClick={() => setStyle(s.id)}
+                      onClick={() => setSelectedDayIndex(i)}
                       className={cn(
-                        "relative rounded-2xl border-2 p-6 text-left transition-all duration-300 overflow-hidden",
+                        "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all duration-300 cursor-pointer",
                         selected
-                          ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/10 via-[#00A352]/5 to-[#C9A84C]/10 shadow-lg shadow-[#006C35]/10"
-                          : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
+                          ? "bg-gradient-to-br from-[#006C35] to-[#00A352] border-[#006C35] text-white shadow-lg shadow-[#006C35]/20"
+                          : "bg-[#F8FBF8] border-[#D4EBD9] text-[#5A8A6A] hover:border-[#006C35]/40 hover:bg-[#F0F7F2]"
                       )}
                     >
-                      {/* Selection checkmark */}
                       {selected && (
-                        <div
-                          className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md z-10"
-                        >
-                          <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center">
-                            <Check className="h-3.5 w-3.5 text-white" />
+                        <div className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md">
+                          <div className="h-4 w-4 rounded-full bg-[#C9A84C] flex items-center justify-center">
+                            <Check className="h-3 w-3 text-white" />
                           </div>
                         </div>
                       )}
-                      {/* Selected gradient accent bar */}
-                      {selected && (
-                        <div
-                          className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left"
-                        />
-                      )}
-                      <span className="text-4xl block">{s.emoji}</span>
-                      <p className="mt-3 text-xl font-extrabold text-[#004D26]">{s.label}</p>
-                      <p className="mt-1 text-base text-[#5A8A6A]">{s.desc}</p>
+                      <span className="text-2xl leading-none">{platformEmoji}</span>
+                      <span className={cn("text-base font-bold leading-tight text-center", selected ? "text-white" : "text-[#004D26]")}>
+                        {locale === "ar" ? (d.dayAr || d.dayEn) : (d.dayEn || d.dayAr)}
+                      </span>
                     </button>
                   );
                 })}
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            ) : null}
 
-          {/* ── Language Toggle ── */}
+            {currentDay ? (
+              <div className="rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-5">
+                <p className="text-lg font-bold text-[#004D26]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
+                <p className="mt-2 text-base text-[#5A8A6A]">{currentDay.imagePromptHint}</p>
+              </div>
+            ) : (
+              <p className="text-lg text-[#5A8A6A]">{tv.noPlan}</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ===== ROW 2: Reference Photos + Style ===== */}
+      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+        {/* ── Reference Images ── */}
+        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C]" />
+          <CardHeader className="p-5 sm:p-8 pb-4">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#C9A84C] shadow-lg">
+                <Upload className="h-7 w-7 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                  {locale === "ar" ? "\u0635\u0648\u0631 \u0645\u0631\u062C\u0639\u064A\u0629" : "Reference Photos"}
+                </CardTitle>
+                <p className="text-lg text-[#5A8A6A] mt-1">
+                  {locale === "ar" ? "\u0623\u0636\u0641 \u0635\u0648\u0631 \u0623\u0637\u0628\u0627\u0642\u0643\u060C \u0645\u0643\u0627\u0646\u0643\u060C \u0623\u0648 \u0645\u0646\u062A\u062C\u0627\u062A\u0643 \u0644\u064A\u0633\u062A\u062E\u062F\u0645\u0647\u0627 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064A" : "Add photos of your dishes, place, or products for AI to reference"}
+                </p>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5 sm:p-8 pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {referenceImages.map((img, i) => (
+                <div
+                  key={i}
+                  className="relative group aspect-square rounded-2xl overflow-hidden border-2 border-[#D4EBD9] shadow-md"
+                >
+                  <img src={img.preview} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
+                  <button
+                    type="button"
+                    onClick={() => removeReferenceImage(i)}
+                    className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              {referenceImages.length < 6 && (
+                <label
+                  className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-[#F8FBF8] hover:bg-[#F0F7F2] transition-all duration-300"
+                  style={{ borderColor: "#006C35", borderImage: "linear-gradient(135deg, #006C35, #C9A84C) 1" }}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleReferenceUpload}
+                  />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md mb-2">
+                    <Upload className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-base font-bold text-[#004D26]">{locale === "ar" ? "\u0625\u0636\u0627\u0641\u0629" : "Add"}</span>
+                </label>
+              )}
+            </div>
+            {referenceImages.length > 0 && (
+              <p className="mt-3 text-base font-semibold text-[#5A8A6A]">
+                {referenceImages.length}/6 {locale === "ar" ? "\u0635\u0648\u0631" : "photos"}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* ── Style Selector ── */}
+        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#C9A84C] via-[#006C35] to-[#C9A84C]" />
+          <CardHeader className="p-5 sm:p-8 pb-4">
+            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-lg">
+                <Paintbrush className="h-7 w-7 text-white" />
+              </div>
+              {tv.style}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 sm:p-8 pt-2">
+            {STYLES.map((s) => {
+              const selected = style === s.id;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setStyle(s.id)}
+                  className={cn(
+                    "relative rounded-2xl border-2 p-5 text-left transition-all duration-300 overflow-hidden",
+                    selected
+                      ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/10 via-[#00A352]/5 to-[#C9A84C]/10 shadow-lg shadow-[#006C35]/10"
+                      : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
+                  )}
+                >
+                  {selected && (
+                    <div className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md z-10">
+                      <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center">
+                        <Check className="h-3.5 w-3.5 text-white" />
+                      </div>
+                    </div>
+                  )}
+                  {selected && (
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left" />
+                  )}
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">{s.emoji}</span>
+                    <p className="text-lg font-extrabold text-[#004D26]">{s.label}</p>
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-[#5A8A6A]">{s.desc}</p>
+                  <p className={cn(
+                    "mt-2 text-xs font-bold rounded-lg px-2.5 py-1 inline-block",
+                    selected
+                      ? "bg-[#006C35]/10 text-[#006C35]"
+                      : "bg-[#F0F7F2] text-[#5A8A6A]"
+                  )}>
+                    {s.best}
+                  </p>
+                </button>
+              );
+            })}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ===== ROW 3: Options + Instructions ===== */}
+      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+        {/* ── Left: Language, Logo, Text toggles ── */}
+        <div className="space-y-6">
+          {/* Language Toggle */}
           <div>
             <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md">
@@ -556,260 +602,273 @@ export default function VisionStudioPage() {
             </div>
           </div>
 
-          {/* ── Include Logo Toggle ── */}
+          {/* Include Logo Toggle */}
           {selectedCompany?.logo_url && (
-            <div>
-              <button
-                type="button"
-                onClick={() => setIncludeLogo(!includeLogo)}
-                className={cn(
-                  "w-full flex items-center gap-5 rounded-2xl border-2 p-6 text-left transition-all duration-300 overflow-hidden relative",
-                  includeLogo
-                    ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/5 to-[#C9A84C]/5 shadow-lg shadow-[#006C35]/10"
-                    : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
-                )}
-              >
-                {/* Gradient border effect when active */}
-                {includeLogo && (
-                  <div
-                    className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left"
-                  />
-                )}
-                <div className={cn(
-                  "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 shadow-md",
-                  includeLogo
-                    ? "bg-gradient-to-br from-[#006C35] to-[#00A352]"
-                    : "bg-[#F0F7F2]"
-                )}>
-                  <ImagePlus className={cn("h-7 w-7", includeLogo ? "text-white" : "text-[#5A8A6A]")} />
+            <button
+              type="button"
+              onClick={() => setIncludeLogo(!includeLogo)}
+              className={cn(
+                "w-full flex items-center gap-5 rounded-2xl border-2 p-5 text-left transition-all duration-300 overflow-hidden relative",
+                includeLogo
+                  ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/5 to-[#C9A84C]/5 shadow-lg shadow-[#006C35]/10"
+                  : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
+              )}
+            >
+              {includeLogo && (
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left" />
+              )}
+              <div className={cn(
+                "flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 shadow-md",
+                includeLogo ? "bg-gradient-to-br from-[#006C35] to-[#00A352]" : "bg-[#F0F7F2]"
+              )}>
+                <ImagePlus className={cn("h-6 w-6", includeLogo ? "text-white" : "text-[#5A8A6A]")} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className={cn("text-lg font-bold", includeLogo ? "text-[#004D26]" : "text-[#5A8A6A]")}>{tv.includeLogo}</p>
+                <p className="text-sm text-[#5A8A6A]">{tv.logoNote}</p>
+              </div>
+              <div className={cn(
+                "h-7 w-12 rounded-full transition-all duration-300 relative flex-shrink-0",
+                includeLogo ? "bg-gradient-to-r from-[#006C35] to-[#00A352] shadow-inner" : "bg-[#D4EBD9]"
+              )}>
+                <div className={cn("absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center")}>
+                  {includeLogo && <Check className="h-3.5 w-3.5 text-[#006C35]" />}
                 </div>
-                <div className="flex-1">
-                  <p className={cn("text-lg font-bold", includeLogo ? "text-[#004D26]" : "text-[#5A8A6A]")}>{tv.includeLogo}</p>
-                  <p className="text-base text-[#5A8A6A]">{tv.logoNote}</p>
-                </div>
-                <div className={cn(
-                  "h-8 w-14 rounded-full transition-all duration-300 relative flex-shrink-0",
-                  includeLogo ? "bg-gradient-to-r from-[#006C35] to-[#00A352] shadow-inner" : "bg-[#D4EBD9]"
-                )}>
-                  <div
-                    className={cn(
-                      "absolute top-1 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center",
-                    )}
-                  >
-                    {includeLogo && <Check className="h-3.5 w-3.5 text-[#006C35]" />}
-                  </div>
-                </div>
-              </button>
-            </div>
+              </div>
+            </button>
           )}
 
-          {/* ── Extra Instructions ── */}
+          {/* Text on Image Toggle */}
           <div>
-            <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-md">
-                <MessageSquare className="h-5 w-5 text-white" />
-              </div>
-              {tv.extraInstructions}
-            </label>
-            <Textarea
-              value={additionalInstructions}
-              onChange={(e) => setAdditionalInstructions(e.target.value)}
-              placeholder={tv.extraPlaceholder}
-              className="min-h-[120px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40 p-5"
-            />
-          </div>
-
-          {/* ── Generate Button ── */}
-          <div>
-            <Button
-              onClick={handleGenerate}
-              disabled={generating || !currentDay}
-              className="relative w-full h-20 rounded-2xl bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#004D26] hover:shadow-md text-2xl font-extrabold transition-all duration-500 shadow-xl border-2 border-[#C9A84C]/30 overflow-hidden group"
-            >
-              {/* Shimmer overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-              {generating ? (
-                <Loader2 className="mr-3 h-8 w-8 animate-spin relative z-10" />
-              ) : (
-                <Sparkles className="mr-3 h-8 w-8 relative z-10" />
+            <button
+              type="button"
+              onClick={() => setAddTextToImage(!addTextToImage)}
+              className={cn(
+                "w-full flex items-center gap-5 rounded-2xl border-2 p-5 text-left transition-all duration-300 overflow-hidden relative",
+                addTextToImage
+                  ? "border-[#006C35] bg-gradient-to-br from-[#006C35]/5 to-[#C9A84C]/5 shadow-lg shadow-[#006C35]/10"
+                  : "border-[#D4EBD9] bg-white hover:border-[#00A352]/40"
               )}
-              <span className="relative z-10">{tv.generate4}</span>
-              {!generating && <Sparkles className="ml-3 h-8 w-8 relative z-10" />}
-            </Button>
+            >
+              {addTextToImage && (
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] origin-left" />
+              )}
+              <div className={cn(
+                "flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 shadow-md",
+                addTextToImage ? "bg-gradient-to-br from-[#006C35] to-[#00A352]" : "bg-[#F0F7F2]"
+              )}>
+                <Type className={cn("h-6 w-6", addTextToImage ? "text-white" : "text-[#5A8A6A]")} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className={cn("text-lg font-bold", addTextToImage ? "text-[#004D26]" : "text-[#5A8A6A]")}>{tv.addText}</p>
+                <p className="text-sm text-[#5A8A6A]">{tv.addTextDesc}</p>
+              </div>
+              <div className={cn(
+                "h-7 w-12 rounded-full transition-all duration-300 relative flex-shrink-0",
+                addTextToImage ? "bg-gradient-to-r from-[#006C35] to-[#00A352] shadow-inner" : "bg-[#D4EBD9]"
+              )}>
+                <div className={cn("absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-md flex items-center justify-center")}>
+                  {addTextToImage && <Check className="h-3.5 w-3.5 text-[#006C35]" />}
+                </div>
+              </div>
+            </button>
+            {addTextToImage && (
+              <div className="mt-3">
+                <input
+                  type="text"
+                  value={imageText}
+                  onChange={(e) => setImageText(e.target.value)}
+                  placeholder={tv.imageTextPlaceholder}
+                  className="w-full h-14 rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40"
+                />
+                <p className="mt-2 text-sm text-[#5A8A6A]">
+                  {outputLanguage === "ar" ? "سيظهر النص بالعربية" : "Text will appear in English"}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* ── RIGHT COLUMN: Image Output ── */}
-        <div className="lg:col-span-3">
-          <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
-            <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
-            <CardHeader className="p-5 sm:p-8 pb-4">
-              <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
-                  <ImageIcon className="h-7 w-7 text-white" />
+        {/* ── Right: Extra Instructions ── */}
+        <div>
+          <label className="mb-3 flex items-center gap-3 text-xl font-extrabold text-[#004D26] font-['Cairo']">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C9A84C] to-[#E8D5A0] shadow-md">
+              <MessageSquare className="h-5 w-5 text-white" />
+            </div>
+            {tv.extraInstructions}
+          </label>
+          <Textarea
+            value={additionalInstructions}
+            onChange={(e) => setAdditionalInstructions(e.target.value)}
+            placeholder={tv.extraPlaceholder}
+            className="min-h-[280px] rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40 p-5"
+          />
+        </div>
+      </div>
+
+      {/* ===== GENERATE BUTTON (centered) ===== */}
+      <div className="flex justify-center">
+        <Button
+          onClick={handleGenerate}
+          disabled={generating || !currentDay}
+          className="relative w-full max-w-2xl h-20 rounded-2xl bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#004D26] hover:shadow-md text-2xl font-extrabold transition-all duration-500 shadow-xl border-2 border-[#C9A84C]/30 overflow-hidden group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+          {generating ? (
+            <Loader2 className="mr-3 h-8 w-8 animate-spin relative z-10" />
+          ) : (
+            <Sparkles className="mr-3 h-8 w-8 relative z-10" />
+          )}
+          <span className="relative z-10">{tv.generate4}</span>
+          {!generating && <Sparkles className="ml-3 h-8 w-8 relative z-10" />}
+        </Button>
+      </div>
+
+      {/* ===== GENERATED IMAGES (full width, centered) ===== */}
+      <div className="max-w-5xl mx-auto w-full">
+        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+          <CardHeader className="p-5 sm:p-8 pb-4">
+            <CardTitle className="flex items-center justify-center gap-4 text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                <ImageIcon className="h-7 w-7 text-white" />
+              </div>
+              {tv.generatedImages}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-5 sm:p-8 pt-2">
+            {images.length === 0 && !generating ? (
+              /* ── Empty State ── */
+              <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] py-20">
+                <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35]/10 to-[#C9A84C]/10 shadow-inner">
+                  <ImageIcon className="h-12 w-12 text-[#5A8A6A]/50" />
                 </div>
-                {tv.generatedImages}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-5 sm:p-8 pt-2">
-              {images.length === 0 && !generating ? (
-                /* ── Empty State ── */
-                <div
-                  className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] py-28"
-                >
-                  <div
-                    className="flex h-32 w-32 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35]/10 to-[#C9A84C]/10 shadow-inner"
-                  >
-                    <ImageIcon className="h-16 w-16 text-[#5A8A6A]/50" />
-                  </div>
-                  <p className="mt-8 text-2xl font-bold text-[#004D26]">{tv.imagesHere}</p>
-                  <p className="mt-2 text-lg text-[#5A8A6A]">{tv.selectAndGenerate}</p>
-                </div>
-              ) : generating ? (
-                /* ── Loading State with Gradient Sweep Skeletons ── */
-                <div className="space-y-6">
-                  <div className="grid grid-cols-2 gap-5">
-                    {[0, 1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9] shadow-md"
-                        style={{ background: "linear-gradient(135deg, #F0F7F2 0%, #F8FBF8 50%, #F0F7F2 100%)" }}
-                      >
-                        {/* Animated gradient sweep */}
-                        <div
-                          className="absolute inset-0"
-                          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(0,108,53,0.08) 30%, rgba(201,168,76,0.08) 50%, rgba(0,108,53,0.08) 70%, transparent 100%)" }}
-                        />
-                        {/* Gradient accent bar at top */}
-                        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
-                        {/* Pulsing icon */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div
-                          >
-                            <Sparkles className="h-14 w-14 text-[#C9A84C]/30" />
-                          </div>
-                        </div>
-                        {/* Progress dots */}
-                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                          {[0, 1, 2].map((d) => (
-                            <div
-                              key={d}
-                              className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-[#006C35] to-[#C9A84C]"
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  {/* Loading quote */}
-                  <div className="text-center py-4">
-                    <p className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
-                      {loadingQuotes[loadingQuoteIndex]}
-                    </p>
-                    <div className="mt-4 mx-auto h-2 w-64 rounded-full bg-[#F0F7F2] overflow-hidden border border-[#D4EBD9]">
-                      <div
-                        className="h-full w-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] transition-all duration-700"
-                      />
-                    </div>
-                    <p className="mt-2 text-base text-[#5A8A6A]">
-                      {locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u0625\u0646\u0634\u0627\u0621..." : "Creating your visuals..."}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                /* ── Generated Images Grid ── */
-                <div
-                  className="grid grid-cols-2 gap-5"
-                >
-                  {images.map((img, i) => (
+                <p className="mt-6 text-2xl font-bold text-[#004D26]">{tv.imagesHere}</p>
+                <p className="mt-2 text-lg text-[#5A8A6A]">{tv.selectAndGenerate}</p>
+              </div>
+            ) : generating ? (
+              /* ── Loading State ── */
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-5">
+                  {[0, 1, 2, 3].map((i) => (
                     <div
-                      key={img.id}
-                      className="group relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-md transition-all duration-300"
+                      key={i}
+                      className="relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9] shadow-md"
+                      style={{ background: "linear-gradient(135deg, #F0F7F2 0%, #F8FBF8 50%, #F0F7F2 100%)" }}
                     >
-                      {/* Gradient accent bar at top */}
-                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] z-10" />
-                      {img.url ? (
-                        <img
-                          src={img.url}
-                          alt={img.style_label}
-                          className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const parent = target.parentElement;
-                            if (parent) {
-                              const fallback = document.createElement("div");
-                              fallback.className = "aspect-square w-full flex items-center justify-center bg-[#F0F7F2]";
-                              fallback.innerHTML = '<p class="text-[#5A8A6A] text-center px-4 text-lg">Image failed to load</p>';
-                              parent.insertBefore(fallback, target);
-                            }
-                          }}
-                        />
-                      ) : (
-                        <div className="aspect-square w-full flex items-center justify-center bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2]">
-                          <div className="text-center">
-                            <ImageIcon className="h-12 w-12 text-[#5A8A6A] mx-auto mb-3" />
-                            <p className="text-lg text-[#5A8A6A]">Generation failed</p>
-                          </div>
-                        </div>
-                      )}
-                      {img.url && (
-                        <div className="absolute inset-0 flex items-center justify-center gap-4 bg-gradient-to-t from-[#004D26]/70 via-[#004D26]/30 to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100">
-                          <button
-                            type="button"
-                            onClick={() => setLightboxUrl(img.url!)}
-                            className="rounded-2xl bg-white/95 border-2 border-[#D4EBD9] px-5 py-3 text-lg font-bold text-[#004D26] flex items-center gap-2.5 shadow-xl"
-                          >
-                            <Maximize2 className="h-5 w-5" /> {tv.fullScreen}
-                          </button>
-                          <a
-                            href={img.url}
-                            download
-                            className="rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-5 py-3 text-lg font-bold text-white flex items-center gap-2.5 shadow-xl"
-                          >
-                            <Download className="h-5 w-5" />
-                          </a>
-                        </div>
-                      )}
-                      <span className="absolute bottom-3 left-3 rounded-xl bg-white/95 border-2 border-[#D4EBD9] px-4 py-2 text-base font-bold text-[#004D26] shadow-md">
-                        {img.style_label}
-                      </span>
+                      <div
+                        className="absolute inset-0"
+                        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(0,108,53,0.08) 30%, rgba(201,168,76,0.08) 50%, rgba(0,108,53,0.08) 70%, transparent 100%)" }}
+                      />
+                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352]" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Sparkles className="h-14 w-14 text-[#C9A84C]/30" />
+                      </div>
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                        {[0, 1, 2].map((d) => (
+                          <div key={d} className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-[#006C35] to-[#C9A84C]" />
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
-              )}
-
-              {/* ── Save Button ── */}
-              {images.length > 0 && !generating && (
-                <div
-                  className="mt-8 flex justify-end"
-                >
-                  <div>
-                    <Button
-                      onClick={handleSave}
-                      disabled={saved || saving}
-                      className={cn(
-                        "relative h-16 px-10 rounded-2xl text-xl font-extrabold shadow-lg transition-all duration-500 border-2 overflow-hidden group",
-                        saved
-                          ? "bg-gradient-to-r from-[#D4EBD9] to-[#F0F7F2] text-[#5A8A6A] border-[#D4EBD9] cursor-default"
-                          : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white border-[#006C35]/30 hover:shadow-md"
-                      )}
-                    >
-                      {/* Shimmer overlay */}
-                      {!saved && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-                      )}
-                      {saving ? <Loader2 className="mr-2.5 h-6 w-6 animate-spin relative z-10" /> : saved ? <Check className="mr-2.5 h-6 w-6 relative z-10" /> : null}
-                      <span className="relative z-10">
-                        {saved ? (locale === "ar" ? "\u2713 \u062A\u0645 \u0627\u0644\u062D\u0641\u0638" : "\u2713 Saved") : saving ? (locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u062D\u0641\u0638..." : "Saving...") : (locale === "ar" ? "\u062D\u0641\u0638 \u0627\u0644\u0635\u0648\u0631" : "Save Images")}
-                      </span>
-                    </Button>
+                <div className="text-center py-4">
+                  <p className="text-2xl font-extrabold text-[#004D26] font-['Cairo']">
+                    {loadingQuotes[loadingQuoteIndex]}
+                  </p>
+                  <div className="mt-4 mx-auto h-2 w-64 rounded-full bg-[#F0F7F2] overflow-hidden border border-[#D4EBD9]">
+                    <div className="h-full w-full rounded-full bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] transition-all duration-700" />
                   </div>
+                  <p className="mt-2 text-base text-[#5A8A6A]">
+                    {locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u0625\u0646\u0634\u0627\u0621..." : "Creating your visuals..."}
+                  </p>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+              </div>
+            ) : (
+              /* ── Generated Images Grid ── */
+              <div className="grid grid-cols-2 gap-5">
+                {images.map((img) => (
+                  <div
+                    key={img.id}
+                    className="group relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-md transition-all duration-300"
+                  >
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#006C35] via-[#C9A84C] to-[#00A352] z-10" />
+                    {img.url ? (
+                      <img
+                        src={img.url}
+                        alt={img.style_label}
+                        className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const parent = target.parentElement;
+                          if (parent) {
+                            const fallback = document.createElement("div");
+                            fallback.className = "aspect-square w-full flex items-center justify-center bg-[#F0F7F2]";
+                            fallback.innerHTML = '<p class="text-[#5A8A6A] text-center px-4 text-lg">Image failed to load</p>';
+                            parent.insertBefore(fallback, target);
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div className="aspect-square w-full flex items-center justify-center bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2]">
+                        <div className="text-center">
+                          <ImageIcon className="h-12 w-12 text-[#5A8A6A] mx-auto mb-3" />
+                          <p className="text-lg text-[#5A8A6A]">Generation failed</p>
+                        </div>
+                      </div>
+                    )}
+                    {img.url && (
+                      <div className="absolute inset-0 flex items-center justify-center gap-4 bg-gradient-to-t from-[#004D26]/70 via-[#004D26]/30 to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100">
+                        <button
+                          type="button"
+                          onClick={() => setLightboxUrl(img.url!)}
+                          className="rounded-2xl bg-white/95 border-2 border-[#D4EBD9] px-5 py-3 text-lg font-bold text-[#004D26] flex items-center gap-2.5 shadow-xl"
+                        >
+                          <Maximize2 className="h-5 w-5" /> {tv.fullScreen}
+                        </button>
+                        <a
+                          href={img.url}
+                          download
+                          className="rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-5 py-3 text-lg font-bold text-white flex items-center gap-2.5 shadow-xl"
+                        >
+                          <Download className="h-5 w-5" />
+                        </a>
+                      </div>
+                    )}
+                    <span className="absolute bottom-3 left-3 rounded-xl bg-white/95 border-2 border-[#D4EBD9] px-4 py-2 text-base font-bold text-[#004D26] shadow-md">
+                      {img.style_label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* ── Save Button (centered) ── */}
+            {images.length > 0 && !generating && (
+              <div className="mt-8 flex justify-center">
+                <Button
+                  onClick={handleSave}
+                  disabled={saved || saving}
+                  className={cn(
+                    "relative h-16 px-10 rounded-2xl text-xl font-extrabold shadow-lg transition-all duration-500 border-2 overflow-hidden group",
+                    saved
+                      ? "bg-gradient-to-r from-[#D4EBD9] to-[#F0F7F2] text-[#5A8A6A] border-[#D4EBD9] cursor-default"
+                      : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white border-[#006C35]/30 hover:shadow-md"
+                  )}
+                >
+                  {!saved && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                  )}
+                  {saving ? <Loader2 className="mr-2.5 h-6 w-6 animate-spin relative z-10" /> : saved ? <Check className="mr-2.5 h-6 w-6 relative z-10" /> : null}
+                  <span className="relative z-10">
+                    {saved ? (locale === "ar" ? "\u2713 \u062A\u0645 \u0627\u0644\u062D\u0641\u0638" : "\u2713 Saved") : saving ? (locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u062D\u0641\u0638..." : "Saving...") : (locale === "ar" ? "\u062D\u0641\u0638 \u0627\u0644\u0635\u0648\u0631" : "Save Images")}
+                  </span>
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       {/* ===== LIGHTBOX ===== */}

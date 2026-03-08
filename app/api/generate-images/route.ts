@@ -46,11 +46,30 @@ You specialize in creating marketing content for Saudi Arabian brands that looks
    - NO glossy/plastic skin on people
    - NO overly saturated or HDR-looking colors
    - NO multiple people with all faces visible (keep it 1-2 people max, or show from behind/profile)
+   - NO unnaturally clean or sterile environments — add lived-in details
+   - NO perfectly uniform lighting — real photos have subtle light falloff
 
-═══ BRAND COLOR INTEGRATION ═══
-- Incorporate brand colors through REAL objects: colored packaging, clothing, walls, props, food items, furniture
+7. ANTI-AI REALISM (CRITICAL):
+   - NEVER produce images that look digitally rendered, CGI, or AI-generated
+   - Every image MUST pass as a real photograph taken by a professional photographer
+   - Add micro-imperfections: a slightly wrinkled napkin, a small coffee ring stain, natural dust motes in light beams
+   - Use natural color grading — slightly muted, not oversaturated. Think analog film, not digital HDR
+   - Include real environment context: reflections in glass, shadows that match the light source, ambient occlusion in corners
+   - Surfaces should show wear: fingerprints on glass, patina on metal, creases in leather
+
+═══ BRAND COLOR INTEGRATION (CRITICAL — MUST FOLLOW) ═══
+- The client's brand colors are NON-NEGOTIABLE. At least 2 brand colors MUST be clearly visible in EVERY image.
+- Incorporate brand colors through REAL objects: colored packaging, clothing, walls, props, food items, furniture, accessories, signage, stationery
+- For each brand color, suggest specific objects: e.g., #006C35 → clothing, wall paint, packaging, foliage; #C9A84C → jewelry, cushions, coffee cups, frames
 - Do NOT apply color filters or unrealistic color grading
 - Colors appear naturally: "wearing a deep green (#006C35) linen shirt", "gold (#C9A84C) accent cushion on the sofa"
+- If colors are warm (reds, oranges, golds), use warm-toned props and textiles
+- If colors are cool (blues, greens), use corresponding natural elements
+
+═══ CLIENT REQUIREMENTS ═══
+- Any client requirements provided in the brief OVERRIDE default style choices
+- Client instructions are MANDATORY — never ignore or deprioritize them
+- If a client requirement conflicts with a style guideline, follow the client requirement
 
 ═══ TEXT IN IMAGES ═══
 - If the output language is Arabic: you may include SHORT Arabic text (1-3 words max) on a sign, menu, or product label — specify the exact Arabic text in quotes
@@ -184,6 +203,7 @@ export async function POST(request: NextRequest) {
       includeLogo = false,
       logoUrl,
       referenceImages: referenceImagesData = [],
+      imageText,
     } = body;
 
     if (!company?.name || !dayContent?.topic) {
@@ -195,20 +215,36 @@ export async function POST(request: NextRequest) {
 
     // Build brand color instruction string
     const brandColors = (company.brand_colors || []).slice(0, 5);
+    const colorSuggestions: Record<string, string> = {};
+    const colorObjectHints = ["clothing, packaging, wall paint, furniture", "accessories, cushions, frames, stationery", "tableware, signage, textiles, rugs", "backgrounds, props, flowers, food items", "accents, jewelry, bags, ribbons"];
+    brandColors.forEach((color: string, i: number) => {
+      colorSuggestions[color] = colorObjectHints[i] || "props, accents, backgrounds";
+    });
     const colorInstruction = brandColors.length
-      ? `BRAND COLORS to integrate through real objects/clothing/props: ${brandColors.join(", ")}. These must appear naturally — on packaging, clothing, walls, furniture, accessories — NOT as color filters.`
+      ? `⚠️ CRITICAL BRAND COLORS (MUST be prominently visible):\n${brandColors.map((c: string, i: number) => `  • ${c} → use on: ${colorObjectHints[i] || "props, accents, backgrounds"}`).join("\n")}\nAt least 2 of these brand colors MUST be clearly visible in every image. Integrate them through real objects — NOT as color filters.`
       : "";
+
+    // Build language directive
+    const langName = outputLanguage === "ar" ? "Arabic" : "English";
+    const langDirective = `ALL text elements in the image (signs, labels, menus, packaging) MUST be in ${langName}. Do NOT mix languages.` +
+      (outputLanguage === "ar" ? " Use Arabic calligraphy or modern Arabic typography when text appears." : " Use clean modern English typography when text appears.");
+
+    // Build text-on-image directive
+    const textDirective = imageText
+      ? `Include the text "${imageText}" prominently in the image as a stylish overlay/sign/banner that fits the scene naturally. The text should be in ${langName} and clearly readable.`
+      : "Do NOT include any text, words, or letters in the image.";
 
     const userMsg = [
       `Brand: "${company.name}" — ${company.industry || "general"} industry, ${company.tone || "professional"} tone`,
+      additionalInstructions ? `⚠️ MANDATORY CLIENT REQUIREMENTS (must follow exactly): ${additionalInstructions}` : "",
       `Content topic: ${dayContent.topic}`,
       `Platform: ${dayContent.platform || "Instagram"}`,
-      `Visual style direction: ${style}`,
-      `Output language: ${outputLanguage}`,
       colorInstruction,
+      `Visual style direction: ${style}`,
+      `Language: ${langDirective}`,
+      textDirective,
       referenceImagesData.length ? `The client provided ${referenceImagesData.length} reference photo(s) of their actual products/venue/dishes. The generated images MUST capture the same visual style, colors, textures, plating, and atmosphere shown in these reference photos. Think of them as the "real thing" — the AI output should look like professional photos taken in the same setting with the same products.` : "",
       includeLogo ? "Composition note: leave a clean corner area (bottom-right preferred) where a logo watermark can be overlaid in post-production." : "",
-      additionalInstructions ? `Client notes: ${additionalInstructions}` : "",
     ]
       .filter(Boolean)
       .join("\n");
@@ -243,9 +279,9 @@ export async function POST(request: NextRequest) {
     const images: { id: number; style_label: string; url?: string; prompt_used: string }[] = [];
 
     // Append photorealism booster to every prompt
-    const realisticSuffix = " Photorealistic, shot on a professional camera, natural lighting, real textures, subtle film grain, shallow depth of field.";
+    const realisticSuffix = " Photorealistic, shot on a professional camera, natural lighting, real textures, subtle film grain, shallow depth of field. Micro-imperfections visible: natural fabric wrinkles, real surface wear, authentic environment details. Natural color grading — slightly muted tones like analog film, not oversaturated or HDR. Must look like a real photograph, never CGI or digitally rendered.";
     const colorReminder = brandColors.length
-      ? ` Brand colors (${brandColors.join(", ")}) appear naturally on objects, clothing, or props in the scene.`
+      ? ` At least 2 brand colors MUST be clearly visible: ${brandColors.map((c: string, i: number) => `${c} on ${colorObjectHints[i]?.split(",")[0] || "props"}`).join(", ")}.`
       : "";
 
     for (const p of prompts.slice(0, 4)) {
