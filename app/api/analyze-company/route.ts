@@ -83,10 +83,14 @@ Return ONLY valid JSON, no markdown, no explanation outside the JSON. Structure:
     "avoid": ["what to never say", "what to avoid"],
     "exampleCaption": "Write one example Instagram caption for this brand"
   },
-  "vision2030Alignment": "How this brand aligns with Saudi Vision 2030 (1-2 sentences)"
+  "vision2030Alignment": "How this brand aligns with Saudi Vision 2030 (1-2 sentences)",
+  "suggestedTargetAudience": "1-2 sentence description of the ideal target audience for this brand based on its industry, offerings, and positioning",
+  "suggestedUniqueValue": "1-2 sentence unique value proposition — what makes this brand stand out from competitors"
 }
 
 If website content is provided, use it to deeply understand the brand's real offerings, tone, and positioning. Extract key products/services, taglines, brand messaging, and value propositions from the actual site content. This is the most reliable source of truth about the brand.
+
+ALWAYS generate suggestedTargetAudience and suggestedUniqueValue based on the company description, industry, and any website content — even if the user already provided them.
 
 If outputLanguage is "ar", write summary, descriptions, exampleCaption, and saudiSpecific in Arabic (Saudi/Jeddah-appropriate tone where natural).`;
 

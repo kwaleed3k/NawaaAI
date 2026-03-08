@@ -594,6 +594,14 @@ export default function CompaniesPage() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Analysis failed");
       setBrandAnalysis(json.analysis);
+      // Auto-fill target audience and unique value if empty
+      const analysis = json.analysis as Record<string, unknown>;
+      if (!form.target_audience.trim() && analysis.suggestedTargetAudience) {
+        setForm((f) => ({ ...f, target_audience: analysis.suggestedTargetAudience as string }));
+      }
+      if (!form.unique_value.trim() && analysis.suggestedUniqueValue) {
+        setForm((f) => ({ ...f, unique_value: analysis.suggestedUniqueValue as string }));
+      }
       const newCount = currentCount + 1;
       // Save analysis + count to company record
       if (editingId) {
