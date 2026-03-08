@@ -240,7 +240,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {mobileOpen && (
         <>
           <div
-            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-200"
+            className="fixed inset-0 z-50 bg-black/40 lg:hidden transition-opacity duration-200"
             onClick={() => setMobileOpen(false)}
           />
           <aside

@@ -17,7 +17,7 @@ export default function InsightsPage() {
       gradient: "from-[#006C35] to-[#00A352]",
       iconBg: "from-[#006C35]/20 to-[#00A352]/20",
       barColor: "from-[#006C35] to-[#00A352]",
-      shadowColor: "hover:shadow-[0_20px_50px_-12px_rgba(0,108,53,0.35)]",
+      shadowColor: "hover:shadow-md",
       barWidth: "65%",
     },
     {
@@ -26,7 +26,7 @@ export default function InsightsPage() {
       gradient: "from-[#C9A84C] to-[#E8C84C]",
       iconBg: "from-[#C9A84C]/20 to-[#E8C84C]/20",
       barColor: "from-[#C9A84C] to-[#E8C84C]",
-      shadowColor: "hover:shadow-[0_20px_50px_-12px_rgba(201,168,76,0.35)]",
+      shadowColor: "hover:shadow-md",
       barWidth: "55%",
     },
     {
@@ -35,7 +35,7 @@ export default function InsightsPage() {
       gradient: "from-[#8B5CF6] to-[#A78BFA]",
       iconBg: "from-[#8B5CF6]/20 to-[#A78BFA]/20",
       barColor: "from-[#8B5CF6] to-[#A78BFA]",
-      shadowColor: "hover:shadow-[0_20px_50px_-12px_rgba(139,92,246,0.35)]",
+      shadowColor: "hover:shadow-md",
       barWidth: "70%",
     },
   ];

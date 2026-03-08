@@ -653,7 +653,7 @@ export default function CompaniesPage() {
 
             <Button
               onClick={openAdd}
-              className="h-14 px-8 text-lg font-bold rounded-2xl bg-white text-[#006C35] hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all shadow-lg"
+              className="h-14 px-8 text-lg font-bold rounded-2xl bg-white text-[#006C35] hover:bg-white/90 hover:shadow-md transition-all shadow-lg"
             >
               <Plus className="mr-2 h-6 w-6" />
               {tc.addCompany}
@@ -699,7 +699,7 @@ export default function CompaniesPage() {
           <div>
             <Button
               onClick={openAdd}
-              className="mt-8 h-16 px-10 text-xl font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] text-white shadow-xl hover:shadow-[0_0_40px_rgba(0,108,53,0.35)] transition-all"
+              className="mt-8 h-16 px-10 text-xl font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] text-white shadow-xl hover:shadow-md transition-all"
             >
               <Plus className="mr-3 h-7 w-7" />
               {tc.addCompany}
@@ -724,7 +724,7 @@ export default function CompaniesPage() {
                 key={c.id}
                 className="group hover:-translate-y-1.5 transition-transform duration-200"
               >
-                <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,108,53,0.15)] hover:border-[#00A352]/40">
+                <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-md hover:border-[#00A352]/40">
                   {/* Top gradient accent bar */}
                   <div className={cn("h-2 w-full bg-gradient-to-r", gradientClass)} />
 
@@ -816,7 +816,7 @@ export default function CompaniesPage() {
                     <div className="mt-6 flex gap-3">
                       <div className="flex-1">
                         <Button
-                          className="h-12 w-full text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-[0_0_25px_rgba(0,108,53,0.3)] rounded-2xl transition-all shadow-md"
+                          className="h-12 w-full text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-sm rounded-2xl transition-all shadow-md"
                           onClick={() => setViewingCompany(c)}
                         >
                           <Eye className="mr-2 h-5 w-5" /> {tc.viewDetails || "View Details"}
@@ -833,7 +833,7 @@ export default function CompaniesPage() {
                       </div>
                       <div>
                         <Button
-                          className="h-12 px-5 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl shadow-md hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all"
+                          className="h-12 px-5 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl shadow-md hover:shadow-sm transition-all"
                           onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}
                         >
                           <Trash2 className="h-5 w-5" />
@@ -851,11 +851,11 @@ export default function CompaniesPage() {
             className="group cursor-pointer hover:-translate-y-1.5 transition-transform duration-200"
             onClick={openAdd}
           >
-            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-white overflow-hidden transition-all duration-300 hover:border-[#00A352] hover:bg-gradient-to-br hover:from-[#F0F7F2] hover:to-[#F8FBF8] hover:shadow-[0_20px_50px_rgba(0,108,53,0.12)]">
+            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-white overflow-hidden transition-all duration-300 hover:border-[#00A352] hover:bg-gradient-to-br hover:from-[#F0F7F2] hover:to-[#F8FBF8] hover:shadow-md">
               {/* Decorative gradients */}
 
               <div
-                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg group-hover:shadow-[0_0_30px_rgba(0,108,53,0.3)] transition-shadow"
+                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg group-hover:shadow-md transition-shadow"
               >
                 <Plus className="h-10 w-10 text-white" />
               </div>
@@ -1213,7 +1213,7 @@ export default function CompaniesPage() {
                     "relative h-16 text-xl px-10 rounded-2xl font-extrabold transition-all shadow-xl overflow-hidden",
                     getAnalysisCount() >= 3
                       ? "bg-[#D4EBD9] text-[#5A8A6A] cursor-not-allowed opacity-60"
-                      : "bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#0A1F0F] hover:shadow-[0_0_40px_rgba(201,168,76,0.5)]"
+                      : "bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#0A1F0F] hover:shadow-md"
                   )}
                 >
                   {/* Shimmer effect */}
@@ -1234,7 +1234,7 @@ export default function CompaniesPage() {
             </section>
 
             {/* ─── Footer Actions ─── */}
-            <div className="sticky bottom-0 bg-white/90 border-t-2 border-[#D4EBD9] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-4 mt-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+            <div className="sticky bottom-0 bg-white/90 border-t-2 border-[#D4EBD9] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-4 mt-4 ">
               <div>
                 <Button
                   variant="outline"
@@ -1248,7 +1248,7 @@ export default function CompaniesPage() {
                 <Button
                   onClick={saveCompany}
                   disabled={saving}
-                  className="h-14 px-12 text-lg font-extrabold rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-xl hover:shadow-[0_0_30px_rgba(0,108,53,0.4)] transition-all"
+                  className="h-14 px-12 text-lg font-extrabold rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-xl hover:shadow-md transition-all"
                 >
                   {saving ? <Loader2 className="h-6 w-6 animate-spin" /> : tc.save}
                 </Button>
@@ -1471,7 +1471,7 @@ export default function CompaniesPage() {
                           {tc.noAnalysis || "No AI analysis yet. Edit the company to run one."}
                         </p>
                         <Button
-                          className="mt-5 h-12 px-8 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#0A1F0F] shadow-lg hover:shadow-[0_0_30px_rgba(201,168,76,0.4)] transition-all"
+                          className="mt-5 h-12 px-8 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#0A1F0F] shadow-lg hover:shadow-md transition-all"
                           onClick={() => { setViewingCompany(null); openEdit(vc); }}
                         >
                           <Sparkles className="mr-2 h-5 w-5" />
@@ -1491,7 +1491,7 @@ export default function CompaniesPage() {
                       <Pencil className="mr-2 h-5 w-5" /> {tc.edit}
                     </Button>
                     <Button
-                      className="h-12 px-8 text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white rounded-2xl shadow-lg hover:shadow-[0_0_25px_rgba(0,108,53,0.3)] transition-all"
+                      className="h-12 px-8 text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white rounded-2xl shadow-lg hover:shadow-sm transition-all"
                       onClick={() => setViewingCompany(null)}
                     >
                       {tc.close || "Close"}

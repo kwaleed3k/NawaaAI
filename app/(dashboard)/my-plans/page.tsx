@@ -129,10 +129,10 @@ const HASHTAG_PILL_COLORS = [
 /* ── Card shadow glow rotation ── */
 
 const CARD_GLOW_COLORS = [
-  "hover:shadow-[0_8px_40px_rgba(0,108,53,0.18)]",
-  "hover:shadow-[0_8px_40px_rgba(201,168,76,0.18)]",
-  "hover:shadow-[0_8px_40px_rgba(99,102,241,0.18)]",
-  "hover:shadow-[0_8px_40px_rgba(168,85,247,0.18)]",
+  "hover:shadow-lg",
+  "hover:shadow-lg",
+  "hover:shadow-lg",
+  "hover:shadow-lg",
 ];
 
 /* ── Helpers ── */
@@ -282,7 +282,6 @@ export default function MyPlansPage() {
         <div
           className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10"
         >
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA4KSIvPjwvc3ZnPg==')] opacity-60" />
           <div className="relative">
             <h1 className="font-['Cairo'] text-4xl md:text-5xl font-extrabold text-white drop-shadow-sm">
               {isAr ? "\u062E\u0637\u0637\u064A \u0627\u0644\u0645\u062D\u0641\u0648\u0638\u0629" : "My Saved Plans"}
@@ -305,7 +304,7 @@ export default function MyPlansPage() {
           {/* Floating animated icon */}
           <div className="relative">
             <div
-              className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C] shadow-[0_8px_40px_rgba(0,108,53,0.25)]"
+              className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#C9A84C] shadow-lg"
             >
               <FolderOpen className="h-14 w-14 text-white" />
             </div>
@@ -336,7 +335,7 @@ export default function MyPlansPage() {
           </p>
           <a
             href="/planner"
-            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] text-white hover:shadow-[0_0_30px_rgba(0,108,53,0.35)] transition-all duration-300 shadow-lg hover:scale-[1.02]"
+            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]"
           >
             <Calendar className="h-6 w-6" />
             {isAr
@@ -359,7 +358,6 @@ export default function MyPlansPage() {
         className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10"
       >
         {/* Decorative dot pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA4KSIvPjwvc3ZnPg==')] opacity-60" />
 
         <div className="relative flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -421,7 +419,7 @@ export default function MyPlansPage() {
                 "group relative overflow-hidden rounded-2xl border-2 bg-white transition-all duration-300",
                 glowClass,
                 isExpanded
-                  ? "border-[#006C35]/50 shadow-[0_8px_40px_rgba(0,108,53,0.15)]"
+                  ? "border-[#006C35]/50 shadow-lg"
                   : "border-[#D4EBD9] hover:border-[#006C35]/40"
               )}
             >
@@ -542,7 +540,7 @@ export default function MyPlansPage() {
                       "flex-1 h-12 rounded-xl text-base font-bold transition-all duration-300",
                       isExpanded
                         ? "bg-[#006C35] text-white hover:bg-[#006C35]/90"
-                        : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-[0_0_25px_rgba(0,163,82,0.3)] shadow-md hover:scale-[1.02]"
+                        : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-sm shadow-md hover:scale-[1.02]"
                     )}
                   >
                     {isExpanded ? (
@@ -564,7 +562,7 @@ export default function MyPlansPage() {
                       <Button
                         onClick={() => handleDelete(plan.id)}
                         disabled={deletingId === plan.id}
-                        className="h-12 px-4 rounded-xl bg-red-500 text-white hover:bg-red-600 text-base font-bold shadow-md hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                        className="h-12 px-4 rounded-xl bg-red-500 text-white hover:bg-red-600 text-base font-bold shadow-md hover:shadow-sm"
                       >
                         {deletingId === plan.id ? (
                           <Loader2 className="h-5 w-5 animate-spin" />
@@ -586,7 +584,7 @@ export default function MyPlansPage() {
                     <Button
                       onClick={() => setConfirmDeleteId(plan.id)}
                       variant="outline"
-                      className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-[0_0_15px_rgba(239,68,68,0.15)] transition-all duration-300"
+                      className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-sm transition-all duration-300"
                     >
                       <Trash2 className="h-5 w-5" />
                     </Button>
@@ -604,7 +602,6 @@ export default function MyPlansPage() {
             <div className="rounded-2xl border-2 border-[#006C35]/20 bg-[#F8FBF8] overflow-hidden">
               {/* ── Gradient header bar ── */}
               <div className="relative overflow-hidden bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-6 py-6 lg:px-8 lg:py-8">
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA4KSIvPjwvc3ZnPg==')] opacity-60" />
                 <div className="relative flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
@@ -664,7 +661,7 @@ export default function MyPlansPage() {
                     return (
                       <div
                         key={day.dayIndex}
-                        className="group/day overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white transition-all duration-300 hover:border-[#006C35]/30 hover:shadow-[0_8px_30px_rgba(0,108,53,0.12)]"
+                        className="group/day overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white transition-all duration-300 hover:border-[#006C35]/30 hover:shadow-md"
                       >
                         {/* Platform-colored top bar */}
                         <div

@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 type Props = {
   variant?: "star" | "octagon" | "arabesque";
   opacity?: number;
@@ -45,16 +43,13 @@ export function IslamicPattern({ variant = "star", opacity = 0.04, animated = tr
   const patternId = `nawaa-${variant}`;
 
   return (
-    <motion.svg
-      className={`absolute inset-0 h-full w-full text-[#C9A84C] ${animated ? "animate-pattern-drift" : ""} ${className}`}
+    <svg
+      className={`absolute inset-0 h-full w-full text-[#C9A84C] ${className}`}
       style={{ opacity }}
       xmlns="http://www.w3.org/2000/svg"
-      initial={animated ? { opacity: 0 } : undefined}
-      animate={animated ? { opacity: 1 } : undefined}
-      transition={animated ? { duration: 1.5 } : undefined}
     >
       <defs>{patterns[variant]}</defs>
       <rect width="200%" height="200%" fill={`url(#${patternId})`} />
-    </motion.svg>
+    </svg>
   );
 }

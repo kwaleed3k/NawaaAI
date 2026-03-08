@@ -258,7 +258,7 @@ export default function PlannerPage() {
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div
-                      className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_0_40px_rgba(0,108,53,0.3)]"
+                      className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-md"
                     >
                       <Sparkles className="h-10 w-10 text-white" />
                     </div>
@@ -512,7 +512,7 @@ export default function PlannerPage() {
                 <Button
                   onClick={handleGenerate}
                   disabled={generating}
-                  className="relative w-full h-20 rounded-2xl bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#004D26] hover:shadow-[0_0_50px_rgba(201,168,76,0.4)] text-2xl font-extrabold transition-all duration-500 shadow-xl border-2 border-[#C9A84C]/30 overflow-hidden group"
+                  className="relative w-full h-20 rounded-2xl bg-gradient-to-r from-[#C9A84C] via-[#E8D5A0] to-[#C9A84C] text-[#004D26] hover:shadow-md text-2xl font-extrabold transition-all duration-500 shadow-xl border-2 border-[#C9A84C]/30 overflow-hidden group"
                 >
                   {/* Shimmer overlay */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
@@ -553,14 +553,14 @@ export default function PlannerPage() {
             className="flex flex-wrap gap-3"
           >
             <Button
-              className="h-14 rounded-2xl border-2 border-[#C9A84C]/40 bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#004D26] text-lg font-bold hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] transition-all shadow-md px-6"
+              className="h-14 rounded-2xl border-2 border-[#C9A84C]/40 bg-gradient-to-r from-[#C9A84C] to-[#E8D5A0] text-[#004D26] text-lg font-bold hover:shadow-md transition-all shadow-md px-6"
               onClick={() => setRefineOpen(true)}
             >
               <Sparkles className="mr-2 h-5 w-5" />
               {tp.refineAI}
             </Button>
             <Button
-              className="h-14 rounded-2xl border-2 border-emerald-400/40 bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-bold hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all shadow-md px-6"
+              className="h-14 rounded-2xl border-2 border-emerald-400/40 bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-bold hover:shadow-md transition-all shadow-md px-6"
               onClick={handleSave}
               disabled={saving}
             >
@@ -568,7 +568,7 @@ export default function PlannerPage() {
               {tp.savePlan}
             </Button>
             <Button
-              className="h-14 rounded-2xl border-2 border-blue-400/40 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-lg font-bold hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all shadow-md px-6"
+              className="h-14 rounded-2xl border-2 border-blue-400/40 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-lg font-bold hover:shadow-md transition-all shadow-md px-6"
               onClick={handleExportPDF}
             >
               <Download className="mr-2 h-5 w-5" />
@@ -730,7 +730,7 @@ export default function PlannerPage() {
             placeholder={tp.refinePlaceholder}
           />
           <Button
-            className="h-14 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-lg font-bold text-white hover:shadow-[0_0_30px_rgba(0,163,82,0.3)] transition-all shadow-lg"
+            className="h-14 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-lg font-bold text-white hover:shadow-md transition-all shadow-lg"
             onClick={async () => {
               setRefineOpen(false);
               const focusPrompt = refineText.trim();

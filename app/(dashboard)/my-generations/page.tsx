@@ -36,10 +36,10 @@ const cardBorderHover = [
 ];
 
 const cardShadowHover = [
-  "hover:shadow-[0_8px_40px_-8px_rgba(0,163,82,0.35)]",
-  "hover:shadow-[0_8px_40px_-8px_rgba(201,168,76,0.35)]",
-  "hover:shadow-[0_8px_40px_-8px_rgba(59,154,232,0.35)]",
-  "hover:shadow-[0_8px_40px_-8px_rgba(168,85,247,0.35)]",
+  "hover:shadow-lg",
+  "hover:shadow-lg",
+  "hover:shadow-lg",
+  "hover:shadow-lg",
 ];
 
 /* ---------- Framer Motion Variants ---------- */
