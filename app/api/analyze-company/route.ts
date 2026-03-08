@@ -101,10 +101,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Trim description to avoid exceeding token limits
+    // Trim description — generous limit to accept large company profiles
     const companyTrimmed = { ...company };
-    if (typeof companyTrimmed.description === "string" && companyTrimmed.description.length > 2000) {
-      companyTrimmed.description = companyTrimmed.description.slice(0, 2000) + "...";
+    if (typeof companyTrimmed.description === "string" && companyTrimmed.description.length > 8000) {
+      companyTrimmed.description = companyTrimmed.description.slice(0, 8000) + "...";
     }
     // Remove any nested brand_analysis to avoid circular bloat
     delete companyTrimmed.brand_analysis;
@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
         { role: "user", content: userMessage },
       ],
       temperature: 0.7,
-      max_tokens: 2500,
+      max_tokens: 4000,
     });
 
     const text = completion.choices[0]?.message?.content?.trim() || "{}";

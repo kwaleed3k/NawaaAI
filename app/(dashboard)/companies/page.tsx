@@ -599,6 +599,8 @@ export default function CompaniesPage() {
       if (editingId) {
         await supabase.from("companies").update({ brand_analysis: json.analysis, analysis_count: newCount }).eq("id", editingId);
         setCompanies((prev) => prev.map((c) => c.id === editingId ? { ...c, brand_analysis: json.analysis, analysis_count: newCount } : c));
+        // Also update viewingCompany if it matches, so detail view reflects the new analysis
+        setViewingCompany((prev) => prev && prev.id === editingId ? { ...prev, brand_analysis: json.analysis, analysis_count: newCount } : prev);
       }
       toast.success(`Brand DNA ready (${newCount}/3 ${tc.analysisRemaining || "analyses used"})`);
     } catch (e) {
@@ -884,7 +886,7 @@ export default function CompaniesPage() {
       )}
 
       {/* ===== ADD/EDIT DIALOG ===== */}
-      <Dialog open={formOpen} onOpenChange={setFormOpen}>
+      <Dialog open={formOpen} onOpenChange={(open) => { setFormOpen(open); if (!open) loadCompanies(); }}>
         <DialogContent className="max-w-[95vw] lg:max-w-[85vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#D4EBD9] text-[#0A1F0F] scrollbar-nawaa p-0">
           {/* Gradient header bar */}
           <div className="sticky top-0 z-10 bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] px-4 sm:px-8 py-5 sm:py-7 rounded-t-lg overflow-hidden">
@@ -986,24 +988,42 @@ export default function CompaniesPage() {
               </div>
               <div className="mt-5">
                 <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.description}</Label>
-                <Textarea
-                  value={form.description}
-                  onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                  className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg p-5 transition-all"
-                  rows={5}
-                />
-                <div className="mt-3 flex items-center gap-3">
-                  <label className={cn("cursor-pointer flex items-center gap-2 bg-gradient-to-r from-[#F0F7F2] to-white border-2 border-[#D4EBD9] rounded-2xl px-5 py-3 hover:border-[#006C35] hover:shadow-md transition-all", uploadingPdf && "pointer-events-none opacity-50")}>
-                    <input type="file" accept="application/pdf" className="hidden" onChange={handlePdfUpload} />
-                    {uploadingPdf ? (
-                      <Loader2 className="h-6 w-6 text-[#C9A84C] animate-spin" />
-                    ) : (
-                      <FileText className="h-6 w-6 text-[#006C35]" />
-                    )}
-                    <span className="text-lg font-bold text-[#006C35]">
-                      {uploadingPdf ? tc.extracting : tc.uploadPdf}
+                <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] focus-within:border-[#006C35] focus-within:bg-white transition-all overflow-hidden">
+                  <Textarea
+                    value={form.description}
+                    onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
+                    className="border-0 bg-transparent text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 rounded-2xl text-lg p-5 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    rows={Math.min(Math.max(5, Math.ceil(form.description.length / 80)), 15)}
+                    placeholder={locale === "ar" ? "اكتب وصف شركتك أو ارفع ملف PDF للملف التعريفي..." : "Describe your company, paste a full company profile, or upload a PDF..."}
+                  />
+                  {/* Bottom bar: char count + PDF upload */}
+                  <div className="flex items-center justify-between px-5 py-3 bg-[#F0F7F2]/60 border-t border-[#D4EBD9]/50">
+                    <div className="flex items-center gap-3">
+                      <label className={cn("cursor-pointer flex items-center gap-2 bg-white border-2 border-[#D4EBD9] rounded-xl px-4 py-2 hover:border-[#006C35] hover:shadow-md transition-all", uploadingPdf && "pointer-events-none opacity-50")}>
+                        <input type="file" accept="application/pdf" className="hidden" onChange={handlePdfUpload} />
+                        {uploadingPdf ? (
+                          <Loader2 className="h-5 w-5 text-[#C9A84C] animate-spin" />
+                        ) : (
+                          <FileText className="h-5 w-5 text-[#006C35]" />
+                        )}
+                        <span className="text-sm font-bold text-[#006C35]">
+                          {uploadingPdf ? (locale === "ar" ? "جاري الاستخراج..." : "Extracting...") : (locale === "ar" ? "رفع ملف PDF" : "Upload PDF")}
+                        </span>
+                      </label>
+                      {form.description.length > 500 && (
+                        <span className="flex items-center gap-1.5 text-sm font-medium text-[#00A352]">
+                          <FileText className="h-4 w-4" />
+                          {locale === "ar" ? "ملف تعريفي شامل" : "Rich profile"}
+                        </span>
+                      )}
+                    </div>
+                    <span className={cn(
+                      "text-sm font-semibold tabular-nums",
+                      form.description.length > 5000 ? "text-[#C9A84C]" : "text-[#5A8A6A]/60"
+                    )}>
+                      {form.description.length.toLocaleString()} {locale === "ar" ? "حرف" : "chars"}
                     </span>
-                  </label>
+                  </div>
                 </div>
               </div>
             </section>
@@ -1370,11 +1390,19 @@ export default function CompaniesPage() {
                     {/* Description */}
                     {vc.description && (
                       <div className="md:col-span-2 rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] p-6">
-                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
-                          <FileText className="h-5 w-5 text-[#00A352]" />
-                          {tc.description}
-                        </h4>
-                        <p className="text-lg text-[#0A1F0F] leading-relaxed whitespace-pre-wrap">{vc.description}</p>
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26]">
+                            <FileText className="h-5 w-5 text-[#00A352]" />
+                            {tc.description}
+                          </h4>
+                          <span className="text-sm font-medium text-[#5A8A6A]/60">{vc.description.length.toLocaleString()} {locale === "ar" ? "حرف" : "chars"}</span>
+                        </div>
+                        <div className={cn(
+                          "text-base text-[#0A1F0F] leading-relaxed whitespace-pre-wrap",
+                          vc.description.length > 600 ? "max-h-[300px] overflow-y-auto scrollbar-nawaa pr-2" : ""
+                        )}>
+                          {vc.description}
+                        </div>
                       </div>
                     )}
 
