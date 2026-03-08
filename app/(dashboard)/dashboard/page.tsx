@@ -53,16 +53,16 @@ export default function DashboardPage() {
   const t = messages[locale].dashboard;
 
   useEffect(() => {
+    if (!user) { setLoading(false); return; }
     const supabase = createClient();
     (async () => {
-      const { data: { user: u } } = await supabase.auth.getUser();
-      if (!u) { setLoading(false); return; }
+      const uid = user.id;
       const [companiesRes, plansRes, imagesRes, plansCountRes, allImagesRes] = await Promise.all([
-        supabase.from("companies").select("*").eq("user_id", u.id).order("created_at", { ascending: false }),
-        supabase.from("content_plans").select("*").eq("user_id", u.id).order("created_at", { ascending: false }).limit(1),
-        supabase.from("generated_images").select("*").eq("user_id", u.id).order("created_at", { ascending: false }).limit(5),
-        supabase.from("content_plans").select("id", { count: "exact", head: true }).eq("user_id", u.id),
-        supabase.from("generated_images").select("image_urls").eq("user_id", u.id),
+        supabase.from("companies").select("*").eq("user_id", uid).order("created_at", { ascending: false }),
+        supabase.from("content_plans").select("*").eq("user_id", uid).order("created_at", { ascending: false }).limit(1),
+        supabase.from("generated_images").select("*").eq("user_id", uid).order("created_at", { ascending: false }).limit(5),
+        supabase.from("content_plans").select("id", { count: "exact", head: true }).eq("user_id", uid),
+        supabase.from("generated_images").select("image_urls").eq("user_id", uid),
       ]);
       const comps = (companiesRes.data || []) as Company[];
       setCompanies(comps);

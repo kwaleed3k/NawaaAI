@@ -155,7 +155,7 @@ function formatWeekRange(weekStart: string): string {
 
 export default function MyPlansPage() {
   const supabase = createClient();
-  const { locale } = useAppStore();
+  const { locale, user } = useAppStore();
   const isAr = locale === "ar";
 
   const [plans, setPlans] = useState<ContentPlanRow[]>([]);
@@ -166,17 +166,12 @@ export default function MyPlansPage() {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
-    loadPlans();
-  }, []);
+    if (user) loadPlans();
+    else setLoading(false);
+  }, [user]);
 
   async function loadPlans() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setLoading(false);
-      return;
-    }
+    if (!user) { setLoading(false); return; }
     const [plansRes, companiesRes] = await Promise.all([
       supabase
         .from("content_plans")

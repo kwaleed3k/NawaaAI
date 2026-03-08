@@ -72,7 +72,7 @@ const HASHTAG_COLORS = [
 
 export default function PlannerPage() {
   const supabase = createClient();
-  const { selectedCompany, setSelectedCompany, locale } = useAppStore();
+  const { selectedCompany, setSelectedCompany, locale, user } = useAppStore();
   const tp = messages[locale].planner;
   const loadingMessages = [tp.loading1, tp.loading2, tp.loading3, tp.loading4, tp.loading5];
 
@@ -96,9 +96,8 @@ export default function PlannerPage() {
   }, []);
 
   useEffect(() => {
+    if (!user) { setLoadingCompanies(false); return; }
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
       const { data } = await supabase
         .from("companies")
         .select("*")
@@ -108,7 +107,7 @@ export default function PlannerPage() {
       if (data?.length && !selectedCompany) setSelectedCompany(data[0] as Company);
       setLoadingCompanies(false);
     })();
-  }, [selectedCompany, setSelectedCompany]);
+  }, [user, selectedCompany, setSelectedCompany]);
 
   useEffect(() => {
     if (!generating) return;

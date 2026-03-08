@@ -36,7 +36,7 @@ const PLATFORM_EMOJI: Record<string, string> = {
 
 export default function VisionStudioPage() {
   const supabase = createClient();
-  const { selectedCompany, setSelectedCompany, locale } = useAppStore();
+  const { selectedCompany, setSelectedCompany, locale, user } = useAppStore();
   const tv = messages[locale].visionStudio;
 
   const STYLES = [
@@ -105,9 +105,8 @@ export default function VisionStudioPage() {
   }, [generating, locale]);
 
   useEffect(() => {
+    if (!user) { setLoading(false); return; }
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
       const { data: comps } = await supabase.from("companies").select("*").eq("user_id", user.id);
       setCompanies((comps as Company[]) ?? []);
       if (comps?.length && !selectedCompany) setSelectedCompany(comps[0] as Company);
@@ -115,7 +114,7 @@ export default function VisionStudioPage() {
       setPlans((plansData as ContentPlanRow[]) ?? []);
       setLoading(false);
     })();
-  }, [selectedCompany, setSelectedCompany]);
+  }, [user, selectedCompany, setSelectedCompany]);
 
   useEffect(() => {
     if (!selectedCompany?.id) return;

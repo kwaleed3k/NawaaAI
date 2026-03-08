@@ -47,7 +47,7 @@ const cardShadowHover = [
 
 export default function MyGenerationsPage() {
   const supabase = createClient();
-  const { locale } = useAppStore();
+  const { locale, user } = useAppStore();
 
   const [generations, setGenerations] = useState<GenerationRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +63,6 @@ export default function MyGenerationsPage() {
   const fullScreenLabel = locale === "ar" ? "عرض كامل" : "Full screen";
 
   const fetchGenerations = useCallback(async () => {
-    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
     const { data, error } = await supabase
@@ -79,7 +78,7 @@ export default function MyGenerationsPage() {
       setGenerations((data as GenerationRow[]) ?? []);
     }
     setLoading(false);
-  }, [locale]);
+  }, [locale, user]);
 
   useEffect(() => {
     fetchGenerations();
@@ -209,20 +208,17 @@ export default function MyGenerationsPage() {
       <div className="mx-auto max-w-7xl space-y-10">
         {/* ========== Gradient Banner Header ========== */}
         <div
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 shadow-lg"
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#C9A84C] p-8 md:p-10"
         >
-          {/* Decorative floating shapes */}
-
-          <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="font-['Cairo'] text-3xl font-bold text-white drop-shadow-sm md:text-4xl">
+              <h1 className="font-['Cairo'] text-4xl md:text-5xl font-extrabold text-white drop-shadow-sm">
                 {title}
               </h1>
-              <p className="mt-2 flex items-center gap-2 text-lg text-white/80">
+              <div className="mt-3 flex items-center gap-2 text-lg text-white/80">
                 <ImageIcon className="h-5 w-5" />
                 <span>{subtitle}</span>
-                <Sparkles className="h-5 w-5 text-[#C9A84C]" />
-              </p>
+              </div>
             </div>
             {/* Count badge */}
             {generations.length > 0 && (

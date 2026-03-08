@@ -346,7 +346,7 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
 
 export default function CompaniesPage() {
   const supabase = createBrowserClient();
-  const { setSelectedCompany, locale } = useAppStore();
+  const { setSelectedCompany, locale, user } = useAppStore();
   const tc = messages[locale].companies;
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
@@ -376,11 +376,11 @@ export default function CompaniesPage() {
   });
 
   useEffect(() => {
-    loadCompanies();
-  }, []);
+    if (user) loadCompanies();
+    else setLoading(false);
+  }, [user]);
 
   async function loadCompanies() {
-    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const { data, error } = await supabase
       .from("companies")
