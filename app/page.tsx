@@ -337,7 +337,7 @@ export default function LandingPage() {
             className="mt-8 leading-[1.05] text-center lg:text-start w-full"
             style={{
               fontFamily: "var(--font-cairo)",
-              fontSize: "clamp(36px, 10vw, 128px)",
+              fontSize: "clamp(36px, 7vw, 128px)",
               fontWeight: 900,
             }}
           >

@@ -673,6 +673,7 @@ export default function MyGenerationsPage() {
                                   type="button"
                                   onClick={() => setLightboxUrl(url)}
                                   className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white/30 bg-white/90 text-[#004D26] shadow-lg transition-colors hover:bg-white"
+                                  aria-label={t.fullScreen}
                                   title={t.fullScreen}
                                 >
                                   <Maximize2 className="h-5 w-5" />
@@ -681,6 +682,7 @@ export default function MyGenerationsPage() {
                                   type="button"
                                   onClick={() => handleDownload(url)}
                                   className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] text-white shadow-lg transition-shadow hover:shadow-[#00A352]/40"
+                                  aria-label={t.download}
                                   title={t.download}
                                 >
                                   <Download className="h-5 w-5" />
@@ -728,7 +730,7 @@ export default function MyGenerationsPage() {
           >
             <img
               src={lightboxUrl}
-              alt=""
+              alt="Generated image — full view"
               className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-1 ring-white/10"
             />
 
@@ -736,6 +738,7 @@ export default function MyGenerationsPage() {
             <button
               type="button"
               onClick={() => setLightboxUrl(null)}
+              aria-label="Close lightbox"
               className="absolute -right-4 -top-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-transparent bg-white text-[#004D26] shadow-xl transition-colors hover:bg-[#F0F7F2]"
               style={{
                 backgroundClip: "padding-box",

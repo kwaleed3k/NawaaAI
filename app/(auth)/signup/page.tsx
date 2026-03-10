@@ -147,8 +147,11 @@ export default function SignupPage() {
                 <button
                   key={i}
                   onClick={() => setQuoteIdx(i)}
-                  className={`h-2 rounded-full transition-all duration-300 ${i === quoteIdx ? "w-8 bg-[#7C3AED]" : "w-2 bg-white/20 hover:bg-white/30"}`}
-                />
+                  aria-label={`Quote ${i + 1}`}
+                  className="relative flex items-center justify-center h-11 w-11 -m-4"
+                >
+                  <span className={`block rounded-full transition-all duration-300 ${i === quoteIdx ? "w-8 h-2.5 bg-[#7C3AED]" : "w-2.5 h-2.5 bg-white/20 hover:bg-white/30"}`} />
+                </button>
               ))}
             </div>
           </div>
@@ -280,6 +283,7 @@ export default function SignupPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className={`absolute top-1/2 -translate-y-1/2 text-[#5A8A6A]/60 hover:text-[#006C35] transition-colors p-1 ${isRtl ? "left-3" : "right-3"}`}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -301,19 +305,17 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Password checks */}
-            {password.length > 0 && (
-              <div className="flex gap-4">
-                {passwordChecks.map((check) => (
-                  <div key={check.label} className="flex items-center gap-2">
-                    <div className={`flex h-5 w-5 items-center justify-center rounded-full transition-all ${check.valid ? "bg-[#006C35]" : "bg-[#D4EBD9]"}`}>
-                      {check.valid && <Check className="h-3 w-3 text-white" />}
-                    </div>
-                    <span className={`text-sm font-medium ${check.valid ? "text-[#006C35]" : "text-[#5A8A6A]"}`}>{check.label}</span>
+            {/* Password checks — always visible for guidance */}
+            <div className="flex gap-4">
+              {passwordChecks.map((check) => (
+                <div key={check.label} className="flex items-center gap-2">
+                  <div className={`flex h-5 w-5 items-center justify-center rounded-full transition-all ${check.valid ? "bg-[#006C35]" : "bg-[#D4EBD9]"}`}>
+                    {check.valid && <Check className="h-3 w-3 text-white" />}
                   </div>
-                ))}
-              </div>
-            )}
+                  <span className={`text-sm font-medium ${check.valid ? "text-[#006C35]" : "text-[#5A8A6A]"}`}>{check.label}</span>
+                </div>
+              ))}
+            </div>
 
             {/* Terms */}
             <label className="flex items-center gap-3 text-sm text-[#5A8A6A] cursor-pointer group">

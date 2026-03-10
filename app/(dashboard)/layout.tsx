@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, useCallback, type ReactNode } from "react";
 import {
   BarChart3, BookOpen, Building2, Calendar, ChevronLeft, ChevronRight,
   FolderOpen, Hash, ImageIcon, LogOut, Menu, Search, Settings, Sparkles, Swords, TrendingUp, X,
@@ -158,6 +158,155 @@ function SidebarBottom({ t, collapsed, onNavClick }: {
   );
 }
 
+/* ═══ Breadcrumbs ═══ */
+const PAGE_LABELS: Record<string, { en: string; ar: string }> = {
+  dashboard: { en: "Dashboard", ar: "لوحة التحكم" },
+  companies: { en: "Companies", ar: "الشركات" },
+  planner: { en: "Content Planner", ar: "مخطط المحتوى" },
+  "vision-studio": { en: "Vision Studio", ar: "استوديو الرؤية" },
+  hashtags: { en: "Hashtag Hub", ar: "مركز الهاشتاقات" },
+  "competitor-analysis": { en: "Competitor Analysis", ar: "تحليل المنافسين" },
+  insights: { en: "Insights", ar: "التحليلات" },
+  "my-plans": { en: "My Plans", ar: "خططي" },
+  "my-generations": { en: "My Generations", ar: "صوري" },
+  "my-competitors": { en: "My Competitors", ar: "منافسي" },
+  playbook: { en: "Playbook", ar: "دليل التشغيل" },
+  settings: { en: "Settings", ar: "الإعدادات" },
+};
+
+function Breadcrumbs({ pathname, locale }: { pathname: string; locale: string }) {
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length === 0 || (segments.length === 1 && segments[0] === "dashboard")) return null;
+  const isRtl = locale === "ar";
+
+  return (
+    <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm font-medium text-[#5A8A6A] mb-4">
+      <Link href="/dashboard" className="hover:text-[#006C35] transition-colors">
+        {locale === "ar" ? "الرئيسية" : "Home"}
+      </Link>
+      {segments.map((seg, i) => {
+        const label = PAGE_LABELS[seg];
+        const href = "/" + segments.slice(0, i + 1).join("/");
+        const isLast = i === segments.length - 1;
+        return (
+          <span key={seg} className="flex items-center gap-2">
+            <span className={isRtl ? "rotate-180" : ""}>/</span>
+            {isLast ? (
+              <span className="text-[#004D26] font-bold">{label ? label[locale as "en" | "ar"] : seg}</span>
+            ) : (
+              <Link href={href} className="hover:text-[#006C35] transition-colors">
+                {label ? label[locale as "en" | "ar"] : seg}
+              </Link>
+            )}
+          </span>
+        );
+      })}
+    </nav>
+  );
+}
+
+/* ═══ Mobile Sidebar with Focus Trap ═══ */
+function MobileSidebar({
+  isRtl,
+  locale,
+  pathname,
+  t,
+  onClose,
+}: {
+  isRtl: boolean;
+  locale: string;
+  pathname: string;
+  t: typeof messages["en"]["nav"] | typeof messages["ar"]["nav"];
+  onClose: () => void;
+}) {
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sidebar = sidebarRef.current;
+    if (!sidebar) return;
+
+    // Focus first focusable element
+    const focusables = sidebar.querySelectorAll<HTMLElement>(
+      'a, button, input, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length > 0) focusables[0].focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key !== "Tab") return;
+      const elems = sidebar!.querySelectorAll<HTMLElement>(
+        'a, button, input, [tabindex]:not([tabindex="-1"])'
+      );
+      if (elems.length === 0) return;
+      const first = elems[0];
+      const last = elems[elems.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 z-50 bg-black/40 lg:hidden transition-opacity duration-200"
+        onClick={onClose}
+      />
+      <aside
+        ref={sidebarRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        className={cn(
+          "fixed top-0 z-[60] flex h-full w-72 flex-col overflow-hidden bg-white shadow-2xl lg:hidden transition-transform duration-300",
+          isRtl ? "right-0 border-l-2 border-[#D4EBD9]" : "left-0 border-r-2 border-[#D4EBD9]"
+        )}
+      >
+        <div className="flex h-24 items-center justify-between border-b-2 border-[#D4EBD9] px-5">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-3"
+            onClick={onClose}
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_4px_12px_rgba(0,108,53,0.25)]">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-[#004D26]">
+              {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
+              <span className="text-[#00A352]">AI</span>
+            </span>
+          </Link>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F0F7F2] text-[#5A8A6A] hover:text-[#006C35] transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <NavLinks
+          collapsed={false}
+          pathname={pathname}
+          t={t}
+          isRtl={isRtl}
+          locale={locale}
+          onNavClick={onClose}
+        />
+        <SidebarBottom t={t} collapsed={false} onNavClick={onClose} />
+      </aside>
+    </>
+  );
+}
+
 function ClientOnly({ children, fallback }: { children: ReactNode; fallback?: ReactNode }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -170,6 +319,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [localeSwitching, setLocaleSwitching] = useState(false);
   const { user, setUser, locale, setLocale } = useAppStore();
 
   useEffect(() => {
@@ -242,6 +393,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             size="icon"
             className="h-10 w-10 shrink-0 text-[#5A8A6A] hover:text-[#006C35] hover:bg-[#F0F7F2] rounded-xl"
             onClick={() => setCollapsed((c) => !c)}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed
               ? (isRtl ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />)
@@ -262,52 +414,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* ═══ Mobile Overlay Sidebar (below lg) ═══ */}
       {mobileOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-50 bg-black/40 lg:hidden transition-opacity duration-200"
-            onClick={() => setMobileOpen(false)}
-          />
-          <aside
-            className={cn(
-              "fixed top-0 z-[60] flex h-full w-72 flex-col overflow-hidden bg-white shadow-2xl lg:hidden transition-transform duration-300",
-              isRtl ? "right-0 border-l-2 border-[#D4EBD9]" : "left-0 border-r-2 border-[#D4EBD9]"
-            )}
-          >
-            {/* Logo + close */}
-            <div className="flex h-24 items-center justify-between border-b-2 border-[#D4EBD9] px-5">
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3"
-                onClick={() => setMobileOpen(false)}
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_4px_12px_rgba(0,108,53,0.25)]">
-                  <Sparkles className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-2xl font-bold text-[#004D26]">
-                  {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
-                  <span className="text-[#00A352]">AI</span>
-                </span>
-              </Link>
-              <button
-                type="button"
-                onClick={() => setMobileOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F0F7F2] text-[#5A8A6A] hover:text-[#006C35] transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <NavLinks
-              collapsed={false}
-              pathname={pathname}
-              t={t}
-              isRtl={isRtl}
-              locale={locale}
-              onNavClick={() => setMobileOpen(false)}
-            />
-            <SidebarBottom t={t} collapsed={false} onNavClick={() => setMobileOpen(false)} />
-          </aside>
-        </>
+        <MobileSidebar
+          isRtl={isRtl}
+          locale={locale}
+          pathname={pathname}
+          t={t}
+          onClose={() => setMobileOpen(false)}
+        />
       )}
 
       {/* ═══ Main Content ═══ */}
@@ -347,19 +460,45 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <input
                   type="search"
                   placeholder={t.search}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-label={t.search}
                   className={cn(
                     "h-12 sm:h-14 w-full rounded-xl border-2 border-[#D4EBD9] bg-[#F8FBF8] text-base sm:text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:outline-none transition-all focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.08)]",
-                    isRtl ? "pl-4 pr-12" : "pl-12 pr-4"
+                    isRtl ? "pl-10 pr-12" : "pl-12 pr-10"
                   )}
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    aria-label="Clear search"
+                    className={cn(
+                      "absolute top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-lg bg-[#D4EBD9] text-[#5A8A6A] hover:bg-[#006C35] hover:text-white transition-colors",
+                      isRtl ? "left-3" : "right-3"
+                    )}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               <button
                 type="button"
-                onClick={() => setLocale(locale === "ar" ? "en" : "ar")}
-                className="rounded-xl border-2 border-[#D4EBD9] px-3 py-2 sm:px-5 sm:py-2.5 text-base sm:text-lg font-medium text-[#2D5A3D] hover:bg-[#F0F7F2] hover:border-[#00A352] transition-all"
+                onClick={() => {
+                  setLocaleSwitching(true);
+                  setLocale(locale === "ar" ? "en" : "ar");
+                  setTimeout(() => setLocaleSwitching(false), 400);
+                }}
+                aria-label={locale === "ar" ? "Switch to English" : "التبديل إلى العربية"}
+                className={cn(
+                  "rounded-xl border-2 px-3 py-2 sm:px-5 sm:py-2.5 text-base sm:text-lg font-bold transition-all duration-300",
+                  localeSwitching
+                    ? "border-[#006C35] bg-[#006C35] text-white scale-95"
+                    : "border-[#D4EBD9] text-[#2D5A3D] hover:bg-[#F0F7F2] hover:border-[#00A352]"
+                )}
               >
                 {locale === "ar" ? "EN" : "عر"}
               </button>
@@ -374,6 +513,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               }>
                 <DropdownMenu>
                   <DropdownMenuTrigger
+                    aria-label="User menu"
                     className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#006C35] to-[#00A352] text-lg font-bold text-white shadow-[0_4px_16px_rgba(0,108,53,0.25)] transition-shadow hover:shadow-[0_6px_20px_rgba(0,108,53,0.35)]"
                   >
                     {extractInitials(displayName)}
@@ -397,6 +537,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </header>
 
           <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 xl:p-10 scrollbar-nawaa">
+            <Breadcrumbs pathname={pathname} locale={locale} />
             {children}
           </main>
         </div>

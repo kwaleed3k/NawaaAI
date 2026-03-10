@@ -769,7 +769,7 @@ export default function CompaniesPage() {
                             style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
                           >
                             {c.logo_url ? (
-                              <img src={c.logo_url} alt="" className="h-full w-full rounded-[14px] object-cover" />
+                              <img src={c.logo_url} alt={c.name || "Company logo"} className="h-full w-full rounded-[14px] object-cover max-w-full" />
                             ) : (
                               c.name?.charAt(0) ?? "?"
                             )}
@@ -1084,7 +1084,7 @@ export default function CompaniesPage() {
                       className="relative"
                     >
                       <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#7C3AED]">
-                        <img src={form.logo_url} alt="" className="h-24 w-24 rounded-[14px] object-cover" />
+                        <img src={form.logo_url} alt="Company logo" className="h-24 w-24 rounded-[14px] object-cover max-w-full" />
                       </div>
                     </div>
                   ) : (
@@ -1357,6 +1357,7 @@ export default function CompaniesPage() {
                   {/* Close button */}
                   <button
                     onClick={() => setViewingCompany(null)}
+                    aria-label="Close company details"
                     className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-all"
                   >
                     <X className="h-5 w-5" />
@@ -1372,7 +1373,7 @@ export default function CompaniesPage() {
                           style={{ backgroundColor: vc.brand_colors?.[0] ?? "#006C35" }}
                         >
                           {vc.logo_url ? (
-                            <img src={vc.logo_url} alt="" className="h-full w-full rounded-[14px] object-cover" />
+                            <img src={vc.logo_url} alt={vc.name || "Company logo"} className="h-full w-full rounded-[14px] object-cover max-w-full" />
                           ) : (
                             vc.name?.charAt(0) ?? "?"
                           )}

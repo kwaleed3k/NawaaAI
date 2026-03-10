@@ -143,8 +143,11 @@ export default function LoginPage() {
                 <button
                   key={i}
                   onClick={() => setQuoteIdx(i)}
-                  className={`h-2 rounded-full transition-all duration-300 ${i === quoteIdx ? "w-8 bg-[#7C3AED]" : "w-2 bg-white/20 hover:bg-white/30"}`}
-                />
+                  aria-label={`Quote ${i + 1}`}
+                  className="relative flex items-center justify-center h-11 w-11 -m-4"
+                >
+                  <span className={`block rounded-full transition-all duration-300 ${i === quoteIdx ? "w-8 h-2.5 bg-[#7C3AED]" : "w-2.5 h-2.5 bg-white/20 hover:bg-white/30"}`} />
+                </button>
               ))}
             </div>
           </div>
@@ -262,6 +265,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className={`absolute top-1/2 -translate-y-1/2 text-[#5A8A6A]/60 hover:text-[#006C35] transition-colors p-1 ${isRtl ? "left-3" : "right-3"}`}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
