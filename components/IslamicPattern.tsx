@@ -44,7 +44,7 @@ export function IslamicPattern({ variant = "star", opacity = 0.04, animated = tr
 
   return (
     <svg
-      className={`absolute inset-0 h-full w-full text-[#7C3AED] ${className}`}
+      className={`absolute inset-0 h-full w-full text-[#8054b8] ${className}`}
       style={{ opacity }}
       xmlns="http://www.w3.org/2000/svg"
     >

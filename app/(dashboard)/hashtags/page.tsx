@@ -22,11 +22,11 @@ const TRENDING_PLACEHOLDER = [
 
 /* ── Trending card gradient rotation ── */
 const TRENDING_GRADIENTS = [
-  "from-rose-500 to-orange-500",
-  "from-blue-500 to-indigo-500",
-  "from-emerald-500 to-teal-500",
-  "from-purple-500 to-fuchsia-500",
-  "from-amber-500 to-yellow-500",
+  "from-rose-500 to-[#f5c6fa]",
+  "from-[#8054b8] to-indigo-500",
+  "from-[#23ab7e] to-[#23ab7e]",
+  "from-[#8054b8] to-fuchsia-500",
+  "from-[#e67af3] to-yellow-500",
 ];
 
 /* ── Platform selector config ── */
@@ -34,16 +34,16 @@ const PLATFORM_OPTIONS = [
   { id: "instagram", label: "Instagram", emoji: "📸", color: "from-pink-500 to-rose-500", selectedBorder: "border-pink-400", unselectedBg: "bg-pink-50", textColor: "text-pink-600" },
   { id: "tiktok", label: "TikTok", emoji: "🎵", color: "from-slate-800 to-cyan-500", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", textColor: "text-slate-700" },
   { id: "x", label: "X", emoji: "𝕏", color: "from-slate-700 to-slate-900", selectedBorder: "border-slate-400", unselectedBg: "bg-slate-50", textColor: "text-slate-700" },
-  { id: "snapchat", label: "Snapchat", emoji: "👻", color: "from-yellow-400 to-amber-400", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", textColor: "text-yellow-700" },
-  { id: "linkedin", label: "LinkedIn", emoji: "💼", color: "from-blue-500 to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", textColor: "text-blue-600" },
+  { id: "snapchat", label: "Snapchat", emoji: "👻", color: "from-yellow-400 to-[#e67af3]", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", textColor: "text-yellow-700" },
+  { id: "linkedin", label: "LinkedIn", emoji: "💼", color: "from-[#8054b8] to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", textColor: "text-[#6d3fa0]" },
 ];
 
 /* ── Hashtag pill color rotation ── */
 const TAG_PILL_COLORS = [
   "bg-pink-100 text-pink-700 border border-pink-200",
   "bg-blue-100 text-blue-700 border border-blue-200",
-  "bg-amber-100 text-amber-700 border border-amber-200",
-  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  "bg-[#e8eaef] text-amber-700 border border-[#f5c6fa]",
+  "bg-white text-[#1a8a64] border border-[#a6ffea]",
   "bg-purple-100 text-purple-700 border border-purple-200",
 ];
 
@@ -52,26 +52,26 @@ const SET_CONFIGS = [
   {
     key: "broad" as const,
     labelKey: "broadReach" as const,
-    gradient: "from-[#7C3AED] via-[#A78BFA] to-[#7C3AED]",
-    iconBg: "from-[#7C3AED] to-[#A78BFA]",
+    gradient: "from-[#8054b8] via-[#A78BFA] to-[#8054b8]",
+    iconBg: "from-[#8054b8] to-[#A78BFA]",
     iconColor: "text-white",
-    accentText: "text-[#7C3AED]",
+    accentText: "text-[#8054b8]",
   },
   {
     key: "niche" as const,
     labelKey: "niche" as const,
-    gradient: "from-[#006C35] via-[#00A352] to-[#006C35]",
-    iconBg: "from-[#006C35] to-[#00A352]",
+    gradient: "from-[#23ab7e] via-[#8054b8] to-[#23ab7e]",
+    iconBg: "from-[#23ab7e] to-[#8054b8]",
     iconColor: "text-white",
-    accentText: "text-[#006C35]",
+    accentText: "text-[#23ab7e]",
   },
   {
     key: "saudi" as const,
     labelKey: "saudiLocal" as const,
-    gradient: "from-[#006C35] via-[#00A352] to-[#7C3AED]",
-    iconBg: "from-[#006C35] to-[#7C3AED]",
+    gradient: "from-[#23ab7e] via-[#8054b8] to-[#8054b8]",
+    iconBg: "from-[#23ab7e] to-[#8054b8]",
     iconColor: "text-white",
-    accentText: "text-[#004D26]",
+    accentText: "text-[#1a1d2e]",
   },
 ];
 
@@ -106,35 +106,35 @@ export default function HashtagsPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] p-8 sm:p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#00A352]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-emerald-400/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-              <Hash className="h-6 w-6 text-emerald-200" />
+              <Hash className="h-6 w-6 text-[#a6ffea]" />
             </div>
-            <span className="text-lg font-bold text-emerald-200/80 tracking-wide">{locale === "ar" ? "هاشتاقات" : "Hashtags"}</span>
+            <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "هاشتاقات" : "Hashtags"}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
             {th.pageTitle}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-emerald-100/70">{th.pageSub}</p>
+          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">{th.pageSub}</p>
         </div>
       </div>
 
       {/* ===== TRENDING KSA SECTION ===== */}
       <div
       >
-        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
           {/* Top accent bar */}
-          <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#7C3AED] to-[#00A352]" />
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
           <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+            <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                 <TrendingUp className="h-7 w-7 text-white" />
               </div>
               {th.trendingKSA}
@@ -173,19 +173,19 @@ export default function HashtagsPage() {
       {/* ===== GENERATE HASHTAG SETS ===== */}
       <div
       >
-        <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
           {/* Top accent bar */}
-          <div className="h-1.5 w-full bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#7C3AED]" />
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#8054b8] via-[#A78BFA] to-[#8054b8]" />
           <CardHeader className="p-5 sm:p-8 pb-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
                 <Hash className="h-7 w-7 text-white" />
               </div>
               <div>
-                <CardTitle className="text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">
+                <CardTitle className="text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">
                   {th.generateSets}
                 </CardTitle>
-                <p className="text-lg text-[#5A8A6A] mt-1">{th.generateSetsSub}</p>
+                <p className="text-lg text-[#8f96a3] mt-1">{th.generateSetsSub}</p>
               </div>
             </div>
           </CardHeader>
@@ -214,7 +214,7 @@ export default function HashtagsPage() {
                         <div
                           className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md"
                         >
-                          <div className="h-4 w-4 rounded-full bg-[#006C35] flex items-center justify-center">
+                          <div className="h-4 w-4 rounded-full bg-[#23ab7e] flex items-center justify-center">
                             <svg className="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
@@ -235,21 +235,21 @@ export default function HashtagsPage() {
             </div>
 
             {/* Gradient divider */}
-            <div className="h-px bg-gradient-to-r from-transparent via-[#D4EBD9] to-transparent" />
+            <div className="h-px bg-gradient-to-r from-transparent via-[#e8eaef] to-transparent" />
 
             {/* ── Topic Input ── */}
             <div
               className="relative"
             >
               <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none z-10">
-                <Hash className="h-6 w-6 text-[#5A8A6A]" />
+                <Hash className="h-6 w-6 text-[#8f96a3]" />
               </div>
               <Input
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder={th.topicPlaceholder}
                 onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
-                className="h-16 pl-14 rounded-2xl border-2 border-[#D4EBD9] bg-white text-lg text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:ring-2 focus:ring-[#006C35]/20 transition-all hover:border-[#006C35]/40"
+                className="h-16 pl-14 rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40"
               />
             </div>
 
@@ -259,7 +259,7 @@ export default function HashtagsPage() {
               <Button
                 onClick={handleGenerate}
                 disabled={generating}
-                className="relative w-full h-16 rounded-2xl bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#7C3AED] text-white hover:shadow-md text-xl font-extrabold transition-all duration-500 shadow-md border-2 border-[#7C3AED]/30 overflow-hidden group"
+                className="relative w-full h-16 rounded-2xl bg-gradient-to-r from-[#8054b8] via-[#A78BFA] to-[#8054b8] text-white hover:shadow-md text-xl font-extrabold transition-all duration-500 shadow-md border-2 border-[#8054b8]/30 overflow-hidden group"
               >
                 {/* Shimmer overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
@@ -281,7 +281,7 @@ export default function HashtagsPage() {
                 {SET_CONFIGS.map((cfg, setIdx) => (
                   <div
                     key={cfg.key}
-                    className="rounded-2xl bg-white border-2 border-[#D4EBD9] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+                    className="rounded-2xl bg-white border-2 border-[#e8eaef] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
                   >
                     {/* Gradient accent bar at top */}
                     <div className={cn("h-2 w-full bg-gradient-to-r", cfg.gradient)} />
@@ -324,10 +324,10 @@ export default function HashtagsPage() {
                           onClick={() => copySet(sets[cfg.key])}
                           className={cn(
                             "w-full h-12 rounded-2xl text-lg font-bold transition-all duration-300 shadow-md overflow-hidden relative group border-2",
-                            "bg-gradient-to-r border-[#D4EBD9] text-white hover:shadow-lg",
-                            cfg.key === "broad" && "from-[#7C3AED] to-[#A78BFA] text-white border-[#7C3AED]/30",
-                            cfg.key === "niche" && "from-[#006C35] to-[#00A352] border-[#006C35]/30",
-                            cfg.key === "saudi" && "from-[#006C35] via-[#00A352] to-[#7C3AED] border-[#006C35]/30"
+                            "bg-gradient-to-r border-[#e8eaef] text-white hover:shadow-lg",
+                            cfg.key === "broad" && "from-[#8054b8] to-[#A78BFA] text-white border-[#8054b8]/30",
+                            cfg.key === "niche" && "from-[#23ab7e] to-[#8054b8] border-[#23ab7e]/30",
+                            cfg.key === "saudi" && "from-[#23ab7e] via-[#8054b8] to-[#8054b8] border-[#23ab7e]/30"
                           )}
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
@@ -348,12 +348,12 @@ export default function HashtagsPage() {
       {brandHashtags.length > 0 && (
         <div
         >
-          <Card className="rounded-2xl border-2 border-[#D4EBD9] bg-white shadow-lg overflow-hidden">
+          <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
             {/* Top accent bar */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED]" />
+            <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
             <CardHeader className="p-5 sm:p-8 pb-4">
-              <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#004D26] font-['Cairo']">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#7C3AED] shadow-lg">
+              <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                   <Hash className="h-7 w-7 text-white" />
                 </div>
                 {th.brandHashtags}
@@ -366,13 +366,13 @@ export default function HashtagsPage() {
                     key={tag}
                     type="button"
                     onClick={() => { navigator.clipboard.writeText(tag); toast.success("Copied"); }}
-                    className="relative rounded-2xl bg-gradient-to-br from-[#F0F7F2] to-white border-2 border-[#006C35]/20 px-7 py-4 text-xl font-extrabold text-[#006C35] hover:border-[#006C35]/50 transition-all duration-300 cursor-pointer overflow-hidden group"
+                    className="relative rounded-2xl bg-gradient-to-br from-[#f4f6f8] to-white border-2 border-[#23ab7e]/20 px-7 py-4 text-xl font-extrabold text-[#23ab7e] hover:border-[#23ab7e]/50 transition-all duration-300 cursor-pointer overflow-hidden group"
                   >
                     {/* Gradient border glow on hover */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#006C35]/5 to-[#7C3AED]/5" />
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#23ab7e]/5 to-[#8054b8]/5" />
                     <span className="relative z-10 flex items-center gap-2">
                       {tag}
-                      <Copy className="h-5 w-5 text-[#5A8A6A] group-hover:text-[#006C35] transition-colors" />
+                      <Copy className="h-5 w-5 text-[#8f96a3] group-hover:text-[#23ab7e] transition-colors" />
                     </span>
                   </button>
                 ))}

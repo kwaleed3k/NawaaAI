@@ -14,18 +14,18 @@ export default function InsightsPage() {
     {
       icon: BarChart3,
       label: ti.engagement,
-      gradient: "from-[#006C35] to-[#00A352]",
-      iconBg: "from-[#006C35]/20 to-[#00A352]/20",
-      barColor: "from-[#006C35] to-[#00A352]",
+      gradient: "from-[#23ab7e] to-[#8054b8]",
+      iconBg: "from-[#23ab7e]/20 to-[#8054b8]/20",
+      barColor: "from-[#23ab7e] to-[#8054b8]",
       shadowColor: "hover:shadow-md",
       barWidth: "65%",
     },
     {
       icon: PieChart,
       label: ti.reach,
-      gradient: "from-[#7C3AED] to-[#60A5FA]",
-      iconBg: "from-[#7C3AED]/20 to-[#60A5FA]/20",
-      barColor: "from-[#7C3AED] to-[#60A5FA]",
+      gradient: "from-[#8054b8] to-[#60A5FA]",
+      iconBg: "from-[#8054b8]/20 to-[#60A5FA]/20",
+      barColor: "from-[#8054b8] to-[#60A5FA]",
       shadowColor: "hover:shadow-md",
       barWidth: "55%",
     },
@@ -48,8 +48,8 @@ export default function InsightsPage() {
         locale === "ar"
           ? "تتبع أداء منشوراتك عبر جميع المنصات"
           : "Track how your posts perform across all platforms",
-      gradient: "from-[#006C35] to-[#00A352]",
-      accentBar: "from-[#006C35] to-[#00A352]",
+      gradient: "from-[#23ab7e] to-[#8054b8]",
+      accentBar: "from-[#23ab7e] to-[#8054b8]",
     },
     {
       icon: TrendingUp,
@@ -58,8 +58,8 @@ export default function InsightsPage() {
         locale === "ar"
           ? "راقب نمو جمهورك واكتشف فرص التوسع"
           : "Monitor your audience growth and discover expansion opportunities",
-      gradient: "from-[#7C3AED] to-[#60A5FA]",
-      accentBar: "from-[#7C3AED] to-[#60A5FA]",
+      gradient: "from-[#8054b8] to-[#60A5FA]",
+      accentBar: "from-[#8054b8] to-[#60A5FA]",
     },
     {
       icon: Activity,
@@ -88,23 +88,23 @@ export default function InsightsPage() {
       dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10"
     >
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] p-8 sm:p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#00A352]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-emerald-400/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-              <BarChart3 className="h-6 w-6 text-emerald-200" />
+              <BarChart3 className="h-6 w-6 text-[#a6ffea]" />
             </div>
-            <span className="text-xl font-bold text-emerald-200/80 tracking-wide">{locale === "ar" ? "التحليلات" : "Insights"}</span>
+            <span className="text-xl font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "التحليلات" : "Insights"}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
             {ti.pageTitle}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-emerald-100/70">{ti.pageSub}</p>
+          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">{ti.pageSub}</p>
         </div>
       </div>
 
@@ -112,25 +112,25 @@ export default function InsightsPage() {
       <div className="relative">
         {/* Gradient border wrapper */}
         <div className="relative rounded-3xl p-[3px]">
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#006C35] via-[#7C3AED] to-[#00A352]" />
-          <div className="relative rounded-3xl bg-gradient-to-b from-[#F8FBF8] to-white px-8 py-24 md:px-14 md:py-32">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
+          <div className="relative rounded-3xl bg-gradient-to-b from-[#fafbfd] to-white px-8 py-24 md:px-14 md:py-32">
             <div className="flex flex-col items-center justify-center text-center">
               {/* Animated icon */}
               <div
-                className="relative flex h-40 w-40 items-center justify-center rounded-full bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] shadow-lg shadow-emerald-500/25"
+                className="relative flex h-40 w-40 items-center justify-center rounded-full nl-aurora-bg shadow-lg shadow-[#23ab7e]/25"
               >
                 <TrendingUp className="text-white" style={{ width: 80, height: 80 }} />
                 {/* Outer ring pulse */}
                 <div
-                  className="absolute inset-0 rounded-full border-4 border-[#006C35]/30"
+                  className="absolute inset-0 rounded-full border-4 border-[#23ab7e]/30"
                 />
               </div>
 
               {/* Coming Soon text */}
-              <h2 className="mt-12 text-6xl sm:text-7xl font-black bg-gradient-to-r from-[#003D1F] via-[#006C35] to-[#7C3AED] bg-clip-text text-transparent">
+              <h2 className="mt-12 text-6xl sm:text-7xl font-black bg-gradient-to-r from-[#23ab7e] via-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">
                 {ti.comingSoon}
               </h2>
-              <p className="mt-6 max-w-xl text-3xl leading-relaxed text-[#5A8A6A] font-medium">
+              <p className="mt-6 max-w-xl text-3xl leading-relaxed text-[#8f96a3] font-medium">
                 {ti.comingSoonDesc}
               </p>
 
@@ -141,7 +141,7 @@ export default function InsightsPage() {
                 {metricCards.map((item, i) => (
                   <div
                     key={item.label}
-                    className={`group cursor-default rounded-3xl border-2 border-[#D4EBD9] bg-gradient-to-b from-white to-[#F0F7F2] p-8 text-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#006C35]/40`}
+                    className={`group cursor-default rounded-3xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-8 text-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40`}
                   >
                     <div
                       className={`mx-auto flex h-18 w-18 items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconBg} h-[72px] w-[72px]`}
@@ -150,14 +150,14 @@ export default function InsightsPage() {
                         className="h-9 w-9 transition-transform duration-300 group-hover:rotate-12"
                         style={{
                           color: item.gradient.includes("006C35")
-                            ? "#006C35"
+                            ? "#23ab7e"
                             : item.gradient.includes("7C3AED")
-                            ? "#7C3AED"
+                            ? "#8054b8"
                             : "#8B5CF6",
                         }}
                       />
                     </div>
-                    <p className="mt-5 text-2xl sm:text-3xl font-black text-[#004D26]">{item.label}</p>
+                    <p className="mt-5 text-2xl sm:text-3xl font-black text-[#1a1d2e]">{item.label}</p>
                     <div className="mt-4 h-3.5 w-full overflow-hidden rounded-full bg-[#E8F5EC]">
                       <div
                         className={`h-full rounded-full bg-gradient-to-r ${item.barColor}`}
@@ -173,7 +173,7 @@ export default function InsightsPage() {
 
       {/* ── What to Expect Section ── */}
       <div>
-        <h3 className="mb-10 text-center text-4xl font-black text-[#003D1F] md:text-5xl">
+        <h3 className="mb-10 text-center text-4xl font-black text-[#23ab7e] md:text-5xl">
           {locale === "ar" ? "ماذا تتوقع" : "What to Expect"}
         </h3>
         <div
@@ -182,7 +182,7 @@ export default function InsightsPage() {
           {featureCards.map((card, i) => (
             <div
               key={card.title}
-              className="group relative cursor-default overflow-hidden rounded-3xl border-2 border-[#D4EBD9] bg-gradient-to-b from-white to-[#F0F7F2] p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#006C35]/40"
+              className="group relative cursor-default overflow-hidden rounded-3xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40"
             >
               {/* Gradient accent bar at top */}
               <div className={`absolute inset-x-0 top-0 h-2 bg-gradient-to-r ${card.accentBar}`} />
@@ -192,8 +192,8 @@ export default function InsightsPage() {
               >
                 <card.icon className="h-8 w-8 text-white" />
               </div>
-              <h4 className="mt-6 text-2xl sm:text-3xl font-black text-[#003D1F]">{card.title}</h4>
-              <p className="mt-3 text-xl leading-relaxed text-[#5A8A6A]">{card.description}</p>
+              <h4 className="mt-6 text-2xl sm:text-3xl font-black text-[#23ab7e]">{card.title}</h4>
+              <p className="mt-3 text-xl leading-relaxed text-[#8f96a3]">{card.description}</p>
             </div>
           ))}
         </div>

@@ -3,16 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signUp } from "@/lib/auth-actions";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
 import { messages } from "@/lib/i18n";
 import toast from "react-hot-toast";
-import { Sparkles, Eye, EyeOff, Check, ArrowLeft, ArrowRight, Lock, Mail, User } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, ArrowRight, Mail, Lock, User, Check } from "lucide-react";
 
 const QUOTES_EN = [
   { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
@@ -21,7 +17,6 @@ const QUOTES_EN = [
   { text: "Your brand is what other people say about you when you're not in the room.", author: "Jeff Bezos" },
   { text: "Make it simple. Make it memorable. Make it inviting to look at.", author: "Leo Burnett" },
 ];
-
 const QUOTES_AR = [
   { text: "أفضل وقت لزراعة شجرة كان قبل عشرين سنة. ثاني أفضل وقت هو الآن.", author: "مثل صيني" },
   { text: "لا تبحث عن عملاء لمنتجاتك. ابحث عن منتجات لعملائك.", author: "سيث غودين" },
@@ -30,6 +25,27 @@ const QUOTES_AR = [
   { text: "اجعله بسيطاً. اجعله لا يُنسى. اجعله جذاباً للنظر.", author: "ليو بيرنت" },
 ];
 
+function getStrength(v: string) { let s = 0; if (v.length >= 6) s++; if (v.length >= 10) s++; if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++; if (/[0-9]/.test(v) || /[^A-Za-z0-9]/.test(v)) s++; return s; }
+const sColors = ["", "#ef4444", "#f59e0b", "#22c55e", "#23ab7e"];
+
+/* 3D Cube */
+function Cube({ size, border, bg, dur, reverse, className }: { size: number; border: string; bg: string; dur: number; reverse?: boolean; className?: string }) {
+  const h = size / 2;
+  const f: React.CSSProperties = { position: "absolute", width: size, height: size, borderRadius: "25%", border: `2px solid ${border}`, background: bg };
+  return (
+    <div className={className} style={{ transformStyle: "preserve-3d" }}>
+      <div className="nl-cube" style={{ width: size, height: size, animation: `nl-spin ${dur}s linear infinite ${reverse ? "reverse" : ""}` }}>
+        <div style={{ ...f, transform: `translateZ(${h}px)` }} /><div style={{ ...f, transform: `translateZ(${-h}px) rotateY(180deg)` }} />
+        <div style={{ ...f, transform: `translateX(${-h}px) rotateY(-90deg)` }} /><div style={{ ...f, transform: `translateX(${h}px) rotateY(90deg)` }} />
+        <div style={{ ...f, transform: `translateY(${-h}px) rotateX(90deg)` }} /><div style={{ ...f, transform: `translateY(${h}px) rotateX(-90deg)` }} />
+      </div>
+    </div>
+  );
+}
+function Dots({ count, className }: { count: number; className?: string }) {
+  return (<div className={className}>{Array.from({ length: count }).map((_, i) => (<div key={i} className="absolute rounded-full" style={{ width: 2 + Math.random() * 4, height: 2 + Math.random() * 4, top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%`, background: ["#a6ffea", "#e67af3", "#c4a8e8", "#23ab7e", "#f5c6fa"][i % 5], opacity: 0.2 + Math.random() * 0.3, animation: `nl-float-particle ${8 + Math.random() * 10}s ease-in-out infinite`, animationDelay: `${Math.random() * 5}s` }} />))}</div>);
+}
+
 export default function SignupPage() {
   const router = useRouter();
   const { locale, setLocale } = useAppStore();
@@ -37,315 +53,205 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPw, setShowPw] = useState(false);
   const [terms, setTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quoteIdx, setQuoteIdx] = useState(0);
+  const [qVis, setQVis] = useState(true);
 
-  useEffect(() => {
-    const stored = typeof window !== "undefined" ? window.localStorage.getItem("nawaa-locale") : null;
-    if (stored === "en" || stored === "ar") setLocale(stored);
-  }, [setLocale]);
-
-  useEffect(() => {
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-  }, [locale]);
-
-  useEffect(() => {
-    const quotes = locale === "ar" ? QUOTES_AR : QUOTES_EN;
-    const timer = setInterval(() => setQuoteIdx((i) => (i + 1) % quotes.length), 6000);
-    return () => clearInterval(timer);
-  }, [locale]);
+  useEffect(() => { const s = typeof window !== "undefined" ? window.localStorage.getItem("nawaa-locale") : null; if (s === "en" || s === "ar") setLocale(s); }, [setLocale]);
+  useEffect(() => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; }, [locale]);
+  useEffect(() => { const q = locale === "ar" ? QUOTES_AR : QUOTES_EN; const t = setInterval(() => { setQVis(false); setTimeout(() => { setQuoteIdx((i) => (i + 1) % q.length); setQVis(true); }, 350); }, 6000); return () => clearInterval(t); }, [locale]);
 
   const t = messages[locale].auth;
   const isRtl = locale === "ar";
-  const BackArrow = isRtl ? ArrowRight : ArrowLeft;
   const quotes = locale === "ar" ? QUOTES_AR : QUOTES_EN;
-
-  const passwordChecks = [
-    { label: t.minChars, valid: password.length >= 6 },
-    { label: t.passwordsMatch, valid: password.length > 0 && password === confirm },
-  ];
+  const BackArrow = isRtl ? ArrowRight : ArrowLeft;
+  const hFont = isRtl ? "var(--font-cairo),'IBM Plex Sans Arabic',sans-serif" : "'Playfair Display','Outfit',sans-serif";
+  const strength = getStrength(password);
+  const pwMatch = confirm.length > 0 && password === confirm;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirm) { toast.error(t.passwordsDontMatch); return; }
     if (!terms) { toast.error(t.acceptTerms); return; }
-    setLoading(true);
-    const result = await signUp(email, password, fullName);
-    setLoading(false);
-    if (result.error) { toast.error(result.error); return; }
-    toast.success(t.signUpSuccess);
-    router.push("/companies");
-    router.refresh();
+    setLoading(true); const r = await signUp(email, password, fullName); setLoading(false);
+    if (r.error) { toast.error(r.error); return; }
+    toast.success(t.signUpSuccess); router.push("/companies"); router.refresh();
   }
-
   async function handleGoogle() {
-    setLoading(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
-    });
+    setLoading(true); const sb = createClient();
+    const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${window.location.origin}/auth/callback` } });
     if (error) { setLoading(false); toast.error(error.message); }
   }
 
+  const inputCls = `w-full py-4 rounded-2xl border-2 border-[#e8eaef] bg-white/80 backdrop-blur-sm text-base text-[#2d3142] outline-none transition-all placeholder:text-[#9ca3b0] placeholder:font-light focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.12)] focus:bg-white`;
+
   return (
-    <div className="flex min-h-screen" dir={isRtl ? "rtl" : "ltr"}>
-      {/* Left panel */}
-      <div
-        className="relative hidden w-1/2 flex-col justify-between overflow-hidden lg:flex"
-        style={{ background: "linear-gradient(160deg, #004D26 0%, #003318 50%, #001A0D 100%)" }}
-      >
-        {/* Ambient glow */}
-        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[#7C3AED]/10 blur-[120px]" />
-        <div className="absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-[#00A352]/12 blur-[120px]" />
+    <div className="flex h-screen overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
 
-        {/* Top — Logo */}
-        <div className="relative z-10 px-14 pt-14 xl:px-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-4"
-          >
-            <div className="h-14 w-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/10">
-              <Sparkles className="h-7 w-7 text-white" />
-            </div>
-            <div>
-              <span className="text-4xl font-extrabold text-white font-['Cairo']">{t.brandName}</span>
-              <span className="text-4xl font-extrabold text-[#7C3AED]"> AI</span>
-            </div>
-          </motion.div>
+      {/* ═══════ LEFT — 3D Brand Panel ═══════ */}
+      <div className="relative hidden lg:flex lg:w-[48%] flex-col justify-between overflow-hidden p-10 xl:p-12" style={{ background: "linear-gradient(165deg, #1a8a64 0%, #23ab7e 25%, #8054b8 60%, #a45dd4 85%, #e67af3 100%)" }}>
+        <div className="absolute inset-0 z-[1] pointer-events-none opacity-[0.04]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
+        <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 20% 80%, rgba(230,122,243,0.35), transparent 70%), radial-gradient(ellipse 60% 50% at 80% 20%, rgba(166,255,234,0.25), transparent 60%)" }} />
+
+        <Cube size={45} border="rgba(166,255,234,.25)" bg="rgba(166,255,234,.06)" dur={16} className="absolute top-[6%] left-[10%] z-[2]" />
+        <Cube size={32} border="rgba(230,122,243,.25)" bg="rgba(230,122,243,.06)" dur={22} reverse className="absolute top-[18%] right-[10%] z-[2]" />
+        <Cube size={25} border="rgba(196,168,232,.2)" bg="rgba(196,168,232,.05)" dur={18} className="absolute bottom-[22%] left-[18%] z-[2]" />
+        <Cube size={38} border="rgba(255,255,255,.15)" bg="rgba(255,255,255,.03)" dur={25} reverse className="absolute bottom-[10%] right-[12%] z-[2]" />
+        <Cube size={20} border="rgba(35,171,126,.2)" bg="rgba(35,171,126,.04)" dur={30} className="absolute top-[50%] right-[30%] z-[2]" />
+
+        <div className="absolute top-[32%] right-[18%] w-[90px] h-[90px] rounded-full z-[2]" style={{ border: "2px solid rgba(166,255,234,.2)", transformStyle: "preserve-3d", animation: "nl-ring-rotate 14s linear infinite" }}><div className="absolute inset-3 rounded-full" style={{ border: "1.5px solid rgba(230,122,243,.15)" }} /></div>
+        <div className="absolute bottom-[35%] left-[8%] w-[60px] h-[60px] rounded-full z-[2]" style={{ border: "1.5px solid rgba(196,168,232,.15)", transformStyle: "preserve-3d", animation: "nl-ring-rotate-2 18s linear infinite" }} />
+
+        <div className="absolute w-[300px] h-[300px] rounded-full -top-16 -left-20 z-0 blur-[80px] bg-[rgba(166,255,234,0.3)]" style={{ animation: "nl-drift-a 12s ease-in-out infinite" }} />
+        <div className="absolute w-[250px] h-[250px] rounded-full bottom-[10%] -right-10 z-0 blur-[80px] bg-[rgba(230,122,243,0.25)]" style={{ animation: "nl-drift-b 12s ease-in-out infinite" }} />
+        <div className="absolute w-[200px] h-[200px] rounded-full top-[40%] left-[30%] z-0 blur-[80px] bg-[rgba(128,84,184,0.2)]" style={{ animation: "nl-drift-c 12s ease-in-out infinite" }} />
+
+        <Dots count={30} className="absolute inset-0 z-[2]" />
+        <div className="absolute top-[45%] left-[45%] z-[2]" style={{ animation: "nl-orbit 16s linear infinite" }}><div className="w-2.5 h-2.5 rounded-full bg-[#a6ffea] opacity-40" /></div>
+        <div className="absolute top-[60%] left-[25%] z-[2]" style={{ animation: "nl-orbit-lg 22s linear infinite reverse" }}><div className="w-2 h-2 rounded-full bg-[#f5c6fa] opacity-35" /></div>
+
+        <div className="relative z-10 flex items-center gap-3.5">
+          <div className="w-16 h-16 rounded-2xl bg-white/[.18] backdrop-blur-sm flex items-center justify-center border border-white/25">
+            <svg viewBox="0 0 32 32" fill="none" className="w-9 h-9"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2.5" fill="#a6ffea"/><circle cx="24" cy="16" r="2.5" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+          <div className="text-[36px] font-bold text-white tracking-tight">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#a6ffea] to-[#f5c6fa] bg-clip-text text-transparent">AI</span></div>
         </div>
 
-        {/* Center — Quote */}
-        <div className="relative z-10 flex-1 flex items-center px-14 xl:px-20">
-          <div className="w-full max-w-lg">
-            <div className="mb-8 h-1 w-16 rounded-full bg-[#7C3AED]/60" />
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={quoteIdx}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                <p className="text-3xl xl:text-4xl font-bold text-white leading-snug tracking-tight">
-                  &ldquo;{quotes[quoteIdx].text}&rdquo;
-                </p>
-                <p className="mt-6 text-lg text-white/50 font-medium">
-                  — {quotes[quoteIdx].author}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Dots */}
-            <div className="mt-10 flex gap-2">
-              {quotes.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setQuoteIdx(i)}
-                  aria-label={`Quote ${i + 1}`}
-                  className="relative flex items-center justify-center h-11 w-11 -m-4"
-                >
-                  <span className={`block rounded-full transition-all duration-300 ${i === quoteIdx ? "w-8 h-2.5 bg-[#7C3AED]" : "w-2.5 h-2.5 bg-white/20 hover:bg-white/30"}`} />
-                </button>
-              ))}
-            </div>
+        <div className="relative z-10 flex-1 flex flex-col justify-center py-8">
+          <div className="rounded-[32px] p-11 max-w-[540px] transition-all duration-350" style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.15)", opacity: qVis ? 1 : 0, transform: qVis ? "translateY(0)" : "translateY(15px)" }}>
+            <div className="text-[80px] leading-[0.6] text-[rgba(166,255,234,0.5)] mb-3" style={{ fontFamily: "'Playfair Display',serif" }}>&ldquo;</div>
+            <p className="text-[30px] font-bold leading-[1.4] text-white mb-5" style={{ fontFamily: hFont }}>{quotes[quoteIdx].text}</p>
+            <p className="text-base text-white/65 tracking-wide">— <strong className="text-white/90 font-semibold">{quotes[quoteIdx].author}</strong></p>
+          </div>
+          <div className="flex gap-3 mt-7">
+            {quotes.map((_, i) => (<button key={i} onClick={() => { setQVis(false); setTimeout(() => { setQuoteIdx(i); setQVis(true); }, 300); }} className={`h-3 rounded-full transition-all duration-300 cursor-pointer ${i === quoteIdx ? "w-10 bg-gradient-to-r from-[#a6ffea] to-[#f5c6fa]" : "w-3 bg-white/25 hover:bg-white/40"}`} />))}
           </div>
         </div>
 
-        {/* Bottom — Tagline */}
-        <div className="relative z-10 px-14 pb-10 xl:px-20">
-          <div className="flex items-center gap-3 text-white/30">
-            <div className="h-px flex-1 bg-white/10" />
-            <p className="text-sm font-medium whitespace-nowrap">{messages[locale].landing.footerTagline}</p>
-            <div className="h-px flex-1 bg-white/10" />
-          </div>
-        </div>
+        <div className="relative z-10 text-base text-white/45 uppercase tracking-[1.5px]">{messages[locale].landing.footerTagline}</div>
       </div>
 
-      {/* Right panel — form */}
-      <div className="relative flex flex-1 flex-col justify-center bg-[#F8FBF8] px-8 py-12 lg:px-16 xl:px-24 overflow-y-auto">
-        {/* Top bar */}
-        <div className="absolute start-6 top-6 lg:start-10 lg:top-10 z-10">
-          <Link
-            href="/"
-            className="flex items-center gap-2 rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 py-3 text-lg font-bold text-[#004D26] hover:bg-[#F0F7F2] hover:border-[#00A352] hover:shadow-lg transition-all"
-          >
-            <BackArrow className="h-5 w-5" />
-            {locale === "ar" ? "الرئيسية" : "Home"}
-          </Link>
-        </div>
-        <div className="absolute end-6 top-6 lg:end-10 lg:top-10 z-10">
-          <button
-            type="button"
-            onClick={() => setLocale(locale === "ar" ? "en" : "ar")}
-            className="rounded-2xl border-2 border-[#D4EBD9] bg-white px-5 py-3 text-lg font-bold text-[#2D5A3D] transition-all hover:bg-[#F0F7F2] hover:border-[#00A352] hover:shadow-lg"
-          >
-            {locale === "ar" ? "English" : "\u0627\u0644\u0639\u0631\u0628\u064a\u0629"}
-          </button>
+      {/* ═══════ RIGHT — Form Panel ═══════ */}
+      <div className="flex-1 relative flex items-center justify-center overflow-hidden" style={{ background: "linear-gradient(170deg, #ffffff 0%, #f7f9fb 40%, #f0fdf8 70%, #f5f0ff 100%)" }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ perspective: "800px", transformStyle: "preserve-3d" }}>
+          <Cube size={25} border="rgba(35,171,126,.1)" bg="rgba(35,171,126,.02)" dur={20} className="absolute top-[8%] right-[6%]" />
+          <Cube size={18} border="rgba(128,84,184,.1)" bg="rgba(128,84,184,.02)" dur={26} reverse className="absolute bottom-[12%] left-[4%]" />
+          <Cube size={15} border="rgba(230,122,243,.08)" bg="rgba(230,122,243,.02)" dur={22} className="absolute top-[60%] right-[15%]" />
+          <div className="absolute top-[20%] left-[8%] w-[70px] h-[70px] rounded-full" style={{ border: "1.5px solid rgba(35,171,126,.08)", transformStyle: "preserve-3d", animation: "nl-ring-rotate-2 20s linear infinite" }} />
+          <Dots count={15} className="absolute inset-0" />
+          <div className="absolute -top-16 -right-16 w-[250px] h-[250px] rounded-full" style={{ background: "radial-gradient(circle, rgba(166,255,234,0.1), transparent 70%)" }} />
+          <div className="absolute -bottom-12 -left-12 w-[200px] h-[200px] rounded-full" style={{ background: "radial-gradient(circle, rgba(128,84,184,0.07), transparent 70%)" }} />
         </div>
 
-        {/* Mobile logo */}
-        <div className="mb-8 flex items-center gap-4 lg:hidden">
-          <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] flex items-center justify-center shadow-lg">
-            <Sparkles className="h-7 w-7 text-white" />
+        <div className="absolute top-7 left-7 sm:left-10 z-10">
+          <Link href="/" className="flex items-center gap-2.5 text-base font-medium text-[#5a6275] no-underline px-5 py-2.5 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#e8eaef] hover:bg-white hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all"><BackArrow className="w-5 h-5" />{isRtl ? "الرئيسية" : "Home"}</Link>
+        </div>
+        <div className="absolute top-7 right-7 sm:right-10 z-10">
+          <button onClick={() => setLocale(locale === "ar" ? "en" : "ar")} className="text-base font-medium text-[#5a6275] px-5 py-2.5 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#e8eaef] cursor-pointer hover:bg-white hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">{locale === "ar" ? "English" : "العربية"}</button>
+        </div>
+
+        <div className="absolute top-[72px] left-7 sm:left-10 flex items-center gap-3 lg:hidden">
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
+            <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
-          <span className="text-3xl font-extrabold text-[#004D26] font-['Cairo']">
-            {t.brandName} <span className="text-[#00A352]">AI</span>
-          </span>
+          <span className="text-lg font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="text-[#23ab7e]">AI</span></span>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mx-auto w-full max-w-md"
+        {/* Form card */}
+        <div
+          className="w-full max-w-[640px] relative z-10 mt-14 lg:mt-0 mx-6 sm:mx-10 rounded-[32px] p-8 sm:p-10"
+          style={{
+            background: "rgba(255,255,255,0.75)",
+            backdropFilter: "blur(24px) saturate(1.5)",
+            WebkitBackdropFilter: "blur(24px) saturate(1.5)",
+            border: "1px solid rgba(255,255,255,0.8)",
+            boxShadow: "0 8px 32px rgba(35,171,126,0.06), 0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(255,255,255,0.6) inset",
+            animation: "nl-fade-up .7s ease forwards",
+          }}
         >
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-extrabold text-[#004D26] font-['Cairo']">{t.joinNawaa}</h1>
-            <p className="mt-2 text-lg text-[#5A8A6A]">{t.createAccount}</p>
+          <div className="flex bg-[#f4f6f8]/80 rounded-2xl p-[5px] mb-7">
+            <Link href="/login" className="flex-1 py-3.5 px-5 text-center text-base font-semibold text-[#9ca3b0] no-underline rounded-2xl hover:text-[#5a6275] transition-colors">{isRtl ? "تسجيل الدخول" : "Sign In"}</Link>
+            <div className="flex-1 py-3.5 px-5 text-center text-base font-semibold text-[#2d3142] bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] cursor-default">{isRtl ? "إنشاء حساب" : "Create Account"}</div>
           </div>
 
-          {/* Google button first */}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGoogle}
-            disabled={loading}
-            className="w-full h-14 text-lg font-bold rounded-2xl border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] transition-all hover:border-[#00A352] hover:bg-[#F0F7F2] hover:shadow-lg"
-          >
-            <svg className="h-6 w-6 me-3" viewBox="0 0 24 24">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-            </svg>
+          <div className="mb-6">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1a1d2e] tracking-tight mb-2" style={{ fontFamily: hFont }}>{t.joinNawaa}</h1>
+            <p className="text-base text-[#9ca3b0]">{t.createAccount}</p>
+          </div>
+
+          <button type="button" onClick={handleGoogle} disabled={loading} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl border-2 border-[#e8eaef] bg-white/80 backdrop-blur-sm text-base font-semibold text-[#2d3142] cursor-pointer transition-all hover:border-[#23ab7e] hover:shadow-[0_4px_20px_rgba(35,171,126,0.1)] hover:-translate-y-px disabled:opacity-50">
+            <svg viewBox="0 0 24 24" className="w-6 h-6"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
             {t.continueGoogle}
-          </Button>
+          </button>
 
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full h-px bg-[#D4EBD9]" />
-            </div>
-            <div className="relative flex justify-center">
-              <span className="bg-[#F8FBF8] px-4 text-sm font-semibold text-[#5A8A6A] uppercase tracking-wider">{t.or}</span>
-            </div>
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-[#e8eaef]" /><span className="text-sm font-medium text-[#9ca3b0] uppercase tracking-wider">{t.or}</span><div className="flex-1 h-px bg-[#e8eaef]" />
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label className="text-sm font-bold text-[#004D26] mb-1.5 block">{t.fullName}</Label>
-              <div className="relative">
-                <User className={`absolute top-1/2 -translate-y-1/2 h-5 w-5 text-[#5A8A6A]/60 ${isRtl ? "right-4" : "left-4"}`} />
-                <Input
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required
-                  className={`h-13 rounded-xl border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] placeholder:text-[#5A8A6A]/40 text-base font-medium focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.06)] transition-all ${isRtl ? "pr-12 pl-4" : "pl-12 pr-4"}`}
-                  placeholder={t.namePlaceholder}
-                />
-              </div>
-            </div>
-            <div>
-              <Label className="text-sm font-bold text-[#004D26] mb-1.5 block">{t.email}</Label>
-              <div className="relative">
-                <Mail className={`absolute top-1/2 -translate-y-1/2 h-5 w-5 text-[#5A8A6A]/60 ${isRtl ? "right-4" : "left-4"}`} />
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className={`h-13 rounded-xl border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] placeholder:text-[#5A8A6A]/40 text-base font-medium focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.06)] transition-all ${isRtl ? "pr-12 pl-4" : "pl-12 pr-4"}`}
-                  placeholder="you@company.com"
-                />
-              </div>
-            </div>
-            <div>
-              <Label className="text-sm font-bold text-[#004D26] mb-1.5 block">{t.password}</Label>
-              <div className="relative">
-                <Lock className={`absolute top-1/2 -translate-y-1/2 h-5 w-5 text-[#5A8A6A]/60 ${isRtl ? "right-4" : "left-4"}`} />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                  className={`h-13 rounded-xl border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] text-base font-medium focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.06)] transition-all ${isRtl ? "pr-12 pl-12" : "pl-12 pr-12"}`}
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  className={`absolute top-1/2 -translate-y-1/2 text-[#5A8A6A]/60 hover:text-[#006C35] transition-colors p-1 ${isRtl ? "left-3" : "right-3"}`}
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
-            </div>
-            <div>
-              <Label className="text-sm font-bold text-[#004D26] mb-1.5 block">{t.confirmPassword}</Label>
-              <div className="relative">
-                <Lock className={`absolute top-1/2 -translate-y-1/2 h-5 w-5 text-[#5A8A6A]/60 ${isRtl ? "right-4" : "left-4"}`} />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  required
-                  className={`h-13 rounded-xl border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] text-base font-medium focus:border-[#006C35] focus:shadow-[0_0_0_3px_rgba(0,108,53,0.06)] transition-all ${isRtl ? "pr-12 pl-4" : "pl-12 pr-4"}`}
-                  placeholder="••••••••"
-                />
-              </div>
-            </div>
-
-            {/* Password checks — always visible for guidance */}
-            <div className="flex gap-4">
-              {passwordChecks.map((check) => (
-                <div key={check.label} className="flex items-center gap-2">
-                  <div className={`flex h-5 w-5 items-center justify-center rounded-full transition-all ${check.valid ? "bg-[#006C35]" : "bg-[#D4EBD9]"}`}>
-                    {check.valid && <Check className="h-3 w-3 text-white" />}
-                  </div>
-                  <span className={`text-sm font-medium ${check.valid ? "text-[#006C35]" : "text-[#5A8A6A]"}`}>{check.label}</span>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-semibold text-[#2d3142] mb-1.5">{t.fullName}</label>
+                <div className="relative">
+                  <User className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-[#9ca3b0] pointer-events-none ${isRtl ? "right-4" : "left-4"}`} />
+                  <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required placeholder={t.namePlaceholder} className={`${inputCls} ${isRtl ? "pr-11 pl-4" : "pl-11 pr-4"}`} />
                 </div>
-              ))}
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#2d3142] mb-1.5">{t.email}</label>
+                <div className="relative">
+                  <Mail className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-[#9ca3b0] pointer-events-none ${isRtl ? "right-3" : "left-3"}`} />
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@company.com" className={`${inputCls} ${isRtl ? "pr-11 pl-4" : "pl-11 pr-4"}`} />
+                </div>
+              </div>
             </div>
 
-            {/* Terms */}
-            <label className="flex items-center gap-3 text-sm text-[#5A8A6A] cursor-pointer group">
-              <div className={`flex h-6 w-6 items-center justify-center rounded-lg border-2 transition-all ${terms ? "border-[#006C35] bg-[#006C35]" : "border-[#D4EBD9] bg-white group-hover:border-[#00A352]"}`}>
-                {terms && <Check className="h-4 w-4 text-white" />}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-semibold text-[#2d3142] mb-1.5">{t.password}</label>
+                <div className="relative">
+                  <Lock className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-[#9ca3b0] pointer-events-none ${isRtl ? "right-3" : "left-3"}`} />
+                  <input type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required placeholder={isRtl ? "كلمة مرور قوية" : "Strong password"} className={`${inputCls} ${isRtl ? "pr-11 pl-11" : "pl-9 pr-9"}`} />
+                  <button type="button" onClick={() => setShowPw(!showPw)} className={`absolute top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#9ca3b0] hover:text-[#5a6275] transition-colors p-0.5 ${isRtl ? "left-2.5" : "right-2.5"}`}>{showPw ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}</button>
+                </div>
               </div>
-              <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="sr-only" />
-              <span className="font-medium">{t.agreeTerms}</span>
+              <div>
+                <label className="block text-sm font-semibold text-[#2d3142] mb-1.5">{t.confirmPassword}</label>
+                <div className="relative">
+                  <Lock className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-[#9ca3b0] pointer-events-none ${isRtl ? "right-3" : "left-3"}`} />
+                  <input type={showPw ? "text" : "password"} value={confirm} onChange={(e) => setConfirm(e.target.value)} required placeholder={isRtl ? "تأكيد" : "Confirm"} className={`${inputCls} ${isRtl ? "pr-11 pl-4" : "pl-11 pr-4"} ${confirm.length > 0 ? (pwMatch ? "!border-[#23ab7e]" : "!border-[#ef4444]") : ""}`} />
+                </div>
+              </div>
+            </div>
+
+            {/* Indicators row */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5 mb-4">
+              {password.length > 0 && (
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1 w-20">{[1,2,3,4].map((i) => <div key={i} className="flex-1 h-1 rounded-sm" style={{ background: i <= strength ? sColors[strength] : "#e8eaef", transition: "background .3s" }} />)}</div>
+                  <span className="flex items-center gap-1 text-[11px]">{password.length >= 6 ? <Check className="w-3 h-3 text-[#23ab7e]" /> : <span className="w-3 h-3 rounded-full border border-[#e8eaef] inline-block" />}<span className={password.length >= 6 ? "text-[#23ab7e]" : "text-[#9ca3b0]"}>{t.minChars}</span></span>
+                </div>
+              )}
+              {confirm.length > 0 && (
+                <span className="flex items-center gap-1 text-[11px]">{pwMatch ? <Check className="w-3 h-3 text-[#23ab7e]" /> : <span className="w-3 h-3 rounded-full border border-[#ef4444] inline-block" />}<span className={pwMatch ? "text-[#23ab7e]" : "text-[#ef4444]"}>{pwMatch ? t.passwordsMatch : t.passwordsDontMatch}</span></span>
+              )}
+            </div>
+
+            <label className="flex items-center gap-3 mb-6 cursor-pointer">
+              <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="w-5 h-5 rounded accent-[#23ab7e]" />
+              <span className="text-sm text-[#5a6275]">{t.agreeTerms}</span>
             </label>
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-14 text-lg font-extrabold rounded-xl text-white bg-[#006C35] hover:bg-[#005A2C] shadow-lg shadow-[#006C35]/20 transition-all"
-            >
-              {loading ? (
-                <div className="h-6 w-6 animate-spin rounded-full border-3 border-white/30 border-t-white" />
-              ) : (
-                t.signUp
-              )}
-            </Button>
+            <button type="submit" disabled={loading} className="w-full py-4 rounded-2xl border-none text-base font-bold text-white cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(35,171,126,0.35)] disabled:opacity-50" style={{ background: "linear-gradient(135deg, #23ab7e 0%, #1e9670 40%, #8054b8 100%)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 4px 20px rgba(35,171,126,0.3), 0 2px 8px rgba(128,84,184,0.15)" }}>
+              {loading ? (isRtl ? "جارٍ الإنشاء..." : "Creating...") : t.signUp}
+            </button>
           </form>
 
-          <p className="mt-6 text-center text-base text-[#5A8A6A]">
-            {t.hasAccount}{" "}
-            <Link href="/login" className="text-[#006C35] font-bold hover:underline transition-colors">
-              {t.signIn}
-            </Link>
-          </p>
-        </motion.div>
+          <p className="text-center mt-6 text-base text-[#9ca3b0]">{t.hasAccount} <Link href="/login" className="text-[#23ab7e] font-semibold no-underline hover:text-[#8054b8] transition-colors">{isRtl ? "سجل دخول" : "Sign in"}</Link></p>
+          <p className="text-center mt-2 text-[11px] text-[#9ca3b0]">{isRtl ? "بإنشاء حساب، أنت توافق على " : "By creating an account, you agree to our "}<a href="#" className="text-[#5a6275] underline underline-offset-2">{isRtl ? "شروط الخدمة" : "Terms"}</a>{isRtl ? " و" : " & "}<a href="#" className="text-[#5a6275] underline underline-offset-2">{isRtl ? "الخصوصية" : "Privacy"}</a></p>
+        </div>
       </div>
     </div>
   );

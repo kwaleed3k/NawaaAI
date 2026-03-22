@@ -12,7 +12,7 @@ export function GlowCard({ children, className }: Props) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white hover:-translate-y-1 transition-transform duration-200",
+        "relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white hover:-translate-y-1 transition-transform duration-200",
         className
       )}
     >

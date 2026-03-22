@@ -21,21 +21,21 @@ export default function DashboardError({
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-50 border-2 border-red-200">
           <AlertTriangle className="h-10 w-10 text-red-500" />
         </div>
-        <h2 className="mt-6 text-3xl font-black text-[#004D26]">Something went wrong</h2>
-        <p className="mt-3 text-lg text-[#5A8A6A]">
+        <h2 className="mt-6 text-3xl font-black text-[#1a1d2e]">Something went wrong</h2>
+        <p className="mt-3 text-lg text-[#8f96a3]">
           An error occurred while loading this page. Please try again.
         </p>
         <div className="mt-6 flex items-center gap-4">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-6 py-3 text-lg font-bold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-6 py-3 text-lg font-bold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105"
           >
             <RotateCcw className="h-5 w-5" />
             Try Again
           </button>
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#D4EBD9] bg-white px-6 py-3 text-lg font-bold text-[#004D26] transition-all hover:border-[#00A352] hover:bg-[#F0F7F2]"
+            className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#e8eaef] bg-white px-6 py-3 text-lg font-bold text-[#1a1d2e] transition-all hover:border-[#8054b8] hover:bg-[#f4f6f8]"
           >
             <Home className="h-5 w-5" />
             Dashboard

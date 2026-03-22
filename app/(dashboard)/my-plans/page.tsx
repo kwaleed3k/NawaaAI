@@ -84,13 +84,13 @@ const PLATFORM_BADGE_STYLES: Record<string, string> = {
     "bg-gradient-to-r from-slate-800 to-cyan-500 text-white border-cyan-400/40",
   x: "bg-gradient-to-r from-slate-700 to-slate-900 text-white border-slate-400/40",
   snapchat:
-    "bg-gradient-to-r from-yellow-400 to-amber-400 text-yellow-900 border-yellow-400/40",
+    "bg-gradient-to-r from-yellow-400 to-[#e67af3] text-yellow-900 border-yellow-400/40",
   linkedin:
-    "bg-gradient-to-r from-blue-500 to-blue-700 text-white border-blue-400/40",
+    "bg-gradient-to-r from-[#8054b8] to-blue-700 text-white border-blue-400/40",
   youtube:
     "bg-gradient-to-r from-red-500 to-red-700 text-white border-red-400/40",
   whatsapp:
-    "bg-gradient-to-r from-green-500 to-emerald-600 text-white border-green-400/40",
+    "bg-gradient-to-r from-[#23ab7e] to-[#1a8a64] text-white border-[#2dd4a0]/40",
 };
 
 /* ── Platform top-bar colors for day cards ── */
@@ -99,19 +99,19 @@ const PLATFORM_BAR_COLORS: Record<string, string> = {
   instagram: "from-pink-500 to-rose-500",
   tiktok: "from-slate-800 to-cyan-500",
   x: "from-slate-700 to-slate-900",
-  snapchat: "from-yellow-400 to-amber-400",
-  linkedin: "from-blue-500 to-blue-700",
+  snapchat: "from-yellow-400 to-[#e67af3]",
+  linkedin: "from-[#8054b8] to-blue-700",
   youtube: "from-red-500 to-red-700",
-  whatsapp: "from-green-500 to-emerald-600",
+  whatsapp: "from-[#23ab7e] to-[#1a8a64]",
 };
 
 /* ── Card accent bar rotation ── */
 
 const CARD_ACCENT_COLORS = [
-  "from-[#006C35] via-[#00A352] to-[#7C3AED]",
-  "from-[#7C3AED] via-[#A78BFA] to-[#7C3AED]",
-  "from-blue-500 via-indigo-500 to-purple-500",
-  "from-purple-500 via-fuchsia-500 to-pink-500",
+  "from-[#23ab7e] via-[#8054b8] to-[#8054b8]",
+  "from-[#8054b8] via-[#A78BFA] to-[#8054b8]",
+  "from-[#8054b8] via-indigo-500 to-[#8054b8]",
+  "from-[#8054b8] via-fuchsia-500 to-pink-500",
 ];
 
 /* ── Hashtag pill color rotation ── */
@@ -119,8 +119,8 @@ const CARD_ACCENT_COLORS = [
 const HASHTAG_PILL_COLORS = [
   "bg-pink-100 text-pink-700 border border-pink-200",
   "bg-blue-100 text-blue-700 border border-blue-200",
-  "bg-amber-100 text-amber-700 border border-amber-200",
-  "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  "bg-[#e8eaef] text-amber-700 border border-[#f5c6fa]",
+  "bg-white text-[#1a8a64] border border-[#a6ffea]",
   "bg-purple-100 text-purple-700 border border-purple-200",
   "bg-cyan-100 text-cyan-700 border border-cyan-200",
   "bg-orange-100 text-orange-700 border border-orange-200",
@@ -232,7 +232,7 @@ export default function MyPlansPage() {
     return (
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
         {/* Skeleton banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#D4EBD9] via-[#E8F5EC] to-[#D4EBD9] p-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef] p-8">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
           <Skeleton className="h-10 w-80 rounded-xl bg-white/50" />
           <Skeleton className="mt-3 h-6 w-60 rounded-lg bg-white/30" />
@@ -243,26 +243,26 @@ export default function MyPlansPage() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white"
+              className="relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white"
             >
               {/* Accent bar skeleton */}
-              <div className="h-2 bg-gradient-to-r from-[#D4EBD9] via-[#E8F5EC] to-[#D4EBD9]">
+              <div className="h-2 bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef]">
                 <div className="h-full w-full bg-gradient-to-r from-transparent via-white/60 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
               </div>
               <div className="p-6 space-y-4">
                 <div className="flex items-center gap-3">
-                  <Skeleton className="h-12 w-12 rounded-xl bg-[#D4EBD9]/50" />
-                  <Skeleton className="h-5 w-32 rounded-lg bg-[#D4EBD9]/40" />
+                  <Skeleton className="h-12 w-12 rounded-xl bg-[#e8eaef]/50" />
+                  <Skeleton className="h-5 w-32 rounded-lg bg-[#e8eaef]/40" />
                 </div>
-                <Skeleton className="h-6 w-full rounded-lg bg-[#D4EBD9]/40" />
-                <Skeleton className="h-5 w-3/4 rounded-lg bg-[#D4EBD9]/30" />
+                <Skeleton className="h-6 w-full rounded-lg bg-[#e8eaef]/40" />
+                <Skeleton className="h-5 w-3/4 rounded-lg bg-[#e8eaef]/30" />
                 <div className="flex gap-2">
-                  <Skeleton className="h-8 w-20 rounded-xl bg-[#D4EBD9]/30" />
-                  <Skeleton className="h-8 w-20 rounded-xl bg-[#D4EBD9]/30" />
+                  <Skeleton className="h-8 w-20 rounded-xl bg-[#e8eaef]/30" />
+                  <Skeleton className="h-8 w-20 rounded-xl bg-[#e8eaef]/30" />
                 </div>
                 <div className="flex gap-2">
-                  <Skeleton className="h-12 flex-1 rounded-xl bg-[#D4EBD9]/20" />
-                  <Skeleton className="h-12 w-12 rounded-xl bg-[#D4EBD9]/20" />
+                  <Skeleton className="h-12 flex-1 rounded-xl bg-[#e8eaef]/20" />
+                  <Skeleton className="h-12 w-12 rounded-xl bg-[#e8eaef]/20" />
                 </div>
               </div>
             </div>
@@ -279,16 +279,16 @@ export default function MyPlansPage() {
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
         {/* ===== PAGE HEADER BANNER ===== */}
         <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
-          <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-violet-600/30 to-fuchsia-600/10 blur-3xl" />
-          <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-blue-600/20 to-cyan-500/10 blur-3xl" />
+          <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
+          <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
           <div className="relative z-10 p-6 sm:p-8">
             <div className="flex items-center gap-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 shadow-lg shadow-violet-500/25">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
                 <FolderOpen className="h-5 w-5 text-white" />
               </div>
               <div className="flex-1">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                  <span className="bg-gradient-to-r from-white via-violet-200 to-blue-200 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
                     {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
                   </span>
                 </h1>
@@ -302,43 +302,43 @@ export default function MyPlansPage() {
 
         {/* Empty state card */}
         <div
-          className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] py-24 px-6"
+          className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] py-24 px-6"
         >
           {/* Floating animated icon */}
           <div className="relative">
             <div
-              className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#7C3AED] shadow-lg"
+              className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#23ab7e] via-[#8054b8] to-[#8054b8] shadow-lg"
             >
               <FolderOpen className="h-14 w-14 text-white" />
             </div>
 
             {/* Pulsing sparkles */}
             <div
-              className="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] shadow-lg"
+              className="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg"
             >
               <Sparkles className="h-5 w-5 text-white" />
             </div>
 
             <div
-              className="absolute -bottom-1 -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#00A352] to-[#006C35] shadow-md"
+              className="absolute -bottom-1 -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#8054b8] to-[#23ab7e] shadow-md"
             >
               <Sparkles className="h-4 w-4 text-white" />
             </div>
           </div>
 
-          <p className="mt-8 text-2xl font-bold text-[#004D26]">
+          <p className="mt-8 text-2xl font-bold text-[#1a1d2e]">
             {isAr
               ? "\u0644\u0627 \u062A\u0648\u062C\u062F \u062E\u0637\u0637 \u0645\u062D\u0641\u0648\u0638\u0629 \u0628\u0639\u062F"
               : "No saved plans yet"}
           </p>
-          <p className="mt-3 text-lg text-[#5A8A6A] max-w-md text-center leading-relaxed">
+          <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">
             {isAr
               ? "\u0627\u0646\u062A\u0642\u0644 \u0625\u0644\u0649 \u0645\u062E\u0637\u0637 \u0627\u0644\u0645\u062D\u062A\u0648\u0649 \u0644\u0625\u0646\u0634\u0627\u0621 \u0648\u062D\u0641\u0638 \u0623\u0648\u0644 \u062E\u0637\u0629 \u0644\u0643"
               : "Go to the Content Planner to create and save your first plan"}
           </p>
           <a
             href="/planner"
-            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]"
+            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]"
           >
             <Calendar className="h-5 w-5" />
             {isAr
@@ -358,16 +358,16 @@ export default function MyPlansPage() {
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
       {/* ===== PAGE HEADER BANNER ===== */}
       <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-violet-600/30 to-fuchsia-600/10 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-blue-600/20 to-cyan-500/10 blur-3xl" />
+        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
+        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
         <div className="relative z-10 p-6 sm:p-8">
           <div className="flex items-center gap-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 shadow-lg shadow-violet-500/25">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
               <FolderOpen className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-violet-200 to-blue-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
                   {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
                 </span>
               </h1>
@@ -405,8 +405,8 @@ export default function MyPlansPage() {
                 "group relative overflow-hidden rounded-2xl border-2 bg-white transition-all duration-300",
                 glowClass,
                 isExpanded
-                  ? "border-[#006C35]/50 shadow-lg"
-                  : "border-[#D4EBD9] hover:border-[#006C35]/40"
+                  ? "border-[#23ab7e]/50 shadow-lg"
+                  : "border-[#e8eaef] hover:border-[#23ab7e]/40"
               )}
             >
               {/* Gradient top accent bar */}
@@ -422,10 +422,10 @@ export default function MyPlansPage() {
                 {company && (
                   <div className="mb-4 flex items-center gap-3">
                     <div
-                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#D4EBD9] shadow-sm"
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#e8eaef] shadow-sm"
                       style={{
                         backgroundColor:
-                          company.brand_colors?.[0] || "#F0F7F2",
+                          company.brand_colors?.[0] || "#f4f6f8",
                       }}
                     >
                       {company.logo_url ? (
@@ -440,7 +440,7 @@ export default function MyPlansPage() {
                         </span>
                       )}
                     </div>
-                    <span className="text-lg font-bold text-[#004D26]">
+                    <span className="text-lg font-bold text-[#1a1d2e]">
                       {isAr
                         ? company.name_ar || company.name
                         : company.name}
@@ -449,7 +449,7 @@ export default function MyPlansPage() {
                 )}
 
                 {/* Title */}
-                <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#004D26] leading-snug line-clamp-2">
+                <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#1a1d2e] leading-snug line-clamp-2">
                   {plan.title ??
                     (isAr
                       ? plan.plan_data?.weekThemeAr ?? plan.plan_data?.weekTheme
@@ -461,8 +461,8 @@ export default function MyPlansPage() {
                 </h3>
 
                 {/* Date range with icon badge */}
-                <div className="mt-3 flex items-center gap-2.5 text-lg text-[#0A1F0F]">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#006C35] to-[#00A352]">
+                <div className="mt-3 flex items-center gap-2.5 text-lg text-[#2d3142]">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#8054b8]">
                     <Calendar className="h-4 w-4 text-white" />
                   </div>
                   <span className="font-medium">
@@ -471,8 +471,8 @@ export default function MyPlansPage() {
                 </div>
 
                 {/* Day count with icon badge */}
-                <div className="mt-2 flex items-center gap-2.5 text-lg text-[#0A1F0F]">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#A78BFA]">
+                <div className="mt-2 flex items-center gap-2.5 text-lg text-[#2d3142]">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#A78BFA]">
                     <FolderOpen className="h-4 w-4 text-white" />
                   </div>
                   <span className="font-medium">
@@ -491,7 +491,7 @@ export default function MyPlansPage() {
                         className={cn(
                           "inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-sm font-bold shadow-sm",
                           PLATFORM_BADGE_STYLES[p.toLowerCase()] ??
-                            "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white border-[#D4EBD9]"
+                            "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white border-[#e8eaef]"
                         )}
                       >
                         <span className="text-base">
@@ -504,7 +504,7 @@ export default function MyPlansPage() {
                 )}
 
                 {/* Created date pill */}
-                <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1 text-base text-[#5A8A6A]">
+                <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base text-[#8f96a3]">
                   <Clock className="h-3.5 w-3.5" />
                   <span>
                     {isAr ? "\u062A\u0645 \u0627\u0644\u062D\u0641\u0638: " : "Saved: "}
@@ -525,8 +525,8 @@ export default function MyPlansPage() {
                     className={cn(
                       "flex-1 h-12 rounded-xl text-base font-bold transition-all duration-300",
                       isExpanded
-                        ? "bg-[#006C35] text-white hover:bg-[#006C35]/90"
-                        : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-sm shadow-md hover:scale-[1.02]"
+                        ? "bg-[#23ab7e] text-white hover:bg-[#23ab7e]/90"
+                        : "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white hover:shadow-sm shadow-md hover:scale-[1.02]"
                     )}
                   >
                     {isExpanded ? (
@@ -561,7 +561,7 @@ export default function MyPlansPage() {
                       <Button
                         onClick={() => setConfirmDeleteId(null)}
                         variant="outline"
-                        className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-[#5A8A6A] text-base hover:bg-[#F0F7F2]"
+                        className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-[#8f96a3] text-base hover:bg-[#f4f6f8]"
                       >
                         <X className="h-5 w-5" />
                       </Button>
@@ -570,7 +570,7 @@ export default function MyPlansPage() {
                     <Button
                       onClick={() => setConfirmDeleteId(plan.id)}
                       variant="outline"
-                      className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-sm transition-all duration-300"
+                      className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-sm transition-all duration-300"
                     >
                       <Trash2 className="h-5 w-5" />
                     </Button>
@@ -585,9 +585,9 @@ export default function MyPlansPage() {
       {/* ── Expanded Plan Detail View ── */}
       {expandedPlan && (
         <div className="overflow-hidden">
-            <div className="rounded-2xl border-2 border-[#006C35]/20 bg-[#F8FBF8] overflow-hidden">
+            <div className="rounded-2xl border-2 border-[#23ab7e]/20 bg-[#fafbfd] overflow-hidden">
               {/* ── Gradient header bar ── */}
-              <div className="relative overflow-hidden bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] px-6 py-6 lg:px-8 lg:py-8">
+              <div className="relative overflow-hidden bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-6 py-6 lg:px-8 lg:py-8">
                 <div className="relative flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
@@ -641,13 +641,13 @@ export default function MyPlansPage() {
                     const platformKey = day.platform?.toLowerCase() ?? "";
                     const barGradient =
                       PLATFORM_BAR_COLORS[platformKey] ??
-                      "from-[#006C35] to-[#00A352]";
+                      "from-[#23ab7e] to-[#8054b8]";
                     const emoji = PLATFORM_EMOJI[platformKey] ?? day.platform?.charAt(0)?.toUpperCase() ?? "?";
 
                     return (
                       <div
                         key={day.dayIndex}
-                        className="group/day overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white transition-all duration-300 hover:border-[#006C35]/30 hover:shadow-md"
+                        className="group/day overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white transition-all duration-300 hover:border-[#23ab7e]/30 hover:shadow-md"
                       >
                         {/* Platform-colored top bar */}
                         <div
@@ -660,12 +660,12 @@ export default function MyPlansPage() {
                         <div className="p-5">
                           {/* Day header */}
                           <div className="flex items-center justify-between mb-4">
-                            <span className="text-xl font-bold text-[#004D26]">
+                            <span className="text-xl font-bold text-[#1a1d2e]">
                               {isAr
                                 ? day.dayAr || day.dayEn
                                 : day.dayEn || day.dayAr}
                             </span>
-                            <span className="rounded-xl bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1 text-base font-medium text-[#5A8A6A]">
+                            <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base font-medium text-[#8f96a3]">
                               {day.date}
                             </span>
                           </div>
@@ -676,26 +676,26 @@ export default function MyPlansPage() {
                               className={cn(
                                 "inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-sm font-bold shadow-sm",
                                 PLATFORM_BADGE_STYLES[platformKey] ??
-                                  "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white border-[#D4EBD9]"
+                                  "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white border-[#e8eaef]"
                               )}
                             >
                               <span className="text-base">{emoji}</span>
                               <span className="capitalize">{day.platform}</span>
                             </span>
-                            <span className="rounded-xl bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1.5 text-base font-medium text-[#2D5A3D]">
+                            <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1.5 text-base font-medium text-[#505868]">
                               {day.contentType}
                             </span>
                           </div>
 
                           {/* Topic */}
-                          <p className="text-xl font-bold text-[#0A1F0F] leading-snug">
+                          <p className="text-xl font-bold text-[#2d3142] leading-snug">
                             {isAr
                               ? day.topicAr || day.topic
                               : day.topic || day.topicAr}
                           </p>
 
                           {/* Caption */}
-                          <p className="mt-2.5 text-lg text-[#2D5A3D] leading-relaxed line-clamp-4">
+                          <p className="mt-2.5 text-lg text-[#505868] leading-relaxed line-clamp-4">
                             {isAr
                               ? day.captionAr || day.caption
                               : day.caption || day.captionAr}
@@ -718,7 +718,7 @@ export default function MyPlansPage() {
                                 </span>
                               ))}
                               {day.hashtags.length > 5 && (
-                                <span className="rounded-xl bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1 text-base font-medium text-[#5A8A6A]">
+                                <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base font-medium text-[#8f96a3]">
                                   +{day.hashtags.length - 5}
                                 </span>
                               )}
@@ -726,16 +726,16 @@ export default function MyPlansPage() {
                           )}
 
                           {/* Posting time — gold-tinted box */}
-                          <div className="mt-4 flex items-center gap-2 rounded-xl bg-[#7C3AED]/10 border border-[#7C3AED]/25 px-3 py-2">
-                            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#7C3AED] to-[#A78BFA]">
+                          <div className="mt-4 flex items-center gap-2 rounded-xl bg-[#8054b8]/10 border border-[#8054b8]/25 px-3 py-2">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#A78BFA]">
                               <Clock className="h-3.5 w-3.5 text-white" />
                             </div>
-                            <span className="text-xl font-bold text-[#7C3AED]">
+                            <span className="text-xl font-bold text-[#8054b8]">
                               {day.postingTime}
                             </span>
                           </div>
                           {day.postingTimeReason && (
-                            <p className="mt-1.5 text-lg text-[#5A8A6A] italic leading-snug px-1">
+                            <p className="mt-1.5 text-lg text-[#8f96a3] italic leading-snug px-1">
                               {day.postingTimeReason}
                             </p>
                           )}
@@ -744,15 +744,15 @@ export default function MyPlansPage() {
                           {day.contentTips && (
                             <div className="mt-4 relative rounded-xl overflow-hidden">
                               {/* Gradient border effect */}
-                              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] p-[2px]">
+                              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] p-[2px]">
                                 <div className="h-full w-full rounded-[10px] bg-white" />
                               </div>
                               <div className="relative p-3.5">
-                                <p className="text-lg font-bold text-[#006C35] mb-1 flex items-center gap-1.5">
-                                  <Sparkles className="h-4 w-4 text-[#7C3AED]" />
+                                <p className="text-lg font-bold text-[#23ab7e] mb-1 flex items-center gap-1.5">
+                                  <Sparkles className="h-4 w-4 text-[#8054b8]" />
                                   {isAr ? "\u0646\u0635\u0627\u0626\u062D" : "Tips"}
                                 </p>
-                                <p className="text-lg text-[#2D5A3D] leading-relaxed">
+                                <p className="text-lg text-[#505868] leading-relaxed">
                                   {day.contentTips}
                                 </p>
                               </div>

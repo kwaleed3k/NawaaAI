@@ -72,8 +72,8 @@ const PLATFORM_GRADIENT: Record<string, string> = {
   instagram: "from-pink-500 to-rose-500",
   tiktok: "from-slate-800 to-slate-600",
   x: "from-slate-700 to-slate-500",
-  snapchat: "from-yellow-400 to-amber-400",
-  linkedin: "from-blue-600 to-blue-500",
+  snapchat: "from-yellow-400 to-[#e67af3]",
+  linkedin: "from-[#6d3fa0] to-[#8054b8]",
 };
 const PLATFORM_EMOJI: Record<string, string> = {
   instagram: "\ud83d\udcf8", tiktok: "\ud83c\udfb5", x: "\u2716\ufe0f",
@@ -157,29 +157,29 @@ export default function DashboardPage() {
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="flex items-center justify-center min-h-[75vh]">
         <div className="flex flex-col items-center gap-10 w-full max-w-md px-6">
           <div className="relative">
-            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] animate-pulse opacity-20" />
-            <div className="absolute -inset-10 rounded-[2rem] bg-gradient-to-br from-[#006C35] to-[#00A352] animate-pulse opacity-10" />
-            <div className="relative flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_12px_40px_rgba(0,108,53,0.4)] animate-float">
+            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] animate-pulse opacity-20" />
+            <div className="absolute -inset-10 rounded-[2rem] bg-gradient-to-br from-[#23ab7e] to-[#8054b8] animate-pulse opacity-10" />
+            <div className="relative flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_12px_40px_rgba(35,171,126,0.4)] animate-float">
               <Sparkles className="h-14 w-14 text-white" />
             </div>
           </div>
           <div className="text-center space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#004D26]">{locale === "ar" ? "\u062c\u0627\u0631\u064a \u062a\u062d\u0645\u064a\u0644 \u0628\u064a\u0627\u0646\u0627\u062a\u0643" : "Loading your data"}</h2>
-            <p className="text-base text-[#5A8A6A]">{locale === "ar" ? "\u0644\u062d\u0638\u0629 \u0648\u0627\u062d\u062f\u0629 \u0641\u0642\u0637..." : "Just a moment..."}</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a1d2e]">{locale === "ar" ? "\u062c\u0627\u0631\u064a \u062a\u062d\u0645\u064a\u0644 \u0628\u064a\u0627\u0646\u0627\u062a\u0643" : "Loading your data"}</h2>
+            <p className="text-base text-[#8f96a3]">{locale === "ar" ? "\u0644\u062d\u0638\u0629 \u0648\u0627\u062d\u062f\u0629 \u0641\u0642\u0637..." : "Just a moment..."}</p>
           </div>
           <div className="h-20 w-full flex items-center justify-center">
-            <div className="flex items-center gap-4 rounded-2xl border border-[#D4EBD9] bg-white px-6 py-4 shadow-sm w-full transition-opacity duration-300">
+            <div className="flex items-center gap-4 rounded-2xl border border-[#e8eaef] bg-white px-6 py-4 shadow-sm w-full transition-opacity duration-300">
               <span className="text-4xl shrink-0">{current.emoji}</span>
-              <p className="text-base font-semibold text-[#004D26] leading-snug">{current.text}</p>
+              <p className="text-base font-semibold text-[#1a1d2e] leading-snug">{current.text}</p>
             </div>
           </div>
           <div className="w-full space-y-3">
-            <div className="h-2 rounded-full bg-[#D4EBD9] overflow-hidden">
-              <div className="h-full rounded-full bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#006C35] animate-shimmer" style={{ width: "60%" }} />
+            <div className="h-2 rounded-full bg-[#e8eaef] overflow-hidden">
+              <div className="h-full rounded-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#23ab7e] animate-shimmer" style={{ width: "60%" }} />
             </div>
             <div className="grid grid-cols-4 gap-2 opacity-40">
               {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="h-16 rounded-xl bg-[#D4EBD9] animate-pulse" />
+                <div key={i} className="h-16 rounded-xl bg-[#e8eaef] animate-pulse" />
               ))}
             </div>
           </div>
@@ -190,17 +190,17 @@ export default function DashboardPage() {
 
   /* ── Stat cards config ── */
   const statItems = [
-    { label: t.totalCompanies, value: stats.companies, icon: Building2, gradient: "from-emerald-500 to-green-600", glow: "shadow-emerald-500/25" },
-    { label: t.plansGenerated, value: stats.plans, icon: Calendar, gradient: "from-amber-400 to-orange-500", glow: "shadow-amber-400/25" },
-    { label: t.imagesCreated, value: stats.images, icon: ImageIcon, gradient: "from-violet-500 to-purple-600", glow: "shadow-violet-500/25" },
-    { label: t.platformsActive, value: stats.platforms, icon: Globe, gradient: "from-sky-400 to-blue-600", glow: "shadow-sky-400/25" },
+    { label: t.totalCompanies, value: stats.companies, icon: Building2, gradient: "from-[#23ab7e] to-[#1a8a64]", glow: "shadow-[#23ab7e]/25" },
+    { label: t.plansGenerated, value: stats.plans, icon: Calendar, gradient: "from-[#e67af3] to-[#c4a8e8]", glow: "shadow-[#e67af3]/25" },
+    { label: t.imagesCreated, value: stats.images, icon: ImageIcon, gradient: "from-[#8054b8] to-[#a45dd4]", glow: "shadow-[#8054b8]/25" },
+    { label: t.platformsActive, value: stats.platforms, icon: Globe, gradient: "from-[#2dd4a0] to-[#23ab7e]", glow: "shadow-[#2dd4a0]/25" },
   ];
 
   /* ── Quick actions config ── */
   const quickActions = [
-    { href: "/companies", icon: Building2, title: t.addNewCompany, desc: locale === "ar" ? "\u0627\u0636\u0641 \u0634\u0631\u0643\u0629 \u062c\u062f\u064a\u062f\u0629 \u0648\u062d\u0644\u0644 \u0647\u0648\u064a\u062a\u0647\u0627" : "Add a new brand and analyze its identity", gradient: "from-emerald-500 to-green-600", glow: "hover:shadow-emerald-500/20" },
-    { href: "/planner", icon: Calendar, title: t.generateThisWeek, desc: locale === "ar" ? "\u062e\u0637\u0629 \u0645\u062d\u062a\u0648\u0649 \u0627\u0633\u0628\u0648\u0639\u064a\u0629 \u0645\u062e\u0635\u0635\u0629 \u0628\u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a" : "AI-powered weekly content plan", gradient: "from-amber-400 to-orange-500", glow: "hover:shadow-amber-400/20" },
-    { href: "/vision-studio", icon: Sparkles, title: t.createVisual, desc: locale === "ar" ? "\u0635\u0648\u0631 \u0627\u062d\u062a\u0631\u0627\u0641\u064a\u0629 \u0645\u0648\u0644\u062f\u0629 \u0628\u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a" : "Professional AI-generated visuals", gradient: "from-violet-500 to-purple-600", glow: "hover:shadow-violet-500/20" },
+    { href: "/companies", icon: Building2, title: t.addNewCompany, desc: locale === "ar" ? "\u0627\u0636\u0641 \u0634\u0631\u0643\u0629 \u062c\u062f\u064a\u062f\u0629 \u0648\u062d\u0644\u0644 \u0647\u0648\u064a\u062a\u0647\u0627" : "Add a new brand and analyze its identity", gradient: "from-[#23ab7e] to-[#1a8a64]", glow: "hover:shadow-[#23ab7e]/20" },
+    { href: "/planner", icon: Calendar, title: t.generateThisWeek, desc: locale === "ar" ? "\u062e\u0637\u0629 \u0645\u062d\u062a\u0648\u0649 \u0627\u0633\u0628\u0648\u0639\u064a\u0629 \u0645\u062e\u0635\u0635\u0629 \u0628\u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a" : "AI-powered weekly content plan", gradient: "from-[#e67af3] to-[#c4a8e8]", glow: "hover:shadow-[#e67af3]/20" },
+    { href: "/vision-studio", icon: Sparkles, title: t.createVisual, desc: locale === "ar" ? "\u0635\u0648\u0631 \u0627\u062d\u062a\u0631\u0627\u0641\u064a\u0629 \u0645\u0648\u0644\u062f\u0629 \u0628\u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a" : "Professional AI-generated visuals", gradient: "from-[#8054b8] to-[#a45dd4]", glow: "hover:shadow-[#8054b8]/20" },
   ];
 
   const isRtl = locale === "ar";
@@ -209,10 +209,10 @@ export default function DashboardPage() {
     <div dir={isRtl ? "rtl" : "ltr"} className="space-y-10 pb-16">
 
       {/* ═══════════════════ HERO ═══════════════════ */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] p-8 sm:p-10 lg:p-14">
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
         {/* Decorative blobs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#00A352]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-emerald-400/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute top-24 right-40 w-1.5 h-1.5 rounded-full bg-white/20 animate-pulse" style={{ animationDelay: "0.5s" }} />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
@@ -222,23 +222,23 @@ export default function DashboardPage() {
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
-                <Sparkles className="h-5 w-5 text-emerald-200" />
+                <Sparkles className="h-5 w-5 text-[#a6ffea]" />
               </div>
-              <span className="text-lg font-bold text-emerald-200/80 tracking-wide">{locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI</span>
+              <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
               {t.greeting}, {displayName} {"\ud83d\udc4b"}
             </h1>
-            <p className="mt-4 text-xl sm:text-2xl font-medium text-emerald-100/70">{formatDate(new Date())}</p>
+            <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">{formatDate(new Date())}</p>
 
             {/* Mini inline stats in hero */}
             <div className="mt-8 flex flex-wrap gap-4">
               {statItems.slice(0, 3).map((s, i) => (
                 <div key={i} className="flex items-center gap-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3">
-                  <s.icon className="h-6 w-6 text-emerald-200" />
+                  <s.icon className="h-6 w-6 text-[#a6ffea]" />
                   <div>
                     <p className="text-2xl font-black text-white">{s.value}</p>
-                    <p className="text-sm font-medium text-emerald-200/60">{s.label}</p>
+                    <p className="text-sm font-medium text-[#a6ffea]/60">{s.label}</p>
                   </div>
                 </div>
               ))}
@@ -248,25 +248,25 @@ export default function DashboardPage() {
           {/* Right side - Rotating Quotes */}
           <div className="lg:max-w-lg xl:max-w-xl">
             <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 p-8 lg:p-10 relative overflow-hidden">
-              <Quote className={`h-12 w-12 text-emerald-300/30 mb-4 ${isRtl ? "scale-x-[-1]" : ""}`} />
+              <Quote className={`h-12 w-12 text-[#a6ffea]/30 mb-4 ${isRtl ? "scale-x-[-1]" : ""}`} />
               <div key={quoteIndex} className="transition-opacity duration-500">
                 <p className="text-2xl lg:text-3xl font-bold text-white/95 leading-relaxed italic mb-6">
                   &ldquo;{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].text}&rdquo;
                 </p>
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-300 to-emerald-500 flex items-center justify-center text-lg font-black text-white shadow-lg">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#a6ffea] to-[#23ab7e] flex items-center justify-center text-lg font-black text-white shadow-lg">
                     {(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].author.charAt(0)}
                   </div>
                   <div>
                     <p className="text-lg font-bold text-white">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].author}</p>
-                    <p className="text-base text-emerald-200/70">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].role}</p>
+                    <p className="text-base text-[#a6ffea]/70">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].role}</p>
                   </div>
                 </div>
               </div>
               {/* Quote dots indicator */}
               <div className="flex gap-2 mt-6 justify-center">
                 {MARKETING_QUOTES_EN.slice(0, 8).map((_, i) => (
-                  <div key={i} className={`h-2 rounded-full transition-all duration-300 ${i === quoteIndex ? "w-6 bg-emerald-300" : "w-2 bg-white/20"}`} />
+                  <div key={i} className={`h-2 rounded-full transition-all duration-300 ${i === quoteIndex ? "w-6 bg-[#a6ffea]" : "w-2 bg-white/20"}`} />
                 ))}
               </div>
             </div>
@@ -299,10 +299,10 @@ export default function DashboardPage() {
       {/* ═══════════════════ QUICK ACTIONS ═══════════════════ */}
       <div>
         <div className="flex items-center gap-3 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-green-600">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#1a8a64]">
             <Zap className="h-5 w-5 text-white" />
           </div>
-          <h2 className="text-3xl font-black text-[#004D26]">{t.quickActions}</h2>
+          <h2 className="text-3xl font-black text-[#1a1d2e]">{t.quickActions}</h2>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {quickActions.map((a) => (
@@ -313,10 +313,10 @@ export default function DashboardPage() {
                 <div className={`mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${a.gradient} shadow-lg`}>
                   <a.icon className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-extrabold text-[#004D26] mb-2">{a.title}</h3>
-                <p className="text-lg text-[#5A8A6A] leading-relaxed">{a.desc}</p>
+                <h3 className="text-2xl font-extrabold text-[#1a1d2e] mb-2">{a.title}</h3>
+                <p className="text-lg text-[#8f96a3] leading-relaxed">{a.desc}</p>
                 <div className={`mt-6 inline-flex items-center gap-2 text-lg font-bold bg-gradient-to-r ${a.gradient} bg-clip-text text-transparent`}>
-                  {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646" : "Get started"} <ArrowRight className={`h-5 w-5 text-emerald-500 group-hover:translate-x-1 transition-transform ${isRtl ? "rotate-180 group-hover:-translate-x-1" : ""}`} />
+                  {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646" : "Get started"} <ArrowRight className={`h-5 w-5 text-[#23ab7e] group-hover:translate-x-1 transition-transform ${isRtl ? "rotate-180 group-hover:-translate-x-1" : ""}`} />
                 </div>
               </Link>
             </div>
@@ -325,16 +325,16 @@ export default function DashboardPage() {
       </div>
 
       {/* ═══════════════════ LATEST PLAN ═══════════════════ */}
-      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden shadow-lg">
-        <div className="flex items-center justify-between p-7 border-b-2 border-[#D4EBD9]">
+      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white overflow-hidden shadow-lg">
+        <div className="flex items-center justify-between p-7 border-b-2 border-[#e8eaef]">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-400/20">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e67af3] to-[#c4a8e8] shadow-lg shadow-[#e67af3]/20">
               <Calendar className="h-6 w-6 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#004D26]">{t.latestPlan}</h2>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.latestPlan}</h2>
           </div>
           {latestPlan && (
-            <Link href="/my-plans" className="flex items-center gap-2 text-lg font-bold text-[#006C35] hover:underline">
+            <Link href="/my-plans" className="flex items-center gap-2 text-lg font-bold text-[#23ab7e] hover:underline">
               {t.viewFullPlan} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
             </Link>
           )}
@@ -348,14 +348,14 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={i}
-                    className="group relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] p-5 text-center hover:border-transparent hover:shadow-lg transition-all duration-300"
+                    className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] p-5 text-center hover:border-transparent hover:shadow-lg transition-all duration-300"
                   >
                     {/* Hover gradient overlay */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${grad} opacity-0 group-hover:opacity-5 transition-opacity`} />
                     <div className={`mx-auto mb-3 h-1.5 w-12 rounded-full bg-gradient-to-r ${grad}`} />
-                    <p className="text-lg font-bold text-[#004D26]">{locale === "ar" ? d.dayAr : d.dayEn || d.dayAr}</p>
+                    <p className="text-lg font-bold text-[#1a1d2e]">{locale === "ar" ? d.dayAr : d.dayEn || d.dayAr}</p>
                     <p className="my-3 text-4xl">{PLATFORM_EMOJI[key] || "\ud83d\udce2"}</p>
-                    <p className="text-base text-[#2D5A3D] leading-snug line-clamp-2">{locale === "ar" ? d.topicAr : d.topic || d.topicAr}</p>
+                    <p className="text-base text-[#505868] leading-snug line-clamp-2">{locale === "ar" ? d.topicAr : d.topic || d.topicAr}</p>
                     <span className={`mt-3 inline-block rounded-xl bg-gradient-to-r ${grad} px-3 py-1 text-sm font-bold text-white capitalize`}>{d.platform}</span>
                   </div>
                 );
@@ -363,10 +363,10 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="py-16 text-center">
-              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100">
-                <Calendar className="h-10 w-10 text-amber-500" />
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e8eaef] to-orange-100">
+                <Calendar className="h-10 w-10 text-[#e67af3]" />
               </div>
-              <p className="text-xl text-[#5A8A6A]">{t.noPlansYet}</p>
+              <p className="text-xl text-[#8f96a3]">{t.noPlansYet}</p>
               <Link href="/planner" className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-amber-600 hover:underline">
                 {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646" : "Create one now"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
               </Link>
@@ -379,37 +379,37 @@ export default function DashboardPage() {
       <div>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-green-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#1a8a64]">
               <Building2 className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-3xl font-black text-[#004D26]">{t.yourCompanies}</h2>
+            <h2 className="text-3xl font-black text-[#1a1d2e]">{t.yourCompanies}</h2>
           </div>
-          <Link href="/companies" className="flex items-center gap-2 text-lg font-bold text-[#006C35] hover:underline">
+          <Link href="/companies" className="flex items-center gap-2 text-lg font-bold text-[#23ab7e] hover:underline">
             {locale === "ar" ? "\u0639\u0631\u0636 \u0627\u0644\u0643\u0644" : "View all"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
           </Link>
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-nawaa">
           {companies.map((c, i) => (
             <div key={c.id}>
-              <Link href="/companies" className="group block min-w-[280px] shrink-0 rounded-2xl border-2 border-[#D4EBD9] bg-white p-7 text-center hover:border-emerald-400 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <Link href="/companies" className="group block min-w-[280px] shrink-0 rounded-2xl border-2 border-[#e8eaef] bg-white p-7 text-center hover:border-[#2dd4a0] hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div
                   className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-2xl text-4xl font-black text-white overflow-hidden shadow-lg"
-                  style={{ backgroundColor: c.brand_colors?.[0] || "#006C35" }}
+                  style={{ backgroundColor: c.brand_colors?.[0] || "#23ab7e" }}
                 >
                   {c.logo_url ? <Image src={c.logo_url} alt={c.name || "Company logo"} width={96} height={96} className="h-full w-full object-cover" /> : c.name?.charAt(0) || "?"}
                 </div>
-                <p className="text-xl font-extrabold text-[#004D26] truncate">{c.name}</p>
+                <p className="text-xl font-extrabold text-[#1a1d2e] truncate">{c.name}</p>
                 {c.industry && (
-                  <span className="mt-3 inline-block rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 px-4 py-1.5 text-base font-semibold text-emerald-700">{c.industry}</span>
+                  <span className="mt-3 inline-block rounded-xl bg-gradient-to-r from-[#f4f6f8] to-[#f4f6f8] border border-[#a6ffea] px-4 py-1.5 text-base font-semibold text-[#1a8a64]">{c.industry}</span>
                 )}
               </Link>
             </div>
           ))}
-          <Link href="/companies" className="min-w-[280px] shrink-0 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] p-7 hover:border-emerald-400 hover:bg-emerald-50/50 transition-all duration-300 group">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
-              <Plus className="h-8 w-8 text-emerald-600" />
+          <Link href="/companies" className="min-w-[280px] shrink-0 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] p-7 hover:border-[#2dd4a0] hover:bg-[#f4f6f8]/50 transition-all duration-300 group">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white group-hover:bg-[#a6ffea] transition-colors">
+              <Plus className="h-8 w-8 text-[#1a8a64]" />
             </div>
-            <span className="text-xl font-extrabold text-[#004D26]">{t.addCompany}</span>
+            <span className="text-xl font-extrabold text-[#1a1d2e]">{t.addCompany}</span>
           </Link>
         </div>
       </div>
@@ -418,13 +418,13 @@ export default function DashboardPage() {
       <div>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#a45dd4]">
               <ImageIcon className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-3xl font-black text-[#004D26]">{t.recentImages}</h2>
+            <h2 className="text-3xl font-black text-[#1a1d2e]">{t.recentImages}</h2>
           </div>
           {recentImages.length > 0 && (
-            <Link href="/my-generations" className="flex items-center gap-2 text-lg font-bold text-violet-600 hover:underline">
+            <Link href="/my-generations" className="flex items-center gap-2 text-lg font-bold text-[#6d3fa0] hover:underline">
               {locale === "ar" ? "\u0639\u0631\u0636 \u0627\u0644\u0643\u0644" : "View all"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
             </Link>
           )}
@@ -434,11 +434,11 @@ export default function DashboardPage() {
             {recentImages.filter(img => img.image_urls?.[0]).slice(0, 5).map((img, i) => (
               <div
                 key={img.id}
-                className="group relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9] shadow-md hover:shadow-xl hover:border-violet-300 transition-all duration-300"
+                className="group relative aspect-square overflow-hidden rounded-2xl border-2 border-[#e8eaef] shadow-md hover:shadow-xl hover:border-[#c4a8e8] transition-all duration-300"
               >
                 <Image src={img.image_urls![0]} alt={locale === "ar" ? "صورة مولدة" : "Generated image"} fill className="object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" />
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="rounded-xl bg-white/90 backdrop-blur-sm px-5 py-2.5 text-lg font-bold text-[#004D26] flex items-center gap-2 shadow-lg">
+                  <span className="rounded-xl bg-white/90 backdrop-blur-sm px-5 py-2.5 text-lg font-bold text-[#1a1d2e] flex items-center gap-2 shadow-lg">
                     <Eye className="h-5 w-5" /> {locale === "ar" ? "\u0639\u0631\u0636" : "View"}
                   </span>
                 </div>
@@ -446,12 +446,12 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border-2 border-dashed border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 py-16 text-center">
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-100 to-purple-100">
-              <ImageIcon className="h-10 w-10 text-violet-500" />
+          <div className="rounded-2xl border-2 border-dashed border-[#c4a8e8] bg-gradient-to-br from-[#f4f6f8] to-purple-50 py-16 text-center">
+            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e8eaef] to-purple-100">
+              <ImageIcon className="h-10 w-10 text-[#8054b8]" />
             </div>
-            <p className="text-xl text-violet-400 font-semibold">{t.noImagesYet}</p>
-            <Link href="/vision-studio" className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-violet-600 hover:underline">
+            <p className="text-xl text-[#c4a8e8] font-semibold">{t.noImagesYet}</p>
+            <Link href="/vision-studio" className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-[#6d3fa0] hover:underline">
               {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0625\u0646\u0634\u0627\u0621" : "Start creating"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
             </Link>
           </div>

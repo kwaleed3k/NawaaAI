@@ -66,31 +66,31 @@ const PLATFORMS = [
   "LinkedIn",
 ];
 
-const FALLBACK_COLORS = ["#006C35", "#00A352", "#7C3AED", "#0B1A0F", "#D0EBDA"];
+const FALLBACK_COLORS = ["#23ab7e", "#8054b8", "#8054b8", "#0B1A0F", "#D0EBDA"];
 
 /* ── Platform config with rich visual data (matches planner/hashtags) ── */
 const PLATFORM_CARDS: Record<string, { emoji: string; selectedBg: string; selectedBorder: string; unselectedBg: string; color: string }> = {
   "Instagram":    { emoji: "\uD83D\uDCF8", selectedBg: "bg-gradient-to-br from-pink-500 to-rose-500", selectedBorder: "border-pink-400", unselectedBg: "bg-pink-50", color: "text-pink-600" },
   "X (Twitter)":  { emoji: "\uD835\uDD4F", selectedBg: "bg-gradient-to-br from-slate-700 to-slate-900", selectedBorder: "border-slate-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
   "TikTok":       { emoji: "\uD83C\uDFB5", selectedBg: "bg-gradient-to-br from-slate-800 to-cyan-500", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
-  "Snapchat":     { emoji: "\uD83D\uDC7B", selectedBg: "bg-gradient-to-br from-yellow-400 to-amber-400", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700" },
-  "LinkedIn":     { emoji: "\uD83D\uDCBC", selectedBg: "bg-gradient-to-br from-blue-500 to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-blue-600" },
+  "Snapchat":     { emoji: "\uD83D\uDC7B", selectedBg: "bg-gradient-to-br from-yellow-400 to-[#e67af3]", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700" },
+  "LinkedIn":     { emoji: "\uD83D\uDCBC", selectedBg: "bg-gradient-to-br from-[#8054b8] to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-[#6d3fa0]" },
 };
 
 /* ── Card accent gradient rotation ── */
 const CARD_GRADIENTS = [
-  "from-[#006C35] via-[#00A352] to-[#7C3AED]",
-  "from-[#7C3AED] via-[#A78BFA] to-[#006C35]",
-  "from-rose-500 via-pink-500 to-purple-500",
-  "from-blue-500 via-indigo-500 to-purple-500",
-  "from-amber-500 via-orange-500 to-red-500",
-  "from-emerald-500 via-teal-500 to-cyan-500",
+  "from-[#23ab7e] via-[#8054b8] to-[#8054b8]",
+  "from-[#8054b8] via-[#A78BFA] to-[#23ab7e]",
+  "from-rose-500 via-pink-500 to-[#8054b8]",
+  "from-[#8054b8] via-indigo-500 to-[#8054b8]",
+  "from-[#e67af3] via-[#f5c6fa] to-red-500",
+  "from-[#23ab7e] via-[#23ab7e] to-cyan-500",
 ];
 
 /* ── Tag emoji prefixes and colors ── */
 const TAG_STYLES = {
-  industry:  { emoji: "\uD83C\uDFED", bg: "bg-[#006C35]/10", border: "border-[#006C35]/25", text: "text-[#006C35]" },
-  tone:      { emoji: "\uD83C\uDFA8", bg: "bg-[#7C3AED]/10", border: "border-[#7C3AED]/25", text: "text-[#7C3AED]" },
+  industry:  { emoji: "\uD83C\uDFED", bg: "bg-[#23ab7e]/10", border: "border-[#23ab7e]/25", text: "text-[#23ab7e]" },
+  tone:      { emoji: "\uD83C\uDFA8", bg: "bg-[#8054b8]/10", border: "border-[#8054b8]/25", text: "text-[#8054b8]" },
   audience:  { emoji: "\uD83C\uDFAF", bg: "bg-[#3B82F6]/10", border: "border-[#3B82F6]/25", text: "text-[#3B82F6]" },
   platform:  { emoji: "\uD83D\uDCF1", bg: "bg-[#A855F7]/10", border: "border-[#A855F7]/25", text: "text-[#A855F7]" },
   website:   { emoji: "\uD83C\uDF10", bg: "bg-[#F97316]/10", border: "border-[#F97316]/25", text: "text-[#F97316]" },
@@ -136,9 +136,9 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
   ] : [];
 
   const mixColors: Record<string, string> = {
-    educational: "#006C35",
-    promotional: "#7C3AED",
-    engagement: "#00A352",
+    educational: "#23ab7e",
+    promotional: "#8054b8",
+    engagement: "#8054b8",
     storytelling: "#3B82F6",
     entertainment: "#A855F7",
   };
@@ -149,52 +149,52 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
     <div className="mt-4 space-y-4">
       {/* Brand Personality */}
       {bp && (
-        <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#004D26]">
-            <Sparkles className="h-5 w-5 text-[#7C3AED]" />
+        <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#1a1d2e]">
+            <Sparkles className="h-5 w-5 text-[#8054b8]" />
             {tc.brandPersonality}
           </h4>
           <div className="space-y-3">
             {personalityDimensions.map((d) => (
               <div key={d.key} className="flex items-center gap-2">
-                <span className="text-[#5A8A6A]">{d.icon}</span>
-                <span className="w-24 text-lg text-[#004D26]">{d.label}</span>
-                <div className="flex-1 h-3 rounded-full bg-[#F0F7F2] overflow-hidden">
+                <span className="text-[#8f96a3]">{d.icon}</span>
+                <span className="w-24 text-lg text-[#1a1d2e]">{d.label}</span>
+                <div className="flex-1 h-3 rounded-full bg-[#f4f6f8] overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#006C35] to-[#00A352] transition-all duration-700"
+                    className="h-full rounded-full bg-gradient-to-r from-[#23ab7e] to-[#8054b8] transition-all duration-700"
                     style={{ width: `${d.value}%` }}
                   />
                 </div>
-                <span className="w-8 text-right text-lg font-medium text-[#7C3AED]">{d.value}</span>
+                <span className="w-8 text-right text-lg font-medium text-[#8054b8]">{d.value}</span>
               </div>
             ))}
           </div>
           {bp.summary && (
-            <p className="mt-3 text-lg text-[#5A8A6A] italic border-t border-[#D4EBD9] pt-2">{bp.summary}</p>
+            <p className="mt-3 text-lg text-[#8f96a3] italic border-t border-[#e8eaef] pt-2">{bp.summary}</p>
           )}
         </div>
       )}
 
       {/* Content Pillars */}
       {pillars && pillars.length > 0 && (
-        <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#004D26]">
-            <Target className="h-5 w-5 text-[#7C3AED]" />
+        <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#1a1d2e]">
+            <Target className="h-5 w-5 text-[#8054b8]" />
             {tc.contentPillars}
           </h4>
           <div className="grid gap-2">
             {pillars.map((p, i) => (
-              <div key={i} className="rounded-xl bg-[#F8FBF8] border border-[#D4EBD9] p-4">
+              <div key={i} className="rounded-xl bg-[#fafbfd] border border-[#e8eaef] p-4">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-lg font-medium text-[#004D26]">
+                  <span className="text-lg font-medium text-[#1a1d2e]">
                     {p.name}{p.nameAr ? ` — ${p.nameAr}` : ""}
                   </span>
-                  <span className="text-lg font-bold text-[#7C3AED]">{p.percentage}%</span>
+                  <span className="text-lg font-bold text-[#8054b8]">{p.percentage}%</span>
                 </div>
-                <p className="text-lg text-[#5A8A6A] mb-2">{p.description}</p>
-                <div className="h-3 rounded-full bg-[#F0F7F2] overflow-hidden">
+                <p className="text-lg text-[#8f96a3] mb-2">{p.description}</p>
+                <div className="h-3 rounded-full bg-[#f4f6f8] overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] transition-all duration-700"
+                    className="h-full rounded-full bg-gradient-to-r from-[#8054b8] to-[#A78BFA] transition-all duration-700"
                     style={{ width: `${p.percentage}%` }}
                   />
                 </div>
@@ -206,37 +206,37 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
 
       {/* Audience Insights */}
       {audience && (
-        <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#004D26]">
-            <Users className="h-5 w-5 text-[#7C3AED]" />
+        <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#1a1d2e]">
+            <Users className="h-5 w-5 text-[#8054b8]" />
             {tc.audienceInsights}
           </h4>
           <div className="flex flex-wrap gap-2 mb-3">
             {audience.primaryAge && (
-              <span className="rounded-xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-4 py-2 text-lg font-medium text-white">
+              <span className="rounded-xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-4 py-2 text-lg font-medium text-white">
                 {tc.age}: {audience.primaryAge}
               </span>
             )}
             {audience.interests?.map((interest, i) => (
-              <span key={i} className="rounded-xl bg-[#F0F7F2] border border-[#D4EBD9] px-4 py-2 text-lg text-[#004D26]">
+              <span key={i} className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-4 py-2 text-lg text-[#1a1d2e]">
                 {interest}
               </span>
             ))}
           </div>
           {audience.saudiSpecific && (
-            <div className="rounded-xl bg-[#F8FBF8] border-2 border-[#7C3AED]/30 p-4 mb-3">
-              <p className="text-lg text-[#7C3AED] font-semibold mb-1">{"\u{1F1F8}\u{1F1E6}"} {tc.saudiInsight}</p>
-              <p className="text-lg text-[#0A1F0F]">{audience.saudiSpecific}</p>
+            <div className="rounded-xl bg-[#fafbfd] border-2 border-[#8054b8]/30 p-4 mb-3">
+              <p className="text-lg text-[#8054b8] font-semibold mb-1">{"\u{1F1F8}\u{1F1E6}"} {tc.saudiInsight}</p>
+              <p className="text-lg text-[#2d3142]">{audience.saudiSpecific}</p>
             </div>
           )}
           {audience.bestPostingTimes && audience.bestPostingTimes.length > 0 && (
             <div className="grid gap-2 sm:grid-cols-2">
               {audience.bestPostingTimes.map((t, i) => (
-                <div key={i} className="flex items-start gap-2 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9] p-4">
-                  <Clock className="h-5 w-5 text-[#00A352] mt-0.5 shrink-0" />
+                <div key={i} className="flex items-start gap-2 rounded-xl bg-[#fafbfd] border border-[#e8eaef] p-4">
+                  <Clock className="h-5 w-5 text-[#8054b8] mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-lg font-medium text-[#004D26]">{t.day} · {t.time}</p>
-                    <p className="text-lg text-[#5A8A6A]">{t.reason}</p>
+                    <p className="text-lg font-medium text-[#1a1d2e]">{t.day} · {t.time}</p>
+                    <p className="text-lg text-[#8f96a3]">{t.reason}</p>
                   </div>
                 </div>
               ))}
@@ -247,9 +247,9 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
 
       {/* Content Mix */}
       {mix && mixTotal > 0 && (
-        <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#004D26]">
-            <Megaphone className="h-5 w-5 text-[#7C3AED]" />
+        <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#1a1d2e]">
+            <Megaphone className="h-5 w-5 text-[#8054b8]" />
             {tc.contentMix}
           </h4>
           {/* Stacked bar */}
@@ -258,7 +258,7 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
               <div
                 key={key}
                 className="h-full first:rounded-l-full last:rounded-r-full transition-all duration-700"
-                style={{ backgroundColor: mixColors[key] || "#5A8A6A", width: `${(val / mixTotal) * 100}%` }}
+                style={{ backgroundColor: mixColors[key] || "#8f96a3", width: `${(val / mixTotal) * 100}%` }}
                 title={`${key}: ${val}%`}
               />
             ))}
@@ -266,9 +266,9 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
           <div className="flex flex-wrap gap-x-4 gap-y-1">
             {Object.entries(mix).map(([key, val]) => (
               <div key={key} className="flex items-center gap-1.5">
-                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: mixColors[key] || "#5A8A6A" }} />
-                <span className="text-lg text-[#004D26] capitalize">{key}</span>
-                <span className="text-lg font-medium text-[#7C3AED]">{val}%</span>
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: mixColors[key] || "#8f96a3" }} />
+                <span className="text-lg text-[#1a1d2e] capitalize">{key}</span>
+                <span className="text-lg font-medium text-[#8054b8]">{val}%</span>
               </div>
             ))}
           </div>
@@ -277,42 +277,42 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
 
       {/* Platform Strategy */}
       {platform && (
-        <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#004D26]">
-            <Target className="h-5 w-5 text-[#7C3AED]" />
+        <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#1a1d2e]">
+            <Target className="h-5 w-5 text-[#8054b8]" />
             {tc.platformStrategy}
           </h4>
           <div className="flex flex-wrap gap-2 mb-2">
             {platform.primary && (
-              <span className="rounded-xl bg-gradient-to-r from-[#006C35] to-[#00A352] px-4 py-2 text-lg font-semibold text-white">
+              <span className="rounded-xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-4 py-2 text-lg font-semibold text-white">
                 ★ {platform.primary}
               </span>
             )}
             {platform.secondary && (
-              <span className="rounded-xl bg-[#F0F7F2] border border-[#D4EBD9] px-4 py-2 text-lg font-medium text-[#004D26]">
+              <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-4 py-2 text-lg font-medium text-[#1a1d2e]">
                 {platform.secondary}
               </span>
             )}
           </div>
           {platform.rationale && (
-            <p className="text-lg text-[#5A8A6A] italic">{platform.rationale}</p>
+            <p className="text-lg text-[#8f96a3] italic">{platform.rationale}</p>
           )}
         </div>
       )}
 
       {/* Tone Guide */}
       {tone && (
-        <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#004D26]">
-            <Megaphone className="h-5 w-5 text-[#7C3AED]" />
+        <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+          <h4 className="mb-3 flex items-center gap-2 text-2xl font-extrabold text-[#1a1d2e]">
+            <Megaphone className="h-5 w-5 text-[#8054b8]" />
             {tc.toneGuide}
           </h4>
           <div className="flex flex-wrap gap-3 mb-3">
             <div className="flex-1 min-w-[140px]">
-              <p className="text-lg font-medium text-[#006C35] mb-1.5">{"\u2713"} {tc.doUse}</p>
+              <p className="text-lg font-medium text-[#23ab7e] mb-1.5">{"\u2713"} {tc.doUse}</p>
               <div className="flex flex-wrap gap-1">
                 {tone.doUse?.map((t, i) => (
-                  <span key={i} className="rounded-xl bg-[#006C35]/10 border border-[#006C35]/30 px-3 py-1.5 text-lg text-[#006C35]">
+                  <span key={i} className="rounded-xl bg-[#23ab7e]/10 border border-[#23ab7e]/30 px-3 py-1.5 text-lg text-[#23ab7e]">
                     {t}
                   </span>
                 ))}
@@ -330,9 +330,9 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
             </div>
           </div>
           {tone.exampleCaption && (
-            <div className="rounded-xl bg-[#F8FBF8] border-l-4 border-[#7C3AED] p-4">
-              <p className="text-lg text-[#5A8A6A] mb-1">{tc.exampleCaption}</p>
-              <p className="text-xl text-[#0A1F0F] italic">&ldquo;{tone.exampleCaption}&rdquo;</p>
+            <div className="rounded-xl bg-[#fafbfd] border-l-4 border-[#8054b8] p-4">
+              <p className="text-lg text-[#8f96a3] mb-1">{tc.exampleCaption}</p>
+              <p className="text-xl text-[#2d3142] italic">&ldquo;{tone.exampleCaption}&rdquo;</p>
             </div>
           )}
         </div>
@@ -340,11 +340,11 @@ function BrandAnalysisDisplay({ data, locale }: { data: Record<string, unknown>;
 
       {/* Vision 2030 Alignment */}
       {vision && (
-        <div className="rounded-2xl border-2 border-[#7C3AED]/40 bg-gradient-to-br from-[#F8FBF8] to-white p-6">
-          <h4 className="mb-2 flex items-center gap-2 text-2xl font-extrabold text-[#7C3AED]">
+        <div className="rounded-2xl border-2 border-[#8054b8]/40 bg-gradient-to-br from-[#fafbfd] to-white p-6">
+          <h4 className="mb-2 flex items-center gap-2 text-2xl font-extrabold text-[#8054b8]">
             {"\u{1F3DB}\uFE0F"} {tc.vision2030}
           </h4>
-          <p className="text-lg text-[#0A1F0F]">{vision}</p>
+          <p className="text-lg text-[#2d3142]">{vision}</p>
         </div>
       )}
     </div>
@@ -640,10 +640,10 @@ export default function CompaniesPage() {
   if (loading) {
     return (
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-6">
-        <div className="h-40 animate-shimmer rounded-2xl bg-gradient-to-r from-[#D4EBD9]/50 via-[#F0F7F2] to-[#D4EBD9]/50 border-2 border-[#D4EBD9]" />
+        <div className="h-40 animate-shimmer rounded-2xl bg-gradient-to-r from-[#e8eaef]/50 via-[#f4f6f8] to-[#e8eaef]/50 border-2 border-[#e8eaef]" />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-72 animate-shimmer rounded-2xl bg-gradient-to-br from-[#F0F7F2] to-white border-2 border-[#D4EBD9]" />
+            <div key={i} className="h-72 animate-shimmer rounded-2xl bg-gradient-to-br from-[#f4f6f8] to-white border-2 border-[#e8eaef]" />
           ))}
         </div>
       </div>
@@ -654,16 +654,16 @@ export default function CompaniesPage() {
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10">
       {/* ===== PAGE HEADER BANNER ===== */}
       <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-violet-600/30 to-fuchsia-600/10 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-blue-600/20 to-cyan-500/10 blur-3xl" />
+        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
+        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
         <div className="relative z-10 p-6 sm:p-8">
           <div className="flex items-center gap-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 shadow-lg shadow-violet-500/25">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
               <Building2 className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-violet-200 to-blue-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
                   {tc.pageTitle}
                 </span>
               </h1>
@@ -681,7 +681,7 @@ export default function CompaniesPage() {
               )}
               <Button
                 onClick={openAdd}
-                className="h-11 px-6 text-lg font-bold rounded-xl bg-white text-[#006C35] hover:bg-white/90 hover:shadow-md transition-all shadow-lg"
+                className="h-11 px-6 text-lg font-bold rounded-xl bg-white text-[#23ab7e] hover:bg-white/90 hover:shadow-md transition-all shadow-lg"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 {tc.addCompany}
@@ -694,7 +694,7 @@ export default function CompaniesPage() {
       {/* ===== EMPTY STATE ===== */}
       {companies.length === 0 ? (
         <div
-          className="relative flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] via-white to-[#F0F7F2] py-20 px-8 overflow-hidden"
+          className="relative flex flex-col items-center justify-center rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] via-white to-[#f4f6f8] py-20 px-8 overflow-hidden"
         >
           {/* Background decorative elements */}
 
@@ -702,33 +702,33 @@ export default function CompaniesPage() {
           <div
             className="relative mb-6"
           >
-            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-[0_0_50px_rgba(0,108,53,0.25)]">
+            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_0_50px_rgba(35,171,126,0.25)]">
               <Building2 className="h-14 w-14 text-white" />
             </div>
             {/* Pulsing sparkles */}
             <div
               className="absolute -top-2 -right-2"
             >
-              <Sparkles className="h-7 w-7 text-[#7C3AED]" />
+              <Sparkles className="h-7 w-7 text-[#8054b8]" />
             </div>
             <div
               className="absolute -bottom-1 -left-3"
             >
-              <Sparkles className="h-5 w-5 text-[#00A352]" />
+              <Sparkles className="h-5 w-5 text-[#8054b8]" />
             </div>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-[#004D26] font-['Cairo'] text-center">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e] font-['Cairo'] text-center">
             {tc.noCompanies}
           </h2>
-          <p className="mt-2 text-xl sm:text-2xl text-[#5A8A6A] text-center max-w-md">
+          <p className="mt-2 text-xl sm:text-2xl text-[#8f96a3] text-center max-w-md">
             {tc.addFirst}
           </p>
 
           <div>
             <Button
               onClick={openAdd}
-              className="mt-8 h-11 px-6 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] text-white shadow-md hover:shadow-sm transition-all"
+              className="mt-8 h-11 px-6 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] text-white shadow-md hover:shadow-sm transition-all"
             >
               <Plus className="mr-2 h-4 w-4" />
               {tc.addCompany}
@@ -753,7 +753,7 @@ export default function CompaniesPage() {
                 key={c.id}
                 className="group hover:-translate-y-1.5 transition-transform duration-200"
               >
-                <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-md hover:border-[#00A352]/40">
+                <div className="relative rounded-2xl border-2 border-[#e8eaef] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-md hover:border-[#8054b8]/40">
                   {/* Top gradient accent bar */}
                   <div className={cn("h-2 w-full bg-gradient-to-r", gradientClass)} />
 
@@ -763,10 +763,10 @@ export default function CompaniesPage() {
                       <div
                         className="relative"
                       >
-                        <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#7C3AED] shadow-lg">
+                        <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#23ab7e] via-[#8054b8] to-[#8054b8] shadow-lg">
                           <div
                             className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[14px] text-lg font-extrabold text-white"
-                            style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
+                            style={{ backgroundColor: c.brand_colors?.[0] ?? "#23ab7e" }}
                           >
                             {c.logo_url ? (
                               <img src={c.logo_url} alt={c.name || "Company logo"} className="h-full w-full rounded-[14px] object-cover max-w-full" />
@@ -777,19 +777,19 @@ export default function CompaniesPage() {
                         </div>
                         {/* Glow behind logo */}
                         <div
-                          style={{ backgroundColor: c.brand_colors?.[0] ?? "#006C35" }}
+                          style={{ backgroundColor: c.brand_colors?.[0] ?? "#23ab7e" }}
                         />
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#004D26] truncate leading-tight">{c.name}</h3>
-                        {c.name_ar && <p className="text-lg text-[#5A8A6A] mt-1 truncate font-medium">{c.name_ar}</p>}
+                        <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#1a1d2e] truncate leading-tight">{c.name}</h3>
+                        {c.name_ar && <p className="text-lg text-[#8f96a3] mt-1 truncate font-medium">{c.name_ar}</p>}
                       </div>
                     </div>
 
                     {/* Description snippet */}
                     {c.description && (
-                      <p className="mt-5 text-lg text-[#5A8A6A] line-clamp-2 leading-relaxed">
+                      <p className="mt-5 text-lg text-[#8f96a3] line-clamp-2 leading-relaxed">
                         {c.description}
                       </p>
                     )}
@@ -816,12 +816,12 @@ export default function CompaniesPage() {
                     <div className="mt-5 flex items-center justify-between">
                       {c.brand_colors?.length ? (
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-bold text-[#5A8A6A]">Colors</span>
+                          <span className="text-sm font-bold text-[#8f96a3]">Colors</span>
                           <div className="flex gap-2">
                             {c.brand_colors.slice(0, 5).map((hex, idx) => (
                               <div
                                 key={idx}
-                                className="h-8 w-8 rounded-xl border-2 border-white shadow-md cursor-pointer ring-1 ring-[#D4EBD9]"
+                                className="h-8 w-8 rounded-xl border-2 border-white shadow-md cursor-pointer ring-1 ring-[#e8eaef]"
                                 style={{ backgroundColor: hex }}
                                 title={hex}
                               />
@@ -833,7 +833,7 @@ export default function CompaniesPage() {
                       {/* AI analysis badge */}
                       {c.brand_analysis && Object.keys(c.brand_analysis).length > 0 && (
                         <span
-                          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#7C3AED]/15 to-[#A78BFA]/15 border border-[#7C3AED]/30 px-3 py-1.5 text-sm font-bold text-[#7C3AED]"
+                          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#8054b8]/15 to-[#A78BFA]/15 border border-[#8054b8]/30 px-3 py-1.5 text-sm font-bold text-[#8054b8]"
                         >
                           <Sparkles className="h-4 w-4" />
                           AI {locale === "ar" ? "محلل" : "Analyzed"}
@@ -845,7 +845,7 @@ export default function CompaniesPage() {
                     <div className="mt-6 flex gap-3">
                       <div className="flex-1">
                         <Button
-                          className="h-11 w-full text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-sm rounded-2xl transition-all shadow-md"
+                          className="h-11 w-full text-lg font-bold bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white hover:shadow-sm rounded-2xl transition-all shadow-md"
                           onClick={() => setViewingCompany(c)}
                         >
                           <Eye className="mr-2 h-4 w-4" /> {tc.viewDetails || "View Details"}
@@ -854,7 +854,7 @@ export default function CompaniesPage() {
                       <div>
                         <Button
                           variant="outline"
-                          className="h-11 px-4 text-lg font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 rounded-2xl transition-all"
+                          className="h-11 px-4 text-lg font-bold border-2 border-[#e8eaef] text-[#1a1d2e] hover:bg-[#f4f6f8] hover:border-[#8054b8]/40 rounded-2xl transition-all"
                           onClick={(e) => { e.stopPropagation(); openEdit(c); }}
                         >
                           <Pencil className="h-4 w-4" />
@@ -871,7 +871,7 @@ export default function CompaniesPage() {
                             </Button>
                             <Button
                               variant="outline"
-                              className="h-11 px-4 text-lg font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 rounded-2xl transition-all"
+                              className="h-11 px-4 text-lg font-bold border-2 border-[#e8eaef] text-[#1a1d2e] hover:bg-[#f4f6f8] hover:border-[#8054b8]/40 rounded-2xl transition-all"
                               onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}
                             >
                               {locale === "ar" ? "إلغاء" : "Cancel"}
@@ -898,17 +898,17 @@ export default function CompaniesPage() {
             className="group cursor-pointer hover:-translate-y-1.5 transition-transform duration-200"
             onClick={openAdd}
           >
-            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-gradient-to-br from-[#F8FBF8] to-white overflow-hidden transition-all duration-300 hover:border-[#00A352] hover:bg-gradient-to-br hover:from-[#F0F7F2] hover:to-[#F8FBF8] hover:shadow-md">
+            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-white overflow-hidden transition-all duration-300 hover:border-[#8054b8] hover:bg-gradient-to-br hover:from-[#f4f6f8] hover:to-[#fafbfd] hover:shadow-md">
               {/* Decorative gradients */}
 
               <div
-                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg group-hover:shadow-md transition-shadow"
+                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg group-hover:shadow-md transition-shadow"
               >
                 <Plus className="h-10 w-10 text-white" />
               </div>
 
-              <p className="mt-5 text-xl font-bold text-[#004D26] font-['Cairo']">{tc.addCompany}</p>
-              <p className="mt-1 text-lg text-[#5A8A6A]">Build your brand profile</p>
+              <p className="mt-5 text-xl font-bold text-[#1a1d2e] font-['Cairo']">{tc.addCompany}</p>
+              <p className="mt-1 text-lg text-[#8f96a3]">Build your brand profile</p>
             </div>
           </div>
         </div>
@@ -916,9 +916,9 @@ export default function CompaniesPage() {
 
       {/* ===== ADD/EDIT DIALOG ===== */}
       <Dialog open={formOpen} onOpenChange={(open) => { setFormOpen(open); if (!open) loadCompanies(); }}>
-        <DialogContent className="max-w-[95vw] lg:max-w-[85vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#D4EBD9] text-[#0A1F0F] scrollbar-nawaa p-0">
+        <DialogContent className="max-w-[95vw] lg:max-w-[85vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#e8eaef] text-[#2d3142] scrollbar-nawaa p-0">
           {/* Gradient header bar */}
-          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] px-4 sm:px-8 py-5 sm:py-7 rounded-t-lg overflow-hidden">
+          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-4 sm:px-8 py-5 sm:py-7 rounded-t-lg overflow-hidden">
             {/* Decorative shapes */}
             <div className="flex items-center gap-4 relative z-10">
               <div
@@ -947,32 +947,32 @@ export default function CompaniesPage() {
               className="rounded-2xl bg-white p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                   <Building2 className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#004D26]">{tc.basicInfo}</h3>
+                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.basicInfo}</h3>
               </div>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.nameEn} {tc.required}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.nameEn} {tc.required}</Label>
                   <Input
                     value={form.name}
                     onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                    className="h-11 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-4 transition-all"
+                    className="h-11 border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg px-4 transition-all"
                     placeholder={tc.namePlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.nameAr}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.nameAr}</Label>
                   <Input
                     value={form.name_ar}
                     onChange={(e) => setForm((f) => ({ ...f, name_ar: e.target.value }))}
-                    className="h-11 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-4 transition-all"
+                    className="h-11 border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg px-4 transition-all"
                     placeholder={tc.nameArPlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.industry}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.industry}</Label>
                   <Select
                     value={INDUSTRIES.some((ind) => ind.en === form.industry) ? form.industry : form.industry ? "Other" : ""}
                     onValueChange={(v) => {
@@ -985,12 +985,12 @@ export default function CompaniesPage() {
                       }
                     }}
                   >
-                    <SelectTrigger className="h-11 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] focus:border-[#006C35] rounded-2xl text-lg px-4">
+                    <SelectTrigger className="h-11 border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] focus:border-[#23ab7e] rounded-2xl text-lg px-4">
                       <SelectValue placeholder={tc.selectIndustry} />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-2 border-[#D4EBD9] rounded-xl max-h-80">
+                    <SelectContent className="bg-white border-2 border-[#e8eaef] rounded-xl max-h-80">
                       {INDUSTRIES.map((ind) => (
-                        <SelectItem key={ind.en} value={ind.en} className="text-[#0A1F0F] text-lg py-2 rounded-xl">
+                        <SelectItem key={ind.en} value={ind.en} className="text-[#2d3142] text-lg py-2 rounded-xl">
                           {locale === "ar" ? ind.ar : ind.en}
                         </SelectItem>
                       ))}
@@ -1001,46 +1001,46 @@ export default function CompaniesPage() {
                       value={form.industry}
                       onChange={(e) => setForm((f) => ({ ...f, industry: e.target.value }))}
                       placeholder={locale === "ar" ? "اكتب مجال شركتك..." : "Type your industry..."}
-                      className="mt-3 h-11 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-4 transition-all"
+                      className="mt-3 h-11 border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg px-4 transition-all"
                     />
                   )}
                 </div>
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.website}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.website}</Label>
                   <Input
                     value={form.website}
                     onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
-                    className="h-11 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-4 transition-all"
+                    className="h-11 border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg px-4 transition-all"
                     placeholder="https://"
                   />
                 </div>
               </div>
               <div className="mt-5">
-                <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.description}</Label>
-                <div className="relative rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] focus-within:border-[#006C35] focus-within:bg-white transition-all overflow-hidden">
+                <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.description}</Label>
+                <div className="relative rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] focus-within:border-[#23ab7e] focus-within:bg-white transition-all overflow-hidden">
                   <Textarea
                     value={form.description}
                     onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                    className="border-0 bg-transparent text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 rounded-2xl text-lg p-4 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="border-0 bg-transparent text-[#2d3142] placeholder:text-[#8f96a3]/50 rounded-2xl text-lg p-4 resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     rows={Math.min(Math.max(5, Math.ceil(form.description.length / 80)), 15)}
                     placeholder={locale === "ar" ? "اكتب وصف شركتك أو ارفع ملف PDF للملف التعريفي..." : "Describe your company, paste a full company profile, or upload a PDF..."}
                   />
                   {/* Bottom bar: char count + PDF upload */}
-                  <div className="flex items-center justify-between px-5 py-3 bg-[#F0F7F2]/60 border-t border-[#D4EBD9]/50">
+                  <div className="flex items-center justify-between px-5 py-3 bg-[#f4f6f8]/60 border-t border-[#e8eaef]/50">
                     <div className="flex items-center gap-3">
-                      <label className={cn("cursor-pointer flex items-center gap-2 bg-white border-2 border-[#D4EBD9] rounded-xl px-4 py-2 hover:border-[#006C35] hover:shadow-md transition-all", uploadingPdf && "pointer-events-none opacity-50")}>
+                      <label className={cn("cursor-pointer flex items-center gap-2 bg-white border-2 border-[#e8eaef] rounded-xl px-4 py-2 hover:border-[#23ab7e] hover:shadow-md transition-all", uploadingPdf && "pointer-events-none opacity-50")}>
                         <input type="file" accept="application/pdf" className="hidden" onChange={handlePdfUpload} />
                         {uploadingPdf ? (
-                          <Loader2 className="h-5 w-5 text-[#7C3AED] animate-spin" />
+                          <Loader2 className="h-5 w-5 text-[#8054b8] animate-spin" />
                         ) : (
-                          <FileText className="h-5 w-5 text-[#006C35]" />
+                          <FileText className="h-5 w-5 text-[#23ab7e]" />
                         )}
-                        <span className="text-lg font-bold text-[#006C35]">
+                        <span className="text-lg font-bold text-[#23ab7e]">
                           {uploadingPdf ? (locale === "ar" ? "جاري الاستخراج..." : "Extracting...") : (locale === "ar" ? "رفع ملف PDF" : "Upload PDF")}
                         </span>
                       </label>
                       {form.description.length > 500 && (
-                        <span className="flex items-center gap-1.5 text-lg font-medium text-[#00A352]">
+                        <span className="flex items-center gap-1.5 text-lg font-medium text-[#8054b8]">
                           <FileText className="h-4 w-4" />
                           {locale === "ar" ? "ملف تعريفي شامل" : "Rich profile"}
                         </span>
@@ -1048,7 +1048,7 @@ export default function CompaniesPage() {
                     </div>
                     <span className={cn(
                       "text-lg font-semibold tabular-nums",
-                      form.description.length > 5000 ? "text-[#7C3AED]" : "text-[#5A8A6A]/60"
+                      form.description.length > 5000 ? "text-[#8054b8]" : "text-[#8f96a3]/60"
                     )}>
                       {form.description.length.toLocaleString()} {locale === "ar" ? "حرف" : "chars"}
                     </span>
@@ -1058,43 +1058,43 @@ export default function CompaniesPage() {
             </section>
 
             {/* Gradient divider */}
-            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#7C3AED]/40 to-transparent" />
+            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#8054b8]/40 to-transparent" />
 
             {/* ─── Section 2: Brand Identity ─── */}
             <section
-              className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8"
+              className="rounded-2xl bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] shadow-lg">
-                  <Palette className="h-6 w-6 text-[#0A1F0F]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
+                  <Palette className="h-6 w-6 text-[#2d3142]" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#004D26]">{tc.brandIdentity}</h3>
+                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.brandIdentity}</h3>
               </div>
 
               {/* Logo upload */}
               <div className="mb-6">
-                <Label className="text-lg font-bold text-[#004D26] mb-3 block">{tc.logo}</Label>
+                <Label className="text-lg font-bold text-[#1a1d2e] mb-3 block">{tc.logo}</Label>
                 <div className="flex items-center gap-5">
                   {uploadingLogo ? (
-                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#7C3AED] bg-white shadow-inner">
-                      <Loader2 className="h-8 w-8 text-[#7C3AED] animate-spin" />
+                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#8054b8] bg-white shadow-inner">
+                      <Loader2 className="h-8 w-8 text-[#8054b8] animate-spin" />
                     </div>
                   ) : form.logo_url ? (
                     <div
                       className="relative"
                     >
-                      <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#7C3AED]">
+                      <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#23ab7e] via-[#8054b8] to-[#8054b8]">
                         <img src={form.logo_url} alt="Company logo" className="h-24 w-24 rounded-[14px] object-cover max-w-full" />
                       </div>
                     </div>
                   ) : (
-                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#D4EBD9] bg-white shadow-inner hover:border-[#00A352] transition-colors">
-                      <Upload className="h-8 w-8 text-[#5A8A6A]" />
+                    <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-3 border-dashed border-[#e8eaef] bg-white shadow-inner hover:border-[#8054b8] transition-colors">
+                      <Upload className="h-8 w-8 text-[#8f96a3]" />
                     </div>
                   )}
-                  <label className={cn("cursor-pointer bg-white border-2 border-[#D4EBD9] rounded-2xl px-6 py-4 hover:border-[#006C35] hover:shadow-lg transition-all group/upload", uploadingLogo && "pointer-events-none opacity-50")}>
+                  <label className={cn("cursor-pointer bg-white border-2 border-[#e8eaef] rounded-2xl px-6 py-4 hover:border-[#23ab7e] hover:shadow-lg transition-all group/upload", uploadingLogo && "pointer-events-none opacity-50")}>
                     <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={handleLogoUpload} />
-                    <span className="text-lg font-bold text-[#006C35] group-hover/upload:text-[#00A352] transition-colors">
+                    <span className="text-lg font-bold text-[#23ab7e] group-hover/upload:text-[#8054b8] transition-colors">
                       {uploadingLogo ? tc.uploadingLogo : tc.uploadLogo}
                     </span>
                   </label>
@@ -1103,12 +1103,12 @@ export default function CompaniesPage() {
 
               {/* Brand Colors */}
               <div className="mb-6">
-                <Label className="text-lg font-bold text-[#004D26] mb-3 block">Brand Colors</Label>
+                <Label className="text-lg font-bold text-[#1a1d2e] mb-3 block">Brand Colors</Label>
                 <div className="flex flex-wrap gap-3">
                   {form.brand_colors.map((hex, idx) => (
                     <div
                       key={idx}
-                      className="h-12 w-12 rounded-2xl border-2 border-white cursor-pointer shadow-md ring-2 ring-[#D4EBD9] hover:ring-[#00A352] transition-all"
+                      className="h-12 w-12 rounded-2xl border-2 border-white cursor-pointer shadow-md ring-2 ring-[#e8eaef] hover:ring-[#8054b8] transition-all"
                       style={{ backgroundColor: hex }}
                       title={hex}
                     />
@@ -1118,14 +1118,14 @@ export default function CompaniesPage() {
 
               {/* Tone */}
               <div>
-                <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.tone}</Label>
+                <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.tone}</Label>
                 <Select value={form.tone} onValueChange={(v) => setForm((f) => ({ ...f, tone: v ?? "" }))}>
-                  <SelectTrigger className="h-14 border-2 border-[#D4EBD9] bg-white text-[#0A1F0F] focus:border-[#006C35] rounded-2xl text-lg px-5">
+                  <SelectTrigger className="h-14 border-2 border-[#e8eaef] bg-white text-[#2d3142] focus:border-[#23ab7e] rounded-2xl text-lg px-5">
                     <SelectValue placeholder={tc.selectTone} />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-2 border-[#D4EBD9] rounded-xl">
+                  <SelectContent className="bg-white border-2 border-[#e8eaef] rounded-xl">
                     {TONES.map((t) => (
-                      <SelectItem key={t} value={t} className="text-[#0A1F0F] text-lg py-2 rounded-xl">{t}</SelectItem>
+                      <SelectItem key={t} value={t} className="text-[#2d3142] text-lg py-2 rounded-xl">{t}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -1133,51 +1133,51 @@ export default function CompaniesPage() {
             </section>
 
             {/* Gradient divider */}
-            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#006C35]/30 to-transparent" />
+            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#23ab7e]/30 to-transparent" />
 
             {/* ─── Section 3: Marketing ─── */}
             <section
               className="rounded-2xl bg-white p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] shadow-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                   <Megaphone className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#004D26]">{tc.marketing}</h3>
+                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.marketing}</h3>
               </div>
               <div className="space-y-6">
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.targetAudience}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.targetAudience}</Label>
                   <Textarea
                     value={form.target_audience}
                     onChange={(e) => setForm((f) => ({ ...f, target_audience: e.target.value }))}
-                    className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg p-4 transition-all"
+                    className="border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg p-4 transition-all"
                     rows={3}
                     placeholder={tc.targetPlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.uniqueValue}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.uniqueValue}</Label>
                   <Textarea
                     value={form.unique_value}
                     onChange={(e) => setForm((f) => ({ ...f, unique_value: e.target.value }))}
-                    className="border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg p-4 transition-all"
+                    className="border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg p-4 transition-all"
                     rows={3}
                     placeholder={tc.uniquePlaceholder}
                   />
                 </div>
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-2 block">{tc.competitors}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-2 block">{tc.competitors}</Label>
                   <Input
                     value={form.competitors}
                     onChange={(e) => setForm((f) => ({ ...f, competitors: e.target.value }))}
-                    className="h-11 border-2 border-[#D4EBD9] bg-[#F8FBF8] text-[#0A1F0F] placeholder:text-[#5A8A6A]/50 focus:border-[#006C35] focus:bg-white rounded-2xl text-lg px-4 transition-all"
+                    className="h-11 border-2 border-[#e8eaef] bg-[#fafbfd] text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:bg-white rounded-2xl text-lg px-4 transition-all"
                   />
                 </div>
 
                 {/* Platform selector as emoji cards */}
                 <div>
-                  <Label className="text-lg font-bold text-[#004D26] mb-3 block">{tc.platforms}</Label>
+                  <Label className="text-lg font-bold text-[#1a1d2e] mb-3 block">{tc.platforms}</Label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     {PLATFORMS.map((p) => {
                       const config = PLATFORM_CARDS[p];
@@ -1190,8 +1190,8 @@ export default function CompaniesPage() {
                           className={cn(
                             "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-5 text-lg font-bold transition-all duration-300 shadow-sm overflow-hidden",
                             isSelected
-                              ? cn(config?.selectedBg ?? "bg-gradient-to-br from-[#006C35] to-[#00A352]", config?.selectedBorder ?? "border-[#006C35]", "text-white shadow-lg")
-                              : cn(config?.unselectedBg ?? "bg-[#F8FBF8]", "border-[#D4EBD9]", config?.color ?? "text-[#5A8A6A]", "hover:border-[#006C35] hover:shadow-md")
+                              ? cn(config?.selectedBg ?? "bg-gradient-to-br from-[#23ab7e] to-[#8054b8]", config?.selectedBorder ?? "border-[#23ab7e]", "text-white shadow-lg")
+                              : cn(config?.unselectedBg ?? "bg-[#fafbfd]", "border-[#e8eaef]", config?.color ?? "text-[#8f96a3]", "hover:border-[#23ab7e] hover:shadow-md")
                           )}
                         >
                           <span className="text-3xl">{config?.emoji ?? "\uD83D\uDCF1"}</span>
@@ -1212,22 +1212,22 @@ export default function CompaniesPage() {
             </section>
 
             {/* Gradient divider */}
-            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#7C3AED]/40 to-transparent" />
+            <div className="my-3 h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#8054b8]/40 to-transparent" />
 
             {/* ─── Section 4: AI Analysis ─── */}
             <section
-              className="rounded-2xl bg-gradient-to-br from-[#F8FBF8] to-[#F0F7F2] p-6 lg:p-8"
+              className="rounded-2xl bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] p-6 lg:p-8"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] shadow-lg"
+                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg"
                 >
-                  <Sparkles className="h-6 w-6 text-[#0A1F0F]" />
+                  <Sparkles className="h-6 w-6 text-[#2d3142]" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#004D26]">{tc.analyzeAI}</h3>
+                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.analyzeAI}</h3>
               </div>
               <div className="mb-5 flex items-center gap-4">
-                <Label className="text-lg font-bold text-[#004D26]">{tc.generateIn}</Label>
+                <Label className="text-lg font-bold text-[#1a1d2e]">{tc.generateIn}</Label>
                 <div className="flex gap-2">
                   <Button
                     type="button"
@@ -1236,8 +1236,8 @@ export default function CompaniesPage() {
                     className={cn(
                       "h-12 rounded-2xl text-lg px-6 font-bold transition-all",
                       outputLanguage === "en"
-                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg"
-                        : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35] hover:shadow-md"
+                        ? "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg"
+                        : "border-2 border-[#e8eaef] text-[#8f96a3] bg-white hover:border-[#23ab7e] hover:shadow-md"
                     )}
                     onClick={() => setOutputLanguage("en")}
                   >
@@ -1250,8 +1250,8 @@ export default function CompaniesPage() {
                     className={cn(
                       "h-12 rounded-2xl text-lg px-6 font-bold transition-all",
                       outputLanguage === "ar"
-                        ? "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg"
-                        : "border-2 border-[#D4EBD9] text-[#5A8A6A] bg-white hover:border-[#006C35] hover:shadow-md"
+                        ? "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg"
+                        : "border-2 border-[#e8eaef] text-[#8f96a3] bg-white hover:border-[#23ab7e] hover:shadow-md"
                     )}
                     onClick={() => setOutputLanguage("ar")}
                   >
@@ -1269,15 +1269,15 @@ export default function CompaniesPage() {
                         className={cn(
                           "h-3 w-10 rounded-full transition-all",
                           i < getAnalysisCount()
-                            ? "bg-gradient-to-r from-[#7C3AED] to-[#A78BFA]"
-                            : "bg-[#D4EBD9]"
+                            ? "bg-gradient-to-r from-[#8054b8] to-[#A78BFA]"
+                            : "bg-[#e8eaef]"
                         )}
                       />
                     ))}
                   </div>
                   <span className={cn(
                     "text-lg font-bold",
-                    getAnalysisCount() >= 3 ? "text-red-500" : "text-[#5A8A6A]"
+                    getAnalysisCount() >= 3 ? "text-red-500" : "text-[#8f96a3]"
                   )}>
                     {getAnalysisCount()}/3
                     {getAnalysisCount() >= 3
@@ -1295,8 +1295,8 @@ export default function CompaniesPage() {
                   className={cn(
                     "relative h-16 text-xl px-10 rounded-2xl font-extrabold transition-all shadow-xl overflow-hidden",
                     getAnalysisCount() >= 3
-                      ? "bg-[#D4EBD9] text-[#5A8A6A] cursor-not-allowed opacity-60"
-                      : "bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#7C3AED] text-[#0A1F0F] hover:shadow-md"
+                      ? "bg-[#e8eaef] text-[#8f96a3] cursor-not-allowed opacity-60"
+                      : "bg-gradient-to-r from-[#8054b8] via-[#A78BFA] to-[#8054b8] text-[#2d3142] hover:shadow-md"
                   )}
                 >
                   {/* Shimmer effect */}
@@ -1317,11 +1317,11 @@ export default function CompaniesPage() {
             </section>
 
             {/* ─── Footer Actions ─── */}
-            <div className="sticky bottom-0 bg-white/90 border-t-2 border-[#D4EBD9] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-4 mt-4 ">
+            <div className="sticky bottom-0 bg-white/90 border-t-2 border-[#e8eaef] rounded-b-lg -mx-8 px-8 py-5 flex justify-end gap-4 mt-4 ">
               <div>
                 <Button
                   variant="outline"
-                  className="h-14 px-8 text-lg font-bold rounded-2xl border-2 border-[#D4EBD9] text-[#2D5A3D] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 transition-all"
+                  className="h-14 px-8 text-lg font-bold rounded-2xl border-2 border-[#e8eaef] text-[#505868] hover:bg-[#f4f6f8] hover:border-[#8054b8]/40 transition-all"
                   onClick={() => setFormOpen(false)}
                 >
                   {tc.cancel}
@@ -1331,7 +1331,7 @@ export default function CompaniesPage() {
                 <Button
                   onClick={saveCompany}
                   disabled={saving}
-                  className="h-14 px-12 text-lg font-extrabold rounded-2xl bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-xl hover:shadow-md transition-all"
+                  className="h-14 px-12 text-lg font-extrabold rounded-2xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-xl hover:shadow-md transition-all"
                 >
                   {saving ? <Loader2 className="h-6 w-6 animate-spin" /> : tc.save}
                 </Button>
@@ -1343,7 +1343,7 @@ export default function CompaniesPage() {
 
       {/* ===== COMPANY DETAIL VIEW DIALOG ===== */}
       <Dialog open={!!viewingCompany} onOpenChange={(open) => !open && setViewingCompany(null)}>
-        <DialogContent className="max-w-[95vw] lg:max-w-[80vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#D4EBD9] text-[#0A1F0F] scrollbar-nawaa p-0">
+        <DialogContent className="max-w-[95vw] lg:max-w-[80vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#e8eaef] text-[#2d3142] scrollbar-nawaa p-0">
           {viewingCompany && (() => {
             const vc = viewingCompany;
             const analysisCount = vc.analysis_count ?? 0;
@@ -1352,7 +1352,7 @@ export default function CompaniesPage() {
             return (
               <>
                 {/* Header with gradient + company logo */}
-                <div className="relative bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] px-4 sm:px-8 py-6 sm:py-10 overflow-hidden">
+                <div className="relative bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-4 sm:px-8 py-6 sm:py-10 overflow-hidden">
 
                   {/* Close button */}
                   <button
@@ -1370,7 +1370,7 @@ export default function CompaniesPage() {
                       <div className="rounded-2xl p-[3px] bg-white/30 shadow-2xl">
                         <div
                           className="flex h-24 w-24 md:h-28 md:w-28 shrink-0 items-center justify-center rounded-[14px] text-4xl font-extrabold text-white"
-                          style={{ backgroundColor: vc.brand_colors?.[0] ?? "#006C35" }}
+                          style={{ backgroundColor: vc.brand_colors?.[0] ?? "#23ab7e" }}
                         >
                           {vc.logo_url ? (
                             <img src={vc.logo_url} alt={vc.name || "Company logo"} className="h-full w-full rounded-[14px] object-cover max-w-full" />
@@ -1419,16 +1419,16 @@ export default function CompaniesPage() {
                   >
                     {/* Description */}
                     {vc.description && (
-                      <div className="md:col-span-2 rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] p-6">
+                      <div className="md:col-span-2 rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] p-6">
                         <div className="flex items-center justify-between mb-3">
-                          <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26]">
-                            <FileText className="h-5 w-5 text-[#00A352]" />
+                          <h4 className="flex items-center gap-2 text-lg font-bold text-[#1a1d2e]">
+                            <FileText className="h-5 w-5 text-[#8054b8]" />
                             {tc.description}
                           </h4>
-                          <span className="text-lg font-medium text-[#5A8A6A]/60">{vc.description.length.toLocaleString()} {locale === "ar" ? "حرف" : "chars"}</span>
+                          <span className="text-lg font-medium text-[#8f96a3]/60">{vc.description.length.toLocaleString()} {locale === "ar" ? "حرف" : "chars"}</span>
                         </div>
                         <div className={cn(
-                          "text-lg text-[#0A1F0F] leading-relaxed whitespace-pre-wrap",
+                          "text-lg text-[#2d3142] leading-relaxed whitespace-pre-wrap",
                           vc.description.length > 600 ? "max-h-[300px] overflow-y-auto scrollbar-nawaa pr-2" : ""
                         )}>
                           {vc.description}
@@ -1438,41 +1438,41 @@ export default function CompaniesPage() {
 
                     {/* Target Audience */}
                     {vc.target_audience && (
-                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#1a1d2e] mb-3">
                           <Users className="h-5 w-5 text-[#3B82F6]" />
                           {tc.targetAudience}
                         </h4>
-                        <p className="text-lg text-[#5A8A6A] leading-relaxed">{vc.target_audience}</p>
+                        <p className="text-lg text-[#8f96a3] leading-relaxed">{vc.target_audience}</p>
                       </div>
                     )}
 
                     {/* Unique Value */}
                     {vc.unique_value && (
-                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
-                          <Sparkles className="h-5 w-5 text-[#7C3AED]" />
+                      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#1a1d2e] mb-3">
+                          <Sparkles className="h-5 w-5 text-[#8054b8]" />
                           {tc.uniqueValue}
                         </h4>
-                        <p className="text-lg text-[#5A8A6A] leading-relaxed">{vc.unique_value}</p>
+                        <p className="text-lg text-[#8f96a3] leading-relaxed">{vc.unique_value}</p>
                       </div>
                     )}
 
                     {/* Competitors */}
                     {vc.competitors && (
-                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#1a1d2e] mb-3">
                           <Target className="h-5 w-5 text-[#F97316]" />
                           {tc.competitors}
                         </h4>
-                        <p className="text-lg text-[#5A8A6A]">{vc.competitors}</p>
+                        <p className="text-lg text-[#8f96a3]">{vc.competitors}</p>
                       </div>
                     )}
 
                     {/* Platforms */}
                     {vc.platforms && vc.platforms.length > 0 && (
-                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#1a1d2e] mb-3">
                           <Megaphone className="h-5 w-5 text-[#A855F7]" />
                           {tc.platforms}
                         </h4>
@@ -1480,7 +1480,7 @@ export default function CompaniesPage() {
                           {vc.platforms.map((p) => {
                             const config = PLATFORM_CARDS[p];
                             return (
-                              <span key={p} className={cn("rounded-xl px-4 py-2 text-lg font-bold text-white", config?.selectedBg ?? "bg-[#006C35]")}>
+                              <span key={p} className={cn("rounded-xl px-4 py-2 text-lg font-bold text-white", config?.selectedBg ?? "bg-[#23ab7e]")}>
                                 {config?.emoji ?? "\uD83D\uDCF1"} {p}
                               </span>
                             );
@@ -1491,8 +1491,8 @@ export default function CompaniesPage() {
 
                     {/* Brand Colors */}
                     {vc.brand_colors && vc.brand_colors.length > 0 && (
-                      <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#004D26] mb-3">
+                      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                        <h4 className="flex items-center gap-2 text-lg font-bold text-[#1a1d2e] mb-3">
                           <Palette className="h-5 w-5 text-[#EC4899]" />
                           {tc.brandColors || "Brand Colors"}
                         </h4>
@@ -1500,10 +1500,10 @@ export default function CompaniesPage() {
                           {vc.brand_colors.map((hex, idx) => (
                             <div key={idx} className="flex flex-col items-center gap-2">
                               <div
-                                className="h-14 w-14 rounded-2xl border-2 border-white shadow-lg ring-2 ring-[#D4EBD9] cursor-pointer"
+                                className="h-14 w-14 rounded-2xl border-2 border-white shadow-lg ring-2 ring-[#e8eaef] cursor-pointer"
                                 style={{ backgroundColor: hex }}
                               />
-                              <span className="text-sm font-mono font-semibold text-[#5A8A6A]">{hex}</span>
+                              <span className="text-sm font-mono font-semibold text-[#8f96a3]">{hex}</span>
                             </div>
                           ))}
                         </div>
@@ -1512,19 +1512,19 @@ export default function CompaniesPage() {
                   </div>
 
                   {/* Gradient divider */}
-                  <div className="h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#7C3AED]/40 to-transparent" />
+                  <div className="h-1.5 rounded-full bg-gradient-to-r from-transparent via-[#8054b8]/40 to-transparent" />
 
                   {/* AI Analysis Section */}
                   <div
                   >
                     <div className="flex items-center gap-3 mb-6">
                       <div
-                        className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] shadow-lg"
+                        className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg"
                       >
-                        <Sparkles className="h-6 w-6 text-[#0A1F0F]" />
+                        <Sparkles className="h-6 w-6 text-[#2d3142]" />
                       </div>
                       <div>
-                        <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#004D26]">
+                        <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">
                           {tc.aiAnalysis || "AI Brand Analysis"}
                         </h3>
                         <div className="flex items-center gap-2 mt-1">
@@ -1535,15 +1535,15 @@ export default function CompaniesPage() {
                                 className={cn(
                                   "h-2.5 w-8 rounded-full transition-all",
                                   i < analysisCount
-                                    ? "bg-gradient-to-r from-[#7C3AED] to-[#A78BFA]"
-                                    : "bg-[#D4EBD9]"
+                                    ? "bg-gradient-to-r from-[#8054b8] to-[#A78BFA]"
+                                    : "bg-[#e8eaef]"
                                 )}
                               />
                             ))}
                           </div>
                           <span className={cn(
                             "text-lg font-semibold",
-                            analysisCount >= 3 ? "text-red-500" : "text-[#5A8A6A]"
+                            analysisCount >= 3 ? "text-red-500" : "text-[#8f96a3]"
                           )}>
                             {analysisCount}/3 {tc.analysisRemaining || "analyses used"}
                           </span>
@@ -1554,16 +1554,16 @@ export default function CompaniesPage() {
                     {hasAnalysis ? (
                       <BrandAnalysisDisplay data={vc.brand_analysis!} locale={locale} />
                     ) : (
-                      <div className="rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-[#F8FBF8] p-10 text-center">
+                      <div className="rounded-2xl border-2 border-dashed border-[#e8eaef] bg-[#fafbfd] p-10 text-center">
                         <div
                         >
-                          <Sparkles className="h-12 w-12 text-[#D4EBD9] mx-auto mb-4" />
+                          <Sparkles className="h-12 w-12 text-[#e8eaef] mx-auto mb-4" />
                         </div>
-                        <p className="text-2xl font-bold text-[#5A8A6A]">
+                        <p className="text-2xl font-bold text-[#8f96a3]">
                           {tc.noAnalysis || "No AI analysis yet. Edit the company to run one."}
                         </p>
                         <Button
-                          className="mt-5 h-12 px-8 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] text-[#0A1F0F] shadow-lg hover:shadow-md transition-all"
+                          className="mt-5 h-12 px-8 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#8054b8] to-[#A78BFA] text-[#2d3142] shadow-lg hover:shadow-md transition-all"
                           onClick={() => { setViewingCompany(null); openEdit(vc); }}
                         >
                           <Sparkles className="mr-2 h-5 w-5" />
@@ -1574,16 +1574,16 @@ export default function CompaniesPage() {
                   </div>
 
                   {/* Bottom actions */}
-                  <div className="flex justify-between items-center pt-4 border-t-2 border-[#D4EBD9]">
+                  <div className="flex justify-between items-center pt-4 border-t-2 border-[#e8eaef]">
                     <Button
                       variant="outline"
-                      className="h-12 px-6 text-lg font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] rounded-2xl transition-all"
+                      className="h-12 px-6 text-lg font-bold border-2 border-[#e8eaef] text-[#1a1d2e] hover:bg-[#f4f6f8] rounded-2xl transition-all"
                       onClick={() => { setViewingCompany(null); openEdit(vc); }}
                     >
                       <Pencil className="mr-2 h-5 w-5" /> {tc.edit}
                     </Button>
                     <Button
-                      className="h-12 px-8 text-lg font-bold bg-gradient-to-r from-[#006C35] to-[#00A352] text-white rounded-2xl shadow-lg hover:shadow-sm transition-all"
+                      className="h-12 px-8 text-lg font-bold bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white rounded-2xl shadow-lg hover:shadow-sm transition-all"
                       onClick={() => setViewingCompany(null)}
                     >
                       {tc.close || "Close"}

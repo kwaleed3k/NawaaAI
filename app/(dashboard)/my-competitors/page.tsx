@@ -52,26 +52,26 @@ interface CompanyInfo { id: string; name: string; name_ar: string | null; logo_u
 function ScoreCircle({ score, size = 64 }: { score: number; size?: number }) {
   const circumference = 2 * Math.PI * 26;
   const offset = circumference - (score / 100) * circumference;
-  const color = score >= 70 ? "#006C35" : score >= 40 ? "#F59E0B" : "#ef4444";
+  const color = score >= 70 ? "#23ab7e" : score >= 40 ? "#F59E0B" : "#ef4444";
   return (
     <svg width={size} height={size} viewBox="0 0 60 60">
       <circle cx="30" cy="30" r="26" fill="none" stroke="#E8F0EA" strokeWidth="5" />
       <circle cx="30" cy="30" r="26" fill="none" stroke={color} strokeWidth="5" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" transform="rotate(-90 30 30)" className="transition-all duration-700" />
-      <text x="30" y="34" textAnchor="middle" style={{ fontSize: "16px", fontWeight: 800, fill: "#0A1F0F" }}>{score}</text>
+      <text x="30" y="34" textAnchor="middle" style={{ fontSize: "16px", fontWeight: 800, fill: "#2d3142" }}>{score}</text>
     </svg>
   );
 }
 
 function ThreatBadge({ level }: { level: number }) {
-  const cfg = level >= 7 ? { bg: "bg-red-100 text-red-700 border-red-200", label: "HIGH" } : level >= 4 ? { bg: "bg-yellow-100 text-yellow-800 border-yellow-200", label: "MED" } : { bg: "bg-green-100 text-[#006C35] border-[#D4EBD9]", label: "LOW" };
+  const cfg = level >= 7 ? { bg: "bg-red-100 text-red-700 border-red-200", label: "HIGH" } : level >= 4 ? { bg: "bg-yellow-100 text-yellow-800 border-yellow-200", label: "MED" } : { bg: "bg-green-100 text-[#23ab7e] border-[#e8eaef]", label: "LOW" };
   return <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-sm font-black border ${cfg.bg}`}><AlertTriangle className="h-3 w-3" />{cfg.label}</span>;
 }
 
 const ACCENT_COLORS = [
-  "from-[#006C35] via-[#00A352] to-[#7C3AED]",
-  "from-[#7C3AED] via-[#A78BFA] to-[#7C3AED]",
-  "from-blue-500 via-indigo-500 to-purple-500",
-  "from-purple-500 via-fuchsia-500 to-pink-500",
+  "from-[#23ab7e] via-[#8054b8] to-[#8054b8]",
+  "from-[#8054b8] via-[#A78BFA] to-[#8054b8]",
+  "from-[#8054b8] via-indigo-500 to-[#8054b8]",
+  "from-[#8054b8] via-fuchsia-500 to-pink-500",
 ];
 
 export default function MyCompetitorsPage() {
@@ -130,18 +130,18 @@ export default function MyCompetitorsPage() {
   if (loading) {
     return (
       <div className="space-y-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#D4EBD9] via-[#E8F5EC] to-[#D4EBD9] p-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef] p-8">
           <Skeleton className="h-10 w-80 rounded-xl bg-white/50" />
           <Skeleton className="mt-3 h-6 w-60 rounded-lg bg-white/30" />
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-2xl border-2 border-[#D4EBD9] bg-white overflow-hidden">
-              <div className="h-2 bg-gradient-to-r from-[#D4EBD9] via-[#E8F5EC] to-[#D4EBD9]" />
+            <div key={i} className="rounded-2xl border-2 border-[#e8eaef] bg-white overflow-hidden">
+              <div className="h-2 bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef]" />
               <div className="p-6 space-y-4">
-                <Skeleton className="h-6 w-full rounded-lg bg-[#D4EBD9]/40" />
-                <Skeleton className="h-5 w-3/4 rounded-lg bg-[#D4EBD9]/30" />
-                <Skeleton className="h-12 w-full rounded-xl bg-[#D4EBD9]/20" />
+                <Skeleton className="h-6 w-full rounded-lg bg-[#e8eaef]/40" />
+                <Skeleton className="h-5 w-3/4 rounded-lg bg-[#e8eaef]/30" />
+                <Skeleton className="h-12 w-full rounded-xl bg-[#e8eaef]/20" />
               </div>
             </div>
           ))}
@@ -154,7 +154,7 @@ export default function MyCompetitorsPage() {
   if (analyses.length === 0) {
     return (
       <div className="space-y-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] p-8 md:p-10">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] p-8 md:p-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white drop-shadow-sm">
             {isAr ? "تحليلاتي التنافسية" : "My Competitor Analyses"}
           </h1>
@@ -163,20 +163,20 @@ export default function MyCompetitorsPage() {
             <span>{isAr ? "عرض وإدارة جميع تحليلات المنافسين المحفوظة" : "View and manage all your saved competitor analyses"}</span>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] py-24 px-6">
+        <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] py-24 px-6">
           <div className="relative">
-            <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35] via-[#00A352] to-[#7C3AED] shadow-lg">
+            <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#23ab7e] via-[#8054b8] to-[#8054b8] shadow-lg">
               <Swords className="h-14 w-14 text-white" />
             </div>
-            <div className="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] shadow-lg">
+            <div className="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
           </div>
-          <p className="mt-8 text-2xl font-bold text-[#004D26]">{isAr ? "لا توجد تحليلات محفوظة بعد" : "No saved analyses yet"}</p>
-          <p className="mt-3 text-lg text-[#5A8A6A] max-w-md text-center leading-relaxed">
+          <p className="mt-8 text-2xl font-bold text-[#1a1d2e]">{isAr ? "لا توجد تحليلات محفوظة بعد" : "No saved analyses yet"}</p>
+          <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">
             {isAr ? "انتقل إلى تحليل المنافسين لإنشاء وحفظ أول تحليل" : "Go to Competitor Analysis to create and save your first analysis"}
           </p>
-          <a href="/competitor-analysis" className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]">
+          <a href="/competitor-analysis" className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]">
             <Swords className="h-6 w-6" />
             {isAr ? "اذهب إلى تحليل المنافسين" : "Go to Competitor Analysis"}
           </a>
@@ -191,23 +191,23 @@ export default function MyCompetitorsPage() {
   return (
     <div className="space-y-8" dir={isAr ? "rtl" : "ltr"}>
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] p-8 sm:p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#00A352]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-emerald-400/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#23ab7e] via-[#23ab7e] to-[#8054b8] p-8 sm:p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-              <Swords className="h-6 w-6 text-emerald-200" />
+              <Swords className="h-6 w-6 text-[#a6ffea]" />
             </div>
-            <span className="text-lg font-bold text-emerald-200/80 tracking-wide">{isAr ? "تحليلاتي" : "My Analyses"}</span>
+            <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{isAr ? "تحليلاتي" : "My Analyses"}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
             {isAr ? "تحليلات المنافسين المحفوظة" : "Saved Competitor Analyses"}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-emerald-100/70">
+          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">
             {isAr ? "راجع وقارن تحليلاتك السابقة" : "Review and compare your previous analyses"}
           </p>
         </div>
@@ -224,21 +224,21 @@ export default function MyCompetitorsPage() {
           const brandScore = data?.brandAssessment?.overallScore ?? 0;
 
           return (
-            <div key={analysis.id} className={cn("group relative overflow-hidden rounded-2xl border-2 bg-white transition-all duration-300 hover:shadow-lg", isExpanded ? "border-[#006C35]/50 shadow-lg" : "border-[#D4EBD9] hover:border-[#006C35]/40")}>
+            <div key={analysis.id} className={cn("group relative overflow-hidden rounded-2xl border-2 bg-white transition-all duration-300 hover:shadow-lg", isExpanded ? "border-[#23ab7e]/50 shadow-lg" : "border-[#e8eaef] hover:border-[#23ab7e]/40")}>
               <div className={cn("h-2 bg-gradient-to-r", ACCENT_COLORS[accentIdx])} />
               <div className="p-6">
                 {/* Company */}
                 {company && (
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#D4EBD9] shadow-sm" style={{ backgroundColor: company.brand_colors?.[0] || "#F0F7F2" }}>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#e8eaef] shadow-sm" style={{ backgroundColor: company.brand_colors?.[0] || "#f4f6f8" }}>
                       {company.logo_url ? <img src={company.logo_url} alt="" className="h-full w-full object-cover" /> : <span className="text-xl font-extrabold text-white drop-shadow-sm">{company.name?.charAt(0) || "?"}</span>}
                     </div>
-                    <span className="text-lg font-bold text-[#004D26]">{isAr ? company.name_ar || company.name : company.name}</span>
+                    <span className="text-lg font-bold text-[#1a1d2e]">{isAr ? company.name_ar || company.name : company.name}</span>
                   </div>
                 )}
 
                 {/* Competitors */}
-                <h3 className="text-2xl font-extrabold text-[#004D26] leading-snug line-clamp-2">
+                <h3 className="text-2xl font-extrabold text-[#1a1d2e] leading-snug line-clamp-2">
                   {isAr ? "vs " : "vs "}{competitorNames}
                 </h3>
 
@@ -246,8 +246,8 @@ export default function MyCompetitorsPage() {
                 <div className="mt-3 flex items-center gap-4">
                   <ScoreCircle score={brandScore} size={56} />
                   <div>
-                    <p className="text-lg font-bold text-[#5A8A6A]">{isAr ? "نتيجة علامتك" : "Your Brand Score"}</p>
-                    <p className="text-lg font-bold text-[#0A1F0F]">{data?.competitors?.length ?? 0} {isAr ? "منافسين" : "competitors"}</p>
+                    <p className="text-lg font-bold text-[#8f96a3]">{isAr ? "نتيجة علامتك" : "Your Brand Score"}</p>
+                    <p className="text-lg font-bold text-[#2d3142]">{data?.competitors?.length ?? 0} {isAr ? "منافسين" : "competitors"}</p>
                   </div>
                 </div>
 
@@ -255,8 +255,8 @@ export default function MyCompetitorsPage() {
                 {data?.competitors && data.competitors.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {data.competitors.map((c) => (
-                      <div key={c.name} className="flex items-center gap-1.5 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9] px-3 py-1.5">
-                        <span className="text-base font-bold text-[#0A1F0F]">{c.name}</span>
+                      <div key={c.name} className="flex items-center gap-1.5 rounded-xl bg-[#fafbfd] border border-[#e8eaef] px-3 py-1.5">
+                        <span className="text-base font-bold text-[#2d3142]">{c.name}</span>
                         <ThreatBadge level={c.threatLevel} />
                       </div>
                     ))}
@@ -265,10 +265,10 @@ export default function MyCompetitorsPage() {
 
                 {/* Language + Date */}
                 <div className="mt-4 flex items-center gap-3 flex-wrap">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1 text-base text-[#5A8A6A]">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base text-[#8f96a3]">
                     {analysis.output_language === "ar" ? "العربية" : "English"}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1 text-base text-[#5A8A6A]">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base text-[#8f96a3]">
                     <Clock className="h-3.5 w-3.5" />
                     {(() => { try { return format(parseISO(analysis.created_at), "MMM d, yyyy"); } catch { return analysis.created_at; } })()}
                   </span>
@@ -276,10 +276,10 @@ export default function MyCompetitorsPage() {
 
                 {/* Actions */}
                 <div className="mt-5 flex gap-2">
-                  <Button onClick={() => setExpandedId(isExpanded ? null : analysis.id)} className={cn("flex-1 h-12 rounded-xl text-lg font-bold transition-all", isExpanded ? "bg-[#006C35] text-white hover:bg-[#006C35]/90" : "bg-gradient-to-r from-[#006C35] to-[#00A352] text-white hover:shadow-sm shadow-md hover:scale-[1.02]")}>
+                  <Button onClick={() => setExpandedId(isExpanded ? null : analysis.id)} className={cn("flex-1 h-12 rounded-xl text-lg font-bold transition-all", isExpanded ? "bg-[#23ab7e] text-white hover:bg-[#23ab7e]/90" : "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white hover:shadow-sm shadow-md hover:scale-[1.02]")}>
                     {isExpanded ? <><ChevronUp className="mr-2 h-5 w-5" />{isAr ? "إخفاء" : "Collapse"}</> : <><Eye className="mr-2 h-5 w-5" />{isAr ? "عرض التحليل" : "View Analysis"}</>}
                   </Button>
-                  <Button onClick={() => handleExportPdf(analysis)} variant="outline" className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-[#006C35] hover:bg-[#F0F7F2]">
+                  <Button onClick={() => handleExportPdf(analysis)} variant="outline" className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-[#23ab7e] hover:bg-[#f4f6f8]">
                     <Download className="h-5 w-5" />
                   </Button>
                   {confirmDeleteId === analysis.id ? (
@@ -287,12 +287,12 @@ export default function MyCompetitorsPage() {
                       <Button onClick={() => handleDelete(analysis.id)} disabled={deletingId === analysis.id} className="h-12 px-4 rounded-xl bg-red-500 text-white hover:bg-red-600 text-lg font-bold">
                         {deletingId === analysis.id ? <Loader2 className="h-5 w-5 animate-spin" /> : isAr ? "تأكيد" : "Yes"}
                       </Button>
-                      <Button onClick={() => setConfirmDeleteId(null)} variant="outline" className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-[#5A8A6A]">
+                      <Button onClick={() => setConfirmDeleteId(null)} variant="outline" className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-[#8f96a3]">
                         <X className="h-5 w-5" />
                       </Button>
                     </div>
                   ) : (
-                    <Button onClick={() => setConfirmDeleteId(analysis.id)} variant="outline" className="h-12 px-4 rounded-xl border-2 border-[#D4EBD9] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50">
+                    <Button onClick={() => setConfirmDeleteId(analysis.id)} variant="outline" className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50">
                       <Trash2 className="h-5 w-5" />
                     </Button>
                   )}
@@ -309,9 +309,9 @@ export default function MyCompetitorsPage() {
         const company = companies.find((c) => c.id === expandedAnalysis.company_id);
         const companyName = company ? (isAr && company.name_ar ? company.name_ar : company.name) : "";
         return (
-          <div className="rounded-2xl border-2 border-[#006C35]/20 bg-[#F8FBF8] overflow-hidden">
+          <div className="rounded-2xl border-2 border-[#23ab7e]/20 bg-[#fafbfd] overflow-hidden">
             {/* Header */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] px-6 py-6 lg:px-8 lg:py-8">
+            <div className="relative overflow-hidden bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-6 py-6 lg:px-8 lg:py-8">
               <div className="relative flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-3">
@@ -336,58 +336,58 @@ export default function MyCompetitorsPage() {
 
             <div className="p-6 lg:p-8 space-y-6">
               {/* Executive Summary */}
-              <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                <h3 className="flex items-center gap-3 text-2xl font-black text-[#0A1F0F] mb-4"><Target className="h-6 w-6 text-[#006C35]" />{isAr ? "الملخص التنفيذي" : "Executive Summary"}</h3>
-                <p className="text-lg leading-8 text-[#2D5A3D] whitespace-pre-line">{data.executiveSummary}</p>
+              <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-4"><Target className="h-6 w-6 text-[#23ab7e]" />{isAr ? "الملخص التنفيذي" : "Executive Summary"}</h3>
+                <p className="text-lg leading-8 text-[#505868] whitespace-pre-line">{data.executiveSummary}</p>
               </div>
 
               {/* Brand Assessment */}
-              <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
+              <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
                 <div className="flex items-center justify-between mb-5">
-                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#0A1F0F]"><Shield className="h-6 w-6 text-[#006C35]" />{isAr ? "تقييم علامتك" : "Brand Assessment"}</h3>
+                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142]"><Shield className="h-6 w-6 text-[#23ab7e]" />{isAr ? "تقييم علامتك" : "Brand Assessment"}</h3>
                   <ScoreCircle score={data.brandAssessment.overallScore} size={72} />
                 </div>
                 {data.brandAssessment.marketPosition && (
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-[#006C35]/5 to-[#00A352]/5 border border-[#D4EBD9] mb-5">
-                    <p className="text-lg text-[#2D5A3D] leading-7">{data.brandAssessment.marketPosition}</p>
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-[#23ab7e]/5 to-[#8054b8]/5 border border-[#e8eaef] mb-5">
+                    <p className="text-lg text-[#505868] leading-7">{data.brandAssessment.marketPosition}</p>
                   </div>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="p-4 rounded-xl bg-green-50/50 border border-green-200">
-                    <h4 className="font-black text-lg text-[#006C35] mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />{isAr ? "نقاط القوة" : "Strengths"}</h4>
-                    <ul className="space-y-2">{data.brandAssessment.strengths.map((s, i) => <li key={i} className="text-lg text-[#2D5A3D] leading-7">+ {s}</li>)}</ul>
+                    <h4 className="font-black text-lg text-[#23ab7e] mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />{isAr ? "نقاط القوة" : "Strengths"}</h4>
+                    <ul className="space-y-2">{data.brandAssessment.strengths.map((s, i) => <li key={i} className="text-lg text-[#505868] leading-7">+ {s}</li>)}</ul>
                   </div>
                   <div className="p-4 rounded-xl bg-red-50/50 border border-red-200">
                     <h4 className="font-black text-lg text-red-600 mb-2 flex items-center gap-2"><AlertTriangle className="h-4 w-4" />{isAr ? "نقاط الضعف" : "Weaknesses"}</h4>
-                    <ul className="space-y-2">{data.brandAssessment.weaknesses.map((w, i) => <li key={i} className="text-lg text-[#2D5A3D] leading-7">- {w}</li>)}</ul>
+                    <ul className="space-y-2">{data.brandAssessment.weaknesses.map((w, i) => <li key={i} className="text-lg text-[#505868] leading-7">- {w}</li>)}</ul>
                   </div>
                 </div>
               </div>
 
               {/* Competitor Cards */}
               <div>
-                <h3 className="flex items-center gap-3 text-2xl font-black text-[#0A1F0F] mb-5"><Swords className="h-6 w-6 text-[#006C35]" />{isAr ? "ملفات المنافسين" : "Competitor Profiles"}</h3>
+                <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><Swords className="h-6 w-6 text-[#23ab7e]" />{isAr ? "ملفات المنافسين" : "Competitor Profiles"}</h3>
                 <div className="grid gap-5 sm:grid-cols-2">
                   {data.competitors.map((comp, i) => (
-                    <div key={i} className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-5">
+                    <div key={i} className="rounded-2xl border-2 border-[#e8eaef] bg-white p-5">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                           <ScoreCircle score={comp.overallScore} size={52} />
                           <div>
-                            <h4 className="font-black text-xl text-[#0A1F0F]">{comp.name}</h4>
-                            <p className="text-base text-[#5A8A6A]">{comp.handle} · {comp.platform}</p>
+                            <h4 className="font-black text-xl text-[#2d3142]">{comp.name}</h4>
+                            <p className="text-base text-[#8f96a3]">{comp.handle} · {comp.platform}</p>
                           </div>
                         </div>
                         <ThreatBadge level={comp.threatLevel} />
                       </div>
-                      <div className="p-4 rounded-xl bg-gradient-to-r from-[#006C35]/5 to-[#7C3AED]/5 border border-[#D4EBD9] mb-4">
-                        <p className="text-sm font-black text-[#006C35] uppercase tracking-wider mb-1">{isAr ? "الرؤية الرئيسية" : "KEY INSIGHT"}</p>
-                        <p className="text-base text-[#0A1F0F] leading-6">{comp.keyInsight}</p>
+                      <div className="p-4 rounded-xl bg-gradient-to-r from-[#23ab7e]/5 to-[#8054b8]/5 border border-[#e8eaef] mb-4">
+                        <p className="text-sm font-black text-[#23ab7e] uppercase tracking-wider mb-1">{isAr ? "الرؤية الرئيسية" : "KEY INSIGHT"}</p>
+                        <p className="text-base text-[#2d3142] leading-6">{comp.keyInsight}</p>
                       </div>
                       {comp.stealThisMove && (
-                        <div className="p-4 rounded-xl bg-[#7C3AED]/5 border border-[#7C3AED]/20 mb-4">
-                          <p className="text-sm font-black text-[#7C3AED] uppercase tracking-wider mb-1 flex items-center gap-1"><Star className="h-3 w-3" />{isAr ? "اسرق هذه الحركة" : "STEAL THIS MOVE"}</p>
-                          <p className="text-base text-[#0A1F0F] leading-6">{comp.stealThisMove}</p>
+                        <div className="p-4 rounded-xl bg-[#8054b8]/5 border border-[#8054b8]/20 mb-4">
+                          <p className="text-sm font-black text-[#8054b8] uppercase tracking-wider mb-1 flex items-center gap-1"><Star className="h-3 w-3" />{isAr ? "اسرق هذه الحركة" : "STEAL THIS MOVE"}</p>
+                          <p className="text-base text-[#2d3142] leading-6">{comp.stealThisMove}</p>
                         </div>
                       )}
                       {/* Business Intelligence */}
@@ -404,21 +404,21 @@ export default function MyCompetitorsPage() {
                             { value: comp.customerReviews, label: isAr ? "المراجعات" : "Reviews", Icon: Star },
                             { value: comp.technologyStack, label: isAr ? "التقنية" : "Tech Stack", Icon: Layers },
                           ].filter(item => item.value).map((item) => (
-                            <div key={item.label} className="p-3 rounded-lg bg-[#F8FBF8] border border-[#D4EBD9]">
-                              <p className="text-sm font-black text-[#006C35] mb-1 flex items-center gap-1"><item.Icon className="h-3 w-3" />{item.label}</p>
-                              <p className="text-base text-[#2D5A3D] leading-6">{item.value}</p>
+                            <div key={item.label} className="p-3 rounded-lg bg-[#fafbfd] border border-[#e8eaef]">
+                              <p className="text-sm font-black text-[#23ab7e] mb-1 flex items-center gap-1"><item.Icon className="h-3 w-3" />{item.label}</p>
+                              <p className="text-base text-[#505868] leading-6">{item.value}</p>
                             </div>
                           ))}
                         </div>
                       )}
                       <div className="grid grid-cols-2 gap-3">
                         <div className="p-3 rounded-lg bg-green-50/50 border border-green-200">
-                          <p className="text-sm font-black text-[#006C35] mb-1">{isAr ? "القوة" : "Strengths"}</p>
-                          {comp.strengths.slice(0, 3).map((s, j) => <p key={j} className="text-base text-[#2D5A3D] leading-5">+ {s}</p>)}
+                          <p className="text-sm font-black text-[#23ab7e] mb-1">{isAr ? "القوة" : "Strengths"}</p>
+                          {comp.strengths.slice(0, 3).map((s, j) => <p key={j} className="text-base text-[#505868] leading-5">+ {s}</p>)}
                         </div>
                         <div className="p-3 rounded-lg bg-red-50/50 border border-red-200">
                           <p className="text-sm font-black text-red-600 mb-1">{isAr ? "الضعف" : "Weak Points"}</p>
-                          {comp.weakPoints.slice(0, 3).map((w, j) => <p key={j} className="text-base text-[#2D5A3D] leading-5">- {w}</p>)}
+                          {comp.weakPoints.slice(0, 3).map((w, j) => <p key={j} className="text-base text-[#505868] leading-5">- {w}</p>)}
                         </div>
                       </div>
                     </div>
@@ -428,30 +428,30 @@ export default function MyCompetitorsPage() {
 
               {/* Comparison Matrix */}
               {data.comparisonMatrix && (
-                <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#0A1F0F] mb-5"><BarChart3 className="h-6 w-6 text-[#006C35]" />{isAr ? "مصفوفة المقارنة" : "Comparison Matrix"}</h3>
+                <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><BarChart3 className="h-6 w-6 text-[#23ab7e]" />{isAr ? "مصفوفة المقارنة" : "Comparison Matrix"}</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b-2 border-[#D4EBD9]">
-                          <th className="text-start py-3 px-3 font-black text-base text-[#5A8A6A]">{isAr ? "الفئة" : "Category"}</th>
-                          <th className="text-start py-3 px-3 font-black text-base text-[#006C35]">{isAr ? "علامتك" : "Your Brand"}</th>
-                          {Object.keys(data.comparisonMatrix.competitors).map((n) => <th key={n} className="text-start py-3 px-3 font-black text-base text-[#0A1F0F]">{n}</th>)}
+                        <tr className="border-b-2 border-[#e8eaef]">
+                          <th className="text-start py-3 px-3 font-black text-base text-[#8f96a3]">{isAr ? "الفئة" : "Category"}</th>
+                          <th className="text-start py-3 px-3 font-black text-base text-[#23ab7e]">{isAr ? "علامتك" : "Your Brand"}</th>
+                          {Object.keys(data.comparisonMatrix.competitors).map((n) => <th key={n} className="text-start py-3 px-3 font-black text-base text-[#2d3142]">{n}</th>)}
                         </tr>
                       </thead>
                       <tbody>
                         {data.comparisonMatrix.categories.map((cat, idx) => (
-                          <tr key={cat} className="border-b border-[#D4EBD9]/50">
-                            <td className="py-3 px-3 font-bold text-base text-[#5A8A6A]">{cat}</td>
+                          <tr key={cat} className="border-b border-[#e8eaef]/50">
+                            <td className="py-3 px-3 font-bold text-base text-[#8f96a3]">{cat}</td>
                             <td className="py-3 px-3">
                               <div className="flex items-center gap-2">
-                                <div className="flex-1 h-2.5 bg-[#E8F0EA] rounded-full overflow-hidden"><div className="h-full rounded-full bg-[#006C35]" style={{ width: `${data.comparisonMatrix.yourBrand[idx]}%` }} /></div>
+                                <div className="flex-1 h-2.5 bg-[#E8F0EA] rounded-full overflow-hidden"><div className="h-full rounded-full bg-[#23ab7e]" style={{ width: `${data.comparisonMatrix.yourBrand[idx]}%` }} /></div>
                                 <span className="text-base font-bold w-8 text-right">{data.comparisonMatrix.yourBrand[idx]}</span>
                               </div>
                             </td>
                             {Object.entries(data.comparisonMatrix.competitors).map(([n, scores]) => {
                               const s = scores[idx];
-                              const c = s >= 70 ? "#006C35" : s >= 40 ? "#F59E0B" : "#ef4444";
+                              const c = s >= 70 ? "#23ab7e" : s >= 40 ? "#F59E0B" : "#ef4444";
                               return (
                                 <td key={n} className="py-3 px-3">
                                   <div className="flex items-center gap-2">
@@ -471,22 +471,22 @@ export default function MyCompetitorsPage() {
 
               {/* Strategy Highlights */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                  <h3 className="flex items-center gap-3 text-xl font-black text-[#0A1F0F] mb-4"><Rocket className="h-5 w-5 text-red-500" />{isAr ? "إجراءات فورية" : "Immediate Actions"}</h3>
+                <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                  <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-4"><Rocket className="h-5 w-5 text-red-500" />{isAr ? "إجراءات فورية" : "Immediate Actions"}</h3>
                   <div className="space-y-3">
                     {data.winningStrategy.immediate.slice(0, 3).map((a, i) => (
                       <div key={i} className="p-3 rounded-xl bg-red-50/50 border border-red-100">
-                        <p className="text-lg text-[#0A1F0F] leading-6">{a.action}</p>
+                        <p className="text-lg text-[#2d3142] leading-6">{a.action}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                  <h3 className="flex items-center gap-3 text-xl font-black text-[#0A1F0F] mb-4"><Calendar className="h-5 w-5 text-[#7C3AED]" />{isAr ? "إجراءات قصيرة المدى" : "Short-Term Actions"}</h3>
+                <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                  <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-4"><Calendar className="h-5 w-5 text-[#8054b8]" />{isAr ? "إجراءات قصيرة المدى" : "Short-Term Actions"}</h3>
                   <div className="space-y-3">
                     {data.winningStrategy.shortTerm.slice(0, 3).map((a, i) => (
                       <div key={i} className="p-3 rounded-xl bg-yellow-50/30 border border-yellow-100">
-                        <p className="text-lg text-[#0A1F0F] leading-6">{a.action}</p>
+                        <p className="text-lg text-[#2d3142] leading-6">{a.action}</p>
                       </div>
                     ))}
                   </div>
@@ -497,40 +497,40 @@ export default function MyCompetitorsPage() {
               {(data.winningStrategy.contentGaps?.length > 0 || data.winningStrategy.differentiators?.length > 0) && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                   {data.winningStrategy.contentGaps?.length > 0 && (
-                    <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                      <h3 className="flex items-center gap-3 text-xl font-black text-[#0A1F0F] mb-4"><Sparkles className="h-5 w-5 text-[#7C3AED]" />{isAr ? "فجوات المحتوى" : "Content Gaps"}</h3>
-                      <div className="space-y-2">{data.winningStrategy.contentGaps.map((g, i) => <p key={i} className="text-lg text-[#2D5A3D] leading-6 flex items-start gap-2"><span className="text-[#7C3AED] mt-0.5">•</span>{g}</p>)}</div>
+                    <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                      <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-4"><Sparkles className="h-5 w-5 text-[#8054b8]" />{isAr ? "فجوات المحتوى" : "Content Gaps"}</h3>
+                      <div className="space-y-2">{data.winningStrategy.contentGaps.map((g, i) => <p key={i} className="text-lg text-[#505868] leading-6 flex items-start gap-2"><span className="text-[#8054b8] mt-0.5">•</span>{g}</p>)}</div>
                     </div>
                   )}
                   {data.winningStrategy.differentiators?.length > 0 && (
-                    <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                      <h3 className="flex items-center gap-3 text-xl font-black text-[#0A1F0F] mb-4"><Shield className="h-5 w-5 text-[#006C35]" />{isAr ? "عوامل التميز" : "Differentiators"}</h3>
-                      <div className="space-y-2">{data.winningStrategy.differentiators.map((d, i) => <p key={i} className="text-lg text-[#2D5A3D] leading-6 flex items-start gap-2"><span className="text-[#006C35] mt-0.5">•</span>{d}</p>)}</div>
+                    <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                      <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-4"><Shield className="h-5 w-5 text-[#23ab7e]" />{isAr ? "عوامل التميز" : "Differentiators"}</h3>
+                      <div className="space-y-2">{data.winningStrategy.differentiators.map((d, i) => <p key={i} className="text-lg text-[#505868] leading-6 flex items-start gap-2"><span className="text-[#23ab7e] mt-0.5">•</span>{d}</p>)}</div>
                     </div>
                   )}
                 </div>
               )}
 
               {/* Saudi Market */}
-              <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                <h3 className="flex items-center gap-3 text-2xl font-black text-[#0A1F0F] mb-5"><Building2 className="h-6 w-6 text-[#006C35]" />{isAr ? "رؤى السوق السعودي" : "Saudi Market Insights"}</h3>
+              <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><Building2 className="h-6 w-6 text-[#23ab7e]" />{isAr ? "رؤى السوق السعودي" : "Saudi Market Insights"}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                    <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "التوافق مع الاتجاهات" : "Trend Alignment"}</h4>
-                    <p className="text-base text-[#2D5A3D] leading-6">{data.saudiMarketInsights.trendAlignment}</p>
+                  <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                    <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "التوافق مع الاتجاهات" : "Trend Alignment"}</h4>
+                    <p className="text-base text-[#505868] leading-6">{data.saudiMarketInsights.trendAlignment}</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                    <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "صلة برؤية 2030" : "Vision 2030"}</h4>
-                    <p className="text-base text-[#2D5A3D] leading-6">{data.saudiMarketInsights.vision2030Relevance}</p>
+                  <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                    <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "صلة برؤية 2030" : "Vision 2030"}</h4>
+                    <p className="text-base text-[#505868] leading-6">{data.saudiMarketInsights.vision2030Relevance}</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                    <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "التوافق الثقافي" : "Cultural Fit"}</h4>
-                    <p className="text-base text-[#2D5A3D] leading-6">{data.saudiMarketInsights.culturalFit}</p>
+                  <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                    <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "التوافق الثقافي" : "Cultural Fit"}</h4>
+                    <p className="text-base text-[#505868] leading-6">{data.saudiMarketInsights.culturalFit}</p>
                   </div>
                   {data.saudiMarketInsights.ramadanStrategy && (
-                    <div className="p-4 rounded-xl bg-gradient-to-r from-[#006C35]/5 to-[#7C3AED]/5 border border-[#7C3AED]/20">
-                      <h4 className="font-black text-base text-[#7C3AED] mb-1 flex items-center gap-1"><Star className="h-3 w-3" />{isAr ? "استراتيجية رمضان" : "Ramadan Strategy"}</h4>
-                      <p className="text-base text-[#2D5A3D] leading-6">{data.saudiMarketInsights.ramadanStrategy}</p>
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-[#23ab7e]/5 to-[#8054b8]/5 border border-[#8054b8]/20">
+                      <h4 className="font-black text-base text-[#8054b8] mb-1 flex items-center gap-1"><Star className="h-3 w-3" />{isAr ? "استراتيجية رمضان" : "Ramadan Strategy"}</h4>
+                      <p className="text-base text-[#505868] leading-6">{data.saudiMarketInsights.ramadanStrategy}</p>
                     </div>
                   )}
                 </div>
@@ -538,24 +538,24 @@ export default function MyCompetitorsPage() {
 
               {/* Industry Analysis */}
               {data.industryAnalysis && (
-                <div className="rounded-2xl border-2 border-[#D4EBD9] bg-white p-6">
-                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#0A1F0F] mb-5"><TrendingUp className="h-6 w-6 text-[#006C35]" />{isAr ? "تحليل الصناعة" : "Industry Analysis"}</h3>
+                <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
+                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><TrendingUp className="h-6 w-6 text-[#23ab7e]" />{isAr ? "تحليل الصناعة" : "Industry Analysis"}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                      <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "نظرة عامة على السوق" : "Market Overview"}</h4>
-                      <p className="text-base text-[#2D5A3D] leading-6">{data.industryAnalysis.marketOverview}</p>
+                    <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                      <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "نظرة عامة على السوق" : "Market Overview"}</h4>
+                      <p className="text-base text-[#505868] leading-6">{data.industryAnalysis.marketOverview}</p>
                     </div>
-                    <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                      <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "المشهد التنافسي" : "Competitive Landscape"}</h4>
-                      <p className="text-base text-[#2D5A3D] leading-6">{data.industryAnalysis.competitiveLandscape}</p>
+                    <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                      <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "المشهد التنافسي" : "Competitive Landscape"}</h4>
+                      <p className="text-base text-[#505868] leading-6">{data.industryAnalysis.competitiveLandscape}</p>
                     </div>
-                    <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                      <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "اتجاهات المستهلكين" : "Consumer Trends"}</h4>
-                      <p className="text-base text-[#2D5A3D] leading-6">{data.industryAnalysis.consumerTrends}</p>
+                    <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                      <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "اتجاهات المستهلكين" : "Consumer Trends"}</h4>
+                      <p className="text-base text-[#505868] leading-6">{data.industryAnalysis.consumerTrends}</p>
                     </div>
-                    <div className="p-4 rounded-xl bg-[#F8FBF8] border border-[#D4EBD9]">
-                      <h4 className="font-black text-base text-[#006C35] mb-1">{isAr ? "التوقعات المستقبلية" : "Future Outlook"}</h4>
-                      <p className="text-base text-[#2D5A3D] leading-6">{data.industryAnalysis.futureOutlook}</p>
+                    <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
+                      <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "التوقعات المستقبلية" : "Future Outlook"}</h4>
+                      <p className="text-base text-[#505868] leading-6">{data.industryAnalysis.futureOutlook}</p>
                     </div>
                   </div>
                 </div>

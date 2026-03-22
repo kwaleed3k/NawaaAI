@@ -95,7 +95,7 @@ const PLATFORMS = [
     bg: "bg-gradient-to-br from-[#14171A] to-[#657786]",
     lightBg: "bg-gradient-to-br from-slate-50 to-gray-100",
     iconColor: "text-[#14171A]",
-    pillBg: "bg-slate-100 text-slate-700 border-slate-200",
+    pillBg: "bg-slate-100 text-slate-700 border-[#e8eaef]",
     ring: "ring-slate-400/40",
     shadow: "shadow-slate-500/20",
   },
@@ -105,7 +105,7 @@ const PLATFORMS = [
     Icon: SnapchatIcon,
     gradient: "from-[#FFFC00] to-[#FFE600]",
     bg: "bg-gradient-to-br from-[#FFFC00] to-[#FFE600]",
-    lightBg: "bg-gradient-to-br from-yellow-50 to-amber-50",
+    lightBg: "bg-gradient-to-br from-yellow-50 to-[#f4f6f8]",
     iconColor: "text-[#333333]",
     pillBg: "bg-yellow-50 text-amber-700 border-yellow-200",
     ring: "ring-yellow-400/40",
@@ -121,7 +121,7 @@ const PLATFORMS = [
     iconColor: "text-[#0077B5]",
     pillBg: "bg-blue-50 text-blue-700 border-blue-200",
     ring: "ring-blue-400/40",
-    shadow: "shadow-blue-500/20",
+    shadow: "shadow-[#8054b8]/20",
   },
 ];
 
@@ -154,24 +154,24 @@ type Plan = {
 
 /* ── Hashtag color rotation ── */
 const HASHTAG_COLORS = [
-  "bg-violet-100/80 text-violet-700 border border-violet-200/60",
+  "bg-[#e8eaef]/80 text-violet-700 border border-[#c4a8e8]/60",
   "bg-pink-100/80 text-pink-700 border border-pink-200/60",
   "bg-blue-100/80 text-blue-700 border border-blue-200/60",
-  "bg-emerald-100/80 text-emerald-700 border border-emerald-200/60",
-  "bg-amber-100/80 text-amber-700 border border-amber-200/60",
+  "bg-white/80 text-[#1a8a64] border border-[#a6ffea]/60",
+  "bg-[#e8eaef]/80 text-amber-700 border border-[#f5c6fa]/60",
   "bg-cyan-100/80 text-cyan-700 border border-cyan-200/60",
   "bg-rose-100/80 text-rose-700 border border-rose-200/60",
 ];
 
 /* ── Day colors for the generated plan cards ── */
 const DAY_THEMES = [
-  { accent: "from-violet-500 to-purple-600", light: "bg-violet-50", text: "text-violet-700", border: "border-violet-200", badge: "bg-violet-100 text-violet-700" },
-  { accent: "from-blue-500 to-indigo-600", light: "bg-blue-50", text: "text-blue-700", border: "border-blue-200", badge: "bg-blue-100 text-blue-700" },
-  { accent: "from-emerald-500 to-teal-600", light: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200", badge: "bg-emerald-100 text-emerald-700" },
+  { accent: "from-[#8054b8] to-[#6d3fa0]", light: "bg-[#f4f6f8]", text: "text-violet-700", border: "border-[#c4a8e8]", badge: "bg-[#e8eaef] text-violet-700" },
+  { accent: "from-[#8054b8] to-indigo-600", light: "bg-blue-50", text: "text-blue-700", border: "border-blue-200", badge: "bg-blue-100 text-blue-700" },
+  { accent: "from-[#23ab7e] to-teal-600", light: "bg-[#f4f6f8]", text: "text-[#1a8a64]", border: "border-[#a6ffea]", badge: "bg-white text-[#1a8a64]" },
   { accent: "from-rose-500 to-pink-600", light: "bg-rose-50", text: "text-rose-700", border: "border-rose-200", badge: "bg-rose-100 text-rose-700" },
-  { accent: "from-amber-500 to-orange-600", light: "bg-amber-50", text: "text-amber-700", border: "border-amber-200", badge: "bg-amber-100 text-amber-700" },
+  { accent: "from-[#e67af3] to-orange-600", light: "bg-[#f4f6f8]", text: "text-amber-700", border: "border-[#f5c6fa]", badge: "bg-[#e8eaef] text-amber-700" },
   { accent: "from-cyan-500 to-sky-600", light: "bg-cyan-50", text: "text-cyan-700", border: "border-cyan-200", badge: "bg-cyan-100 text-cyan-700" },
-  { accent: "from-fuchsia-500 to-purple-600", light: "bg-fuchsia-50", text: "text-fuchsia-700", border: "border-fuchsia-200", badge: "bg-fuchsia-100 text-fuchsia-700" },
+  { accent: "from-fuchsia-500 to-[#6d3fa0]", light: "bg-fuchsia-50", text: "text-fuchsia-700", border: "border-fuchsia-200", badge: "bg-fuchsia-100 text-fuchsia-700" },
 ];
 
 export default function PlannerPage() {
@@ -303,8 +303,8 @@ export default function PlannerPage() {
   if (loadingCompanies) {
     return (
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-6 p-4">
-        <Skeleton className="h-48 rounded-3xl" />
-        <Skeleton className="h-96 rounded-3xl" />
+        <Skeleton className="h-48 rounded-xl" />
+        <Skeleton className="h-96 rounded-xl" />
       </div>
     );
   }
@@ -316,68 +316,49 @@ export default function PlannerPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8 pb-12">
 
-      {/* ════════════════════════════════════════════════════════ */}
-      {/* ===== HERO HEADER — dark with animated gradient ===== */}
-      {/* ════════════════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
-        {/* Gradient orbs */}
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-violet-600/30 to-fuchsia-600/10 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-blue-600/20 to-cyan-500/10 blur-3xl" />
-
-        <div className="relative z-10 p-6 sm:p-8">
-          <div className="flex items-center gap-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 shadow-lg shadow-violet-500/25">
-              <Calendar className="h-5 w-5 text-white" />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-violet-200 to-blue-200 bg-clip-text text-transparent">
-                  {tp.pageTitle}
-                </span>
-              </h1>
-              <p className="mt-1 text-xl sm:text-2xl font-medium text-slate-400">{tp.pageSub}</p>
-            </div>
-            <div className="hidden sm:flex items-center gap-2">
-              {[
-                { icon: Zap, label: locale === "ar" ? "AI" : "AI", color: "text-violet-300 border-violet-500/30" },
-                { icon: LayoutGrid, label: locale === "ar" ? "7 أيام" : "7 Days", color: "text-blue-300 border-blue-500/30" },
-                { icon: Globe, label: locale === "ar" ? "5 منصات" : "5 Platforms", color: "text-emerald-300 border-emerald-500/30" },
-              ].map((stat) => (
-                <div key={stat.label} className={cn("flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-bold", stat.color)}>
-                  <stat.icon className="h-3.5 w-3.5" />
-                  {stat.label}
-                </div>
-              ))}
-            </div>
+      {/* ===== PAGE HEADER ===== */}
+      <div className="rounded-xl border border-[#e8eaef] bg-white p-6 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#23ab7e]/10">
+            <Calendar className="h-5 w-5 text-[#23ab7e]" />
+          </div>
+          <div className="flex-1">
+            <h1 className="text-xl font-bold text-[#1a1d2e]">{tp.pageTitle}</h1>
+            <p className="mt-0.5 text-sm text-[#9ca3b0]">{tp.pageSub}</p>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            {[
+              { icon: Zap, label: locale === "ar" ? "AI" : "AI", color: "text-[#23ab7e] border-[#e8eaef]" },
+              { icon: LayoutGrid, label: locale === "ar" ? "7 \u0623\u064a\u0627\u0645" : "7 Days", color: "text-[#2d3142] border-[#e8eaef]" },
+              { icon: Globe, label: locale === "ar" ? "5 \u0645\u0646\u0635\u0627\u062a" : "5 Platforms", color: "text-[#2d3142] border-[#e8eaef]" },
+            ].map((stat) => (
+              <div key={stat.label} className={cn("flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium", stat.color)}>
+                <stat.icon className="h-3.5 w-3.5" />
+                {stat.label}
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* ═══════════════ Loading Overlay ═══════════════ */}
       {generating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
-          <div className="w-full max-w-md mx-auto px-6">
-            <div className="relative rounded-3xl bg-[#0B0E14] border border-white/10 p-10 shadow-2xl text-center overflow-hidden">
-              {/* Spinning gradient ring */}
-              <div className="flex justify-center mb-8">
-                <div className="relative h-32 w-32">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-fuchsia-500 animate-spin opacity-60" style={{ animationDuration: "3s" }} />
-                  <div className="absolute inset-1 rounded-full bg-[#0B0E14]" />
-                  <div className="absolute inset-4 flex items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-blue-600 shadow-lg shadow-violet-500/30">
-                    <Wand2 className="h-10 w-10 text-white animate-pulse" />
-                  </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+          <div className="w-full max-w-sm mx-auto px-6">
+            <div className="rounded-xl bg-white border border-[#e8eaef] p-8 shadow-md text-center">
+              <div className="flex justify-center mb-6">
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#23ab7e]/10">
+                  <Loader2 className="h-7 w-7 text-[#23ab7e] animate-spin" />
                 </div>
               </div>
-
-              <p key={loadingMsgIndex} className="text-2xl font-bold text-white mb-2 animate-fade-in">
+              <p key={loadingMsgIndex} className="text-base font-semibold text-[#1a1d2e] mb-1">
                 {loadingMessages[loadingMsgIndex]}
               </p>
-              <p className="text-lg text-slate-400 mb-8">
-                {locale === "ar" ? "نبني لك خطة محتوى احترافية" : "Building your professional content plan"}
+              <p className="text-sm text-[#9ca3b0] mb-6">
+                {locale === "ar" ? "\u0646\u0628\u0646\u064a \u0644\u0643 \u062e\u0637\u0629 \u0645\u062d\u062a\u0648\u0649 \u0627\u062d\u062a\u0631\u0627\u0641\u064a\u0629" : "Building your professional content plan"}
               </p>
-
-              <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
-                <div className="h-full rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-fuchsia-500 animate-pulse" style={{ width: "70%" }} />
+              <div className="h-1 rounded-full bg-[#f4f5f7] overflow-hidden">
+                <div className="h-full rounded-full bg-[#23ab7e] animate-pulse" style={{ width: "70%" }} />
               </div>
             </div>
           </div>
@@ -391,14 +372,14 @@ export default function PlannerPage() {
         <div className="space-y-6">
 
           {/* ── Step 1: Company Selection ── */}
-          <div className="rounded-2xl bg-white border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="rounded-xl bg-white border border-[#e8eaef] shadow-sm overflow-hidden">
             <div className="flex items-center gap-4 p-6 pb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white text-base font-black shadow-md shadow-violet-500/20">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#23ab7e]/10 text-[#23ab7e] text-sm font-bold">
                 1
               </div>
               <div>
-                <h3 className="text-2xl font-extrabold text-slate-900">{tp.company}</h3>
-                <p className="text-base text-slate-500">{locale === "ar" ? "اختر العلامة التجارية" : "Choose your brand"}</p>
+                <h3 className="text-base font-semibold text-[#1a1d2e]">{tp.company}</h3>
+                <p className="text-sm text-[#9ca3b0]">{locale === "ar" ? "اختر العلامة التجارية" : "Choose your brand"}</p>
               </div>
             </div>
             <div className="px-6 pb-6">
@@ -409,7 +390,7 @@ export default function PlannerPage() {
                     const c = companies.find((x) => x.id === e.target.value);
                     if (c) setSelectedCompany(c);
                   }}
-                  className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 h-14 pr-10 text-lg font-medium text-slate-900 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 hover:border-slate-300 cursor-pointer"
+                  className="w-full appearance-none rounded-xl border border-[#e8eaef] bg-slate-50/50 px-3 h-10 pr-10 text-sm font-medium text-[#1a1d2e] outline-none transition-all focus:border-[#c4a8e8] focus:ring-2 focus:ring-[#8054b8]/20 hover:border-slate-300 cursor-pointer"
                 >
                   {companies.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -421,21 +402,21 @@ export default function PlannerPage() {
           </div>
 
           {/* ── Step 2: Platform Selection ── */}
-          <div className="rounded-2xl bg-white border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="rounded-xl bg-white border border-[#e8eaef] shadow-sm overflow-hidden">
             <div className="flex items-center justify-between p-6 pb-4">
               <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-base font-black shadow-md shadow-blue-500/20">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#23ab7e]/10 text-[#23ab7e] text-sm font-bold">
                   2
                 </div>
                 <div>
-                  <h3 className="text-2xl font-extrabold text-slate-900">{tp.platforms}</h3>
-                  <p className="text-base text-slate-500">{locale === "ar" ? "اختر المنصات المستهدفة" : "Pick target platforms"}</p>
+                  <h3 className="text-base font-semibold text-[#1a1d2e]">{tp.platforms}</h3>
+                  <p className="text-sm text-[#9ca3b0]">{locale === "ar" ? "اختر المنصات المستهدفة" : "Pick target platforms"}</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setPlatforms(platforms.length === PLATFORMS.length ? [] : PLATFORMS.map((p) => p.id))}
-                className="text-sm font-bold text-violet-600 hover:text-violet-800 transition-colors px-3 py-1.5 rounded-lg hover:bg-violet-50"
+                className="text-sm font-bold text-[#6d3fa0] hover:text-violet-800 transition-colors px-3 py-1.5 rounded-lg hover:bg-[#f4f6f8]"
               >
                 {platforms.length === PLATFORMS.length ? tp.clearAll : tp.selectAll}
               </button>
@@ -451,22 +432,22 @@ export default function PlannerPage() {
                       type="button"
                       onClick={() => togglePlatform(p.id)}
                       className={cn(
-                        "relative flex flex-col items-center gap-3 rounded-2xl p-5 transition-all duration-300 cursor-pointer group border-2",
+                        "relative flex flex-col items-center gap-2 rounded-xl p-4 transition-all duration-200 cursor-pointer group border",
                         selected
-                          ? `${p.bg} border-transparent text-white shadow-lg ${p.shadow} ring-4 ${p.ring} scale-[1.02]`
-                          : `bg-white border-slate-100 hover:border-slate-200 hover:shadow-md`
+                          ? "bg-[#23ab7e] border-[#23ab7e] text-white shadow-sm"
+                          : "bg-white border-[#e8eaef] hover:border-[#23ab7e]/40 hover:shadow-sm"
                       )}
                     >
                       {selected && (
                         <div className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                          <CheckCircle2 className="h-4 w-4 text-[#23ab7e]" />
                         </div>
                       )}
                       <div className={cn(
-                        "flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300",
+                        "flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-200",
                         selected
-                          ? "bg-white/20 backdrop-blur-sm"
-                          : `${p.lightBg} group-hover:scale-110`
+                          ? "bg-white/20"
+                          : `${p.lightBg}`
                       )}>
                         <Icon className={cn(
                           "h-6 w-6 transition-colors",
@@ -474,8 +455,8 @@ export default function PlannerPage() {
                         )} />
                       </div>
                       <span className={cn(
-                        "text-sm font-bold tracking-wide transition-colors",
-                        selected ? "text-white" : "text-slate-600 group-hover:text-slate-900"
+                        "text-sm font-medium transition-colors",
+                        selected ? "text-white" : "text-[#2d3142]"
                       )}>
                         {p.label}
                       </span>
@@ -489,14 +470,14 @@ export default function PlannerPage() {
           {/* ── Step 3: Settings (side-by-side) ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Week Start */}
-            <div className="rounded-2xl bg-white border border-slate-200/80 shadow-sm overflow-hidden">
+            <div className="rounded-xl bg-white border border-[#e8eaef] shadow-sm overflow-hidden">
               <div className="flex items-center gap-4 p-6 pb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-base font-black shadow-md shadow-emerald-500/20">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#23ab7e]/10 text-[#23ab7e] text-sm font-bold">
                   3
                 </div>
                 <div>
-                  <h3 className="text-2xl font-extrabold text-slate-900">{tp.weekStart}</h3>
-                  <p className="text-base text-slate-500">{locale === "ar" ? "بداية الأسبوع" : "Start date"}</p>
+                  <h3 className="text-base font-semibold text-[#1a1d2e]">{tp.weekStart}</h3>
+                  <p className="text-sm text-[#9ca3b0]">{locale === "ar" ? "بداية الأسبوع" : "Start date"}</p>
                 </div>
               </div>
               <div className="px-6 pb-6">
@@ -504,20 +485,20 @@ export default function PlannerPage() {
                   type="date"
                   value={weekStart}
                   onChange={(e) => setWeekStart(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 h-14 text-lg font-medium text-slate-900 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 hover:border-slate-300 cursor-pointer"
+                  className="w-full rounded-xl border border-[#e8eaef] bg-slate-50/50 px-3 h-10 text-sm font-medium text-[#1a1d2e] outline-none transition-all focus:border-[#c4a8e8] focus:ring-2 focus:ring-[#8054b8]/20 hover:border-slate-300 cursor-pointer"
                 />
               </div>
             </div>
 
             {/* Language */}
-            <div className="rounded-2xl bg-white border border-slate-200/80 shadow-sm overflow-hidden">
+            <div className="rounded-xl bg-white border border-[#e8eaef] shadow-sm overflow-hidden">
               <div className="flex items-center gap-4 p-6 pb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 text-white text-base font-black shadow-md shadow-rose-500/20">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#23ab7e]/10 text-[#23ab7e] text-sm font-bold">
                   4
                 </div>
                 <div>
-                  <h3 className="text-2xl font-extrabold text-slate-900">{tp.generateIn}</h3>
-                  <p className="text-base text-slate-500">{locale === "ar" ? "لغة المحتوى" : "Content language"}</p>
+                  <h3 className="text-base font-semibold text-[#1a1d2e]">{tp.generateIn}</h3>
+                  <p className="text-sm text-[#9ca3b0]">{locale === "ar" ? "لغة المحتوى" : "Content language"}</p>
                 </div>
               </div>
               <div className="px-6 pb-6">
@@ -531,13 +512,13 @@ export default function PlannerPage() {
                       type="button"
                       onClick={() => setOutputLanguage(lang.code)}
                       className={cn(
-                        "flex-1 h-14 rounded-xl text-lg font-bold transition-all duration-300 flex items-center justify-center gap-2",
+                        "flex-1 h-10 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2",
                         outputLanguage === lang.code
-                          ? "bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-md shadow-violet-500/20"
-                          : "bg-slate-50 border border-slate-200 text-slate-600 hover:border-violet-300 hover:bg-violet-50"
+                          ? "bg-[#23ab7e] text-white shadow-sm"
+                          : "bg-white border border-[#e8eaef] text-[#2d3142] hover:bg-[#f4f5f7]"
                       )}
                     >
-                      <span className="text-xl">{lang.flag}</span>
+                      <span className="text-sm">{lang.flag}</span>
                       {lang.label}
                     </button>
                   ))}
@@ -547,14 +528,14 @@ export default function PlannerPage() {
           </div>
 
           {/* ── Step 5: Special Focus ── */}
-          <div className="rounded-2xl bg-white border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="rounded-xl bg-white border border-[#e8eaef] shadow-sm overflow-hidden">
             <div className="flex items-center gap-4 p-6 pb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white text-base font-black shadow-md shadow-amber-500/20">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#23ab7e]/10 text-[#23ab7e] text-sm font-bold">
                 5
               </div>
               <div>
-                <h3 className="text-2xl font-extrabold text-slate-900">{tp.specialFocus}</h3>
-                <p className="text-base text-slate-500">{locale === "ar" ? "اختياري — وجّه الذكاء الاصطناعي" : "Optional — guide the AI"}</p>
+                <h3 className="text-base font-semibold text-[#1a1d2e]">{tp.specialFocus}</h3>
+                <p className="text-sm text-[#9ca3b0]">{locale === "ar" ? "اختياري — وجّه الذكاء الاصطناعي" : "Optional — guide the AI"}</p>
               </div>
             </div>
             <div className="px-6 pb-6">
@@ -562,7 +543,7 @@ export default function PlannerPage() {
                 value={userPrompt}
                 onChange={(e) => setUserPrompt(e.target.value)}
                 placeholder={tp.focusPlaceholder}
-                className="min-h-[100px] rounded-xl border border-slate-200 bg-slate-50/50 text-lg text-slate-900 placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 transition-all resize-none"
+                className="min-h-[100px] rounded-lg border border-[#e8eaef] bg-white text-sm text-[#2d3142] placeholder:text-[#9ca3b0] focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all resize-none"
               />
             </div>
           </div>
@@ -571,13 +552,11 @@ export default function PlannerPage() {
           <Button
             onClick={handleGenerate}
             disabled={generating}
-            className="relative w-full h-16 rounded-2xl bg-gradient-to-r from-violet-600 via-blue-600 to-indigo-600 text-white hover:from-violet-700 hover:via-blue-700 hover:to-indigo-700 text-xl font-bold transition-all duration-500 shadow-lg shadow-violet-500/25 overflow-hidden group disabled:opacity-50"
+            className="w-full h-11 rounded-lg bg-[#23ab7e] hover:bg-[#1a8a64] text-white text-sm font-medium transition-all disabled:opacity-50"
           >
-            {/* Shimmer effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-            <Sparkles className="mr-2 h-5 w-5" />
+            <Sparkles className="mr-2 h-4 w-4" />
             {tp.generatePlan}
-            <ArrowRight className={cn("h-5 w-5 group-hover:translate-x-1 transition-transform", locale === "ar" ? "mr-2 rotate-180" : "ml-2")} />
+            <ArrowRight className={cn("h-4 w-4", locale === "ar" ? "mr-2 rotate-180" : "ml-2")} />
           </Button>
         </div>
 
@@ -588,25 +567,18 @@ export default function PlannerPage() {
         <div className="space-y-8">
 
           {/* ── Week Theme Banner ── */}
-          <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
-            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-gradient-to-bl from-violet-600/30 to-transparent blur-3xl" />
-            <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-blue-600/20 to-transparent blur-3xl" />
-
-            <div className="relative z-10 p-8 sm:p-10">
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="h-1.5 w-8 rounded-full bg-gradient-to-r from-violet-500 to-blue-500" />
-                    <span className="text-sm font-bold text-violet-300 tracking-widest uppercase">
-                      {locale === "ar" ? "موضوع الأسبوع" : "Week Theme"}
-                    </span>
-                  </div>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-                    {outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}
-                  </h2>
-                  <div className="mt-4 flex items-center gap-2 text-slate-400">
-                    <Calendar className="h-5 w-5 text-violet-400" />
-                    <span className="text-base font-medium">
+          <div className="rounded-xl border border-[#e8eaef] bg-white p-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="flex-1">
+                <span className="text-xs font-medium text-[#9ca3b0] tracking-widest uppercase">
+                  {locale === "ar" ? "\u0645\u0648\u0636\u0648\u0639 \u0627\u0644\u0623\u0633\u0628\u0648\u0639" : "Week Theme"}
+                </span>
+                <h2 className="mt-1 text-xl font-bold text-[#1a1d2e] leading-tight">
+                  {outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}
+                </h2>
+                <div className="mt-2 flex items-center gap-2 text-[#9ca3b0]">
+                  <Calendar className="h-4 w-4 text-[#23ab7e]" />
+                  <span className="text-sm font-medium">
                       {weekStart && plan.days?.[0]?.date
                         ? `${format(parseISO(plan.days[0].date), "MMM d")} – ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}`
                         : weekStart}
@@ -615,24 +587,17 @@ export default function PlannerPage() {
                 </div>
 
                 {/* Progress ring */}
-                <div className="flex flex-col items-center gap-2">
-                  <div className="relative h-20 w-20">
-                    <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
-                      <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="3" />
-                      <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="url(#progressGrad)" strokeWidth="3" strokeDasharray={`${(completedDays.size / 7) * 100}, 100`} strokeLinecap="round" />
-                      <defs>
-                        <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#8B5CF6" />
-                          <stop offset="100%" stopColor="#3B82F6" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-xl font-black text-white">{completedDays.size}/7</span>
-                    </div>
+              <div className="flex flex-col items-center gap-1">
+                <div className="relative h-16 w-16">
+                  <svg className="h-16 w-16 -rotate-90" viewBox="0 0 36 36">
+                    <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e8eaef" strokeWidth="3" />
+                    <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#23ab7e" strokeWidth="3" strokeDasharray={`${(completedDays.size / 7) * 100}, 100`} strokeLinecap="round" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-bold text-[#1a1d2e]">{completedDays.size}/7</span>
                   </div>
-                  <span className="text-sm font-medium text-slate-500">{locale === "ar" ? "مكتمل" : "Done"}</span>
                 </div>
+                <span className="text-xs font-medium text-[#9ca3b0]">{locale === "ar" ? "\u0645\u0643\u062a\u0645\u0644" : "Done"}</span>
               </div>
             </div>
           </div>
@@ -641,7 +606,7 @@ export default function PlannerPage() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setRefineOpen(true)}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 text-white font-bold text-base shadow-md shadow-violet-500/20 hover:shadow-lg hover:shadow-violet-500/30 transition-all"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[#6d3fa0] to-[#6d3fa0] text-white font-bold text-base shadow-md shadow-[#8054b8]/20 hover:shadow-sm hover:shadow-[#8054b8]/30 transition-all"
             >
               <Wand2 className="h-5 w-5" />
               {tp.refineAI}
@@ -649,14 +614,14 @@ export default function PlannerPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-base shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[#1a8a64] to-teal-600 text-white font-bold text-base shadow-md shadow-[#23ab7e]/20 hover:shadow-sm hover:shadow-[#23ab7e]/30 transition-all disabled:opacity-50"
             >
               {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
               {tp.savePlan}
             </button>
             <button
               onClick={handleExportPDF}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-base shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[#6d3fa0] to-indigo-600 text-white font-bold text-base shadow-md shadow-[#8054b8]/20 hover:shadow-sm hover:shadow-[#8054b8]/30 transition-all"
             >
               <Download className="h-5 w-5" />
               {tp.exportPDF}
@@ -683,10 +648,10 @@ export default function PlannerPage() {
                 <div
                   key={day.dayIndex}
                   className={cn(
-                    "group rounded-2xl bg-white border transition-all duration-300 overflow-hidden",
+                    "group rounded-xl bg-white border transition-all duration-300 overflow-hidden",
                     isCompleted
-                      ? "border-emerald-200 bg-emerald-50/30"
-                      : "border-slate-200/80 hover:border-slate-300 hover:shadow-md"
+                      ? "border-[#a6ffea] bg-[#f4f6f8]/30"
+                      : "border-[#e8eaef] hover:border-slate-300 hover:shadow-md"
                   )}
                 >
                   {/* Top accent bar */}
@@ -700,7 +665,7 @@ export default function PlannerPage() {
                   >
                     {/* Day number circle */}
                     <div className={cn(
-                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white font-black text-xl shadow-md",
+                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white font-bold text-xl shadow-md",
                       theme.accent
                     )}>
                       {idx + 1}
@@ -725,7 +690,7 @@ export default function PlannerPage() {
                     {PlatformIcon && (
                       <div className={cn(
                         "hidden sm:flex items-center gap-2 rounded-xl px-3 py-2 border text-sm font-bold",
-                        platformCfg?.pillBg ?? "bg-slate-50 text-slate-600 border-slate-200"
+                        platformCfg?.pillBg ?? "bg-slate-50 text-slate-600 border-[#e8eaef]"
                       )}>
                         <PlatformIcon className="h-4 w-4" />
                         {day.platform}
@@ -733,7 +698,7 @@ export default function PlannerPage() {
                     )}
 
                     {/* Posting time */}
-                    <div className="hidden md:flex items-center gap-1.5 text-sm font-bold text-violet-600 bg-violet-50 px-3 py-2 rounded-xl border border-violet-100">
+                    <div className="hidden md:flex items-center gap-1.5 text-sm font-bold text-[#6d3fa0] bg-[#f4f6f8] px-3 py-2 rounded-xl border border-[#e8eaef]">
                       <Clock className="h-4 w-4" />
                       {day.postingTime}
                     </div>
@@ -741,8 +706,8 @@ export default function PlannerPage() {
                     {/* Status + expand */}
                     <div className="flex items-center gap-2">
                       {isCompleted && (
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+                          <CheckCircle2 className="h-4 w-4 text-[#1a8a64]" />
                         </div>
                       )}
                       <ChevronDown className={cn(
@@ -754,7 +719,7 @@ export default function PlannerPage() {
 
                   {/* Expanded content */}
                   {isExpanded && (
-                    <div className="px-5 pb-6 pt-0 border-t border-slate-100 animate-in slide-in-from-top-2 duration-300">
+                    <div className="px-5 pb-6 pt-0 border-t border-[#e8eaef] animate-in slide-in-from-top-2 duration-300">
                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5">
 
                         {/* Left — Caption */}
@@ -764,13 +729,13 @@ export default function PlannerPage() {
                             {PlatformIcon && (
                               <div className={cn(
                                 "flex items-center gap-2 rounded-xl px-3 py-2 border text-sm font-bold",
-                                platformCfg?.pillBg ?? "bg-slate-50 text-slate-600 border-slate-200"
+                                platformCfg?.pillBg ?? "bg-slate-50 text-slate-600 border-[#e8eaef]"
                               )}>
                                 <PlatformIcon className="h-4 w-4" />
                                 {day.platform}
                               </div>
                             )}
-                            <div className="flex items-center gap-1.5 text-sm font-bold text-violet-600 bg-violet-50 px-3 py-2 rounded-xl border border-violet-100">
+                            <div className="flex items-center gap-1.5 text-sm font-bold text-[#6d3fa0] bg-[#f4f6f8] px-3 py-2 rounded-xl border border-[#e8eaef]">
                               <Clock className="h-4 w-4" />
                               {day.postingTime}
                             </div>
@@ -783,10 +748,10 @@ export default function PlannerPage() {
                           </div>
 
                           {/* Caption */}
-                          <div className="rounded-xl bg-slate-50 border border-slate-100 p-5">
+                          <div className="rounded-xl bg-slate-50 border border-[#e8eaef] p-5">
                             <div className="flex items-center gap-2 mb-3">
-                              <MessageSquare className="h-5 w-5 text-violet-500" />
-                              <span className="text-sm font-bold text-violet-600 uppercase tracking-wider">{locale === "ar" ? "الكابشن" : "Caption"}</span>
+                              <MessageSquare className="h-5 w-5 text-[#8054b8]" />
+                              <span className="text-sm font-bold text-[#6d3fa0] uppercase tracking-wider">{locale === "ar" ? "الكابشن" : "Caption"}</span>
                             </div>
                             <p className="text-lg text-slate-700 leading-relaxed whitespace-pre-wrap">
                               {outputLanguage === "ar" ? (day.captionAr || day.caption) : (day.caption || day.captionAr)}
@@ -796,8 +761,8 @@ export default function PlannerPage() {
                           {/* Hashtags */}
                           <div>
                             <div className="flex items-center gap-2 mb-2">
-                              <Hash className="h-5 w-5 text-blue-500" />
-                              <span className="text-sm font-bold text-blue-600 uppercase tracking-wider">{locale === "ar" ? "الهاشتاقات" : "Hashtags"}</span>
+                              <Hash className="h-5 w-5 text-[#8054b8]" />
+                              <span className="text-sm font-bold text-[#6d3fa0] uppercase tracking-wider">{locale === "ar" ? "الهاشتاقات" : "Hashtags"}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
                               {day.hashtags?.map((tag, tagIdx) => (
@@ -818,22 +783,22 @@ export default function PlannerPage() {
                         {/* Right — Meta info */}
                         <div className="space-y-4">
                           {/* Posting time detail */}
-                          <div className="rounded-xl bg-violet-50 border border-violet-100 p-4">
+                          <div className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] p-4">
                             <div className="flex items-center gap-2 mb-2">
-                              <Clock className="h-5 w-5 text-violet-500" />
-                              <span className="text-sm font-bold text-violet-600 uppercase tracking-wider">{locale === "ar" ? "أفضل وقت" : "Best Time"}</span>
+                              <Clock className="h-5 w-5 text-[#8054b8]" />
+                              <span className="text-sm font-bold text-[#6d3fa0] uppercase tracking-wider">{locale === "ar" ? "أفضل وقت" : "Best Time"}</span>
                             </div>
-                            <p className="text-3xl font-black text-violet-700">{day.postingTime}</p>
+                            <p className="text-3xl font-bold text-violet-700">{day.postingTime}</p>
                             {day.postingTimeReason && (
-                              <p className="mt-2 text-sm text-violet-500 leading-relaxed">{day.postingTimeReason}</p>
+                              <p className="mt-2 text-sm text-[#8054b8] leading-relaxed">{day.postingTimeReason}</p>
                             )}
                           </div>
 
                           {/* Content tips */}
                           {day.contentTips && (
-                            <div className="rounded-xl bg-amber-50 border border-amber-100 p-4">
+                            <div className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] p-4">
                               <div className="flex items-center gap-2 mb-2">
-                                <Lightbulb className="h-5 w-5 text-amber-500" />
+                                <Lightbulb className="h-5 w-5 text-[#e67af3]" />
                                 <span className="text-sm font-bold text-amber-600 uppercase tracking-wider">{locale === "ar" ? "نصائح" : "Tips"}</span>
                               </div>
                               <p className="text-base text-amber-700 leading-relaxed">{day.contentTips}</p>
@@ -844,8 +809,8 @@ export default function PlannerPage() {
                           {day.imagePromptHint && (
                             <div className="rounded-xl bg-blue-50 border border-blue-100 p-4">
                               <div className="flex items-center gap-2 mb-2">
-                                <Image className="h-5 w-5 text-blue-500" />
-                                <span className="text-sm font-bold text-blue-600 uppercase tracking-wider">{locale === "ar" ? "فكرة الصورة" : "Image Idea"}</span>
+                                <Image className="h-5 w-5 text-[#8054b8]" />
+                                <span className="text-sm font-bold text-[#6d3fa0] uppercase tracking-wider">{locale === "ar" ? "فكرة الصورة" : "Image Idea"}</span>
                               </div>
                               <p className="text-base text-blue-700 leading-relaxed">{day.imagePromptHint}</p>
                             </div>
@@ -866,8 +831,8 @@ export default function PlannerPage() {
                             className={cn(
                               "w-full h-12 rounded-xl text-base font-bold flex items-center justify-center gap-2 transition-all duration-300 border",
                               isCompleted
-                                ? "border-emerald-300 bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-sm shadow-emerald-500/20"
-                                : "border-slate-200 bg-white text-slate-500 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
+                                ? "border-[#a6ffea] bg-gradient-to-r from-[#23ab7e] to-[#23ab7e] text-white shadow-sm shadow-[#23ab7e]/20"
+                                : "border-[#e8eaef] bg-white text-slate-500 hover:border-[#a6ffea] hover:bg-[#f4f6f8] hover:text-[#1a8a64]"
                             )}
                           >
                             {isCompleted ? (
@@ -889,23 +854,23 @@ export default function PlannerPage() {
 
       {/* ═══════════════ Refine Dialog ═══════════════ */}
       <Dialog open={refineOpen} onOpenChange={setRefineOpen}>
-        <DialogContent className="border border-slate-200 bg-white text-slate-900 sm:max-w-lg rounded-2xl overflow-hidden shadow-2xl">
-          <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-blue-500 to-fuchsia-500" />
+        <DialogContent className="border border-[#e8eaef] bg-white text-slate-900 sm:max-w-lg rounded-xl overflow-hidden shadow-md">
+          <div className="h-1 w-full bg-gradient-to-r from-[#8054b8] via-[#8054b8] to-fuchsia-500" />
           <DialogHeader className="pt-2">
             <DialogTitle className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <Wand2 className="h-6 w-6 text-violet-500" />
+              <Wand2 className="h-6 w-6 text-[#8054b8]" />
               {tp.refineAI}
             </DialogTitle>
           </DialogHeader>
-          <p className="text-base text-slate-500">{tp.refineTell}</p>
+          <p className="text-sm text-[#9ca3b0]">{tp.refineTell}</p>
           <Textarea
             value={refineText}
             onChange={(e) => setRefineText(e.target.value)}
-            className="min-h-[100px] rounded-xl border border-slate-200 bg-slate-50/50 text-lg text-slate-900 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 transition-all resize-none"
+            className="min-h-[100px] rounded-xl border border-[#e8eaef] bg-slate-50/50 text-lg text-slate-900 focus:border-[#c4a8e8] focus:ring-2 focus:ring-[#8054b8]/20 transition-all resize-none"
             placeholder={tp.refinePlaceholder}
           />
           <Button
-            className="h-12 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 text-base font-bold text-white shadow-md shadow-violet-500/20 transition-all hover:shadow-lg hover:shadow-violet-500/30"
+            className="h-12 rounded-xl bg-gradient-to-r from-[#6d3fa0] to-[#6d3fa0] text-base font-bold text-white shadow-md shadow-[#8054b8]/20 transition-all hover:shadow-sm hover:shadow-[#8054b8]/30"
             onClick={async () => {
               setRefineOpen(false);
               const focusPrompt = refineText.trim();

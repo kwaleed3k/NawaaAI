@@ -45,15 +45,15 @@ type PlanRow = {
 
 /* ---------- Accent gradient palette cycling per card ---------- */
 const cardAccents = [
-  "from-[#006C35] via-[#00A352] to-[#2DD17A]",
-  "from-[#7C3AED] via-[#A78BFA] to-[#C4B5FD]",
+  "from-[#23ab7e] via-[#8054b8] to-[#2DD17A]",
+  "from-[#8054b8] via-[#A78BFA] to-[#C4B5FD]",
   "from-[#1E6DB8] via-[#3B9AE8] to-[#70C0F5]",
   "from-[#7B3FA0] via-[#A855F7] to-[#D09CF7]",
 ];
 
 const cardBorderHover = [
-  "hover:border-[#00A352]",
-  "hover:border-[#7C3AED]",
+  "hover:border-[#8054b8]",
+  "hover:border-[#8054b8]",
   "hover:border-[#3B9AE8]",
   "hover:border-[#A855F7]",
 ];
@@ -220,10 +220,10 @@ export default function MyGenerationsPage() {
   /* ---------- Loading skeleton ---------- */
   if (loading) {
     return (
-      <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-[#F8FBF8] p-6">
+      <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-[#fafbfd] p-6">
         <div className="mx-auto max-w-7xl space-y-8">
           {/* Header skeleton */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] p-8 sm:p-10 lg:p-14">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#23ab7e] via-[#23ab7e] to-[#8054b8] p-8 sm:p-10 lg:p-14">
             <div className="space-y-4">
               <div className="relative h-12 w-12 overflow-hidden rounded-2xl bg-white/20">
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -242,9 +242,9 @@ export default function MyGenerationsPage() {
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="relative h-12 w-36 overflow-hidden rounded-2xl bg-white border-2 border-[#D4EBD9]"
+                className="relative h-12 w-36 overflow-hidden rounded-2xl bg-white border-2 border-[#e8eaef]"
               >
-                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-[#00A352]/10 to-transparent" />
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-[#8054b8]/10 to-transparent" />
               </div>
             ))}
           </div>
@@ -254,38 +254,38 @@ export default function MyGenerationsPage() {
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
-                className="relative overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-white"
+                className="relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white"
               >
-                <div className="relative h-1.5 overflow-hidden bg-gradient-to-r from-[#D4EBD9] via-[#A8D5B8] to-[#D4EBD9]">
+                <div className="relative h-1.5 overflow-hidden bg-gradient-to-r from-[#e8eaef] via-[#A8D5B8] to-[#e8eaef]">
                   <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
                 </div>
                 <div className="p-5 space-y-4">
                   {/* Badges skeleton */}
                   <div className="flex gap-2">
-                    <div className="relative h-8 w-28 overflow-hidden rounded-full bg-[#D4EBD9]/40">
-                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-[#00A352]/10 to-transparent" />
+                    <div className="relative h-8 w-28 overflow-hidden rounded-full bg-[#e8eaef]/40">
+                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-[#8054b8]/10 to-transparent" />
                     </div>
-                    <div className="relative h-8 w-24 overflow-hidden rounded-full bg-[#D4EBD9]/40">
-                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-[#00A352]/10 to-transparent" />
+                    <div className="relative h-8 w-24 overflow-hidden rounded-full bg-[#e8eaef]/40">
+                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-[#8054b8]/10 to-transparent" />
                     </div>
                   </div>
                   {/* Date skeleton */}
-                  <div className="relative h-6 w-48 overflow-hidden rounded-lg bg-[#D4EBD9]/30">
-                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite_0.2s] bg-gradient-to-r from-transparent via-[#00A352]/10 to-transparent" />
+                  <div className="relative h-6 w-48 overflow-hidden rounded-lg bg-[#e8eaef]/30">
+                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite_0.2s] bg-gradient-to-r from-transparent via-[#8054b8]/10 to-transparent" />
                   </div>
                   {/* Title skeleton */}
-                  <div className="relative h-8 w-40 overflow-hidden rounded-lg bg-[#D4EBD9]/30">
-                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite_0.3s] bg-gradient-to-r from-transparent via-[#00A352]/10 to-transparent" />
+                  <div className="relative h-8 w-40 overflow-hidden rounded-lg bg-[#e8eaef]/30">
+                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite_0.3s] bg-gradient-to-r from-transparent via-[#8054b8]/10 to-transparent" />
                   </div>
                   {/* Image grid skeleton */}
                   <div className="grid grid-cols-2 gap-3">
                     {[1, 2, 3, 4].map((j) => (
                       <div
                         key={j}
-                        className="relative aspect-square overflow-hidden rounded-2xl bg-[#D4EBD9]/25"
+                        className="relative aspect-square overflow-hidden rounded-2xl bg-[#e8eaef]/25"
                       >
                         <div
-                          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#00A352]/8 to-transparent"
+                          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#8054b8]/8 to-transparent"
                           style={{ animation: `shimmer 2s infinite ${j * 0.15}s` }}
                         />
                       </div>
@@ -307,12 +307,12 @@ export default function MyGenerationsPage() {
   }
 
   return (
-    <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-[#F8FBF8]">
+    <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-[#fafbfd]">
       <div className="mx-auto max-w-7xl space-y-10">
         {/* ===== PAGE HEADER BANNER ===== */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003D1F] via-[#006C35] to-[#00A352] p-8 sm:p-10 lg:p-14">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#00A352]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-emerald-400/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#23ab7e] via-[#23ab7e] to-[#8054b8] p-8 sm:p-10 lg:p-14">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
           <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
           <div
             className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse"
@@ -322,16 +322,16 @@ export default function MyGenerationsPage() {
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-                <ImageIcon className="h-6 w-6 text-emerald-200" />
+                <ImageIcon className="h-6 w-6 text-[#a6ffea]" />
               </div>
-              <span className="text-lg font-bold text-emerald-200/80 tracking-wide">
+              <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">
                 {t.galleryLabel}
               </span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
               {t.title}
             </h1>
-            <p className="mt-4 text-xl sm:text-2xl font-medium text-emerald-100/70">
+            <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">
               {t.subtitle}
             </p>
 
@@ -339,29 +339,29 @@ export default function MyGenerationsPage() {
             {generations.length > 0 && (
               <div className="mt-6 flex flex-wrap gap-6">
                 <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 px-5 py-3">
-                  <ImageIcon className="h-5 w-5 text-emerald-300" />
+                  <ImageIcon className="h-5 w-5 text-[#a6ffea]" />
                   <span className="text-lg font-bold text-white">
                     {totalImages}
                   </span>
-                  <span className="text-base font-medium text-emerald-200/70">
+                  <span className="text-base font-medium text-[#a6ffea]/70">
                     {t.images}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 px-5 py-3">
-                  <Building2 className="h-5 w-5 text-emerald-300" />
+                  <Building2 className="h-5 w-5 text-[#a6ffea]" />
                   <span className="text-lg font-bold text-white">
                     {companies.length}
                   </span>
-                  <span className="text-base font-medium text-emerald-200/70">
+                  <span className="text-base font-medium text-[#a6ffea]/70">
                     {isAr ? "شركات" : "companies"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 px-5 py-3">
-                  <Sparkles className="h-5 w-5 text-emerald-300" />
+                  <Sparkles className="h-5 w-5 text-[#a6ffea]" />
                   <span className="text-lg font-bold text-white">
                     {generations.length}
                   </span>
-                  <span className="text-base font-medium text-emerald-200/70">
+                  <span className="text-base font-medium text-[#a6ffea]/70">
                     {isAr ? "مجموعات" : "generations"}
                   </span>
                 </div>
@@ -372,26 +372,26 @@ export default function MyGenerationsPage() {
 
         {/* ===== EMPTY STATE ===== */}
         {generations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-white py-28">
+          <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] bg-white py-28">
             <div className="relative">
-              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-[#006C35]/15 via-[#00A352]/10 to-[#7C3AED]/15">
-                <ImageIcon className="h-16 w-16 text-[#00A352]" />
+              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-[#23ab7e]/15 via-[#8054b8]/10 to-[#8054b8]/15">
+                <ImageIcon className="h-16 w-16 text-[#8054b8]" />
               </div>
               <div className="absolute -right-2 -top-2">
-                <Sparkles className="h-7 w-7 text-[#7C3AED]" />
+                <Sparkles className="h-7 w-7 text-[#8054b8]" />
               </div>
               <div className="absolute -bottom-1 -left-3">
-                <Sparkles className="h-5 w-5 text-[#00A352]" />
+                <Sparkles className="h-5 w-5 text-[#8054b8]" />
               </div>
             </div>
 
-            <p className="mt-8 text-2xl sm:text-3xl font-black text-[#004D26]">
+            <p className="mt-8 text-2xl sm:text-3xl font-black text-[#1a1d2e]">
               {t.noGenerations}
             </p>
-            <p className="mt-2 text-lg text-[#5A8A6A]/70">{t.noGenerationsSub}</p>
+            <p className="mt-2 text-lg text-[#8f96a3]/70">{t.noGenerationsSub}</p>
             <a
               href="/vision-studio"
-              className="mt-8 inline-flex h-14 items-center rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] px-10 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#00A352]/25"
+              className="mt-8 inline-flex h-14 items-center rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-10 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#8054b8]/25"
             >
               <Sparkles className="mr-2 h-6 w-6" />
               {t.openStudio}
@@ -402,8 +402,8 @@ export default function MyGenerationsPage() {
             {/* ===== FILTER BAR ===== */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Filter className="h-5 w-5 text-[#00A352]" />
-                <span className="text-lg font-bold text-[#004D26]">{t.filterBy}</span>
+                <Filter className="h-5 w-5 text-[#8054b8]" />
+                <span className="text-lg font-bold text-[#1a1d2e]">{t.filterBy}</span>
               </div>
               <div className="flex flex-wrap gap-3">
                 {/* All button */}
@@ -413,8 +413,8 @@ export default function MyGenerationsPage() {
                   className={cn(
                     "inline-flex items-center gap-2 rounded-2xl border-2 px-5 py-3 text-sm font-bold transition-all duration-300",
                     activeFilter === "all"
-                      ? "border-[#00A352] bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#00A352]/20"
-                      : "border-[#D4EBD9] bg-white text-[#004D26] hover:border-[#00A352]/40 hover:bg-[#F0F7F2]"
+                      ? "border-[#8054b8] bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#8054b8]/20"
+                      : "border-[#e8eaef] bg-white text-[#1a1d2e] hover:border-[#8054b8]/40 hover:bg-[#f4f6f8]"
                   )}
                 >
                   {t.all}
@@ -423,7 +423,7 @@ export default function MyGenerationsPage() {
                       "inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded-full px-1.5 text-xs font-bold",
                       activeFilter === "all"
                         ? "bg-white/20 text-white"
-                        : "bg-[#D4EBD9] text-[#004D26]"
+                        : "bg-[#e8eaef] text-[#1a1d2e]"
                     )}
                   >
                     {generations.length}
@@ -443,8 +443,8 @@ export default function MyGenerationsPage() {
                       className={cn(
                         "inline-flex items-center gap-2 rounded-2xl border-2 px-5 py-3 text-sm font-bold transition-all duration-300",
                         isActive
-                          ? "border-[#00A352] bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#00A352]/20"
-                          : "border-[#D4EBD9] bg-white text-[#004D26] hover:border-[#00A352]/40 hover:bg-[#F0F7F2]"
+                          ? "border-[#8054b8] bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#8054b8]/20"
+                          : "border-[#e8eaef] bg-white text-[#1a1d2e] hover:border-[#8054b8]/40 hover:bg-[#f4f6f8]"
                       )}
                     >
                       {company.logo_url ? (
@@ -454,7 +454,7 @@ export default function MyGenerationsPage() {
                           className="h-5 w-5 rounded-full object-cover"
                         />
                       ) : (
-                        <Building2 className={cn("h-4 w-4", isActive ? "text-white" : "text-[#00A352]")} />
+                        <Building2 className={cn("h-4 w-4", isActive ? "text-white" : "text-[#8054b8]")} />
                       )}
                       {company.name}
                       <span
@@ -462,7 +462,7 @@ export default function MyGenerationsPage() {
                           "inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded-full px-1.5 text-xs font-bold",
                           isActive
                             ? "bg-white/20 text-white"
-                            : "bg-[#D4EBD9] text-[#004D26]"
+                            : "bg-[#e8eaef] text-[#1a1d2e]"
                         )}
                       >
                         {count}
@@ -479,8 +479,8 @@ export default function MyGenerationsPage() {
                     className={cn(
                       "inline-flex items-center gap-2 rounded-2xl border-2 px-5 py-3 text-sm font-bold transition-all duration-300",
                       activeFilter === "__none__"
-                        ? "border-[#00A352] bg-gradient-to-r from-[#006C35] to-[#00A352] text-white shadow-lg shadow-[#00A352]/20"
-                        : "border-[#D4EBD9] bg-white text-[#004D26] hover:border-[#00A352]/40 hover:bg-[#F0F7F2]"
+                        ? "border-[#8054b8] bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#8054b8]/20"
+                        : "border-[#e8eaef] bg-white text-[#1a1d2e] hover:border-[#8054b8]/40 hover:bg-[#f4f6f8]"
                     )}
                   >
                     {t.noCompany}
@@ -489,7 +489,7 @@ export default function MyGenerationsPage() {
                         "inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded-full px-1.5 text-xs font-bold",
                         activeFilter === "__none__"
                           ? "bg-white/20 text-white"
-                          : "bg-[#D4EBD9] text-[#004D26]"
+                          : "bg-[#e8eaef] text-[#1a1d2e]"
                       )}
                     >
                       {companyCounts.get("__none__") ?? 0}
@@ -502,15 +502,15 @@ export default function MyGenerationsPage() {
             {/* ===== SECTION HEADER (showing current filter) ===== */}
             {activeFilter !== "all" && (
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl sm:text-3xl font-black text-[#004D26]">
+                <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">
                   {t.generationsFor}{" "}
-                  <span className="text-[#00A352]">
+                  <span className="text-[#8054b8]">
                     {activeFilter === "__none__"
                       ? t.noCompany
                       : companyMap.get(activeFilter)?.name ?? ""}
                   </span>
                 </h2>
-                <span className="text-lg font-bold text-[#5A8A6A]/60">
+                <span className="text-lg font-bold text-[#8f96a3]/60">
                   ({filteredGenerations.length})
                 </span>
               </div>
@@ -529,7 +529,7 @@ export default function MyGenerationsPage() {
                   <div key={gen.id}>
                     <Card
                       className={cn(
-                        "group relative overflow-hidden border-2 border-[#D4EBD9] bg-white rounded-2xl transition-all duration-500",
+                        "group relative overflow-hidden border-2 border-[#e8eaef] bg-white rounded-2xl transition-all duration-500",
                         "hover:-translate-y-1.5 hover:shadow-lg",
                         cardBorderHover[accentIdx]
                       )}
@@ -549,7 +549,7 @@ export default function MyGenerationsPage() {
                             <div className="flex flex-wrap gap-2 min-w-0 flex-1">
                               {/* Company badge */}
                               {company ? (
-                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0F7F2] border border-[#D4EBD9] px-3 py-1.5 text-sm font-bold text-[#004D26]">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1.5 text-sm font-bold text-[#1a1d2e]">
                                   {company.logo_url ? (
                                     <img
                                       src={company.logo_url}
@@ -557,7 +557,7 @@ export default function MyGenerationsPage() {
                                       className="h-4 w-4 rounded-full object-cover"
                                     />
                                   ) : (
-                                    <Building2 className="h-3.5 w-3.5 text-[#00A352]" />
+                                    <Building2 className="h-3.5 w-3.5 text-[#8054b8]" />
                                   )}
                                   {company.name}
                                 </span>
@@ -570,7 +570,7 @@ export default function MyGenerationsPage() {
 
                               {/* Plan badge */}
                               {plan && (
-                                <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 border border-violet-200 px-3 py-1.5 text-sm font-bold text-violet-700">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#c4a8e8] px-3 py-1.5 text-sm font-bold text-violet-700">
                                   <FileText className="h-3.5 w-3.5" />
                                   {plan.title.length > 25
                                     ? plan.title.slice(0, 25) + "..."
@@ -599,7 +599,7 @@ export default function MyGenerationsPage() {
                                     size="sm"
                                     variant="outline"
                                     onClick={() => setConfirmDeleteId(null)}
-                                    className="h-9 px-3 text-sm font-bold border-2 border-[#D4EBD9] text-[#004D26] hover:bg-[#F0F7F2] hover:border-[#00A352]/40 rounded-xl transition-all"
+                                    className="h-9 px-3 text-sm font-bold border-2 border-[#e8eaef] text-[#1a1d2e] hover:bg-[#f4f6f8] hover:border-[#8054b8]/40 rounded-xl transition-all"
                                   >
                                     {t.cancel}
                                   </Button>
@@ -624,16 +624,16 @@ export default function MyGenerationsPage() {
                           </div>
 
                           {/* Date badge */}
-                          <div className="inline-flex items-center gap-2 rounded-full border border-[#D4EBD9] bg-[#F0F7F2] px-3 py-1.5">
-                            <Calendar className="h-4 w-4 text-[#00A352]" />
-                            <span className="text-base font-medium text-[#5A8A6A]">
+                          <div className="inline-flex items-center gap-2 rounded-full border border-[#e8eaef] bg-[#f4f6f8] px-3 py-1.5">
+                            <Calendar className="h-4 w-4 text-[#8054b8]" />
+                            <span className="text-base font-medium text-[#8f96a3]">
                               {formatCreatedAt(gen.created_at)}
                             </span>
                           </div>
 
                           {/* Day label */}
                           {gen.day_label && (
-                            <p className="text-2xl font-extrabold text-[#004D26] truncate">
+                            <p className="text-2xl font-extrabold text-[#1a1d2e] truncate">
                               {gen.day_label}
                             </p>
                           )}
@@ -646,7 +646,7 @@ export default function MyGenerationsPage() {
                           {(gen.image_urls ?? []).map((url, imgIdx) => (
                             <div
                               key={imgIdx}
-                              className="group/img relative aspect-square overflow-hidden rounded-2xl border-2 border-[#D4EBD9] bg-[#F8FBF8] transition-all duration-300 hover:border-[#00A352]/50"
+                              className="group/img relative aspect-square overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] transition-all duration-300 hover:border-[#8054b8]/50"
                             >
                               <img
                                 src={url}
@@ -660,19 +660,19 @@ export default function MyGenerationsPage() {
                                   if (parent) {
                                     const fallback = document.createElement("div");
                                     fallback.className =
-                                      "absolute inset-0 flex items-center justify-center bg-[#F0F7F2]";
+                                      "absolute inset-0 flex items-center justify-center bg-[#f4f6f8]";
                                     fallback.innerHTML =
-                                      '<p class="text-[#5A8A6A] text-sm text-center px-2">Failed to load</p>';
+                                      '<p class="text-[#8f96a3] text-sm text-center px-2">Failed to load</p>';
                                     parent.appendChild(fallback);
                                   }
                                 }}
                               />
                               {/* Gradient hover overlay */}
-                              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-gradient-to-t from-[#004D26]/70 via-[#006C35]/40 to-transparent opacity-0 transition-all duration-300 group-hover/img:opacity-100">
+                              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-gradient-to-t from-[#1a1d2e]/70 via-[#23ab7e]/40 to-transparent opacity-0 transition-all duration-300 group-hover/img:opacity-100">
                                 <button
                                   type="button"
                                   onClick={() => setLightboxUrl(url)}
-                                  className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white/30 bg-white/90 text-[#004D26] shadow-lg transition-colors hover:bg-white"
+                                  className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white/30 bg-white/90 text-[#1a1d2e] shadow-lg transition-colors hover:bg-white"
                                   aria-label={t.fullScreen}
                                   title={t.fullScreen}
                                 >
@@ -681,7 +681,7 @@ export default function MyGenerationsPage() {
                                 <button
                                   type="button"
                                   onClick={() => handleDownload(url)}
-                                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006C35] to-[#00A352] text-white shadow-lg transition-shadow hover:shadow-[#00A352]/40"
+                                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-white shadow-lg transition-shadow hover:shadow-[#8054b8]/40"
                                   aria-label={t.download}
                                   title={t.download}
                                 >
@@ -700,15 +700,15 @@ export default function MyGenerationsPage() {
 
             {/* Empty filtered state */}
             {filteredGenerations.length === 0 && generations.length > 0 && (
-              <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4EBD9] bg-white py-20">
-                <ImageIcon className="h-16 w-16 text-[#D4EBD9]" />
-                <p className="mt-4 text-2xl font-bold text-[#004D26]">
+              <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] bg-white py-20">
+                <ImageIcon className="h-16 w-16 text-[#e8eaef]" />
+                <p className="mt-4 text-2xl font-bold text-[#1a1d2e]">
                   {isAr ? "لا توجد صور لهذه الشركة" : "No generations for this company"}
                 </p>
                 <button
                   type="button"
                   onClick={() => setActiveFilter("all")}
-                  className="mt-4 text-lg font-bold text-[#00A352] hover:underline"
+                  className="mt-4 text-lg font-bold text-[#8054b8] hover:underline"
                 >
                   {isAr ? "عرض الكل" : "Show all"}
                 </button>
@@ -721,7 +721,7 @@ export default function MyGenerationsPage() {
       {/* ===== LIGHTBOX OVERLAY ===== */}
       {lightboxUrl && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#004D26]/90 via-black/85 to-[#0A1F0F]/90 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#1a1d2e]/90 via-black/85 to-[#2d3142]/90 p-4"
           onClick={() => setLightboxUrl(null)}
         >
           <div
@@ -739,10 +739,10 @@ export default function MyGenerationsPage() {
               type="button"
               onClick={() => setLightboxUrl(null)}
               aria-label="Close lightbox"
-              className="absolute -right-4 -top-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-transparent bg-white text-[#004D26] shadow-xl transition-colors hover:bg-[#F0F7F2]"
+              className="absolute -right-4 -top-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-transparent bg-white text-[#1a1d2e] shadow-xl transition-colors hover:bg-[#f4f6f8]"
               style={{
                 backgroundClip: "padding-box",
-                borderImage: "linear-gradient(135deg, #006C35, #7C3AED) 1",
+                borderImage: "linear-gradient(135deg, #23ab7e, #8054b8) 1",
                 borderImageSlice: 1,
               }}
             >
@@ -756,7 +756,7 @@ export default function MyGenerationsPage() {
                 e.stopPropagation();
                 handleDownload(lightboxUrl);
               }}
-              className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#006C35] via-[#00A352] to-[#7C3AED] px-7 py-4 text-lg font-bold text-white shadow-xl transition-shadow hover:shadow-2xl hover:shadow-[#00A352]/30"
+              className="absolute bottom-6 right-6 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-7 py-4 text-lg font-bold text-white shadow-xl transition-shadow hover:shadow-2xl hover:shadow-[#8054b8]/30"
             >
               <Download className="h-6 w-6" />
               {t.download}
