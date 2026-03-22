@@ -13,7 +13,8 @@ import { signOut } from "@/lib/auth-actions";
 import { cn, extractInitials } from "@/lib/utils";
 import { messages } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
-import WelcomeWizard from "@/components/WelcomeWizard";
+import OnboardingWelcome from "@/components/OnboardingWelcome";
+import OnboardingTour from "@/components/OnboardingTour";
 import KimzChat from "@/components/KimzChat";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
@@ -318,7 +319,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
+  const [onboardingPhase, setOnboardingPhase] = useState<"none" | "welcome" | "tour">("none");
   const [searchQuery, setSearchQuery] = useState("");
   const [localeSwitching, setLocaleSwitching] = useState(false);
   const { user, setUser, locale, setLocale } = useAppStore();
@@ -346,10 +347,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (user && typeof window !== "undefined") {
-      const seenLocal = localStorage.getItem("nawaa-welcome-seen") === "true";
-      const seenMeta = user.user_metadata?.has_seen_welcome === true;
-      if (!seenLocal && !seenMeta) {
-        setShowWelcome(true);
+      const seenWelcome = localStorage.getItem("nawaa-welcome-seen") === "true" || user.user_metadata?.has_seen_welcome === true;
+      const seenTour = localStorage.getItem("nawaa-tour-seen") === "true";
+      if (!seenWelcome) {
+        setOnboardingPhase("welcome");
+      } else if (!seenTour) {
+        setOnboardingPhase("tour");
       }
     }
   }, [user]);
@@ -365,7 +368,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen bg-[#fafbfd] text-[#2d3142] text-base">
-      {showWelcome && <WelcomeWizard onComplete={() => setShowWelcome(false)} />}
+      {onboardingPhase === "welcome" && (
+        <OnboardingWelcome
+          onComplete={() => {
+            localStorage.setItem("nawaa-welcome-seen", "true");
+            // Update Supabase metadata
+            const supabase = createClient();
+            supabase.auth.updateUser({ data: { has_seen_welcome: true } });
+            // Check if tour should start
+            const seenTour = localStorage.getItem("nawaa-tour-seen") === "true";
+            setOnboardingPhase(seenTour ? "none" : "tour");
+          }}
+        />
+      )}
+      {onboardingPhase === "tour" && (
+        <OnboardingTour onComplete={() => setOnboardingPhase("none")} />
+      )}
 
       {/* ═══ Desktop Sidebar (lg+) ═══ */}
       <aside
