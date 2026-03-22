@@ -221,9 +221,9 @@ export default function MyGenerationsPage() {
   if (loading) {
     return (
       <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-[#fafbfd] p-6">
-        <div className="mx-auto max-w-7xl space-y-8">
+        <div className="space-y-8">
           {/* Header skeleton */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#23ab7e] via-[#23ab7e] to-[#8054b8] p-8 sm:p-10 lg:p-14">
+          <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
             <div className="space-y-4">
               <div className="relative h-12 w-12 overflow-hidden rounded-2xl bg-white/20">
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -308,9 +308,9 @@ export default function MyGenerationsPage() {
 
   return (
     <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-[#fafbfd]">
-      <div className="mx-auto max-w-7xl space-y-10">
+      <div className="space-y-10">
         {/* ===== PAGE HEADER BANNER ===== */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#23ab7e] via-[#23ab7e] to-[#8054b8] p-8 sm:p-10 lg:p-14">
+        <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
           <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />

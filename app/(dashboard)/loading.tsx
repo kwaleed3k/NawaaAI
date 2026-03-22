@@ -2,7 +2,7 @@ export default function DashboardLoading() {
   return (
     <div className="space-y-8 animate-pulse">
       {/* Header banner skeleton */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#23ab7e]/80 via-[#23ab7e]/60 to-[#8054b8]/40 h-48 sm:h-56" />
+      <div className="rounded-3xl nl-aurora-bg h-48 sm:h-56" />
 
       {/* Content cards skeleton */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

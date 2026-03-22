@@ -221,7 +221,7 @@ export default function CompetitorAnalysisPage() {
   return (
     <div className="space-y-8 w-full" dir={isRtl ? "rtl" : "ltr"}>
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
+      <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
         <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
         <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
         <div className="relative z-10 p-6 sm:p-8">

@@ -653,7 +653,7 @@ export default function CompaniesPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
+      <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
         <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
         <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
         <div className="relative z-10 p-6 sm:p-8">
@@ -728,7 +728,7 @@ export default function CompaniesPage() {
           <div>
             <Button
               onClick={openAdd}
-              className="mt-8 h-11 px-6 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] text-white shadow-md hover:shadow-sm transition-all"
+              className="mt-8 h-11 px-6 text-lg font-bold rounded-2xl nl-aurora-bg text-white shadow-md hover:shadow-sm transition-all"
             >
               <Plus className="mr-2 h-4 w-4" />
               {tc.addCompany}
@@ -918,7 +918,7 @@ export default function CompaniesPage() {
       <Dialog open={formOpen} onOpenChange={(open) => { setFormOpen(open); if (!open) loadCompanies(); }}>
         <DialogContent className="max-w-[95vw] lg:max-w-[85vw] max-h-[95vh] overflow-y-auto bg-white border-2 border-[#e8eaef] text-[#2d3142] scrollbar-nawaa p-0">
           {/* Gradient header bar */}
-          <div className="sticky top-0 z-10 bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-4 sm:px-8 py-5 sm:py-7 rounded-t-lg overflow-hidden">
+          <div className="sticky top-0 z-10 nl-aurora-bg px-4 sm:px-8 py-5 sm:py-7 rounded-t-lg overflow-hidden">
             {/* Decorative shapes */}
             <div className="flex items-center gap-4 relative z-10">
               <div
@@ -1352,7 +1352,7 @@ export default function CompaniesPage() {
             return (
               <>
                 {/* Header with gradient + company logo */}
-                <div className="relative bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-4 sm:px-8 py-6 sm:py-10 overflow-hidden">
+                <div className="relative nl-aurora-bg px-4 sm:px-8 py-6 sm:py-10 overflow-hidden">
 
                   {/* Close button */}
                   <button

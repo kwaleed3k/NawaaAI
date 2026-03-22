@@ -278,7 +278,7 @@ export default function MyPlansPage() {
     return (
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
         {/* ===== PAGE HEADER BANNER ===== */}
-        <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
+        <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
           <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
           <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
           <div className="relative z-10 p-6 sm:p-8">
@@ -338,7 +338,7 @@ export default function MyPlansPage() {
           </p>
           <a
             href="/planner"
-            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]"
+            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl nl-aurora-bg text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]"
           >
             <Calendar className="h-5 w-5" />
             {isAr
@@ -357,7 +357,7 @@ export default function MyPlansPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#0B0E14]">
+      <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
         <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
         <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
         <div className="relative z-10 p-6 sm:p-8">
@@ -587,7 +587,7 @@ export default function MyPlansPage() {
         <div className="overflow-hidden">
             <div className="rounded-2xl border-2 border-[#23ab7e]/20 bg-[#fafbfd] overflow-hidden">
               {/* ── Gradient header bar ── */}
-              <div className="relative overflow-hidden bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-6 py-6 lg:px-8 lg:py-8">
+              <div className="relative overflow-hidden nl-aurora-bg px-6 py-6 lg:px-8 lg:py-8">
                 <div className="relative flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
@@ -744,7 +744,7 @@ export default function MyPlansPage() {
                           {day.contentTips && (
                             <div className="mt-4 relative rounded-xl overflow-hidden">
                               {/* Gradient border effect */}
-                              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] p-[2px]">
+                              <div className="absolute inset-0 rounded-xl nl-aurora-bg p-[2px]">
                                 <div className="h-full w-full rounded-[10px] bg-white" />
                               </div>
                               <div className="relative p-3.5">

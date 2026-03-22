@@ -131,7 +131,7 @@ export default function HashtagsPage() {
       >
         <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
           {/* Top accent bar */}
-          <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
+          <div className="h-1.5 w-full nl-aurora-bg" />
           <CardHeader className="p-5 sm:p-8 pb-4">
             <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
@@ -350,7 +350,7 @@ export default function HashtagsPage() {
         >
           <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
             {/* Top accent bar */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
+            <div className="h-1.5 w-full nl-aurora-bg" />
             <CardHeader className="p-5 sm:p-8 pb-4">
               <CardTitle className="flex items-center gap-4 text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">

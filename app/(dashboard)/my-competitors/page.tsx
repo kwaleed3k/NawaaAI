@@ -154,7 +154,7 @@ export default function MyCompetitorsPage() {
   if (analyses.length === 0) {
     return (
       <div className="space-y-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] p-8 md:p-10">
+        <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-8 md:p-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white drop-shadow-sm">
             {isAr ? "تحليلاتي التنافسية" : "My Competitor Analyses"}
           </h1>
@@ -176,7 +176,7 @@ export default function MyCompetitorsPage() {
           <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">
             {isAr ? "انتقل إلى تحليل المنافسين لإنشاء وحفظ أول تحليل" : "Go to Competitor Analysis to create and save your first analysis"}
           </p>
-          <a href="/competitor-analysis" className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]">
+          <a href="/competitor-analysis" className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl nl-aurora-bg text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]">
             <Swords className="h-6 w-6" />
             {isAr ? "اذهب إلى تحليل المنافسين" : "Go to Competitor Analysis"}
           </a>
@@ -191,7 +191,7 @@ export default function MyCompetitorsPage() {
   return (
     <div className="space-y-8" dir={isAr ? "rtl" : "ltr"}>
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#23ab7e] via-[#23ab7e] to-[#8054b8] p-8 sm:p-10 lg:p-14">
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
@@ -311,7 +311,7 @@ export default function MyCompetitorsPage() {
         return (
           <div className="rounded-2xl border-2 border-[#23ab7e]/20 bg-[#fafbfd] overflow-hidden">
             {/* Header */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-6 py-6 lg:px-8 lg:py-8">
+            <div className="relative overflow-hidden nl-aurora-bg px-6 py-6 lg:px-8 lg:py-8">
               <div className="relative flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-3">

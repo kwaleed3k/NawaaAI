@@ -112,7 +112,7 @@ export default function InsightsPage() {
       <div className="relative">
         {/* Gradient border wrapper */}
         <div className="relative rounded-3xl p-[3px]">
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
+          <div className="absolute inset-0 rounded-3xl nl-aurora-bg" />
           <div className="relative rounded-3xl bg-gradient-to-b from-[#fafbfd] to-white px-8 py-24 md:px-14 md:py-32">
             <div className="flex flex-col items-center justify-center text-center">
               {/* Animated icon */}
