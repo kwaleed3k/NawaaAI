@@ -301,50 +301,25 @@ export default function MyPlansPage() {
         </div>
 
         {/* Empty state card */}
-        <div
-          className="flex flex-col items-center justify-center rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] py-24 px-6"
-        >
-          {/* Floating animated icon */}
-          <div className="relative">
-            <div
-              className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#23ab7e] via-[#8054b8] to-[#8054b8] shadow-lg"
-            >
-              <FolderOpen className="h-14 w-14 text-white" />
+        <div className="relative overflow-hidden rounded-3xl py-24 px-8" style={{ background: "linear-gradient(170deg, #ffffff 0%, #f7f9fb 40%, #f0fdf8 70%, #f5f0ff 100%)", border: "1.5px solid #e8eaef" }}>
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="relative mb-8">
+              <div className="absolute -inset-4 rounded-[28px] opacity-20" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
+              <div className="relative flex h-28 w-28 items-center justify-center rounded-[24px] shadow-xl" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", boxShadow: "0 12px 40px rgba(128,84,184,0.3)" }}>
+                <FolderOpen className="h-14 w-14 text-white" />
+              </div>
+              <div className="absolute -top-3 -right-3" style={{ animation: "nl-pulse-dot 2s ease infinite" }}>
+                <div className="w-8 h-8 rounded-xl bg-[#23ab7e] flex items-center justify-center shadow-lg"><Sparkles className="h-4 w-4 text-white" /></div>
+              </div>
             </div>
-
-            {/* Pulsing sparkles */}
-            <div
-              className="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg"
-            >
-              <Sparkles className="h-5 w-5 text-white" />
-            </div>
-
-            <div
-              className="absolute -bottom-1 -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#8054b8] to-[#23ab7e] shadow-md"
-            >
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#2d3142] text-center">{isAr ? "لا توجد خطط محفوظة بعد" : "No saved plans yet"}</h2>
+            <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">{isAr ? "انتقل إلى مخطط المحتوى لإنشاء وحفظ أول خطة لك" : "Go to the Content Planner to create and save your first plan"}</p>
+            <a href="/planner" className="relative mt-10 h-16 px-12 text-xl font-black rounded-2xl text-white border-none cursor-pointer transition-all hover:-translate-y-1 overflow-hidden inline-flex items-center gap-3" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}>
+              <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
+              <Calendar className="h-6 w-6 relative z-10" />
+              <span className="relative z-10">{isAr ? "اذهب إلى المخطط" : "Go to Planner"}</span>
+            </a>
           </div>
-
-          <p className="mt-8 text-2xl font-bold text-[#1a1d2e]">
-            {isAr
-              ? "\u0644\u0627 \u062A\u0648\u062C\u062F \u062E\u0637\u0637 \u0645\u062D\u0641\u0648\u0638\u0629 \u0628\u0639\u062F"
-              : "No saved plans yet"}
-          </p>
-          <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">
-            {isAr
-              ? "\u0627\u0646\u062A\u0642\u0644 \u0625\u0644\u0649 \u0645\u062E\u0637\u0637 \u0627\u0644\u0645\u062D\u062A\u0648\u0649 \u0644\u0625\u0646\u0634\u0627\u0621 \u0648\u062D\u0641\u0638 \u0623\u0648\u0644 \u062E\u0637\u0629 \u0644\u0643"
-              : "Go to the Content Planner to create and save your first plan"}
-          </p>
-          <a
-            href="/planner"
-            className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl nl-aurora-bg text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]"
-          >
-            <Calendar className="h-5 w-5" />
-            {isAr
-              ? "\u0627\u0630\u0647\u0628 \u0625\u0644\u0649 \u0627\u0644\u0645\u062E\u0637\u0637"
-              : "Go to Planner"}
-          </a>
         </div>
       </div>
     );
@@ -357,25 +332,28 @@ export default function MyPlansPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
-        <div className="relative z-10 p-6 sm:p-8">
-          <div className="flex items-center gap-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
-              <FolderOpen className="h-5 w-5 text-white" />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
-                  {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
-                </span>
-              </h1>
-              <p className="mt-1 text-xl sm:text-2xl text-slate-400">
-                {isAr ? "إدارة ومراجعة جميع خططك" : "Manage and review all your plans"}
-              </p>
-            </div>
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
+            <FolderOpen className="h-8 w-8 text-white" />
           </div>
+          <div className="flex-1">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
+            </h1>
+            <p className="mt-2 text-lg text-white/60">
+              {isAr ? "إدارة ومراجعة جميع خططك" : "Manage and review all your plans"}
+            </p>
+          </div>
+          {plans.length > 0 && (
+            <div className="flex items-center gap-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-2.5">
+              <FolderOpen className="h-5 w-5 text-[#a6ffea]" />
+              <span className="text-xl font-black text-white">{plans.length}</span>
+              <span className="text-sm text-white/60">{isAr ? "خطط" : "Plans"}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -402,17 +380,17 @@ export default function MyPlansPage() {
             <div
               key={plan.id}
               className={cn(
-                "group relative overflow-hidden rounded-2xl border-2 bg-white transition-all duration-300",
-                glowClass,
+                "group relative overflow-hidden rounded-3xl transition-all duration-300 hover:-translate-y-1",
                 isExpanded
-                  ? "border-[#23ab7e]/50 shadow-lg"
-                  : "border-[#e8eaef] hover:border-[#23ab7e]/40"
+                  ? "shadow-[0_12px_40px_rgba(35,171,126,0.1)]"
+                  : "hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)]"
               )}
+              style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", border: isExpanded ? "2px solid rgba(35,171,126,0.3)" : "1.5px solid #e8eaef" }}
             >
               {/* Gradient top accent bar */}
               <div
                 className={cn(
-                  "h-2 bg-gradient-to-r",
+                  "h-1.5 bg-gradient-to-r",
                   CARD_ACCENT_COLORS[accentIdx]
                 )}
               />
