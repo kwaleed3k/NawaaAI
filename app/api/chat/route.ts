@@ -57,12 +57,36 @@ export async function POST(request: NextRequest) {
     if (rateLimitError) return rateLimitError;
 
     const body = await request.json();
-    const { messages } = body as { messages: ChatMessage[] };
+    const { messages, context } = body as { messages: ChatMessage[]; context?: { currentPage?: string; selectedCompany?: { name: string; industry: string } | null; locale?: string } };
 
     // Validate message array, roles, and content lengths
     const validationError = validateMessageContent(messages);
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
+    }
+
+    // Build context-aware system prompt
+    let contextPrompt = SYSTEM_PROMPT;
+    if (context) {
+      const pageNames: Record<string, string> = {
+        "/dashboard": "Dashboard (homepage)",
+        "/companies": "Companies page (brand management)",
+        "/planner": "Content Planner (weekly content generation)",
+        "/vision-studio": "Vision Studio (AI image generation)",
+        "/hashtags": "Hashtag Hub (hashtag generation)",
+        "/competitor-analysis": "Competitor Analysis page",
+        "/insights": "Insights page (analytics)",
+        "/my-plans": "My Plans (saved content plans)",
+        "/my-generations": "My Generations (saved images)",
+        "/settings": "Settings page",
+      };
+      const pageName = pageNames[context.currentPage || ""] || context.currentPage;
+      contextPrompt += `\n\nCURRENT USER CONTEXT:\n- The user is currently on: ${pageName}`;
+      if (context.selectedCompany) {
+        contextPrompt += `\n- Selected company: "${context.selectedCompany.name}" (${context.selectedCompany.industry || "general"} industry)`;
+      }
+      contextPrompt += `\n- User language: ${context.locale === "ar" ? "Arabic" : "English"}`;
+      contextPrompt += `\n\nTailor your responses to be relevant to the page they're on. If they're on the Content Planner, focus on content planning tips. If on Vision Studio, focus on image generation tips. Be proactive — suggest next steps based on where they are.`;
     }
 
     // Only keep last 10 messages for token control
@@ -71,7 +95,7 @@ export async function POST(request: NextRequest) {
     const completion = await getOpenAI().chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: contextPrompt },
         ...recentMessages.map((m) => ({
           role: m.role as "user" | "assistant",
           content: m.content,

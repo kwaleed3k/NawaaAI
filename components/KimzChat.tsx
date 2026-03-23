@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import {
   MessageCircle, X, Send, Sparkles, Bot, User,
-  Building2, Calendar, ImageIcon, Hash, Swords, TrendingUp, BookOpen, Zap,
+  Building2, Calendar, ImageIcon, Hash, Swords, TrendingUp, BookOpen, Zap, Lightbulb,
 } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { messages } from "@/lib/i18n";
@@ -80,11 +81,69 @@ function FormattedText({ text }: { text: string }) {
   );
 }
 
+// Page-specific smart suggestions
+const PAGE_SUGGESTIONS_EN: Record<string, { icon: React.ElementType; label: string; msg: string }[]> = {
+  "/dashboard": [
+    { icon: Lightbulb, label: "What should I do first?", msg: "I just signed up. What should I do first on Nawaa AI?" },
+    { icon: Building2, label: "Add my brand", msg: "Help me add my first company and set up my brand profile." },
+  ],
+  "/companies": [
+    { icon: Sparkles, label: "Analyze my brand", msg: "How does the AI brand analysis work? What does it check?" },
+    { icon: Building2, label: "Brand colors & tone", msg: "How do I set up my brand colors and tone of voice?" },
+  ],
+  "/planner": [
+    { icon: Calendar, label: "Plan tips", msg: "What makes a good content plan? Any tips for my weekly strategy?" },
+    { icon: Lightbulb, label: "Content ideas", msg: "What type of content works best for the Saudi market?" },
+  ],
+  "/vision-studio": [
+    { icon: ImageIcon, label: "Image tips", msg: "How do I get the best results from the AI image generator?" },
+    { icon: Lightbulb, label: "Reference photos", msg: "How do reference photos improve my generated images?" },
+  ],
+  "/hashtags": [
+    { icon: Hash, label: "Hashtag strategy", msg: "What's the best hashtag strategy for growing on Instagram in Saudi Arabia?" },
+    { icon: TrendingUp, label: "Saudi trends", msg: "What are the trending content themes in the Saudi market right now?" },
+  ],
+  "/competitor-analysis": [
+    { icon: Swords, label: "Analysis tips", msg: "How do I get the most out of competitor analysis? What should I look for?" },
+    { icon: Lightbulb, label: "Beat competitors", msg: "What strategies work best to outperform competitors in the Saudi market?" },
+  ],
+};
+
+const PAGE_SUGGESTIONS_AR: Record<string, { icon: React.ElementType; label: string; msg: string }[]> = {
+  "/dashboard": [
+    { icon: Lightbulb, label: "ماذا أفعل أولاً؟", msg: "سجلت للتو. ماذا يجب أن أفعل أولاً في نواة AI؟" },
+    { icon: Building2, label: "أضف علامتي", msg: "ساعدني في إضافة شركتي الأولى وإعداد ملف العلامة التجارية." },
+  ],
+  "/companies": [
+    { icon: Sparkles, label: "حلل علامتي", msg: "كيف يعمل تحليل العلامة التجارية بالذكاء الاصطناعي؟ ماذا يفحص؟" },
+    { icon: Building2, label: "ألوان وأسلوب", msg: "كيف أضبط ألوان علامتي التجارية وأسلوب الكتابة؟" },
+  ],
+  "/planner": [
+    { icon: Calendar, label: "نصائح الخطة", msg: "ما الذي يجعل خطة المحتوى جيدة؟ أي نصائح لاستراتيجيتي الأسبوعية؟" },
+    { icon: Lightbulb, label: "أفكار محتوى", msg: "ما نوع المحتوى الأفضل للسوق السعودي؟" },
+  ],
+  "/vision-studio": [
+    { icon: ImageIcon, label: "نصائح الصور", msg: "كيف أحصل على أفضل نتائج من مولد الصور بالذكاء الاصطناعي؟" },
+    { icon: Lightbulb, label: "الصور المرجعية", msg: "كيف تحسن الصور المرجعية صوري المولّدة؟" },
+  ],
+  "/hashtags": [
+    { icon: Hash, label: "استراتيجية الهاشتاق", msg: "ما أفضل استراتيجية هاشتاق للنمو على إنستغرام في السعودية؟" },
+    { icon: TrendingUp, label: "ترندات سعودية", msg: "ما هي مواضيع المحتوى الرائجة في السوق السعودي الآن؟" },
+  ],
+  "/competitor-analysis": [
+    { icon: Swords, label: "نصائح التحليل", msg: "كيف أستفيد أكثر من تحليل المنافسين؟ على ماذا أركز؟" },
+    { icon: Lightbulb, label: "تفوق على المنافسين", msg: "ما الاستراتيجيات الأفضل للتفوق على المنافسين في السوق السعودي؟" },
+  ],
+};
+
 export default function KimzChat() {
-  const { locale } = useAppStore();
+  const { locale, selectedCompany } = useAppStore();
+  const pathname = usePathname();
   const t = messages[locale].chat;
   const isRtl = locale === "ar";
-  const quickActions = locale === "ar" ? QUICK_ACTIONS_AR : QUICK_ACTIONS_EN;
+  const baseActions = locale === "ar" ? QUICK_ACTIONS_AR : QUICK_ACTIONS_EN;
+  const pageSuggestions = (locale === "ar" ? PAGE_SUGGESTIONS_AR : PAGE_SUGGESTIONS_EN)[pathname] || [];
+  const quickActions = [...pageSuggestions, ...baseActions].slice(0, 6);
 
   const [isOpen, setIsOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -122,10 +181,15 @@ export default function KimzChat() {
     setLoading(true);
 
     try {
+      const context = {
+        currentPage: pathname,
+        selectedCompany: selectedCompany ? { name: selectedCompany.name, industry: selectedCompany.industry } : null,
+        locale,
+      };
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: newMessages, context }),
       });
 
       const data = await res.json();
@@ -225,14 +289,14 @@ export default function KimzChat() {
                   </p>
                   <div className="grid grid-cols-2 gap-3">
                     {quickActions.map((action, i) => {
-                      const Icon = action.icon;
+                      const Icon = action.icon as React.ComponentType<{ className?: string }>;
                       return (
                         <button
                           key={i}
                           onClick={() => sendMessage(action.msg)}
                           className="group flex items-center gap-3 rounded-2xl border border-[#e8eaef] bg-white px-4 py-4 text-left hover:border-[#8054b8]/30 hover:shadow-md hover:shadow-[#8054b8]/5 transition-all duration-200"
                         >
-                          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${action.color} shadow-sm group-hover:scale-110 transition-transform`}>
+                          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${"color" in action ? action.color : "from-[#23ab7e] to-[#8054b8]"} shadow-sm group-hover:scale-110 transition-transform`}>
                             <Icon className="h-5 w-5 text-white" />
                           </div>
                           <span className="text-sm font-semibold text-[#505868] group-hover:text-[#8054b8] transition-colors leading-tight">

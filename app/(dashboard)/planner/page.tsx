@@ -77,6 +77,7 @@ export default function PlannerPage() {
   const [refineText, setRefineText] = useState("");
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const [expandedDay, setExpandedDay] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
 
   useEffect(() => { setWeekStart(format(nextSaturday(new Date()), "yyyy-MM-dd")); }, []);
   useEffect(() => { if (!user) { setLoadingCompanies(false); return; } (async () => { const { data } = await supabase.from("companies").select("*").eq("user_id", user.id).order("created_at", { ascending: false }); setCompanies((data as Company[]) ?? []); if (data?.length && !selectedCompany) setSelectedCompany(data[0] as Company); setLoadingCompanies(false); })(); }, [user, selectedCompany, setSelectedCompany]);
@@ -290,8 +291,8 @@ export default function PlannerPage() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-3">
+          {/* Action Buttons + View Toggle */}
+          <div className="flex flex-wrap items-center gap-3">
             {[
               { onClick: () => setRefineOpen(true), icon: Wand2, label: tp.refineAI, bg: "from-[#8054b8] to-[#6d3fa0]", shadow: "rgba(128,84,184,0.25)" },
               { onClick: handleSave, icon: saving ? Loader2 : Save, label: tp.savePlan, bg: "from-[#23ab7e] to-[#1a8a64]", shadow: "rgba(35,171,126,0.25)", disabled: saving, spin: saving },
@@ -303,10 +304,70 @@ export default function PlannerPage() {
                 {btn.label}
               </button>
             ))}
+
+            {/* View Toggle */}
+            <div className="flex ml-auto rounded-2xl border-2 border-[#e8eaef] bg-white p-1 gap-1">
+              <button onClick={() => setViewMode("list")} className={cn("flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer border-none", viewMode === "list" ? "bg-[#23ab7e] text-white shadow-md" : "bg-transparent text-[#8f96a3] hover:text-[#2d3142]")}>
+                <LayoutGrid className="h-4 w-4" />{isRtl ? "قائمة" : "List"}
+              </button>
+              <button onClick={() => setViewMode("calendar")} className={cn("flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer border-none", viewMode === "calendar" ? "bg-[#8054b8] text-white shadow-md" : "bg-transparent text-[#8f96a3] hover:text-[#2d3142]")}>
+                <Calendar className="h-4 w-4" />{isRtl ? "تقويم" : "Calendar"}
+              </button>
+            </div>
           </div>
 
-          {/* Day Cards */}
-          <div className="space-y-5">
+          {/* ═══════ CALENDAR VIEW ═══════ */}
+          {viewMode === "calendar" && plan.days && (
+            <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid #e8eaef" }}>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
+                {plan.days.map((day, idx) => {
+                  const pCfg = getPlatformConfig(day.platform);
+                  const PIcon = pCfg?.Icon;
+                  const clr = DAY_COLORS[idx % DAY_COLORS.length];
+                  const done = completedDays.has(day.dayIndex);
+                  return (
+                    <button key={day.dayIndex} type="button" onClick={() => { setExpandedDay(day.dayIndex); setViewMode("list"); }}
+                      className={cn("relative flex flex-col p-4 sm:p-5 border-[#e8eaef] transition-all hover:bg-[#f4f6f8] cursor-pointer text-left bg-transparent", idx < plan.days!.length - 1 && "border-b xl:border-b-0 xl:border-r", idx > 0 && idx % 2 === 1 && "border-l sm:border-l-0", idx > 0 && idx % 3 !== 0 && "sm:border-l lg:border-l-0", idx > 0 && idx % 4 !== 0 && "lg:border-l xl:border-l-0", idx > 0 && "xl:border-l")}
+                      style={{ borderColor: "#e8eaef" }}
+                    >
+                      {/* Top: Day name + number */}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black text-white" style={{ background: clr }}>{idx + 1}</div>
+                          <span className="text-sm font-bold text-[#2d3142]">{outputLanguage === "ar" ? (day.dayAr || day.dayEn) : (day.dayEn || day.dayAr)}</span>
+                        </div>
+                        {done && <CheckCircle2 className="h-4 w-4 text-[#23ab7e]" />}
+                      </div>
+
+                      {/* Date */}
+                      <p className="text-xs text-[#8f96a3] mb-2">{day.date}</p>
+
+                      {/* Platform badge */}
+                      {PIcon && (
+                        <div className={cn("inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[10px] font-bold border mb-2 self-start", pCfg?.pillBg)}>
+                          <PIcon className="h-3 w-3" />{pCfg?.label}
+                        </div>
+                      )}
+
+                      {/* Topic */}
+                      <p className="text-xs font-semibold text-[#505868] line-clamp-2 flex-1">{outputLanguage === "ar" ? (day.topicAr || day.topic) : (day.topic || day.topicAr)}</p>
+
+                      {/* Time */}
+                      <div className="flex items-center gap-1 mt-2 text-[10px] font-bold" style={{ color: clr }}>
+                        <Clock className="h-3 w-3" />{day.postingTime}
+                      </div>
+
+                      {/* Colored bottom accent */}
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: clr }} />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ═══════ LIST VIEW — Day Cards ═══════ */}
+          {viewMode === "list" && <div className="space-y-5">
             {plan.days?.map((day, idx) => {
               const pCfg = getPlatformConfig(day.platform);
               const PIcon = pCfg?.Icon;
@@ -394,7 +455,7 @@ export default function PlannerPage() {
                 </div>
               );
             })}
-          </div>
+          </div>}
         </div>
       )}
 

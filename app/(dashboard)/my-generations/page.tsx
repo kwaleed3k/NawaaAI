@@ -201,6 +201,36 @@ export default function MyGenerationsPage() {
     document.body.removeChild(a);
   }
 
+  const [downloadingZip, setDownloadingZip] = useState(false);
+  async function handleBulkDownload() {
+    const allUrls = filteredGenerations.flatMap((g) => g.image_urls || []).filter(Boolean);
+    if (!allUrls.length) { toast.error("No images to download"); return; }
+    setDownloadingZip(true);
+    try {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      const imgFolder = zip.folder("NawaaAI-Images");
+      await Promise.all(allUrls.map(async (url, i) => {
+        try {
+          const res = await fetch(url);
+          const blob = await res.blob();
+          const ext = blob.type.includes("png") ? "png" : "jpg";
+          imgFolder?.file(`image-${i + 1}.${ext}`, blob);
+        } catch { /* skip failed images */ }
+      }));
+      const content = await zip.generateAsync({ type: "blob" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(content);
+      a.download = `NawaaAI-Images-${new Date().toISOString().split("T")[0]}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      toast.success(locale === "ar" ? "تم تحميل الملف" : "ZIP downloaded");
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Download failed"); }
+    setDownloadingZip(false);
+  }
+
   function formatCreatedAt(dateStr: string): string {
     try {
       const d = new Date(dateStr);
@@ -365,6 +395,22 @@ export default function MyGenerationsPage() {
                     {isAr ? "مجموعات" : "generations"}
                   </span>
                 </div>
+              </div>
+            )}
+            {/* Bulk Download Button */}
+            {filteredGenerations.length > 0 && (
+              <div className="mt-6">
+                <button
+                  onClick={handleBulkDownload}
+                  disabled={downloadingZip}
+                  className="flex items-center gap-2.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 px-6 py-3 text-base font-bold text-white hover:bg-white/25 transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  {downloadingZip ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
+                  {downloadingZip
+                    ? (isAr ? "جارٍ التحميل..." : "Creating ZIP...")
+                    : (isAr ? "تحميل الكل كـ ZIP" : "Download All as ZIP")
+                  }
+                </button>
               </div>
             )}
           </div>
