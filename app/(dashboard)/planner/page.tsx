@@ -71,6 +71,7 @@ export default function PlannerPage() {
   const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
   const [plan, setPlan] = useState<Plan | null>(null);
   const [saving, setSaving] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [refineOpen, setRefineOpen] = useState(false);
   const [refineText, setRefineText] = useState("");
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
@@ -106,7 +107,7 @@ export default function PlannerPage() {
     setSaving(false);
   }
 
-  function handleExportPDF() { if (!plan || !selectedCompany) return; loadExportPlanToPDF().then(fn => fn(plan, selectedCompany, outputLanguage)).then(() => toast.success("PDF downloaded"), (e) => toast.error(e instanceof Error ? e.message : "Export failed")); }
+  async function handleExportPDF() { if (!plan || !selectedCompany || exporting) return; setExporting(true); try { const fn = await loadExportPlanToPDF(); await fn(plan, selectedCompany, "en"); toast.success("PDF downloaded"); } catch (e) { toast.error(e instanceof Error ? e.message : "Export failed"); } setExporting(false); }
   function getPlatformConfig(id: string) { return PLATFORMS.find((p) => p.id === id); }
 
   if (loadingCompanies) return (<div dir={isRtl ? "rtl" : "ltr"} className="space-y-6"><Skeleton className="h-48 rounded-2xl" /><Skeleton className="h-96 rounded-2xl" /></div>);
@@ -293,7 +294,7 @@ export default function PlannerPage() {
             {[
               { onClick: () => setRefineOpen(true), icon: Wand2, label: tp.refineAI, bg: "from-[#8054b8] to-[#6d3fa0]", shadow: "rgba(128,84,184,0.25)" },
               { onClick: handleSave, icon: saving ? Loader2 : Save, label: tp.savePlan, bg: "from-[#23ab7e] to-[#1a8a64]", shadow: "rgba(35,171,126,0.25)", disabled: saving, spin: saving },
-              { onClick: handleExportPDF, icon: Download, label: tp.exportPDF, bg: "from-[#e67af3] to-[#c054d4]", shadow: "rgba(230,122,243,0.25)" },
+              { onClick: handleExportPDF, icon: exporting ? Loader2 : Download, label: tp.exportPDF, bg: "from-[#e67af3] to-[#c054d4]", shadow: "rgba(230,122,243,0.25)", disabled: exporting, spin: exporting },
               { onClick: () => setPlan(null), icon: RotateCcw, label: tp.generateNew, bg: "from-[#505868] to-[#8f96a3]", shadow: "rgba(0,0,0,0.1)" },
             ].map((btn) => (
               <button key={btn.label} onClick={btn.onClick} disabled={btn.disabled} className={`flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r ${btn.bg} text-white font-bold text-base transition-all hover:-translate-y-0.5 disabled:opacity-50`} style={{ boxShadow: `0 4px 16px ${btn.shadow}` }}>
