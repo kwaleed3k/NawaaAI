@@ -653,39 +653,40 @@ export default function CompaniesPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
-        <div className="relative z-10 p-6 sm:p-8">
-          <div className="flex items-center gap-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
-              <Building2 className="h-5 w-5 text-white" />
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="absolute top-[30%] left-[40%] w-48 h-48 bg-[#a6ffea]/8 rounded-full blur-2xl" />
+        <div className="relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
+              <Building2 className="h-8 w-8 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
-                  {tc.pageTitle}
-                </span>
-              </h1>
-              <p className="mt-1 text-xl sm:text-2xl text-slate-400">
-                {locale === "ar" ? "\u0628\u0646\u0627\u0621 \u0627\u0644\u0647\u0648\u064a\u0629 \u0627\u0644\u062a\u062c\u0627\u0631\u064a\u0629 \u0627\u0644\u0645\u062a\u0645\u064a\u0632\u0629" : "Premium Brand Builder"}
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">{tc.pageTitle}</h1>
+              <p className="mt-2 text-lg text-white/60">
+                {locale === "ar" ? "بناء الهوية التجارية المتميزة بالذكاء الاصطناعي" : "Build & analyze your brand identity with AI"}
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {companies.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3 py-2">
-                  <Building2 className="h-4 w-4 text-slate-400" />
-                  <span className="text-lg font-bold text-white">{companies.length}</span>
-                  <span className="text-sm text-slate-400">{locale === "ar" ? "\u0634\u0631\u0643\u0627\u062a" : "Companies"}</span>
+                <div className="flex items-center gap-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-2.5">
+                  <Building2 className="h-5 w-5 text-[#a6ffea]" />
+                  <span className="text-xl font-black text-white">{companies.length}</span>
+                  <span className="text-sm text-white/60">{locale === "ar" ? "شركات" : "Brands"}</span>
                 </div>
               )}
-              <Button
+              <button
                 onClick={openAdd}
-                className="h-11 px-6 text-lg font-bold rounded-xl bg-white text-[#23ab7e] hover:bg-white/90 hover:shadow-md transition-all shadow-lg"
+                className="relative h-14 px-8 text-lg font-bold rounded-2xl bg-white text-[#23ab7e] border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)] overflow-hidden"
+                style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.1)" }}
               >
-                <Plus className="mr-2 h-4 w-4" />
-                {tc.addCompany}
-              </Button>
+                <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(35,171,126,.08) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
+                <span className="relative flex items-center gap-2">
+                  <Plus className="h-5 w-5" />
+                  {tc.addCompany}
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -693,118 +694,115 @@ export default function CompaniesPage() {
 
       {/* ===== EMPTY STATE ===== */}
       {companies.length === 0 ? (
-        <div
-          className="relative flex flex-col items-center justify-center rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] via-white to-[#f4f6f8] py-20 px-8 overflow-hidden"
-        >
-          {/* Background decorative elements */}
+        <div className="relative overflow-hidden rounded-3xl border-2 border-[#e8eaef] py-24 px-8" style={{ background: "linear-gradient(170deg, #ffffff 0%, #f7f9fb 40%, #f0fdf8 70%, #f5f0ff 100%)" }}>
+          {/* Background decorations */}
+          <div className="absolute top-[10%] right-[8%] w-[100px] h-[100px] rounded-full" style={{ border: "1.5px solid rgba(35,171,126,.08)", animation: "nl-ring-rotate-2 20s linear infinite" }} />
+          <div className="absolute bottom-[15%] left-[5%] w-[60px] h-[60px] rounded-full" style={{ background: "radial-gradient(circle, rgba(128,84,184,0.08), transparent 70%)" }} />
+          <div className="absolute top-[20%] left-[15%] w-[80px] h-[80px] rounded-full" style={{ background: "radial-gradient(circle, rgba(35,171,126,0.06), transparent 70%)" }} />
 
-          {/* Animated building icon */}
-          <div
-            className="relative mb-6"
-          >
-            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_0_50px_rgba(35,171,126,0.25)]">
-              <Building2 className="h-14 w-14 text-white" />
+          <div className="relative z-10 flex flex-col items-center">
+            {/* Icon with glow */}
+            <div className="relative mb-8">
+              <div className="absolute -inset-4 rounded-[28px] opacity-20" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
+              <div className="relative flex h-28 w-28 items-center justify-center rounded-[24px] shadow-xl" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 12px 40px rgba(35,171,126,0.3)" }}>
+                <Building2 className="h-14 w-14 text-white" />
+              </div>
+              <div className="absolute -top-3 -right-3" style={{ animation: "nl-pulse-dot 2s ease infinite" }}>
+                <div className="w-8 h-8 rounded-xl bg-[#8054b8] flex items-center justify-center shadow-lg"><Sparkles className="h-4 w-4 text-white" /></div>
+              </div>
             </div>
-            {/* Pulsing sparkles */}
-            <div
-              className="absolute -top-2 -right-2"
-            >
-              <Sparkles className="h-7 w-7 text-[#8054b8]" />
-            </div>
-            <div
-              className="absolute -bottom-1 -left-3"
-            >
-              <Sparkles className="h-5 w-5 text-[#8054b8]" />
-            </div>
-          </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e] font-['Cairo'] text-center">
-            {tc.noCompanies}
-          </h2>
-          <p className="mt-2 text-xl sm:text-2xl text-[#8f96a3] text-center max-w-md">
-            {tc.addFirst}
-          </p>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#2d3142] text-center">{tc.noCompanies}</h2>
+            <p className="mt-3 text-lg sm:text-xl text-[#8f96a3] text-center max-w-lg">{tc.addFirst}</p>
 
-          <div>
-            <Button
+            {/* Benefit cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 max-w-2xl w-full">
+              {[
+                { icon: Sparkles, title: locale === "ar" ? "تحليل الهوية" : "Brand DNA", desc: locale === "ar" ? "الذكاء الاصطناعي يحلل علامتك" : "AI analyzes your brand", color: "#23ab7e" },
+                { icon: FileText, title: locale === "ar" ? "خطط المحتوى" : "Content Plans", desc: locale === "ar" ? "7 أيام محتوى جاهز" : "7 days of ready content", color: "#8054b8" },
+                { icon: Palette, title: locale === "ar" ? "مرئيات AI" : "AI Visuals", desc: locale === "ar" ? "صور احترافية فورية" : "Instant pro images", color: "#e67af3" },
+              ].map((b) => (
+                <div key={b.title} className="rounded-2xl p-5 text-center transition-all hover:-translate-y-1" style={{ background: `${b.color}08`, border: `1.5px solid ${b.color}18` }}>
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: `${b.color}15` }}>
+                    <b.icon className="w-6 h-6" style={{ color: b.color }} />
+                  </div>
+                  <p className="text-base font-bold text-[#2d3142]">{b.title}</p>
+                  <p className="text-sm text-[#8f96a3] mt-1">{b.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <button
               onClick={openAdd}
-              className="mt-8 h-11 px-6 text-lg font-bold rounded-2xl nl-aurora-bg text-white shadow-md hover:shadow-sm transition-all"
+              className="relative mt-10 h-16 px-12 text-xl font-black rounded-2xl text-white border-none cursor-pointer transition-all hover:-translate-y-1 overflow-hidden"
+              style={{ background: "linear-gradient(135deg, #23ab7e, #1a8a64, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(35,171,126,0.3)" }}
             >
-              <Plus className="mr-2 h-4 w-4" />
-              {tc.addCompany}
-            </Button>
+              <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
+              <span className="relative flex items-center gap-3"><Plus className="h-6 w-6" />{tc.addCompany}</span>
+            </button>
           </div>
         </div>
       ) : (
         /* ===== COMPANY CARDS GRID ===== */
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {companies.map((c, i) => {
             const keywords: { label: string; type: keyof typeof TAG_STYLES }[] = [];
             if (c.industry) keywords.push({ label: locale === "ar" ? (INDUSTRIES.find((ind) => ind.en === c.industry)?.ar ?? c.industry) : c.industry, type: "industry" });
             if (c.tone) keywords.push({ label: c.tone, type: "tone" });
-            if (c.target_audience) keywords.push({ label: c.target_audience.length > 30 ? c.target_audience.slice(0, 30) + "..." : c.target_audience, type: "audience" });
-            (c.platforms || []).forEach((p) => keywords.push({ label: p, type: "platform" }));
-            if (c.website) keywords.push({ label: c.website.replace(/^https?:\/\//, "").replace(/\/$/, ""), type: "website" });
+            (c.platforms || []).slice(0, 2).forEach((p) => keywords.push({ label: p, type: "platform" }));
 
-            const gradientClass = CARD_GRADIENTS[i % CARD_GRADIENTS.length];
+            const accent = ["#23ab7e", "#8054b8", "#e67af3", "#2dd4a0", "#c4a8e8", "#f5c6fa"][i % 6];
+            const hasAnalysis = c.brand_analysis && Object.keys(c.brand_analysis).length > 0;
 
             return (
-              <div
-                key={c.id}
-                className="group hover:-translate-y-1.5 transition-transform duration-200"
-              >
-                <div className="relative rounded-2xl border-2 border-[#e8eaef] bg-white overflow-hidden shadow-lg transition-all duration-300 hover:shadow-md hover:border-[#8054b8]/40">
-                  {/* Top gradient accent bar */}
-                  <div className={cn("h-2 w-full bg-gradient-to-r", gradientClass)} />
+              <div key={c.id} className="group transition-all duration-300 hover:-translate-y-2">
+                <div className="relative rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)]" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", border: "1.5px solid #e8eaef" }}>
+                  {/* Accent bar */}
+                  <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${accent}, ${accent}40)` }} />
 
-                  <div className="p-8">
-                    {/* Logo + Name */}
-                    <div className="flex items-center gap-5">
-                      <div
-                        className="relative"
-                      >
-                        <div className="rounded-2xl p-[3px] bg-gradient-to-br from-[#23ab7e] via-[#8054b8] to-[#8054b8] shadow-lg">
-                          <div
-                            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[14px] text-lg font-extrabold text-white"
-                            style={{ backgroundColor: c.brand_colors?.[0] ?? "#23ab7e" }}
-                          >
+                  <div className="p-7">
+                    {/* Logo + Name + AI Badge */}
+                    <div className="flex items-start gap-4">
+                      <div className="relative shrink-0">
+                        <div className="rounded-2xl p-[2.5px] shadow-lg" style={{ background: `linear-gradient(135deg, ${accent}, #8054b8)` }}>
+                          <div className="flex h-16 w-16 items-center justify-center rounded-[13px] text-lg font-black text-white" style={{ backgroundColor: c.brand_colors?.[0] ?? accent }}>
                             {c.logo_url ? (
-                              <img src={c.logo_url} alt={c.name || "Company logo"} className="h-full w-full rounded-[14px] object-cover max-w-full" />
+                              <img src={c.logo_url} alt={c.name || ""} className="h-full w-full rounded-[13px] object-cover" />
                             ) : (
-                              c.name?.charAt(0) ?? "?"
+                              <span className="text-2xl">{c.name?.charAt(0) ?? "?"}</span>
                             )}
                           </div>
                         </div>
-                        {/* Glow behind logo */}
-                        <div
-                          style={{ backgroundColor: c.brand_colors?.[0] ?? "#23ab7e" }}
-                        />
+                        {hasAnalysis && (
+                          <div className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#23ab7e] flex items-center justify-center shadow-md" style={{ animation: "nl-pulse-dot 3s ease infinite" }}>
+                            <BadgeCheck className="w-3.5 h-3.5 text-white" />
+                          </div>
+                        )}
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#1a1d2e] truncate leading-tight">{c.name}</h3>
-                        {c.name_ar && <p className="text-lg text-[#8f96a3] mt-1 truncate font-medium">{c.name_ar}</p>}
+                        <h3 className="text-xl font-extrabold text-[#2d3142] truncate leading-tight">{c.name}</h3>
+                        {c.name_ar && <p className="text-sm text-[#8f96a3] mt-0.5 truncate">{c.name_ar}</p>}
+                        {c.industry && (
+                          <span className="inline-flex items-center gap-1 mt-2 text-xs font-bold px-2.5 py-1 rounded-lg" style={{ background: `${accent}10`, color: accent, border: `1px solid ${accent}20` }}>
+                            {locale === "ar" ? (INDUSTRIES.find((ind) => ind.en === c.industry)?.ar ?? c.industry) : c.industry}
+                          </span>
+                        )}
                       </div>
                     </div>
 
-                    {/* Description snippet */}
+                    {/* Description */}
                     {c.description && (
-                      <p className="mt-5 text-lg text-[#8f96a3] line-clamp-2 leading-relaxed">
-                        {c.description}
-                      </p>
+                      <p className="mt-4 text-sm text-[#8f96a3] line-clamp-2 leading-relaxed">{c.description}</p>
                     )}
 
-                    {/* Colorful keyword tags with emoji */}
+                    {/* Tags */}
                     {keywords.length > 0 && (
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {keywords.map((kw, ki) => {
-                          const style = TAG_STYLES[kw.type];
+                      <div className="mt-4 flex flex-wrap gap-1.5">
+                        {keywords.slice(0, 4).map((kw, ki) => {
+                          const s = TAG_STYLES[kw.type];
                           return (
-                            <span
-                              key={ki}
-                              className={cn("rounded-xl border px-3 py-1.5 text-sm font-bold inline-flex items-center gap-1.5", style.bg, style.border, style.text)}
-                            >
-                              <span className="text-lg">{style.emoji}</span>
+                            <span key={ki} className={cn("rounded-lg border px-2.5 py-1 text-xs font-bold inline-flex items-center gap-1", s.bg, s.border, s.text)}>
                               {kw.label}
                             </span>
                           );
@@ -812,80 +810,40 @@ export default function CompaniesPage() {
                       </div>
                     )}
 
-                    {/* Brand color swatches + AI badge */}
-                    <div className="mt-5 flex items-center justify-between">
+                    {/* Colors + AI badge row */}
+                    <div className="mt-4 flex items-center justify-between">
                       {c.brand_colors?.length ? (
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-bold text-[#8f96a3]">Colors</span>
-                          <div className="flex gap-2">
-                            {c.brand_colors.slice(0, 5).map((hex, idx) => (
-                              <div
-                                key={idx}
-                                className="h-8 w-8 rounded-xl border-2 border-white shadow-md cursor-pointer ring-1 ring-[#e8eaef]"
-                                style={{ backgroundColor: hex }}
-                                title={hex}
-                              />
-                            ))}
-                          </div>
+                        <div className="flex gap-1.5">
+                          {c.brand_colors.slice(0, 5).map((hex, idx) => (
+                            <div key={idx} className="h-6 w-6 rounded-lg border-2 border-white shadow-sm ring-1 ring-[#e8eaef]/50" style={{ backgroundColor: hex }} />
+                          ))}
                         </div>
                       ) : <div />}
-
-                      {/* AI analysis badge */}
-                      {c.brand_analysis && Object.keys(c.brand_analysis).length > 0 && (
-                        <span
-                          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#8054b8]/15 to-[#A78BFA]/15 border border-[#8054b8]/30 px-3 py-1.5 text-sm font-bold text-[#8054b8]"
-                        >
-                          <Sparkles className="h-4 w-4" />
-                          AI {locale === "ar" ? "محلل" : "Analyzed"}
+                      {hasAnalysis && (
+                        <span className="flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold" style={{ background: "#8054b815", color: "#8054b8", border: "1px solid #8054b825" }}>
+                          <Sparkles className="h-3 w-3" />AI
                         </span>
                       )}
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-6 flex gap-3">
-                      <div className="flex-1">
-                        <Button
-                          className="h-11 w-full text-lg font-bold bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white hover:shadow-sm rounded-2xl transition-all shadow-md"
-                          onClick={() => setViewingCompany(c)}
-                        >
-                          <Eye className="mr-2 h-4 w-4" /> {tc.viewDetails || "View Details"}
-                        </Button>
-                      </div>
-                      <div>
-                        <Button
-                          variant="outline"
-                          className="h-11 px-4 text-lg font-bold border-2 border-[#e8eaef] text-[#1a1d2e] hover:bg-[#f4f6f8] hover:border-[#8054b8]/40 rounded-2xl transition-all"
-                          onClick={(e) => { e.stopPropagation(); openEdit(c); }}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div>
-                        {confirmDeleteId === c.id ? (
-                          <div className="flex items-center gap-2">
-                            <Button
-                              className="h-11 px-4 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl shadow-md hover:shadow-sm transition-all"
-                              onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}
-                            >
-                              {locale === "ar" ? "نعم" : "Yes"}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              className="h-11 px-4 text-lg font-bold border-2 border-[#e8eaef] text-[#1a1d2e] hover:bg-[#f4f6f8] hover:border-[#8054b8]/40 rounded-2xl transition-all"
-                              onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}
-                            >
-                              {locale === "ar" ? "إلغاء" : "Cancel"}
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button
-                            className="h-11 px-4 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl shadow-md hover:shadow-sm transition-all"
-                            onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(c.id); }}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
+                    <div className="mt-5 flex gap-2">
+                      <button onClick={() => setViewingCompany(c)} className="flex-1 h-11 rounded-xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer border-none" style={{ background: `linear-gradient(135deg, ${accent}, #8054b8)`, boxShadow: `0 4px 12px ${accent}25` }}>
+                        <Eye className="h-4 w-4" />{tc.viewDetails || (locale === "ar" ? "عرض" : "View")}
+                      </button>
+                      <button onClick={(e) => { e.stopPropagation(); openEdit(c); }} className="h-11 w-11 rounded-xl flex items-center justify-center border-2 border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#8054b8] hover:text-[#8054b8] transition-all cursor-pointer">
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      {confirmDeleteId === c.id ? (
+                        <div className="flex gap-1.5">
+                          <button onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }} className="h-11 px-3 rounded-xl bg-red-500 text-white text-sm font-bold border-none cursor-pointer hover:bg-red-600 transition-colors">{locale === "ar" ? "حذف" : "Yes"}</button>
+                          <button onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }} className="h-11 px-3 rounded-xl border-2 border-[#e8eaef] bg-white text-[#8f96a3] text-sm font-bold cursor-pointer hover:border-[#e8eaef] transition-colors">{locale === "ar" ? "لا" : "No"}</button>
+                        </div>
+                      ) : (
+                        <button onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(c.id); }} className="h-11 w-11 rounded-xl flex items-center justify-center border-2 border-[#e8eaef] bg-white text-[#8f96a3] hover:border-red-300 hover:text-red-500 hover:bg-red-50 transition-all cursor-pointer">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -894,21 +852,16 @@ export default function CompaniesPage() {
           })}
 
           {/* ===== ADD COMPANY CARD ===== */}
-          <div
-            className="group cursor-pointer hover:-translate-y-1.5 transition-transform duration-200"
-            onClick={openAdd}
-          >
-            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-white overflow-hidden transition-all duration-300 hover:border-[#8054b8] hover:bg-gradient-to-br hover:from-[#f4f6f8] hover:to-[#fafbfd] hover:shadow-md">
-              {/* Decorative gradients */}
-
-              <div
-                className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg group-hover:shadow-md transition-shadow"
-              >
-                <Plus className="h-10 w-10 text-white" />
+          <div className="group cursor-pointer transition-all duration-300 hover:-translate-y-2" onClick={openAdd}>
+            <div className="relative flex h-full min-h-[340px] flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#e8eaef] overflow-hidden transition-all duration-300 hover:border-[#23ab7e] hover:shadow-[0_20px_60px_rgba(35,171,126,0.08)]" style={{ background: "linear-gradient(170deg, #fafbfd, #f0fdf8, #f5f0ff)" }}>
+              <div className="relative">
+                <div className="absolute -inset-3 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)" }} />
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl shadow-lg group-hover:shadow-xl transition-shadow" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)" }}>
+                  <Plus className="h-10 w-10 text-white" />
+                </div>
               </div>
-
-              <p className="mt-5 text-xl font-bold text-[#1a1d2e] font-['Cairo']">{tc.addCompany}</p>
-              <p className="mt-1 text-lg text-[#8f96a3]">Build your brand profile</p>
+              <p className="mt-5 text-xl font-bold text-[#2d3142]">{tc.addCompany}</p>
+              <p className="mt-1 text-base text-[#8f96a3]">{locale === "ar" ? "أضف علامتك التجارية" : "Add your brand"}</p>
             </div>
           </div>
         </div>
