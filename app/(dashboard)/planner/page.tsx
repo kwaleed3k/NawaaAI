@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Calendar, Sparkles, Save, Download, Loader2, Clock, CheckCircle2, Circle, Globe, Zap, ArrowRight, LayoutGrid, ChevronDown, Wand2, RotateCcw, FileText, Hash, MessageSquare, Lightbulb, Image } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import PostPreview from "@/components/PostPreview";
 import { useAppStore, type Company } from "@/lib/store";
 import { messages } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -374,6 +375,15 @@ export default function PlannerPage() {
                               <p className="text-sm text-[#505868] leading-relaxed">{day.imagePromptHint}</p>
                             </div>
                           )}
+                          {/* Post Preview */}
+                          <PostPreview
+                            platform={day.platform}
+                            caption={outputLanguage === "ar" ? (day.captionAr || day.caption) : (day.caption || day.captionAr || "")}
+                            hashtags={day.hashtags || []}
+                            companyName={selectedCompany?.name || "Brand"}
+                            companyLogo={selectedCompany?.logo_url}
+                            locale={locale as "en" | "ar"}
+                          />
                           <button type="button" onClick={(e) => { e.stopPropagation(); setCompletedDays((prev) => { const n = new Set(prev); if (n.has(day.dayIndex)) n.delete(day.dayIndex); else n.add(day.dayIndex); return n; }); }} className={cn("w-full h-14 rounded-2xl text-base font-bold flex items-center justify-center gap-2 transition-all duration-300 border-2 cursor-pointer", done ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e]")}>
                             {done ? <><CheckCircle2 className="h-5 w-5" /> {isRtl ? "تم ✨" : "Done ✨"}</> : <><Circle className="h-5 w-5" /> {isRtl ? "تحديد كمنجز" : "Mark as done"}</>}
                           </button>
