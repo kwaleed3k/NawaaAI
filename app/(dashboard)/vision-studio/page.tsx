@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 
 type ContentPlanRow = {
   id: string;
+  company_id: string;
   week_start: string;
   title: string | null;
   plan_data: { days?: Array<{ dayIndex: number; dayEn: string; dayAr: string; topic: string; topicAr?: string; caption?: string; imagePromptHint?: string; platform?: string; contentType?: string }> };
@@ -62,6 +63,8 @@ export default function VisionStudioPage() {
   const [referenceImages, setReferenceImages] = useState<{ file: File; preview: string }[]>([]);
   const [addTextToImage, setAddTextToImage] = useState(false);
   const [imageText, setImageText] = useState("");
+  const [numImages, setNumImages] = useState(4);
+  const [imageSize, setImageSize] = useState("1:1");
 
   const loadingQuotesEn = [
     "Brewing pixel magic... \u2615",
@@ -118,10 +121,9 @@ export default function VisionStudioPage() {
 
   useEffect(() => {
     if (!selectedCompany?.id) return;
-    const filtered = plans.filter((p) => p.plan_data?.days?.length);
-    if (filtered.length && !selectedPlan) setSelectedPlan(filtered[0]);
-    else setSelectedPlan(filtered[0] ?? null);
-    setSelectedDayIndex(0);
+    const filtered = plans.filter((p) => p.company_id === selectedCompany.id && p.plan_data?.days?.length);
+    if (filtered.length) { setSelectedPlan(filtered[0]); setSelectedDayIndex(0); }
+    else { setSelectedPlan(null); setSelectedDayIndex(null); }
   }, [selectedCompany?.id, plans]);
 
   const currentDay = selectedPlan?.plan_data?.days?.[selectedDayIndex ?? 0];
@@ -193,6 +195,8 @@ export default function VisionStudioPage() {
           includeLogo: includeLogo && !!selectedCompany?.logo_url,
           logoUrl: includeLogo ? selectedCompany?.logo_url : undefined,
           referenceImages: referenceBase64,
+          numImages,
+          imageSize,
         }),
       });
       const json = await res.json();
@@ -273,11 +277,11 @@ export default function VisionStudioPage() {
       {/* ===== ROW 1: Company + Content Day ===== */}
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
         {/* ── Company Selector ── */}
-        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
-          <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
+        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.06), 0 0 0 1.5px #e8eaef" }}>
+          <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8)" }} />
           <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
+            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#2d3142]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
                 <Camera className="h-7 w-7 text-white" />
               </div>
               {tv.company}
@@ -375,8 +379,8 @@ export default function VisionStudioPage() {
         </Card>
 
         {/* ── Content Day Selector ── */}
-        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
-          <div className="h-1.5 w-full bg-gradient-to-r from-[#8054b8] via-[#A78BFA] to-[#8054b8]" />
+        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
           <CardHeader className="p-5 sm:p-8 pb-4">
             <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
@@ -391,7 +395,7 @@ export default function VisionStudioPage() {
               onChange={(e) => { const p = plans.find((x) => x.id === e.target.value); setSelectedPlan(p ?? null); setSelectedDayIndex(0); }}
               className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-5 text-lg text-[#2d3142] font-medium transition-all focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 hover:border-[#23ab7e]/40"
             >
-              {plans.filter((p) => p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
+              {plans.filter((p) => p.company_id === selectedCompany?.id && p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
             </select>
 
             {selectedPlan?.plan_data?.days?.length ? (
@@ -443,7 +447,7 @@ export default function VisionStudioPage() {
       {/* ===== ROW 2: Reference Photos + Style ===== */}
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
         {/* ── Reference Images ── */}
-        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
+        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
           <CardHeader className="p-5 sm:p-8 pb-4">
             <div className="flex items-center gap-4">
@@ -506,7 +510,7 @@ export default function VisionStudioPage() {
         </Card>
 
         {/* ── Style Selector ── */}
-        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
+        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#8054b8] via-[#23ab7e] to-[#8054b8]" />
           <CardHeader className="p-5 sm:p-8 pb-4">
             <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
@@ -711,27 +715,75 @@ export default function VisionStudioPage() {
         </div>
       </div>
 
+      {/* ===== NUMBER OF IMAGES + SIZE ===== */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Number */}
+        <div className="rounded-3xl p-7" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(230,122,243,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <label className="mb-4 flex items-center gap-3 text-lg font-extrabold text-[#2d3142]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#e67af3] to-[#f5c6fa] shadow-md">
+              <ImageIcon className="h-5 w-5 text-white" />
+            </div>
+            {locale === "ar" ? "عدد الصور" : "Number of Images"}
+          </label>
+          <div className="flex gap-3">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <button key={n} type="button" onClick={() => setNumImages(n)} className={cn("flex-1 h-14 rounded-2xl border-2 text-xl font-black flex items-center justify-center transition-all duration-200 cursor-pointer", numImages === n ? "border-[#e67af3] bg-gradient-to-br from-[#e67af3]/10 to-[#8054b8]/10 text-[#e67af3] shadow-[0_4px_16px_rgba(230,122,243,0.2)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8] hover:text-[#8054b8]")}>
+                {n}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Size / Aspect Ratio */}
+        <div className="rounded-3xl p-7" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <label className="mb-4 flex items-center gap-3 text-lg font-extrabold text-[#2d3142]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#c4a8e8] shadow-md">
+              <Maximize2 className="h-5 w-5 text-white" />
+            </div>
+            {locale === "ar" ? "حجم الصورة" : "Image Size"}
+          </label>
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+            {[
+              { id: "1:1", label: "1:1", desc: locale === "ar" ? "مربع" : "Square", w: 28, h: 28 },
+              { id: "4:5", label: "4:5", desc: "Instagram", w: 24, h: 30 },
+              { id: "9:16", label: "9:16", desc: locale === "ar" ? "ستوري" : "Story", w: 20, h: 34 },
+              { id: "16:9", label: "16:9", desc: locale === "ar" ? "عريض" : "Wide", w: 34, h: 20 },
+              { id: "3:4", label: "3:4", desc: locale === "ar" ? "بورتريه" : "Portrait", w: 24, h: 32 },
+            ].map((s) => (
+              <button key={s.id} type="button" onClick={() => setImageSize(s.id)} className={cn("flex flex-col items-center gap-2 rounded-2xl border-2 py-3 px-2 transition-all duration-200 cursor-pointer", imageSize === s.id ? "border-[#8054b8] bg-gradient-to-br from-[#8054b8]/10 to-[#e67af3]/10 shadow-[0_4px_16px_rgba(128,84,184,0.15)]" : "border-[#e8eaef] bg-white hover:border-[#c4a8e8]")}>
+                <div className="flex items-center justify-center" style={{ width: 40, height: 40 }}>
+                  <div className={cn("rounded-sm border-2 transition-colors", imageSize === s.id ? "border-[#8054b8] bg-[#8054b8]/20" : "border-[#8f96a3]/30 bg-[#f4f6f8]")} style={{ width: s.w, height: s.h }} />
+                </div>
+                <span className={cn("text-sm font-bold", imageSize === s.id ? "text-[#8054b8]" : "text-[#8f96a3]")}>{s.label}</span>
+                <span className={cn("text-[10px] font-medium -mt-1", imageSize === s.id ? "text-[#8054b8]/70" : "text-[#8f96a3]/60")}>{s.desc}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ===== GENERATE BUTTON (centered) ===== */}
       <div className="flex justify-center">
-        <Button
+        <button
           onClick={handleGenerate}
           disabled={generating || !currentDay}
-          className="relative w-full max-w-2xl h-20 rounded-2xl bg-gradient-to-r from-[#8054b8] via-[#A78BFA] to-[#8054b8] text-white hover:shadow-md text-2xl font-extrabold transition-all duration-500 shadow-md border-2 border-[#8054b8]/30 overflow-hidden group"
+          className="relative w-full max-w-2xl h-20 rounded-2xl text-white text-2xl font-extrabold transition-all duration-500 overflow-hidden group cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+          style={{ background: "linear-gradient(135deg, #8054b8, #A78BFA, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
           {generating ? (
-            <Loader2 className="mr-3 h-8 w-8 animate-spin relative z-10" />
+            <Loader2 className="mr-3 h-8 w-8 animate-spin relative z-10 inline-block" />
           ) : (
-            <Sparkles className="mr-3 h-8 w-8 relative z-10" />
+            <Sparkles className="mr-3 h-8 w-8 relative z-10 inline-block" />
           )}
-          <span className="relative z-10">{tv.generate4}</span>
-          {!generating && <Sparkles className="ml-3 h-8 w-8 relative z-10" />}
-        </Button>
+          <span className="relative z-10">{locale === "ar" ? "توليد السحر" : "Generate Magic"}</span>
+          {!generating && <Sparkles className="ml-3 h-8 w-8 relative z-10 inline-block" />}
+        </button>
       </div>
 
       {/* ===== GENERATED IMAGES (full width, centered) ===== */}
       <div className="w-full">
-        <Card className="rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg overflow-hidden">
+        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
           <CardHeader className="p-5 sm:p-8 pb-4">
             <CardTitle className="flex items-center justify-center gap-4 text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">

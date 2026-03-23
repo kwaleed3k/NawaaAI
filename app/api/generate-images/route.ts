@@ -193,6 +193,7 @@ const GEMINI_MODELS = [
 
 async function generateImageWithGemini(
   contentParts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }>,
+  aspectRatio?: string,
 ): Promise<{ base64: string; mimeType: string } | null> {
   for (const modelName of GEMINI_MODELS) {
     try {
@@ -201,7 +202,8 @@ async function generateImageWithGemini(
         contents: [{ role: "user", parts: contentParts }],
         config: {
           responseModalities: ["IMAGE", "TEXT"],
-        },
+          ...(aspectRatio ? { aspectRatio } : {}),
+        } as Record<string, unknown>,
       });
 
       const parts = response.candidates?.[0]?.content?.parts ?? [];
@@ -240,7 +242,16 @@ export async function POST(request: NextRequest) {
       logoUrl,
       referenceImages: referenceImagesData = [],
       imageText,
+      numImages = 4,
+      imageSize = "1:1",
     } = body;
+
+    const imageCount = Math.max(1, Math.min(5, Number(numImages) || 4));
+    // Map user sizes to Gemini-supported aspect ratios
+    const geminiRatioMap: Record<string, string> = { "1:1": "1:1", "4:5": "3:4", "9:16": "9:16", "16:9": "16:9", "3:4": "3:4" };
+    const aspectRatio = geminiRatioMap[imageSize] || "1:1";
+    const sizeLabels: Record<string, string> = { "1:1": "square", "4:5": "portrait (Instagram feed 4:5)", "9:16": "vertical (Stories/Reels 9:16)", "16:9": "landscape widescreen (16:9)", "3:4": "portrait (3:4)" };
+    const sizeDirective = `Image aspect ratio: ${imageSize} ${sizeLabels[imageSize] || "square"}. Compose the shot to perfectly fill this frame.`;
 
     if (!company?.name || !dayContent?.topic) {
       return NextResponse.json(
@@ -293,6 +304,7 @@ export async function POST(request: NextRequest) {
       `Platform: ${dayContent.platform || "Instagram"}`,
       colorInstruction,
       `Visual style direction: ${style}`,
+      sizeDirective,
       `Language: ${langDirective}`,
       textDirective,
       referenceImagesData.length ? `⚠️ REFERENCE PHOTOS PROVIDED (${referenceImagesData.length} photo(s)): The client uploaded real photos of their actual products/venue/dishes. These are NOT just inspiration — they are the REAL thing. The generated images MUST:\n  1. Recreate the SAME environment/setting as closely as possible (same type of space, same decor style, same surfaces and backgrounds)\n  2. Match the exact visual style, lighting mood, color palette, and atmosphere\n  3. Feature the same products/dishes/items with matching textures, plating, and presentation\n  4. Feel like they were taken in the SAME photoshoot session — same photographer, same location, same day\n  5. If it's a place (restaurant, cafe, store), generate images that look like they were shot IN that exact place\n  6. If it's a product/dish, show the same item from different angles or in complementary compositions` : "",
@@ -306,7 +318,7 @@ export async function POST(request: NextRequest) {
       model: "gpt-4o",
       messages: [
         { role: "system", content: PROMPT_BUILDER_SYSTEM },
-        { role: "user", content: userMsg + "\n\nReturn JSON only." },
+        { role: "user", content: userMsg + `\n\n⚠️ Generate exactly ${imageCount} image prompts (not more, not less). Return JSON with "prompts" array containing exactly ${imageCount} items.\n\nReturn JSON only.` },
       ],
       temperature: PROMPT_TEMPERATURE,
       max_tokens: PROMPT_MAX_TOKENS,
@@ -336,7 +348,7 @@ export async function POST(request: NextRequest) {
       ? ` At least 2 brand colors MUST be clearly visible: ${brandColors.map((c: string, i: number) => `${c} on ${colorObjectHints[i]?.split(",")[0] || "props"}`).join(", ")}.`
       : "";
 
-    for (const p of prompts.slice(0, MAX_IMAGES_PER_REQUEST)) {
+    for (const p of prompts.slice(0, imageCount)) {
       const fullPrompt = p.prompt + colorReminder + realisticSuffix;
 
       // Build content parts for Gemini
@@ -368,7 +380,7 @@ export async function POST(request: NextRequest) {
 
       contentParts.push({ text: `Generate this photorealistic marketing image: ${fullPrompt}` });
 
-      const result = await generateImageWithGemini(contentParts);
+      const result = await generateImageWithGemini(contentParts, aspectRatio);
 
       if (result) {
         const dataUri = `data:${result.mimeType};base64,${result.base64}`;

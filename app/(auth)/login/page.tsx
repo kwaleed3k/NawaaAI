@@ -43,20 +43,24 @@ function Cube({ size, border, bg, dur, reverse, className }: { size: number; bor
   );
 }
 
-/* Floating dots */
+/* Floating dots — uses deterministic values from index to avoid hydration mismatch */
 function Dots({ count, className }: { count: number; className?: string }) {
   return (
     <div className={className}>
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="absolute rounded-full" style={{
-          width: 2 + Math.random() * 4, height: 2 + Math.random() * 4,
-          top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%`,
-          background: ["#a6ffea", "#e67af3", "#c4a8e8", "#23ab7e", "#f5c6fa"][i % 5],
-          opacity: 0.2 + Math.random() * 0.3,
-          animation: `nl-float-particle ${8 + Math.random() * 10}s ease-in-out infinite`,
-          animationDelay: `${Math.random() * 5}s`,
-        }} />
-      ))}
+      {Array.from({ length: count }).map((_, i) => {
+        const seed = (i * 7 + 13) % 100;
+        const seed2 = (i * 11 + 37) % 100;
+        return (
+          <div key={i} className="absolute rounded-full" style={{
+            width: 2 + (seed % 5), height: 2 + (seed2 % 5),
+            top: `${(seed * 1.01) % 100}%`, left: `${(seed2 * 1.03) % 100}%`,
+            background: ["#a6ffea", "#e67af3", "#c4a8e8", "#23ab7e", "#f5c6fa"][i % 5],
+            opacity: 0.2 + (seed % 30) / 100,
+            animation: `nl-float-particle ${8 + (seed % 10)}s ease-in-out infinite`,
+            animationDelay: `${(seed2 % 50) / 10}s`,
+          }} />
+        );
+      })}
     </div>
   );
 }
