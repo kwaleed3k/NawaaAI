@@ -47,6 +47,9 @@ interface UISlice {
   setSelectedCompany: (c: Company | null) => void;
   locale: "en" | "ar";
   setLocale: (l: "en" | "ar") => void;
+  theme: "light" | "dark";
+  setTheme: (t: "light" | "dark") => void;
+  toggleTheme: () => void;
 }
 
 /* ══ Combined Store ══ */
@@ -68,6 +71,24 @@ export const useStore = create<Store>((set) => ({
       document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
     }
     set({ locale: l });
+  },
+  theme: "light",
+  setTheme: (t) => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("nawaa-theme", t);
+      document.documentElement.classList.toggle("dark", t === "dark");
+    }
+    set({ theme: t });
+  },
+  toggleTheme: () => {
+    set((state) => {
+      const next = state.theme === "light" ? "dark" : "light";
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("nawaa-theme", next);
+        document.documentElement.classList.toggle("dark", next === "dark");
+      }
+      return { theme: next };
+    });
   },
 }));
 

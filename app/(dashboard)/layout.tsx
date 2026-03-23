@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useCallback, type ReactNode } from "react";
 import {
   BarChart3, BookOpen, Building2, Calendar, ChevronLeft, ChevronRight,
-  FolderOpen, Hash, ImageIcon, LogOut, Menu, Search, Settings, Sparkles, Swords, TrendingUp, X,
+  FolderOpen, Hash, ImageIcon, LogOut, Menu, Moon, Search, Settings, Sparkles, Sun, Swords, TrendingUp, X,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
 import { useAppStore } from "@/lib/store";
@@ -65,8 +65,8 @@ function NavLinks({
             className={cn(
               "relative flex items-center gap-4 rounded-xl px-4 py-3.5 text-lg font-bold transition-all duration-200",
               isActive
-                ? "bg-[#f4f6f8] text-[#23ab7e]"
-                : "text-[#8f96a3] hover:bg-[#f4f6f8] hover:text-[#1a1d2e]"
+                ? "bg-[#f4f6f8] dark:bg-[#1e2030] text-[#23ab7e]"
+                : "text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0]"
             )}
           >
             {isActive && (
@@ -109,8 +109,8 @@ function NavLinks({
             className={cn(
               "relative flex items-center gap-4 rounded-xl px-4 py-3.5 text-lg font-bold transition-all duration-200",
               isActive
-                ? "bg-[#f4f6f8] text-[#23ab7e]"
-                : "text-[#8f96a3] hover:bg-[#f4f6f8] hover:text-[#1a1d2e]"
+                ? "bg-[#f4f6f8] dark:bg-[#1e2030] text-[#23ab7e]"
+                : "text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0]"
             )}
           >
             {isActive && (
@@ -137,11 +137,11 @@ function SidebarBottom({ t, collapsed, onNavClick }: {
   onNavClick?: () => void;
 }) {
   return (
-    <div className="border-t-2 border-[#e8eaef] p-4">
+    <div className="border-t-2 border-[#e8eaef] dark:border-[#2a2d3e] p-4">
       <Link
         href="/settings"
         onClick={onNavClick}
-        className="flex items-center gap-4 rounded-xl px-4 py-3 text-lg font-medium text-[#8f96a3] hover:bg-[#f4f6f8] hover:text-[#1a1d2e] transition-colors"
+        className="flex items-center gap-4 rounded-xl px-4 py-3 text-lg font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
       >
         <Settings className="h-7 w-7" />
         {!collapsed && <span>{t.settings}</span>}
@@ -149,7 +149,7 @@ function SidebarBottom({ t, collapsed, onNavClick }: {
       <form action={signOut}>
         <button
           type="submit"
-          className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-lg font-medium text-[#8f96a3] hover:bg-[#f4f6f8] hover:text-[#1a1d2e] transition-colors"
+          className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-lg font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
         >
           <LogOut className="h-7 w-7" />
           {!collapsed && <span>{t.logout}</span>}
@@ -266,11 +266,11 @@ function MobileSidebar({
         aria-modal="true"
         aria-label="Navigation menu"
         className={cn(
-          "fixed top-0 z-[60] flex h-full w-72 flex-col overflow-hidden bg-white shadow-2xl lg:hidden transition-transform duration-300",
+          "fixed top-0 z-[60] flex h-full w-72 flex-col overflow-hidden bg-white dark:bg-[#0c0e14] shadow-2xl lg:hidden transition-transform duration-300",
           isRtl ? "right-0 border-l-2 border-[#e8eaef]" : "left-0 border-r-2 border-[#e8eaef]"
         )}
       >
-        <div className="flex h-24 items-center justify-between border-b-2 border-[#e8eaef] px-5">
+        <div className="flex h-24 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-5">
           <Link
             href="/dashboard"
             className="flex items-center gap-3"
@@ -279,7 +279,7 @@ function MobileSidebar({
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
               <Sparkles className="h-6 w-6 text-white" />
             </div>
-            <span className="text-2xl font-bold text-[#1a1d2e]">
+            <span className="text-2xl font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
               {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
               <span className="text-[#8054b8]">AI</span>
             </span>
@@ -322,12 +322,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [onboardingPhase, setOnboardingPhase] = useState<"none" | "welcome" | "tour">("none");
   const [searchQuery, setSearchQuery] = useState("");
   const [localeSwitching, setLocaleSwitching] = useState(false);
-  const { user, setUser, locale, setLocale } = useAppStore();
+  const { user, setUser, locale, setLocale, theme, setTheme, toggleTheme } = useAppStore();
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? window.localStorage.getItem("nawaa-locale") : null;
     if (stored === "en" || stored === "ar") setLocale(stored);
   }, [setLocale]);
+
+  // Initialize theme from localStorage
+  useEffect(() => {
+    const savedTheme = typeof window !== "undefined" ? window.localStorage.getItem("nawaa-theme") : null;
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setTheme(savedTheme);
+    } else if (typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    }
+  }, [setTheme]);
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -367,7 +377,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const sidebarWidth = collapsed ? 84 : 288;
 
   return (
-    <div className="flex min-h-screen bg-[#fafbfd] text-[#2d3142] text-base">
+    <div className="flex min-h-screen bg-[#fafbfd] dark:bg-[#0c0e14] text-[#2d3142] dark:text-[#e2e8f0] text-base transition-colors duration-300">
       {onboardingPhase === "welcome" && (
         <OnboardingWelcome
           onComplete={() => {
@@ -388,19 +398,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* ═══ Desktop Sidebar (lg+) ═══ */}
       <aside
         className={cn(
-          "fixed top-0 z-40 hidden lg:flex h-full flex-col overflow-hidden bg-white border-[#e8eaef] transition-[width] duration-300",
+          "fixed top-0 z-40 hidden lg:flex h-full flex-col overflow-hidden bg-white dark:bg-[#0c0e14] border-[#e8eaef] dark:border-[#2a2d3e] transition-[width] duration-300",
           isRtl ? "right-0 border-l-2" : "left-0 border-r-2"
         )}
         style={{ width: sidebarWidth }}
       >
         {/* Logo */}
-        <div className="flex h-24 items-center justify-between border-b-2 border-[#e8eaef] px-5">
+        <div className="flex h-24 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-5">
           {!collapsed && (
             <Link href="/dashboard" className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-[#1a1d2e]">
+              <span className="text-2xl font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
                 {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
                 <span className="text-[#8054b8]">AI</span>
               </span>
@@ -458,7 +468,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         `}</style>
         <div className="nawaa-desktop-content flex flex-1 flex-col min-w-0">
           {/* ── Topbar Header ── */}
-          <header className="sticky top-0 z-30 flex h-20 sm:h-24 items-center gap-3 sm:gap-4 border-b-2 border-[#e8eaef] bg-white/80 px-4 sm:px-8">
+          <header className="sticky top-0 z-30 flex h-20 sm:h-24 items-center gap-3 sm:gap-4 border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-white/80 dark:bg-[#0c0e14]/80 backdrop-blur-sm px-4 sm:px-8">
             {/* Hamburger — visible only on mobile */}
             <button
               type="button"
@@ -482,7 +492,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   onChange={(e) => setSearchQuery(e.target.value)}
                   aria-label={t.search}
                   className={cn(
-                    "h-12 sm:h-14 w-full rounded-xl border-2 border-[#e8eaef] bg-[#fafbfd] text-base sm:text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)]",
+                    "h-12 sm:h-14 w-full rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-[#fafbfd] dark:bg-[#141620] text-base sm:text-lg text-[#2d3142] dark:text-[#e2e8f0] placeholder:text-[#8f96a3]/50 focus:outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)]",
                     isRtl ? "pl-10 pr-12" : "pl-12 pr-10"
                   )}
                 />
@@ -503,6 +513,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              {/* Theme toggle */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                className="rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] p-2 sm:p-2.5 text-[#505868] dark:text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:border-[#8054b8] transition-all duration-300"
+              >
+                {theme === "dark" ? <Sun className="h-5 w-5 text-[#e67af3]" /> : <Moon className="h-5 w-5 text-[#8054b8]" />}
+              </button>
+
               <button
                 type="button"
                 onClick={() => {

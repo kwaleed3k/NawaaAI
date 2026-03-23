@@ -82,6 +82,41 @@
   --sidebar-ring: #23ab7e;
 }
 
+.dark {
+  --background: #0c0e14;
+  --foreground: #e2e8f0;
+  --card: #141620;
+  --card-foreground: #e2e8f0;
+  --popover: #141620;
+  --popover-foreground: #e2e8f0;
+  --primary: #23ab7e;
+  --primary-foreground: #ffffff;
+  --secondary: #1e2030;
+  --secondary-foreground: #e2e8f0;
+  --muted: #1e2030;
+  --muted-foreground: #8f96a3;
+  --accent: #8054b8;
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.58 0.22 27);
+  --border: #2a2d3e;
+  --input: #2a2d3e;
+  --ring: #23ab7e;
+  --chart-1: #23ab7e;
+  --chart-2: #8054b8;
+  --chart-3: #e67af3;
+  --chart-4: #2dd4a0;
+  --chart-5: #c4a8e8;
+  --radius: 0.75rem;
+  --sidebar: #0c0e14;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #23ab7e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e2030;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #2a2d3e;
+  --sidebar-ring: #23ab7e;
+}
+
 /* ═══════════════════════════════════════
    KEYFRAME ANIMATIONS
    ═══════════════════════════════════════ */
