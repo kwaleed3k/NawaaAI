@@ -177,7 +177,7 @@ export default function OnboardingWelcome({ onComplete }: { onComplete: () => vo
         }}
       >
         <div
-          className="rounded-[32px] p-8 sm:p-12 lg:p-14"
+          className="rounded-[32px] p-6 sm:p-8 lg:p-12"
           style={{
             background: "rgba(255,255,255,0.12)",
             backdropFilter: "blur(40px) saturate(1.8)",

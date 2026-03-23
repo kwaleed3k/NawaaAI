@@ -174,22 +174,22 @@ export default function LoginPage() {
           <div className="absolute top-[25%] left-[10%] w-[80px] h-[80px] rounded-full" style={{ border: "1.5px solid rgba(35,171,126,.08)", transformStyle: "preserve-3d", animation: "nl-ring-rotate-2 20s linear infinite" }} />
           <Dots count={12} className="absolute inset-0" />
           {/* Gradient spheres */}
-          <div className="absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full" style={{ background: "radial-gradient(circle, rgba(166,255,234,0.12), transparent 70%)" }} />
-          <div className="absolute -bottom-16 -left-16 w-[250px] h-[250px] rounded-full" style={{ background: "radial-gradient(circle, rgba(128,84,184,0.08), transparent 70%)" }} />
+          <div className="hidden sm:block absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full" style={{ background: "radial-gradient(circle, rgba(166,255,234,0.12), transparent 70%)" }} />
+          <div className="hidden sm:block absolute -bottom-16 -left-16 w-[250px] h-[250px] rounded-full" style={{ background: "radial-gradient(circle, rgba(128,84,184,0.08), transparent 70%)" }} />
         </div>
 
         {/* Top bar */}
-        <div className="absolute top-8 left-8 sm:left-12 z-10">
+        <div className="absolute top-4 left-4 sm:top-8 sm:left-12 z-10">
           <Link href="/" className="flex items-center gap-2.5 text-base font-medium text-[#5a6275] no-underline px-5 py-3 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#e8eaef] hover:bg-white hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">
             <BackArrow className="w-5 h-5" />{isRtl ? "الرئيسية" : "Home"}
           </Link>
         </div>
-        <div className="absolute top-8 right-8 sm:right-12 z-10">
+        <div className="absolute top-4 right-4 sm:top-8 sm:right-12 z-10">
           <button onClick={() => setLocale(locale === "ar" ? "en" : "ar")} className="text-base font-medium text-[#5a6275] px-5 py-3 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#e8eaef] cursor-pointer hover:bg-white hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">{locale === "ar" ? "English" : "العربية"}</button>
         </div>
 
         {/* Mobile logo */}
-        <div className="absolute top-20 left-8 sm:left-12 flex items-center gap-3 lg:hidden">
+        <div className="absolute top-16 left-4 sm:top-20 sm:left-12 flex items-center gap-3 lg:hidden">
           <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
             <svg viewBox="0 0 32 32" fill="none" className="w-6 h-6"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
@@ -198,7 +198,7 @@ export default function LoginPage() {
 
         {/* Form card with glassmorphism */}
         <div
-          className="w-full max-w-[600px] relative z-10 mt-16 lg:mt-0 mx-8 sm:mx-12 rounded-[32px] p-10 sm:p-14"
+          className="w-full max-w-full sm:max-w-[520px] relative z-10 mt-16 lg:mt-0 mx-4 sm:mx-12 rounded-2xl sm:rounded-[32px] p-6 sm:p-10 lg:p-14"
           style={{
             background: "rgba(255,255,255,0.75)",
             backdropFilter: "blur(24px) saturate(1.5)",

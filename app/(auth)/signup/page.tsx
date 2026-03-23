@@ -144,18 +144,18 @@ export default function SignupPage() {
           <Cube size={15} border="rgba(230,122,243,.08)" bg="rgba(230,122,243,.02)" dur={22} className="absolute top-[60%] right-[15%]" />
           <div className="absolute top-[20%] left-[8%] w-[70px] h-[70px] rounded-full" style={{ border: "1.5px solid rgba(35,171,126,.08)", transformStyle: "preserve-3d", animation: "nl-ring-rotate-2 20s linear infinite" }} />
           <Dots count={15} className="absolute inset-0" />
-          <div className="absolute -top-16 -right-16 w-[250px] h-[250px] rounded-full" style={{ background: "radial-gradient(circle, rgba(166,255,234,0.1), transparent 70%)" }} />
-          <div className="absolute -bottom-12 -left-12 w-[200px] h-[200px] rounded-full" style={{ background: "radial-gradient(circle, rgba(128,84,184,0.07), transparent 70%)" }} />
+          <div className="hidden sm:block absolute -top-16 -right-16 w-[250px] h-[250px] rounded-full" style={{ background: "radial-gradient(circle, rgba(166,255,234,0.1), transparent 70%)" }} />
+          <div className="hidden sm:block absolute -bottom-12 -left-12 w-[200px] h-[200px] rounded-full" style={{ background: "radial-gradient(circle, rgba(128,84,184,0.07), transparent 70%)" }} />
         </div>
 
-        <div className="absolute top-7 left-7 sm:left-10 z-10">
+        <div className="absolute top-4 left-4 sm:top-7 sm:left-10 z-10">
           <Link href="/" className="flex items-center gap-2.5 text-base font-medium text-[#5a6275] no-underline px-5 py-2.5 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#e8eaef] hover:bg-white hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all"><BackArrow className="w-5 h-5" />{isRtl ? "الرئيسية" : "Home"}</Link>
         </div>
-        <div className="absolute top-7 right-7 sm:right-10 z-10">
+        <div className="absolute top-4 right-4 sm:top-7 sm:right-10 z-10">
           <button onClick={() => setLocale(locale === "ar" ? "en" : "ar")} className="text-base font-medium text-[#5a6275] px-5 py-2.5 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#e8eaef] cursor-pointer hover:bg-white hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">{locale === "ar" ? "English" : "العربية"}</button>
         </div>
 
-        <div className="absolute top-[72px] left-7 sm:left-10 flex items-center gap-3 lg:hidden">
+        <div className="absolute top-16 left-4 sm:top-[72px] sm:left-10 flex items-center gap-3 lg:hidden">
           <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
             <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
@@ -164,7 +164,7 @@ export default function SignupPage() {
 
         {/* Form card */}
         <div
-          className="w-full max-w-[640px] relative z-10 mt-14 lg:mt-0 mx-6 sm:mx-10 rounded-[32px] p-8 sm:p-10"
+          className="w-full max-w-full sm:max-w-[560px] relative z-10 mt-14 lg:mt-0 mx-4 sm:mx-10 rounded-2xl sm:rounded-[32px] p-5 sm:p-8 lg:p-10"
           style={{
             background: "rgba(255,255,255,0.75)",
             backdropFilter: "blur(24px) saturate(1.5)",

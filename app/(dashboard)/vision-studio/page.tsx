@@ -244,7 +244,7 @@ export default function VisionStudioPage() {
           ))}
         </div>
         <Skeleton className="h-20 w-full max-w-2xl mx-auto rounded-2xl" style={{ backgroundColor: "#e8eaef" }} />
-        <Skeleton className="h-[400px] w-full max-w-5xl mx-auto rounded-2xl" style={{ backgroundColor: "#f4f6f8", border: "2px solid #e8eaef" }} />
+        <Skeleton className="h-[200px] sm:h-[300px] lg:h-[400px] w-full max-w-5xl mx-auto rounded-2xl" style={{ backgroundColor: "#f4f6f8", border: "2px solid #e8eaef" }} />
       </div>
     );
   }
@@ -710,7 +710,7 @@ export default function VisionStudioPage() {
             value={additionalInstructions}
             onChange={(e) => setAdditionalInstructions(e.target.value)}
             placeholder={tv.extraPlaceholder}
-            className="min-h-[280px] rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40 p-5"
+            className="min-h-[120px] sm:min-h-[200px] lg:min-h-[280px] rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40 p-5"
           />
         </div>
       </div>

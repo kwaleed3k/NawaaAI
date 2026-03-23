@@ -175,7 +175,7 @@ export default function PlannerPage() {
                 <p className="text-base text-[#8f96a3]">{isRtl ? "اختر العلامة التجارية" : "Choose your brand"}</p>
               </div>
             </div>
-            <select value={selectedCompany?.id ?? ""} onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }} className="w-full appearance-none rounded-2xl border-2 border-[#e8eaef] bg-white px-6 h-16 text-lg font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)] cursor-pointer">
+            <select value={selectedCompany?.id ?? ""} onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }} className="w-full appearance-none rounded-2xl border-2 border-[#e8eaef] bg-white px-6 h-12 sm:h-14 lg:h-16 text-lg font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)] cursor-pointer">
               {companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
@@ -217,7 +217,7 @@ export default function PlannerPage() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#2dd4a0] to-[#23ab7e] text-white text-sm font-bold shadow-md">3</div>
                 <h3 className="text-lg font-bold text-[#2d3142]">{tp.weekStart}</h3>
               </div>
-              <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="w-full rounded-2xl border-2 border-[#e8eaef] bg-white px-6 h-16 text-lg font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]" />
+              <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="w-full rounded-2xl border-2 border-[#e8eaef] bg-white px-6 h-12 sm:h-14 lg:h-16 text-lg font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]" />
             </div>
             <div className="rounded-3xl p-8" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(0,0,0,0.02)" }}>
               <div className="flex items-center gap-3 mb-5">
@@ -226,7 +226,7 @@ export default function PlannerPage() {
               </div>
               <div className="flex gap-3">
                 {[{ val: "en" as const, flag: "🇺🇸", label: "English" }, { val: "ar" as const, flag: "🇸🇦", label: "العربية" }].map((l) => (
-                  <button key={l.val} type="button" onClick={() => setOutputLanguage(l.val)} className={cn("flex-1 h-16 rounded-2xl border-2 text-lg font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer", outputLanguage === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8]")}>
+                  <button key={l.val} type="button" onClick={() => setOutputLanguage(l.val)} className={cn("flex-1 h-12 sm:h-14 lg:h-16 rounded-2xl border-2 text-lg font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer", outputLanguage === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8]")}>
                     <span className="text-xl">{l.flag}</span>{l.label}
                   </button>
                 ))}
@@ -243,11 +243,11 @@ export default function PlannerPage() {
                 <p className="text-base text-[#8f96a3]">{isRtl ? "اختياري — وجّه الذكاء الاصطناعي" : "Optional — guide the AI output"}</p>
               </div>
             </div>
-            <Textarea value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} placeholder={tp.focusPlaceholder} className="min-h-[120px] rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3] focus:border-[#e67af3] focus:ring-0 focus:shadow-[0_0_0_4px_rgba(230,122,243,0.1)] transition-all resize-none p-5" />
+            <Textarea value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} placeholder={tp.focusPlaceholder} className="min-h-[80px] sm:min-h-[120px] rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3] focus:border-[#e67af3] focus:ring-0 focus:shadow-[0_0_0_4px_rgba(230,122,243,0.1)] transition-all resize-none p-5" />
           </div>
 
           {/* ── Generate Button ── */}
-          <button onClick={handleGenerate} disabled={generating} className="relative w-full h-20 rounded-3xl border-none text-2xl font-black text-white cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,0.4)] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden" style={{ background: "linear-gradient(135deg, #23ab7e, #1a8a64, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(35,171,126,0.3), 0 4px 12px rgba(128,84,184,0.15)" }}>
+          <button onClick={handleGenerate} disabled={generating} className="relative w-full h-14 sm:h-16 lg:h-20 rounded-3xl border-none text-lg sm:text-xl lg:text-2xl font-black text-white cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,0.4)] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden" style={{ background: "linear-gradient(135deg, #23ab7e, #1a8a64, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(35,171,126,0.3), 0 4px 12px rgba(128,84,184,0.15)" }}>
             <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
             <span className="relative flex items-center justify-center gap-4">
               <Sparkles className="h-7 w-7" />

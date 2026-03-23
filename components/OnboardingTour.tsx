@@ -150,22 +150,31 @@ export default function OnboardingTour({ onComplete }: { onComplete: () => void 
   };
   const goBack = () => { if (current > 0) setCurrent((c) => c - 1); };
 
-  // Tooltip position
+  // Tooltip position — on mobile (<768px) fix to bottom-center; otherwise beside sidebar
   const tooltipStyle: React.CSSProperties = {};
   if (highlightRect) {
     tooltipStyle.position = "fixed";
-    tooltipStyle.top = highlightRect.top;
     tooltipStyle.zIndex = 10001;
-    if (isRtl) {
-      tooltipStyle.right = window.innerWidth - highlightRect.left + 20;
+
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      // Mobile: anchor to bottom-center
+      tooltipStyle.bottom = 20;
+      tooltipStyle.left = 16;
+      tooltipStyle.right = 16;
+      tooltipStyle.top = "auto";
     } else {
-      tooltipStyle.left = highlightRect.right + 20;
-    }
-    // If tooltip would go off screen, position below
-    if ((tooltipStyle.left as number) > window.innerWidth - 420 || (tooltipStyle.right as number) > window.innerWidth - 420) {
-      tooltipStyle.left = highlightRect.left;
-      tooltipStyle.right = undefined;
-      tooltipStyle.top = highlightRect.bottom + 16;
+      tooltipStyle.top = highlightRect.top;
+      if (isRtl) {
+        tooltipStyle.right = window.innerWidth - highlightRect.left + 20;
+      } else {
+        tooltipStyle.left = highlightRect.right + 20;
+      }
+      // If tooltip would go off screen, position below
+      if ((tooltipStyle.left as number) > window.innerWidth - 420 || (tooltipStyle.right as number) > window.innerWidth - 420) {
+        tooltipStyle.left = highlightRect.left;
+        tooltipStyle.right = undefined;
+        tooltipStyle.top = highlightRect.bottom + 16;
+      }
     }
   }
 
@@ -211,7 +220,7 @@ export default function OnboardingTour({ onComplete }: { onComplete: () => void 
 
       {/* Tooltip card */}
       <div
-        className="fixed w-[380px] sm:w-[420px]"
+        className="fixed w-[calc(100vw-32px)] sm:w-[380px] lg:w-[420px]"
         style={{ ...tooltipStyle, zIndex: 10001 }}
         key={current}
       >

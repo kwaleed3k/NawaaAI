@@ -159,7 +159,7 @@ export default function DashboardPage() {
           <div className="relative">
             <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] animate-pulse opacity-20" />
             <div className="absolute -inset-10 rounded-[2rem] bg-gradient-to-br from-[#23ab7e] to-[#8054b8] animate-pulse opacity-10" />
-            <div className="relative flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_12px_40px_rgba(35,171,126,0.4)] animate-float">
+            <div className="relative flex h-20 w-20 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_12px_40px_rgba(35,171,126,0.4)] animate-float">
               <Sparkles className="h-14 w-14 text-white" />
             </div>
           </div>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
         <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-nawaa">
           {companies.map((c, i) => (
             <div key={c.id}>
-              <Link href="/companies" className="group block min-w-[280px] shrink-0 rounded-2xl border-2 border-[#e8eaef] bg-white p-7 text-center hover:border-[#2dd4a0] hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <Link href="/companies" className="group block min-w-[240px] sm:min-w-[280px] shrink-0 rounded-2xl border-2 border-[#e8eaef] bg-white p-7 text-center hover:border-[#2dd4a0] hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div
                   className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-2xl text-4xl font-black text-white overflow-hidden shadow-lg"
                   style={{ backgroundColor: c.brand_colors?.[0] || "#23ab7e" }}
@@ -405,7 +405,7 @@ export default function DashboardPage() {
               </Link>
             </div>
           ))}
-          <Link href="/companies" className="min-w-[280px] shrink-0 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] p-7 hover:border-[#2dd4a0] hover:bg-[#f4f6f8]/50 transition-all duration-300 group">
+          <Link href="/companies" className="min-w-[240px] sm:min-w-[280px] shrink-0 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] p-7 hover:border-[#2dd4a0] hover:bg-[#f4f6f8]/50 transition-all duration-300 group">
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white group-hover:bg-[#a6ffea] transition-colors">
               <Plus className="h-8 w-8 text-[#1a8a64]" />
             </div>

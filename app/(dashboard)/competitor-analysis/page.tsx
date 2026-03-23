@@ -222,7 +222,7 @@ export default function CompetitorAnalysisPage() {
     <div className="space-y-8 w-full" dir={isRtl ? "rtl" : "ltr"}>
       {/* ===== PAGE HEADER BANNER ===== */}
       <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
+        <div className="hidden sm:block absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
         <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
         <div className="relative z-10 p-6 sm:p-8">
           <div className="flex items-center gap-6">
@@ -654,9 +654,9 @@ export default function CompetitorAnalysisPage() {
                       {analysisData.comparisonMatrix.categories.map((cat, idx) => (
                         <tr key={cat} className="border-b border-[#e8eaef]/50 hover:bg-[#fafbfd] transition-colors">
                           <td className="py-4 px-3 font-bold text-lg text-[#8f96a3]">{cat}</td>
-                          <td className="py-4 px-3 min-w-[200px]"><ScoreBar score={analysisData.comparisonMatrix.yourBrand[idx]} color="#23ab7e" /></td>
+                          <td className="py-4 px-3 min-w-0"><ScoreBar score={analysisData.comparisonMatrix.yourBrand[idx]} color="#23ab7e" /></td>
                           {Object.entries(analysisData.comparisonMatrix.competitors).map(([n, scores]) => (
-                            <td key={n} className="py-4 px-3 min-w-[200px]"><ScoreBar score={scores[idx]} /></td>
+                            <td key={n} className="py-4 px-3 min-w-0"><ScoreBar score={scores[idx]} /></td>
                           ))}
                         </tr>
                       ))}
@@ -799,7 +799,7 @@ export default function CompetitorAnalysisPage() {
       {loading && (
         <div className="rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#f4f6f8] via-white to-[#fafbfd] flex flex-col items-center justify-center py-24 px-8 text-center">
           <div className="relative mb-8">
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#23ab7e] to-[#8054b8] flex items-center justify-center shadow-[0_8px_32px_rgba(35,171,126,0.3)] animate-pulse">
+            <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-[#23ab7e] to-[#8054b8] flex items-center justify-center shadow-[0_8px_32px_rgba(35,171,126,0.3)] animate-pulse">
               <Swords className="h-14 w-14 text-white animate-bounce" />
             </div>
             <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-[#8054b8] to-[#A78BFA] flex items-center justify-center shadow-lg animate-spin" style={{ animationDuration: "3s" }}>

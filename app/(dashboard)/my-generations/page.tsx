@@ -231,7 +231,7 @@ export default function MyGenerationsPage() {
               <div className="relative h-12 w-80 overflow-hidden rounded-xl bg-white/20">
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
               </div>
-              <div className="relative h-8 w-[28rem] overflow-hidden rounded-xl bg-white/15">
+              <div className="relative h-8 w-full max-w-[28rem] overflow-hidden rounded-xl bg-white/15">
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite_0.3s] bg-gradient-to-r from-transparent via-white/25 to-transparent" />
               </div>
             </div>

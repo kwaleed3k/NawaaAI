@@ -113,11 +113,11 @@ export default function InsightsPage() {
         {/* Gradient border wrapper */}
         <div className="relative rounded-3xl p-[3px]">
           <div className="absolute inset-0 rounded-3xl nl-aurora-bg" />
-          <div className="relative rounded-3xl bg-gradient-to-b from-[#fafbfd] to-white px-8 py-24 md:px-14 md:py-32">
+          <div className="relative rounded-3xl bg-gradient-to-b from-[#fafbfd] to-white px-8 py-12 sm:py-16 md:py-24 md:px-14 lg:py-32">
             <div className="flex flex-col items-center justify-center text-center">
               {/* Animated icon */}
               <div
-                className="relative flex h-40 w-40 items-center justify-center rounded-full nl-aurora-bg shadow-lg shadow-[#23ab7e]/25"
+                className="relative flex h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 items-center justify-center rounded-full nl-aurora-bg shadow-lg shadow-[#23ab7e]/25"
               >
                 <TrendingUp className="text-white" style={{ width: 80, height: 80 }} />
                 {/* Outer ring pulse */}
@@ -144,7 +144,7 @@ export default function InsightsPage() {
                     className={`group cursor-default rounded-3xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-8 text-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40`}
                   >
                     <div
-                      className={`mx-auto flex h-18 w-18 items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconBg} h-[72px] w-[72px]`}
+                      className={`mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconBg} h-12 w-12 sm:h-[72px] sm:w-[72px]`}
                     >
                       <item.icon
                         className="h-9 w-9 transition-transform duration-300 group-hover:rotate-12"
