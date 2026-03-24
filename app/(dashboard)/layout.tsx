@@ -513,16 +513,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-              {/* Theme toggle */}
-              <button
-                type="button"
-                onClick={toggleTheme}
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                className="rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] p-2 sm:p-2.5 text-[#505868] dark:text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:border-[#8054b8] transition-all duration-300"
-              >
-                {theme === "dark" ? <Sun className="h-5 w-5 text-[#e67af3]" /> : <Moon className="h-5 w-5 text-[#8054b8]" />}
-              </button>
-
               <button
                 type="button"
                 onClick={() => {
