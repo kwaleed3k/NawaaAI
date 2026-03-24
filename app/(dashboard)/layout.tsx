@@ -530,10 +530,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               >
                 {locale === "ar" ? "EN" : "عر"}
               </button>
-              <span className="hidden xl:inline text-lg text-[#8f96a3]">
-                AI Credits: <span className="text-[#23ab7e] font-bold">47</span>{" "}
-                {messages[locale].dashboard.creditsRemaining}
-              </span>
               <ClientOnly fallback={
                 <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-lg font-bold text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]">
                   {extractInitials(displayName)}
