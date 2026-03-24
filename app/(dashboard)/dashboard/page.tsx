@@ -136,14 +136,14 @@ export default function DashboardPage() {
   const days = latestPlan?.plan_data?.days?.slice(0, 7) || [];
 
   /* ── Quote Rotation — 10s instead of 3s to reduce re-renders ── */
-  const [quoteIndex, setQuoteIndex] = useState(() => Math.floor(Math.random() * MARKETING_QUOTES_EN.length));
+  const [quoteIndex, setQuoteIndex] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => setQuoteIndex((p) => (p + 1) % MARKETING_QUOTES_EN.length), 10000);
     return () => clearInterval(interval);
   }, []);
 
   /* ── Loading State ── */
-  const [lineIndex, setLineIndex] = useState(() => Math.floor(Math.random() * LOADING_LINES_EN.length));
+  const [lineIndex, setLineIndex] = useState(0);
   useEffect(() => {
     if (!loading) return;
     const interval = setInterval(() => setLineIndex((p) => (p + 1) % LOADING_LINES_EN.length), 2400);

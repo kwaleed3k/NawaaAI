@@ -24,12 +24,12 @@ function Dots({ count, className }: { count: number; className?: string }) {
     <div className={className}>
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="absolute rounded-full" style={{
-          width: 2 + Math.random() * 4, height: 2 + Math.random() * 4,
-          top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%`,
+          width: 2 + ((i * 7 + 3) % 4), height: 2 + ((i * 11 + 2) % 4),
+          top: `${((i * 7 + 13) % 100)}%`, left: `${((i * 11 + 37) % 100)}%`,
           background: ["#a6ffea", "#e67af3", "#c4a8e8", "#23ab7e", "#f5c6fa"][i % 5],
-          opacity: 0.15 + Math.random() * 0.25,
-          animation: `nl-float-particle ${8 + Math.random() * 10}s ease-in-out infinite`,
-          animationDelay: `${Math.random() * 5}s`,
+          opacity: 0.15 + ((i * 7 + 13) % 25) / 100,
+          animation: `nl-float-particle ${8 + ((i * 7 + 13) % 10)}s ease-in-out infinite`,
+          animationDelay: `${((i * 11 + 37) % 50) / 10}s`,
         }} />
       ))}
     </div>

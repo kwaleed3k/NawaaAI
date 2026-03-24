@@ -38,22 +38,26 @@ function Cube3D({ size, border, bg, dur, reverse }: {
 function Particles({ count, className }: { count: number; className?: string }) {
   return (
     <div className={className}>
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: 3 + Math.random() * 5,
-            height: 3 + Math.random() * 5,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            background: ["#23ab7e", "#8054b8", "#e67af3", "#a6ffea", "#c4a8e8"][i % 5],
-            opacity: 0.15 + Math.random() * 0.25,
-            animation: `nl-float-particle ${8 + Math.random() * 12}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 6}s`,
-          }}
-        />
-      ))}
+      {Array.from({ length: count }).map((_, i) => {
+        const s1 = (i * 7 + 13) % 100;
+        const s2 = (i * 11 + 37) % 100;
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: 3 + (s1 % 5),
+              height: 3 + (s2 % 5),
+              top: `${s1}%`,
+              left: `${s2}%`,
+              background: ["#23ab7e", "#8054b8", "#e67af3", "#a6ffea", "#c4a8e8"][i % 5],
+              opacity: 0.15 + (s1 % 25) / 100,
+              animation: `nl-float-particle ${8 + (s1 % 12)}s ease-in-out infinite`,
+              animationDelay: `${(s2 % 60) / 10}s`,
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
