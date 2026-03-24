@@ -109,7 +109,11 @@ export default function SettingsPage() {
         .from("avatars")
         .getPublicUrl(filePath);
 
-      const publicUrl = urlData.publicUrl;
+      // Ensure the URL includes /public/ for unauthenticated access
+      let publicUrl = urlData.publicUrl;
+      if (publicUrl && !publicUrl.includes("/public/")) {
+        publicUrl = publicUrl.replace("/storage/v1/object/", "/storage/v1/object/public/");
+      }
 
       const { data, error: updateError } = await supabase.auth.updateUser({
         data: { avatar_url: publicUrl },
@@ -234,212 +238,84 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* ═══════════════════ AVATAR SECTION ═══════════════════ */}
-      <div className="flex flex-col items-center gap-3">
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploadingAvatar}
-          className="group relative flex-shrink-0"
-          aria-label={t.uploadAvatar}
-        >
-          {/* Gradient border ring */}
-          <div className="absolute -inset-[3px] rounded-full bg-gradient-to-br from-[#23ab7e] to-[#8054b8] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-white overflow-hidden">
-            {isUploadingAvatar ? (
-              <svg className="animate-spin h-7 w-7 text-[#8054b8]" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-            ) : avatarUrl ? (
-              <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
-            ) : (
-              <span className="text-2xl font-black text-[#8054b8]">{initials}</span>
-            )}
-            {/* Camera overlay on hover */}
-            {!isUploadingAvatar && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="h-6 w-6 text-white" />
+      {/* ═══════════════════ PROFILE + AVATAR ═══════════════════ */}
+      <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8)" }} />
+        <div className="p-8 sm:p-10">
+          <div className="flex items-center gap-6 mb-8">
+            {/* Avatar */}
+            <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploadingAvatar} className="group relative flex-shrink-0" aria-label={t.uploadAvatar}>
+              <div className="absolute -inset-[3px] rounded-full opacity-80 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)" }} />
+              <div className="relative flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full bg-white overflow-hidden">
+                {isUploadingAvatar ? (
+                  <svg className="animate-spin h-8 w-8 text-[#8054b8]" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+                ) : avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                ) : (
+                  <span className="text-3xl font-black text-[#8054b8]">{initials}</span>
+                )}
+                {!isUploadingAvatar && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="h-7 w-7 text-white" />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleAvatarUpload}
-          className="hidden"
-        />
-        {avatarError && (
-          <p className="text-sm font-bold text-red-500">{avatarError}</p>
-        )}
-      </div>
+            </button>
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
 
-      {/* ═══════════════════ SETTINGS GRID ═══════════════════ */}
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* ── Profile Section ── */}
-        <div className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#23ab7e] to-[#1a8a64]" />
-          <div className="p-8">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#1a8a64] shadow-lg shadow-[#23ab7e]/20">
-                <User className="h-7 w-7 text-white" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.profile}</h2>
-            </div>
-            <div className="space-y-6">
-              <div>
-                <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.fullName}</label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-lg text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.email}</label>
-                <input
-                  type="email"
-                  value={user?.email || ""}
-                  readOnly
-                  className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#f4f6f8] px-5 text-lg text-[#8f96a3] cursor-not-allowed"
-                />
-                <p className="mt-2 text-lg text-[#8f96a3]">
-                  {locale === "ar"
-                    ? "\u0644\u0627 \u064a\u0645\u0643\u0646 \u062a\u063a\u064a\u064a\u0631 \u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a"
-                    : "Email cannot be changed"}
-                </p>
-              </div>
+            <div className="flex-1">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142]">{t.profile}</h2>
+              <p className="text-base text-[#8f96a3] mt-1">{user?.email}</p>
+              {avatarError && <p className="text-sm font-bold text-red-500 mt-1">{avatarError}</p>}
             </div>
           </div>
-        </div>
 
-        {/* ── Agency Section ── */}
-        <div className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#e67af3] to-[#f5c6fa]" />
-          <div className="p-8">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e67af3] to-[#f5c6fa] shadow-lg shadow-[#e67af3]/20">
-                <Building2 className="h-7 w-7 text-white" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.agency}</h2>
-            </div>
-            <div className="space-y-6">
-              <div>
-                <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.agencyName}</label>
-                <input
-                  type="text"
-                  value={agencyName}
-                  onChange={(e) => setAgencyName(e.target.value)}
-                  placeholder={t.agencyNamePlaceholder}
-                  className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.agencyType}</label>
-                <select
-                  value={agencyType}
-                  onChange={(e) => setAgencyType(e.target.value)}
-                  className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-lg text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all"
-                >
-                  <option value="">{t.selectType}</option>
-                  {AGENCY_TYPES.map((type) => (
-                    <option key={type} value={type}>
-                      {t[type]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Preferences Section (full width) ── */}
-        <div className="lg:col-span-2 group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#8054b8] to-[#6d3fa0]" />
-          <div className="p-8">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#6d3fa0] shadow-lg shadow-[#8054b8]/20">
-                <Globe className="h-7 w-7 text-white" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.preferences}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.fullName}</label>
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-base text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all" />
             </div>
             <div>
-              <label className="block text-lg font-bold text-[#1a1d2e] mb-4">{t.language}</label>
-              <div className="grid grid-cols-2 gap-4 max-w-lg">
-                <button
-                  type="button"
-                  onClick={() => setLocale("en")}
-                  className={`relative h-16 rounded-2xl border-2 text-xl font-bold transition-all duration-300 ${
-                    locale === "en"
-                      ? "border-[#23ab7e] bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#23ab7e]/20"
-                      : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e]/40 hover:shadow-md"
-                  }`}
-                >
-                  {locale === "en" && (
-                    <Check className={`absolute top-3 ${isRtl ? "left-3" : "right-3"} h-5 w-5 text-white/70`} />
-                  )}
-                  English
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLocale("ar")}
-                  className={`relative h-16 rounded-2xl border-2 text-xl font-bold transition-all duration-300 ${
-                    locale === "ar"
-                      ? "border-[#23ab7e] bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#23ab7e]/20"
-                      : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e]/40 hover:shadow-md"
-                  }`}
-                >
-                  {locale === "ar" && (
-                    <Check className={`absolute top-3 ${isRtl ? "left-3" : "right-3"} h-5 w-5 text-white/70`} />
-                  )}
-                  {"\u0627\u0644\u0639\u0631\u0628\u064a\u0629"}
-                </button>
-              </div>
+              <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.email}</label>
+              <input type="email" value={user?.email || ""} readOnly className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#f4f6f8] px-5 text-base text-[#8f96a3] cursor-not-allowed" />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.agencyName}</label>
+              <input type="text" value={agencyName} onChange={(e) => setAgencyName(e.target.value)} placeholder={t.agencyNamePlaceholder} className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-base text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all" />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.agencyType}</label>
+              <select value={agencyType} onChange={(e) => setAgencyType(e.target.value)} className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-base text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all">
+                <option value="">{t.selectType}</option>
+                {AGENCY_TYPES.map((type) => <option key={type} value={type}>{t[type]}</option>)}
+              </select>
             </div>
           </div>
+
+          {/* Language */}
+          <div className="mt-6">
+            <label className="block text-sm font-bold text-[#2d3142] mb-3">{t.language}</label>
+            <div className="flex gap-3 max-w-sm">
+              {[{ val: "en" as const, label: "English" }, { val: "ar" as const, label: "العربية" }].map((l) => (
+                <button key={l.val} type="button" onClick={() => setLocale(l.val)} className={`flex-1 h-12 rounded-2xl border-2 text-base font-bold transition-all ${locale === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e]/40"}`}>
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Save */}
+          <button type="button" onClick={handleSave} disabled={saving} className="mt-8 relative h-14 px-10 rounded-2xl text-base font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 overflow-hidden border-none cursor-pointer" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 4px 16px rgba(35,171,126,0.25)" }}>
+            <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
+            <span className="relative flex items-center gap-2">{saving ? <><svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>{t.saving}</> : <><Sparkles className="h-5 w-5" />{t.save}</>}</span>
+          </button>
+          {saved && <p className="mt-3 text-sm font-bold text-[#23ab7e] flex items-center gap-1"><Check className="h-4 w-4" />{t.saved}</p>}
         </div>
       </div>
 
-      {/* ═══════════════════ SAVE BUTTON ═══════════════════ */}
-      <div className="flex flex-col items-center gap-4">
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={saving}
-          className="group/btn relative w-full sm:w-auto sm:min-w-[320px] h-16 rounded-2xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-xl font-black text-white shadow-xl shadow-[#23ab7e]/20 hover:shadow-2xl hover:shadow-[#23ab7e]/30 hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:hover:scale-100 overflow-hidden"
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
-          <span className="relative z-10 flex items-center justify-center gap-3">
-            {saving ? (
-              <>
-                <svg className="animate-spin h-6 w-6" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-                {t.saving}
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-6 w-6" />
-                {t.save}
-              </>
-            )}
-          </span>
-        </button>
-        {saved && (
-          <div className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#f4f6f8] to-[#f4f6f8] border border-[#a6ffea] px-6 py-3 shadow-sm">
-            <Check className="h-5 w-5 text-[#1a8a64]" />
-            <p className="text-lg font-bold text-[#1a8a64]">{t.saved}</p>
-          </div>
-        )}
-      </div>
-
-      {/* ═══════════════════ CHANGE PASSWORD SECTION ═══════════════════ */}
-      <div className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#8054b8] to-[#6d3fa0]" />
+      {/* ═══════════════════ CHANGE PASSWORD ═══════════════════ */}
+      <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
         <div className="p-8">
           <div className="flex items-center gap-4 mb-8">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#6d3fa0] shadow-lg shadow-[#8054b8]/20">
