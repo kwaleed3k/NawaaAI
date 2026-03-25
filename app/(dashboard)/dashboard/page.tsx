@@ -199,7 +199,11 @@ export default function DashboardPage() {
                 <div key={i} className="flex items-center gap-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3">
                   <s.icon className="h-6 w-6 text-[#a6ffea]" />
                   <div>
-                    <p className="text-2xl font-black text-white">{s.value}</p>
+                    {loading ? (
+                      <div className="h-7 w-10 rounded-lg bg-white/20 animate-pulse" />
+                    ) : (
+                      <p className="text-2xl font-black text-white">{s.value}</p>
+                    )}
                     <p className="text-sm font-medium text-[#a6ffea]/60">{s.label}</p>
                   </div>
                 </div>
@@ -251,7 +255,11 @@ export default function DashboardPage() {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 mb-5">
                 <s.icon className="h-8 w-8 text-white" />
               </div>
-              <p className="text-5xl lg:text-6xl font-black text-white tracking-tight">{s.value.toLocaleString()}</p>
+              {loading ? (
+                <div className="h-12 w-20 rounded-xl bg-white/20 animate-pulse mt-1" />
+              ) : (
+                <p className="text-5xl lg:text-6xl font-black text-white tracking-tight">{s.value.toLocaleString()}</p>
+              )}
               <p className="text-lg font-bold text-white/70 mt-2">{s.label}</p>
             </div>
           </div>
