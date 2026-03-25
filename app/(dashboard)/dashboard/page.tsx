@@ -150,6 +150,114 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [loading]);
 
+  /* ── Insane Loading Screen ── */
+  if (loading) {
+    const lines = locale === "ar" ? LOADING_LINES_AR : LOADING_LINES_EN;
+    const current = lines[lineIndex];
+    const isRtl = locale === "ar";
+    return (
+      <div dir={isRtl ? "rtl" : "ltr"} className="relative flex items-center justify-center min-h-[80vh] overflow-hidden">
+        {/* Aurora background */}
+        <div className="absolute inset-0 nl-aurora-bg opacity-[0.07]" />
+
+        {/* 3D Cubes */}
+        <div className="absolute inset-0 pointer-events-none" style={{ perspective: "800px", transformStyle: "preserve-3d" }}>
+          {[
+            { size: 50, top: "8%", left: "5%", border: "rgba(35,171,126,.15)", bg: "rgba(35,171,126,.04)", dur: 16 },
+            { size: 35, top: "15%", left: "85%", border: "rgba(128,84,184,.15)", bg: "rgba(128,84,184,.04)", dur: 22, reverse: true },
+            { size: 28, top: "75%", left: "8%", border: "rgba(230,122,243,.15)", bg: "rgba(230,122,243,.04)", dur: 18 },
+            { size: 40, top: "70%", left: "88%", border: "rgba(166,255,234,.18)", bg: "rgba(166,255,234,.04)", dur: 24, reverse: true },
+            { size: 20, top: "45%", left: "15%", border: "rgba(196,168,232,.12)", bg: "rgba(196,168,232,.03)", dur: 20 },
+            { size: 25, top: "30%", left: "75%", border: "rgba(245,198,250,.15)", bg: "rgba(245,198,250,.04)", dur: 26, reverse: true },
+          ].map((c, i) => (
+            <div key={i} className="absolute" style={{ top: c.top, left: c.left, transformStyle: "preserve-3d", animation: `nl-drift-${["a", "b", "c", "d", "a", "b"][i]} ${14 + i * 2}s ease-in-out infinite` }}>
+              <div className="nl-cube" style={{ width: c.size, height: c.size, animation: `nl-spin ${c.dur}s linear infinite ${c.reverse ? "reverse" : ""}` }}>
+                {[0,1,2,3,4,5].map(f => <div key={f} style={{ position: "absolute", width: c.size, height: c.size, borderRadius: "25%", border: `2px solid ${c.border}`, background: c.bg, transform: [
+                  `translateZ(${c.size/2}px)`, `translateZ(${-c.size/2}px) rotateY(180deg)`,
+                  `translateX(${-c.size/2}px) rotateY(-90deg)`, `translateX(${c.size/2}px) rotateY(90deg)`,
+                  `translateY(${-c.size/2}px) rotateX(90deg)`, `translateY(${c.size/2}px) rotateX(-90deg)`
+                ][f] }} />)}
+              </div>
+            </div>
+          ))}
+
+          {/* 3D Rings */}
+          <div className="absolute top-[25%] right-[20%] w-[80px] h-[80px] rounded-full" style={{ border: "2px solid rgba(166,255,234,.12)", transformStyle: "preserve-3d", animation: "nl-ring-rotate 12s linear infinite" }}>
+            <div className="absolute inset-[10px] rounded-full" style={{ border: "1.5px solid rgba(128,84,184,.1)" }} />
+          </div>
+          <div className="absolute bottom-[20%] left-[25%] w-[60px] h-[60px] rounded-full" style={{ border: "1.5px solid rgba(230,122,243,.1)", transformStyle: "preserve-3d", animation: "nl-ring-rotate-2 16s linear infinite" }} />
+
+          {/* Gradient Spheres */}
+          <div className="absolute top-[5%] right-[10%] w-[120px] h-[120px] rounded-full" style={{ background: "radial-gradient(circle at 30% 30%, rgba(196,168,232,.2), transparent 70%)", animation: "nl-drift-c 18s ease-in-out infinite" }} />
+          <div className="absolute bottom-[10%] left-[10%] w-[100px] h-[100px] rounded-full" style={{ background: "radial-gradient(circle at 30% 30%, rgba(166,255,234,.2), transparent 70%)", animation: "nl-drift-b 16s ease-in-out infinite" }} />
+
+          {/* Floating particles */}
+          {Array.from({ length: 15 }).map((_, i) => {
+            const s1 = (i * 7 + 13) % 100;
+            const s2 = (i * 11 + 37) % 100;
+            return <div key={i} className="absolute rounded-full" style={{ width: 3 + (s1 % 4), height: 3 + (s2 % 4), top: `${s1}%`, left: `${s2}%`, background: ["#23ab7e", "#8054b8", "#e67af3", "#a6ffea", "#c4a8e8"][i % 5], opacity: 0.15 + (s1 % 20) / 100, animation: `nl-float-particle ${8 + (s1 % 10)}s ease-in-out infinite`, animationDelay: `${(s2 % 50) / 10}s` }} />;
+          })}
+
+          {/* Orbiting dots */}
+          <div className="absolute top-[40%] left-[45%]" style={{ animation: "nl-orbit 14s linear infinite" }}>
+            <div className="w-2 h-2 rounded-full bg-[#23ab7e] opacity-30" />
+          </div>
+          <div className="absolute top-[55%] left-[50%]" style={{ animation: "nl-orbit-lg 18s linear infinite reverse" }}>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#8054b8] opacity-25" />
+          </div>
+        </div>
+
+        {/* Center content */}
+        <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-lg px-6">
+          {/* Animated logo with glow */}
+          <div className="relative">
+            <div className="absolute -inset-8 rounded-[32px] opacity-20" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
+            <div className="absolute -inset-16 rounded-[40px] opacity-10" style={{ background: "linear-gradient(135deg, #8054b8, #e67af3)", animation: "nl-glow-breathe 3s ease-in-out infinite 1s" }} />
+            <div className="relative flex h-24 w-24 items-center justify-center rounded-[24px]" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 16px 48px rgba(35,171,126,0.4), 0 0 80px rgba(128,84,184,0.15)" }}>
+              <Sparkles className="h-12 w-12 text-white" style={{ animation: "nl-spin-slow 8s linear infinite" }} />
+            </div>
+            {/* Pulse ring */}
+            <div className="absolute -inset-3 rounded-[28px]" style={{ border: "2px solid #23ab7e", animation: "nl-pulse-ring 2.5s ease-in-out infinite" }} />
+          </div>
+
+          {/* Text */}
+          <div className="text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#2d3142]" style={{ animation: "nl-fade-up 0.6s ease forwards" }}>
+              {isRtl ? "جارٍ تحميل بياناتك" : "Loading your workspace"}
+            </h2>
+            <p className="text-lg text-[#8f96a3] mt-2" style={{ animation: "nl-fade-up 0.6s ease forwards 0.15s", opacity: 0 }}>
+              {isRtl ? "نجهز لوحة التحكم الخاصة بك" : "Preparing your personalized dashboard"}
+            </p>
+          </div>
+
+          {/* Rotating message card */}
+          <div className="w-full rounded-2xl border border-[#e8eaef] p-5 transition-all duration-300" style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(12px)" }}>
+            <div className="flex items-center gap-4">
+              <span className="text-3xl shrink-0">{current.emoji}</span>
+              <p className="text-base font-semibold text-[#2d3142] leading-snug">{current.text}</p>
+            </div>
+          </div>
+
+          {/* Progress bar with aurora gradient */}
+          <div className="w-full space-y-4">
+            <div className="h-2 rounded-full bg-[#e8eaef] overflow-hidden">
+              <div className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, #23ab7e, #8054b8, #e67af3)", backgroundSize: "200% 100%", animation: "nl-aurora 3s ease infinite" }} />
+            </div>
+
+            {/* Mini feature cards skeleton */}
+            <div className="grid grid-cols-4 gap-3">
+              {["#23ab7e", "#8054b8", "#e67af3", "#2dd4a0"].map((color, i) => (
+                <div key={i} className="h-16 rounded-xl overflow-hidden" style={{ background: `${color}08`, border: `1.5px solid ${color}15` }}>
+                  <div className="h-full w-full" style={{ background: `linear-gradient(90deg, transparent, ${color}10, transparent)`, backgroundSize: "200% 100%", animation: `nl-aurora ${2 + i * 0.3}s ease infinite` }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   /* ── Stat cards config ── */
   const statItems = [
     { label: t.totalCompanies, value: stats.companies, icon: Building2, gradient: "from-[#23ab7e] to-[#1a8a64]", glow: "shadow-[#23ab7e]/25" },
