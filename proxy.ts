@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const protectedPaths = ["/dashboard", "/companies", "/planner", "/vision-studio", "/insights", "/hashtags", "/settings", "/playbook"];
 const authPaths = ["/login", "/signup"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Handle CORS preflight for API routes
   if (request.method === "OPTIONS" && request.nextUrl.pathname.startsWith("/api/")) {
     return new NextResponse(null, {
