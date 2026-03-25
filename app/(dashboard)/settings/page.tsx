@@ -65,7 +65,11 @@ export default function SettingsPage() {
 
   // Avatar state
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [avatarUrl, setAvatarUrl] = useState(user?.user_metadata?.avatar_url || "");
+  // Load avatar from localStorage (not user metadata — avoids cookie bloat)
+  const [avatarUrl, setAvatarUrl] = useState(() => {
+    if (typeof window !== "undefined") return localStorage.getItem("nawaa-avatar-url") || "";
+    return "";
+  });
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [avatarError, setAvatarError] = useState("");
 
@@ -95,46 +99,15 @@ export default function SettingsPage() {
     setAvatarError("");
 
     try {
-      const supabase = createClient();
-      const fileExt = file.name.split(".").pop();
-      const filePath = `${user.id}/${Date.now()}.${fileExt}`;
+      const formData = new FormData();
+      formData.append("file", file);
 
-      const { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, file, { upsert: true });
+      const res = await fetch("/api/upload-avatar", { method: "POST", body: formData });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Upload failed");
 
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(filePath);
-
-      // Ensure the URL includes /public/ for unauthenticated access
-      let publicUrl = urlData.publicUrl;
-      if (publicUrl && !publicUrl.includes("/public/")) {
-        publicUrl = publicUrl.replace("/storage/v1/object/", "/storage/v1/object/public/");
-      }
-
-      const { data, error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrl },
-      });
-
-      if (updateError) throw updateError;
-
-      setAvatarUrl(publicUrl);
-      if (data.user) {
-        setUser({
-          id: data.user.id,
-          email: data.user.email ?? undefined,
-          user_metadata: data.user.user_metadata as {
-            full_name?: string;
-            avatar_url?: string;
-            agency_name?: string;
-            agency_type?: string;
-            has_seen_welcome?: boolean;
-          },
-        });
-      }
+      setAvatarUrl(json.url);
+      localStorage.setItem("nawaa-avatar-url", json.url);
     } catch {
       setAvatarError(t.avatarError);
       setTimeout(() => setAvatarError(""), 3000);
@@ -323,7 +296,7 @@ export default function SettingsPage() {
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.changePassword}</h2>
           </div>
-          <div className="space-y-6 max-w-lg">
+          <form onSubmit={(e) => { e.preventDefault(); handlePasswordUpdate(); }} className="space-y-6 max-w-lg" autoComplete="off">
             {/* New Password */}
             <div>
               <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.newPassword}</label>
@@ -405,8 +378,7 @@ export default function SettingsPage() {
 
             {/* Update button */}
             <button
-              type="button"
-              onClick={handlePasswordUpdate}
+              type="submit"
               disabled={!passwordsMatch || !isPasswordLongEnough || isUpdatingPassword}
               className="group/btn relative h-14 w-full rounded-2xl bg-gradient-to-r from-[#8054b8] to-[#6d3fa0] text-lg font-black text-white shadow-lg shadow-[#8054b8]/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-40 disabled:hover:scale-100 overflow-hidden"
             >
@@ -448,7 +420,7 @@ export default function SettingsPage() {
                 </p>
               </div>
             )}
-          </div>
+          </form>
         </div>
       </div>
 

@@ -105,7 +105,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!user?.id) return;
-    setLoading(true);
+    // Don't block rendering — load data in background
     const supabase = createClient();
     const uid = user.id;
     (async () => {
@@ -149,44 +149,6 @@ export default function DashboardPage() {
     const interval = setInterval(() => setLineIndex((p) => (p + 1) % LOADING_LINES_EN.length), 2400);
     return () => clearInterval(interval);
   }, [loading]);
-
-  if (loading) {
-    const lines = locale === "ar" ? LOADING_LINES_AR : LOADING_LINES_EN;
-    const current = lines[lineIndex];
-    return (
-      <div dir={locale === "ar" ? "rtl" : "ltr"} className="flex items-center justify-center min-h-[75vh]">
-        <div className="flex flex-col items-center gap-10 w-full max-w-md px-6">
-          <div className="relative">
-            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] animate-pulse opacity-20" />
-            <div className="absolute -inset-10 rounded-[2rem] bg-gradient-to-br from-[#23ab7e] to-[#8054b8] animate-pulse opacity-10" />
-            <div className="relative flex h-20 w-20 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_12px_40px_rgba(35,171,126,0.4)] animate-float">
-              <Sparkles className="h-14 w-14 text-white" />
-            </div>
-          </div>
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a1d2e]">{locale === "ar" ? "\u062c\u0627\u0631\u064a \u062a\u062d\u0645\u064a\u0644 \u0628\u064a\u0627\u0646\u0627\u062a\u0643" : "Loading your data"}</h2>
-            <p className="text-base text-[#8f96a3]">{locale === "ar" ? "\u0644\u062d\u0638\u0629 \u0648\u0627\u062d\u062f\u0629 \u0641\u0642\u0637..." : "Just a moment..."}</p>
-          </div>
-          <div className="h-20 w-full flex items-center justify-center">
-            <div className="flex items-center gap-4 rounded-2xl border border-[#e8eaef] bg-white px-6 py-4 shadow-sm w-full transition-opacity duration-300">
-              <span className="text-4xl shrink-0">{current.emoji}</span>
-              <p className="text-base font-semibold text-[#1a1d2e] leading-snug">{current.text}</p>
-            </div>
-          </div>
-          <div className="w-full space-y-3">
-            <div className="h-2 rounded-full bg-[#e8eaef] overflow-hidden">
-              <div className="h-full rounded-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#23ab7e] animate-shimmer" style={{ width: "60%" }} />
-            </div>
-            <div className="grid grid-cols-4 gap-2 opacity-40">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="h-16 rounded-xl bg-[#e8eaef] animate-pulse" />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   /* ── Stat cards config ── */
   const statItems = [

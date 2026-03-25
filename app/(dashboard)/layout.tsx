@@ -546,12 +546,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     align="end"
                     className="border-2 border-[#e8eaef] bg-white text-[#2d3142] rounded-xl p-2"
                   >
-                    <DropdownMenuItem className="focus:bg-[#f4f6f8] rounded-lg px-3 py-2.5 text-lg">
+                    <DropdownMenuItem className="focus:bg-[#f4f6f8] rounded-lg px-3 py-2.5 text-lg font-bold">
                       {displayName}
                     </DropdownMenuItem>
                     <DropdownMenuItem className="rounded-lg px-3 py-2.5 text-lg p-0">
+                      <Link href="/settings" className="w-full flex items-center gap-2 px-3 py-2.5 no-underline text-[#2d3142]">
+                        <Settings className="h-4 w-4 text-[#8f96a3]" />{t.settings}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="rounded-lg px-3 py-2.5 text-lg p-0">
                       <form action={signOut} className="w-full">
-                        <button type="submit" className="w-full text-left px-3 py-2.5">{t.logout}</button>
+                        <button type="submit" className="w-full text-left px-3 py-2.5 flex items-center gap-2">
+                          <LogOut className="h-4 w-4 text-[#8f96a3]" />{t.logout}
+                        </button>
                       </form>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
