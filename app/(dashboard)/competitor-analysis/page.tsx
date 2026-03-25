@@ -72,12 +72,20 @@ function ScoreBar({ score, color, height = "h-3" }: { score: number; color?: str
 function ScoreCircle({ score, size = 80, label }: { score: number; size?: number; label?: string }) {
   const circumference = 2 * Math.PI * 34;
   const offset = circumference - (score / 100) * circumference;
-  const color = score >= 70 ? "#23ab7e" : score >= 40 ? "#F59E0B" : "#ef4444";
+  const gradientId = `score-grad-${score}-${Math.random().toString(36).slice(2, 6)}`;
+  const startColor = score >= 70 ? "#23ab7e" : score >= 40 ? "#F59E0B" : "#ef4444";
+  const endColor = score >= 70 ? "#8054b8" : score >= 40 ? "#ef4444" : "#F59E0B";
   return (
     <div className="flex flex-col items-center gap-1">
       <svg width={size} height={size} viewBox="0 0 80 80">
+        <defs>
+          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={startColor} />
+            <stop offset="100%" stopColor={endColor} />
+          </linearGradient>
+        </defs>
         <circle cx="40" cy="40" r="34" fill="none" stroke="#E8F0EA" strokeWidth="6" />
-        <circle cx="40" cy="40" r="34" fill="none" stroke={color} strokeWidth="6" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" transform="rotate(-90 40 40)" className="transition-all duration-1000 ease-out" />
+        <circle cx="40" cy="40" r="34" fill="none" stroke={`url(#${gradientId})`} strokeWidth="6" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" transform="rotate(-90 40 40)" className="transition-all duration-1000 ease-out" />
         <text x="40" y="44" textAnchor="middle" className="fill-[#2d3142] text-xl font-bold" style={{ fontSize: "20px", fontWeight: 800 }}>{score}</text>
       </svg>
       {label && <span className="text-lg font-bold text-[#8f96a3] text-center">{label}</span>}
@@ -95,11 +103,16 @@ function PriorityBadge({ priority }: { priority: string }) {
   return <span className={`inline-flex items-center px-3 py-1 rounded-xl text-sm font-bold border-2 uppercase tracking-wide ${c[priority.toLowerCase()] || c.medium}`}>{priority}</span>;
 }
 
-function SectionCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`rounded-2xl border-2 border-[#e8eaef] bg-white p-8 ${className}`}>{children}</div>;
+function SectionCard({ children, className = "", accentColor }: { children: React.ReactNode; className?: string; accentColor?: string }) {
+  return (
+    <div className={`rounded-3xl border border-white/20 p-8 relative overflow-hidden ${className}`} style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)" }}>
+      {accentColor && <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: accentColor }} />}
+      {children}
+    </div>
+  );
 }
 
-function SectionTitle({ icon: Icon, children, color = "text-[#23ab7e]" }: { icon: React.ElementType; children: React.ReactNode; color?: string }) {
+function SectionTitle({ icon: Icon, children, color = "text-[#23ab7e]" }: { icon: React.ComponentType<{ className?: string }>; children: React.ReactNode; color?: string }) {
   return <h3 className={`flex items-center gap-3 text-2xl font-extrabold text-[#2d3142] mb-5`}><Icon className={`h-6 w-6 ${color}`} />{children}</h3>;
 }
 
@@ -184,7 +197,7 @@ export default function CompetitorAnalysisPage() {
 
   const addCompetitor = () => { if (competitors.length < 5) setCompetitors([...competitors, { ...emptyCompetitor }]); };
   const removeCompetitor = (i: number) => setCompetitors(competitors.filter((_, j) => j !== i));
-  const updateCompetitor = (i: number, f: keyof Competitor, v: string) => { const u = [...competitors]; u[i] = { ...u[i], [f]: v }; setCompetitors(u); };
+  const updateCompetitor = (i: number, f: keyof Competitor, v: string) => { const u = [...competitors]; u[i] = { ...u[i], [f]: v } as Competitor; setCompetitors(u); };
 
   const runAnalysis = async () => {
     if (!selectedCompany) { setError(t.selectCompany); return; }
@@ -221,22 +234,18 @@ export default function CompetitorAnalysisPage() {
   return (
     <div className="space-y-8 w-full" dir={isRtl ? "rtl" : "ltr"}>
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
-        <div className="hidden sm:block absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
-        <div className="relative z-10 p-6 sm:p-8">
-          <div className="flex items-center gap-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
-              <Swords className="h-5 w-5 text-white" />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
-                  {t.pageTitle}
-                </span>
-              </h1>
-              <p className="mt-1 text-xl sm:text-2xl text-slate-400">{t.pageSub}</p>
-            </div>
+      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
+            <Swords className="h-8 w-8 text-white" />
+          </div>
+          <div className="flex-1">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              {t.pageTitle}
+            </h1>
+            <p className="mt-2 text-lg text-white/60">{t.pageSub}</p>
           </div>
         </div>
       </div>
@@ -279,8 +288,9 @@ export default function CompetitorAnalysisPage() {
       )}
 
       {/* ═══ COMPANY SELECTOR ═══ */}
-      <SectionCard>
-        <div className="flex items-center gap-3 mb-4">
+      <div className="rounded-3xl border border-white/20 p-8" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)" }}>
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-white font-black text-sm">1</div>
           <Building2 className="h-6 w-6 text-[#23ab7e]" />
           <h3 className="font-extrabold text-2xl text-[#2d3142]">{locale === "ar" ? "اختر الشركة" : "Select Company"}</h3>
         </div>
@@ -296,14 +306,17 @@ export default function CompetitorAnalysisPage() {
             ))}
           </div>
         )}
-      </SectionCard>
+      </div>
 
       {/* ═══ COMPETITOR INPUT ═══ */}
-      <SectionCard className="space-y-5">
+      <div className="rounded-3xl border border-white/20 p-8 space-y-5" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)" }}>
         <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-extrabold text-2xl text-[#2d3142]">{t.addCompetitor}</h3>
-            <p className="text-lg text-[#8f96a3]">{t.maxCompetitors} · {competitors.length}/5</p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#6d3fa0] text-white font-black text-sm">2</div>
+            <div>
+              <h3 className="font-extrabold text-2xl text-[#2d3142]">{t.addCompetitor}</h3>
+              <p className="text-lg text-[#8f96a3]">{t.maxCompetitors} · {competitors.length}/5</p>
+            </div>
           </div>
           <button onClick={addCompetitor} disabled={competitors.length >= 5} className="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-[#e8eaef] text-lg font-bold text-[#23ab7e] hover:bg-[#f4f6f8] disabled:opacity-40 transition-colors">
             <Plus className="h-5 w-5" /> {t.addCompetitor}
@@ -314,24 +327,24 @@ export default function CompetitorAnalysisPage() {
           <div key={idx} className="grid grid-cols-1 md:grid-cols-[1fr_1fr_160px_1fr_auto] gap-4 items-end p-5 rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd]">
             <div>
               <label className="text-lg font-bold text-[#8f96a3] mb-1.5 block">{t.competitorName}</label>
-              <input value={comp.name} onChange={(e) => updateCompetitor(idx, "name", e.target.value)} placeholder={locale === "ar" ? "اسم المنافس" : "Competitor name"} className="w-full h-12 rounded-xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors" />
+              <input value={comp.name} onChange={(e) => updateCompetitor(idx, "name", e.target.value)} placeholder={locale === "ar" ? "اسم المنافس" : "Competitor name"} className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors" />
             </div>
             <div>
               <label className="text-lg font-bold text-[#8f96a3] mb-1.5 block">{t.socialHandle}</label>
-              <input value={comp.handle} onChange={(e) => updateCompetitor(idx, "handle", e.target.value)} placeholder="@handle" className="w-full h-12 rounded-xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors" />
+              <input value={comp.handle} onChange={(e) => updateCompetitor(idx, "handle", e.target.value)} placeholder="@handle" className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors" />
             </div>
             <div>
               <label className="text-lg font-bold text-[#8f96a3] mb-1.5 block">{t.platform}</label>
-              <select value={comp.platform} onChange={(e) => updateCompetitor(idx, "platform", e.target.value)} className="w-full h-12 rounded-xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors">
+              <select value={comp.platform} onChange={(e) => updateCompetitor(idx, "platform", e.target.value)} className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors">
                 {PLATFORMS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
               </select>
             </div>
             <div>
               <label className="text-lg font-bold text-[#8f96a3] mb-1.5 block">{t.websiteUrl}</label>
-              <input value={comp.websiteUrl} onChange={(e) => updateCompetitor(idx, "websiteUrl", e.target.value)} placeholder="https://..." className="w-full h-12 rounded-xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors" />
+              <input value={comp.websiteUrl} onChange={(e) => updateCompetitor(idx, "websiteUrl", e.target.value)} placeholder="https://..." className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-4 text-lg text-[#2d3142] focus:border-[#23ab7e] focus:outline-none transition-colors" />
             </div>
             {competitors.length > 1 && (
-              <button onClick={() => removeCompetitor(idx)} className="h-12 w-12 flex items-center justify-center rounded-xl text-[#8f96a3] hover:text-red-500 hover:bg-red-50 transition-colors"><Trash2 className="h-5 w-5" /></button>
+              <button onClick={() => removeCompetitor(idx)} className="h-14 w-14 flex items-center justify-center rounded-2xl text-[#8f96a3] hover:text-red-500 hover:bg-red-50 transition-colors"><Trash2 className="h-5 w-5" /></button>
             )}
           </div>
         ))}
@@ -359,17 +372,27 @@ export default function CompetitorAnalysisPage() {
             </button>
           </div>
         </div>
+      </div>
 
-        <button onClick={runAnalysis} disabled={loading} className="w-full h-14 rounded-2xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white text-lg font-bold shadow-[0_6px_24px_rgba(35,171,126,0.3)] hover:shadow-[0_8px_32px_rgba(35,171,126,0.4)] disabled:opacity-60 transition-all flex items-center justify-center gap-3">
-          {loading ? <><Loader2 className="h-6 w-6 animate-spin" /> {t.analyzing}</> : <><Swords className="h-6 w-6" /> {t.analyze}</>}
+      {/* ═══ ANALYZE BUTTON ═══ */}
+      <div className="rounded-3xl border border-white/20 p-8" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)" }}>
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#f59e0b] to-[#ef4444] text-white font-black text-sm">3</div>
+          <h3 className="font-extrabold text-2xl text-[#2d3142]">{locale === "ar" ? "ابدأ التحليل" : "Launch Analysis"}</h3>
+        </div>
+        <button onClick={runAnalysis} disabled={loading} className="group relative w-full h-16 rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#23ab7e] bg-[length:200%_100%] text-white text-xl font-black shadow-[0_6px_24px_rgba(35,171,126,0.3)] hover:shadow-[0_8px_32px_rgba(35,171,126,0.4)] disabled:opacity-60 transition-all flex items-center justify-center gap-3 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+          <span className="relative z-10 flex items-center gap-3">
+            {loading ? <><Loader2 className="h-6 w-6 animate-spin" /> {t.analyzing}</> : <><Swords className="h-6 w-6" /> {t.analyze}</>}
+          </span>
         </button>
-      </SectionCard>
+      </div>
 
       {/* ═══ RESULTS ═══ */}
       {analysisData && (
         <div className="space-y-6">
           {/* Tab bar */}
-          <div className="flex rounded-2xl border-2 border-[#e8eaef] bg-white p-1.5 gap-1.5">
+          <div className="flex rounded-3xl border border-white/20 p-1.5 gap-1.5" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)" }}>
             {([
               { key: "overview" as const, label: t.overview, icon: Target },
               { key: "compare" as const, label: t.compare, icon: BarChart3 },
@@ -385,13 +408,13 @@ export default function CompetitorAnalysisPage() {
           {activeTab === "overview" && (
             <div className="space-y-6">
               {/* Executive Summary */}
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #23ab7e, #8054b8)">
                 <SectionTitle icon={Target}>{t.executiveSummary}</SectionTitle>
                 <p className="text-lg leading-relaxed text-[#505868] whitespace-pre-line">{analysisData.executiveSummary}</p>
               </SectionCard>
 
               {/* Brand Assessment — SWOT style */}
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #23ab7e, #10b981)">
                 <div className="flex items-center justify-between mb-6">
                   <SectionTitle icon={Shield}>{t.brandAssessment}</SectionTitle>
                   <ScoreCircle score={analysisData.brandAssessment.overallScore} size={100} />
@@ -402,24 +425,24 @@ export default function CompetitorAnalysisPage() {
                   </div>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-5 rounded-2xl bg-green-50/50 border border-green-200">
+                  <div className="p-5 rounded-2xl border border-[#23ab7e]/20 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(35,171,126,0.08), rgba(16,185,129,0.04))" }}>
                     <h4 className="font-bold text-xl text-[#23ab7e] mb-3 flex items-center gap-2"><TrendingUp className="h-5 w-5" /> {t.strengths}</h4>
                     <ul className="space-y-2.5">{analysisData.brandAssessment.strengths.map((s, i) => <li key={i} className="text-lg text-[#505868] leading-relaxed flex items-start gap-2"><span className="text-[#23ab7e] font-bold text-xl mt-0.5">+</span><span>{s}</span></li>)}</ul>
                   </div>
-                  <div className="p-5 rounded-2xl bg-red-50/50 border border-red-200">
+                  <div className="p-5 rounded-2xl border border-red-200/40 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08), rgba(248,113,113,0.04))" }}>
                     <h4 className="font-bold text-xl text-red-600 mb-3 flex items-center gap-2"><AlertTriangle className="h-5 w-5" /> {t.weaknesses}</h4>
                     <ul className="space-y-2.5">{analysisData.brandAssessment.weaknesses.map((w, i) => <li key={i} className="text-lg text-[#505868] leading-relaxed flex items-start gap-2"><span className="text-red-500 font-bold text-xl mt-0.5">-</span><span>{w}</span></li>)}</ul>
                   </div>
                   {analysisData.brandAssessment.opportunities && (
-                    <div className="p-5 rounded-2xl bg-blue-50/50 border border-blue-200">
+                    <div className="p-5 rounded-2xl border border-[#8054b8]/20 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(128,84,184,0.08), rgba(167,139,250,0.04))" }}>
                       <h4 className="font-bold text-xl text-[#6d3fa0] mb-3 flex items-center gap-2"><Sparkles className="h-5 w-5" /> {locale === "ar" ? "الفرص" : "Opportunities"}</h4>
                       <ul className="space-y-2.5">{analysisData.brandAssessment.opportunities.map((o, i) => <li key={i} className="text-lg text-[#505868] leading-relaxed flex items-start gap-2"><span className="text-[#8054b8] font-bold text-xl mt-0.5">★</span><span>{o}</span></li>)}</ul>
                     </div>
                   )}
                   {analysisData.brandAssessment.threats && (
-                    <div className="p-5 rounded-2xl bg-orange-50/50 border border-orange-200">
+                    <div className="p-5 rounded-2xl border border-orange-200/40 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.08), rgba(251,146,60,0.04))" }}>
                       <h4 className="font-bold text-xl text-orange-600 mb-3 flex items-center gap-2"><Crosshair className="h-5 w-5" /> {locale === "ar" ? "التهديدات" : "Threats"}</h4>
-                      <ul className="space-y-2.5">{analysisData.brandAssessment.threats.map((t2, i) => <li key={i} className="text-lg text-[#505868] leading-relaxed flex items-start gap-2"><span className="text-[#f5c6fa] font-bold text-xl mt-0.5">!</span><span>{t2}</span></li>)}</ul>
+                      <ul className="space-y-2.5">{analysisData.brandAssessment.threats.map((t2, i) => <li key={i} className="text-lg text-[#505868] leading-relaxed flex items-start gap-2"><span className="text-orange-500 font-bold text-xl mt-0.5">!</span><span>{t2}</span></li>)}</ul>
                     </div>
                   )}
                 </div>
@@ -430,7 +453,7 @@ export default function CompetitorAnalysisPage() {
                 <h3 className="flex items-center gap-3 text-2xl font-extrabold text-[#2d3142] mb-5"><Swords className="h-6 w-6 text-[#23ab7e]" /> {t.competitorProfiles}</h3>
                 <div className="space-y-6">
                   {analysisData.competitors.map((comp, i) => (
-                    <SectionCard key={i}>
+                    <SectionCard key={i} accentColor="linear-gradient(90deg, #8054b8, #a78bfa)">
                       <div className="flex items-start justify-between mb-5 flex-wrap gap-4">
                         <div className="flex items-center gap-4">
                           <ScoreCircle score={comp.overallScore} size={72} />
@@ -565,11 +588,11 @@ export default function CompetitorAnalysisPage() {
                               <p className="text-lg text-[#505868] leading-7">{comp.paidStrategy}</p>
                             </div>
                           )}
-                          <div className="p-5 rounded-xl bg-green-50/50 border border-green-200">
+                          <div className="p-5 rounded-xl border border-[#23ab7e]/20" style={{ background: "linear-gradient(135deg, rgba(35,171,126,0.08), rgba(16,185,129,0.04))" }}>
                             <p className="text-lg font-bold text-[#23ab7e] mb-2">{t.strengths}</p>
                             {comp.strengths.map((s, j) => <p key={j} className="text-lg text-[#505868] leading-7">+ {s}</p>)}
                           </div>
-                          <div className="p-5 rounded-xl bg-red-50/50 border border-red-200">
+                          <div className="p-5 rounded-xl border border-red-200/40" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08), rgba(248,113,113,0.04))" }}>
                             <p className="text-lg font-bold text-red-600 mb-2">{t.weaknesses}</p>
                             {comp.weakPoints.map((w, j) => <p key={j} className="text-lg text-[#505868] leading-7">- {w}</p>)}
                           </div>
@@ -581,7 +604,7 @@ export default function CompetitorAnalysisPage() {
               </div>
 
               {/* Saudi Market Insights */}
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #0d9488, #06b6d4)">
                 <SectionTitle icon={Globe}>🇸🇦 {t.saudiMarketInsights}</SectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
@@ -611,7 +634,7 @@ export default function CompetitorAnalysisPage() {
 
               {/* Industry Analysis */}
               {analysisData.industryAnalysis && (
-                <SectionCard>
+                <SectionCard accentColor="linear-gradient(90deg, #6366f1, #8054b8)">
                   <SectionTitle icon={TrendingUp}>{locale === "ar" ? "تحليل الصناعة" : "Industry Analysis"}</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-5 rounded-2xl bg-[#fafbfd] border border-[#e8eaef]">
@@ -639,7 +662,7 @@ export default function CompetitorAnalysisPage() {
           {/* ═══ COMPARE TAB ═══ */}
           {activeTab === "compare" && (
             <div className="space-y-6">
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #8054b8, #ec4899)">
                 <SectionTitle icon={BarChart3}>{t.comparisonMatrix}</SectionTitle>
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -686,7 +709,7 @@ export default function CompetitorAnalysisPage() {
             <div className="space-y-6">
               {/* Quick Wins */}
               {analysisData.winningStrategy.quickWins && analysisData.winningStrategy.quickWins.length > 0 && (
-                <SectionCard className="bg-gradient-to-r from-[#23ab7e]/5 to-[#8054b8]/5 border-[#23ab7e]/20">
+                <SectionCard accentColor="linear-gradient(90deg, #f59e0b, #ef4444)" className="bg-gradient-to-r from-[#23ab7e]/5 to-[#8054b8]/5">
                   <SectionTitle icon={Zap} color="text-[#8054b8]">{locale === "ar" ? "مكاسب سريعة — نفذها اليوم!" : "Quick Wins — Do These TODAY!"}</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {analysisData.winningStrategy.quickWins.map((w, i) => (
@@ -700,7 +723,7 @@ export default function CompetitorAnalysisPage() {
               )}
 
               {/* Immediate */}
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #ef4444, #f59e0b)">
                 <SectionTitle icon={Zap} color="text-red-500">{t.immediateActions}</SectionTitle>
                 <div className="space-y-4">
                   {analysisData.winningStrategy.immediate.map((a, i) => (
@@ -716,7 +739,7 @@ export default function CompetitorAnalysisPage() {
               </SectionCard>
 
               {/* Short-term */}
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #8054b8, #a78bfa)">
                 <SectionTitle icon={Calendar} color="text-[#8054b8]">{t.shortTermActions}</SectionTitle>
                 <div className="space-y-4">
                   {analysisData.winningStrategy.shortTerm.map((a, i) => (
@@ -732,7 +755,7 @@ export default function CompetitorAnalysisPage() {
               </SectionCard>
 
               {/* Long-term */}
-              <SectionCard>
+              <SectionCard accentColor="linear-gradient(90deg, #23ab7e, #10b981)">
                 <SectionTitle icon={Rocket} color="text-[#23ab7e]">{t.longTermActions}</SectionTitle>
                 <div className="space-y-4">
                   {analysisData.winningStrategy.longTerm.map((a, i) => (
@@ -749,7 +772,7 @@ export default function CompetitorAnalysisPage() {
 
               {/* Content Series */}
               {analysisData.winningStrategy.contentSeries && analysisData.winningStrategy.contentSeries.length > 0 && (
-                <SectionCard>
+                <SectionCard accentColor="linear-gradient(90deg, #ec4899, #8054b8)">
                   <SectionTitle icon={Sparkles} color="text-[#8054b8]">{locale === "ar" ? "سلاسل محتوى مقترحة" : "Recommended Content Series"}</SectionTitle>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {analysisData.winningStrategy.contentSeries.map((s, i) => (
@@ -795,36 +818,64 @@ export default function CompetitorAnalysisPage() {
         </div>
       )}
 
-      {/* Loading state — big funny messages */}
+      {/* Loading state — 3D animated experience */}
       {loading && (
-        <div className="rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#f4f6f8] via-white to-[#fafbfd] flex flex-col items-center justify-center py-24 px-8 text-center">
+        <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-[#f4f6f8] via-white to-[#fafbfd] flex flex-col items-center justify-center py-24 px-8 text-center relative overflow-hidden" style={{ backdropFilter: "blur(12px)" }}>
+          {/* Floating 3D cubes */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-[10%] left-[15%] w-10 h-10 rounded-lg bg-gradient-to-br from-[#23ab7e]/20 to-[#8054b8]/20 border border-[#23ab7e]/10" style={{ animation: "float-cube 6s ease-in-out infinite", transform: "rotate(45deg) perspective(200px) rotateX(20deg)" }} />
+            <div className="absolute top-[20%] right-[20%] w-8 h-8 rounded-lg bg-gradient-to-br from-[#8054b8]/20 to-[#ec4899]/20 border border-[#8054b8]/10" style={{ animation: "float-cube 5s ease-in-out infinite 1s", transform: "rotate(30deg) perspective(200px) rotateY(20deg)" }} />
+            <div className="absolute bottom-[25%] left-[10%] w-12 h-12 rounded-lg bg-gradient-to-br from-[#06b6d4]/20 to-[#23ab7e]/20 border border-[#06b6d4]/10" style={{ animation: "float-cube 7s ease-in-out infinite 0.5s", transform: "rotate(60deg) perspective(200px) rotateX(30deg)" }} />
+            <div className="absolute bottom-[15%] right-[12%] w-6 h-6 rounded-lg bg-gradient-to-br from-[#f59e0b]/20 to-[#ef4444]/20 border border-[#f59e0b]/10" style={{ animation: "float-cube 4s ease-in-out infinite 2s", transform: "rotate(15deg) perspective(200px) rotateY(25deg)" }} />
+            <div className="absolute top-[50%] left-[5%] w-7 h-7 rounded-lg bg-gradient-to-br from-[#ec4899]/20 to-[#8054b8]/20 border border-[#ec4899]/10" style={{ animation: "float-cube 5.5s ease-in-out infinite 1.5s", transform: "rotate(40deg) perspective(200px) rotateX(15deg)" }} />
+            <div className="absolute top-[40%] right-[8%] w-9 h-9 rounded-lg bg-gradient-to-br from-[#23ab7e]/15 to-[#06b6d4]/15 border border-[#23ab7e]/10" style={{ animation: "float-cube 6.5s ease-in-out infinite 0.8s", transform: "rotate(55deg) perspective(200px) rotateY(30deg)" }} />
+          </div>
+
+          {/* Center circle with sparkles */}
           <div className="relative mb-8">
-            <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-[#23ab7e] to-[#8054b8] flex items-center justify-center shadow-[0_8px_32px_rgba(35,171,126,0.3)] animate-pulse">
-              <Swords className="h-14 w-14 text-white animate-bounce" />
+            <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-[#23ab7e] to-[#8054b8] flex items-center justify-center shadow-[0_8px_40px_rgba(35,171,126,0.35)]" style={{ animation: "pulse-glow 2s ease-in-out infinite" }}>
+              <Swords className="h-14 w-14 sm:h-16 sm:w-16 text-white" style={{ animation: "float-cube 3s ease-in-out infinite" }} />
             </div>
-            <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-[#8054b8] to-[#A78BFA] flex items-center justify-center shadow-lg animate-spin" style={{ animationDuration: "3s" }}>
+            <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-gradient-to-br from-[#f59e0b] to-[#ef4444] flex items-center justify-center shadow-lg" style={{ animation: "orbit-sparkle 4s linear infinite" }}>
               <Sparkles className="h-5 w-5 text-white" />
             </div>
+            <div className="absolute -bottom-2 -left-2 w-8 h-8 rounded-full bg-gradient-to-br from-[#ec4899] to-[#8054b8] flex items-center justify-center shadow-lg" style={{ animation: "orbit-sparkle 5s linear infinite reverse" }}>
+              <Sparkles className="h-4 w-4 text-white" />
+            </div>
+            <div className="absolute top-1/2 -right-6 w-6 h-6 rounded-full bg-gradient-to-br from-[#06b6d4] to-[#23ab7e] flex items-center justify-center shadow-lg" style={{ animation: "orbit-sparkle 3.5s linear infinite 1s" }}>
+              <Star className="h-3 w-3 text-white" />
+            </div>
           </div>
-          <p className="text-3xl md:text-4xl font-black text-[#2d3142] max-w-2xl leading-tight mb-4 transition-all duration-500">
+
+          {/* Rotating fun quotes */}
+          <p className="text-3xl md:text-4xl font-black text-[#2d3142] max-w-2xl leading-tight mb-4 transition-all duration-500" style={{ animation: "fade-text 4s ease-in-out infinite" }}>
             {funnyMessages[loadingMsg]}
           </p>
           <div className="flex items-center gap-3 mt-4">
             <Loader2 className="h-6 w-6 animate-spin text-[#23ab7e]" />
             <p className="text-xl text-[#8f96a3] font-bold">{t.analyzing}...</p>
           </div>
+
+          {/* Aurora progress bar */}
           <div className="mt-8 w-full max-w-md">
-            <div className="h-2 bg-[#E8F0EA] rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-[#23ab7e] to-[#8054b8] rounded-full animate-pulse" style={{ width: "60%", animation: "loading-bar 8s ease-in-out infinite" }} />
+            <div className="h-3 bg-[#E8F0EA] rounded-full overflow-hidden">
+              <div className="h-full rounded-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8, #ec4899, #23ab7e)", backgroundSize: "300% 100%", animation: "aurora-bar 8s ease-in-out infinite, loading-bar 8s ease-in-out infinite" }} />
             </div>
           </div>
-          <style>{`@keyframes loading-bar { 0% { width: 5%; } 50% { width: 75%; } 100% { width: 5%; } }`}</style>
+          <style>{`
+            @keyframes loading-bar { 0% { width: 5%; } 50% { width: 85%; } 100% { width: 5%; } }
+            @keyframes aurora-bar { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+            @keyframes float-cube { 0%, 100% { transform: translateY(0px) rotate(45deg); } 50% { transform: translateY(-20px) rotate(45deg); } }
+            @keyframes pulse-glow { 0%, 100% { box-shadow: 0 8px 40px rgba(35,171,126,0.35); } 50% { box-shadow: 0 12px 60px rgba(128,84,184,0.45); } }
+            @keyframes orbit-sparkle { 0% { transform: rotate(0deg) translateX(8px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(8px) rotate(-360deg); } }
+            @keyframes fade-text { 0%, 100% { opacity: 1; } 45% { opacity: 1; } 50% { opacity: 0.6; } 55% { opacity: 1; } }
+          `}</style>
         </div>
       )}
 
       {/* Empty state */}
       {!analysisData && !loading && (
-        <div className="rounded-2xl border-2 border-dashed border-[#e8eaef] bg-white flex flex-col items-center justify-center py-20 text-center">
+        <div className="rounded-3xl border-2 border-dashed border-[#e8eaef]/50 flex flex-col items-center justify-center py-20 text-center" style={{ background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)" }}>
           <Swords className="h-16 w-16 text-[#e8eaef] mb-5" />
           <p className="text-[#8f96a3] text-2xl font-medium">{t.noAnalysisYet}</p>
         </div>

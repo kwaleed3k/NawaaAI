@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@/lib/openai";
 import { authenticateRequest, checkRateLimit, validateExternalUrl, validateStringInput, MAX_STRING_LENGTH } from "@/lib/api-auth";
+import { braveWebSearch, braveNewsSearch, isBraveConfigured } from "@/lib/services/brave-search";
 
 /* ═══════════════════════════════════════════════════
    DEEP RESEARCH ENGINE — Real web scraping + search
@@ -125,27 +126,30 @@ async function deepScrapeWebsite(baseUrl: string): Promise<string> {
   return results.join("\n\n");
 }
 
-/* Search Google for real company intelligence */
-async function searchGoogle(query: string): Promise<string> {
+/* Search the web using Brave Search API (replaces unreliable Google HTML scraping) */
+async function searchWeb(query: string, isNews = false): Promise<{ text: string; resultCount: number }> {
   try {
-    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&hl=en&num=8`;
-    const html = await fetchPage(searchUrl, 10000);
-    if (!html) return "Google search failed";
+    if (!isBraveConfigured()) {
+      return { text: "Search API not configured (missing BRAVE_API_KEY)", resultCount: 0 };
+    }
 
-    // Extract search result snippets
-    const text = html
-      .replace(/<script[\s\S]*?<\/script>/gi, " ")
-      .replace(/<style[\s\S]*?<\/style>/gi, " ")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/&nbsp;/g, " ")
-      .replace(/&amp;/g, "&")
-      .replace(/&#\d+;/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    if (isNews) {
+      const response = await braveNewsSearch(query, { count: 8, freshness: "py" });
+      if (response.results.length === 0) return { text: "No news results found", resultCount: 0 };
+      const formatted = response.results
+        .map((r) => `• [${r.age || "recent"}] ${r.title}\n  ${r.url}\n  ${r.description}`)
+        .join("\n\n");
+      return { text: formatted, resultCount: response.results.length };
+    }
 
-    return text.slice(0, 3000);
+    const response = await braveWebSearch(query, { count: 8 });
+    if (response.results.length === 0) return { text: "No search results found", resultCount: 0 };
+    const formatted = response.results
+      .map((r) => `• ${r.title}\n  ${r.url}\n  ${r.description}`)
+      .join("\n\n");
+    return { text: formatted, resultCount: response.results.length };
   } catch {
-    return "Search failed";
+    return { text: "Search failed", resultCount: 0 };
   }
 }
 
@@ -221,18 +225,45 @@ export async function POST(request: NextRequest) {
     }
 
     // ── PHASE 1: Deep research on ALL competitors in parallel ──
+    // Track data quality metrics across all research
+    let websitesScraped = 0;
+    let websitesFailed = 0;
+    let socialProfilesFound = 0;
+    let searchResultsFound = 0;
+
     // Use Promise.allSettled so one failed competitor doesn't kill the entire request
     const settledResults = await Promise.allSettled(
       competitors.map(async (c: { name: string; handle?: string; platform?: string; websiteUrl?: string }) => {
-        const [websiteData, socialData, googleCompanyInfo, googleReviews, googleNews] = await Promise.allSettled([
+        const [websiteData, socialData, searchCompanyInfo, searchReviews, searchNews] = await Promise.allSettled([
           c.websiteUrl ? deepScrapeWebsite(c.websiteUrl) : Promise.resolve("No website URL provided"),
           c.handle ? scrapeSocialProfile(c.handle, c.platform || "instagram") : Promise.resolve("No social handle provided"),
-          searchGoogle(`"${c.name}" company about Saudi Arabia`),
-          searchGoogle(`"${c.name}" reviews rating customers`),
-          searchGoogle(`"${c.name}" news latest 2024 2025`),
+          searchWeb(`"${c.name}" company about Saudi Arabia`),
+          searchWeb(`"${c.name}" reviews rating customers`),
+          searchWeb(`"${c.name}" news latest 2024 2025`, true),
         ]);
 
-        const val = (r: PromiseSettledResult<string | null>) => r.status === "fulfilled" ? (r.value || "No data") : "Research failed";
+        const valStr = (r: PromiseSettledResult<string | null>) => r.status === "fulfilled" ? (r.value || "No data") : "Research failed";
+        const valSearch = (r: PromiseSettledResult<{ text: string; resultCount: number }>) => {
+          if (r.status === "fulfilled") {
+            searchResultsFound += r.value.resultCount;
+            return r.value.text;
+          }
+          return "Research failed";
+        };
+
+        // Track website scraping success/failure
+        if (c.websiteUrl) {
+          if (websiteData.status === "fulfilled" && websiteData.value && !websiteData.value.includes("Could not fetch")) {
+            websitesScraped++;
+          } else {
+            websitesFailed++;
+          }
+        }
+
+        // Track social profile success
+        if (c.handle && socialData.status === "fulfilled" && socialData.value && !socialData.value.includes("Could not scrape")) {
+          socialProfilesFound++;
+        }
 
         return {
           name: c.name,
@@ -240,11 +271,11 @@ export async function POST(request: NextRequest) {
           platform: c.platform || "N/A",
           websiteUrl: c.websiteUrl || "N/A",
           research: [
-            `══ WEBSITE DEEP SCRAPE ══\n${val(websiteData)}`,
-            `══ SOCIAL MEDIA PROFILE ══\n${val(socialData)}`,
-            `══ GOOGLE: COMPANY INFO ══\n${val(googleCompanyInfo)}`,
-            `══ GOOGLE: CUSTOMER REVIEWS ══\n${val(googleReviews)}`,
-            `══ GOOGLE: LATEST NEWS ══\n${val(googleNews)}`,
+            `══ WEBSITE DEEP SCRAPE ══\n${valStr(websiteData)}`,
+            `══ SOCIAL MEDIA PROFILE ══\n${valStr(socialData)}`,
+            `══ SEARCH: COMPANY INFO ══\n${valSearch(searchCompanyInfo)}`,
+            `══ SEARCH: CUSTOMER REVIEWS ══\n${valSearch(searchReviews)}`,
+            `══ SEARCH: LATEST NEWS ══\n${valSearch(searchNews)}`,
           ].join("\n\n"),
         };
       })
@@ -255,7 +286,28 @@ export async function POST(request: NextRequest) {
       .map(r => r.value);
 
     // Also research the user's own brand
-    const brandResearch = await searchGoogle(`"${companyName}" company Saudi Arabia`);
+    const brandSearchResult = await searchWeb(`"${companyName}" company Saudi Arabia`);
+    searchResultsFound += brandSearchResult.resultCount;
+    const brandResearch = brandSearchResult.text;
+
+    // Calculate overall data quality confidence
+    const totalCompetitors = competitors.length;
+    const totalWebsites = competitors.filter((c: { websiteUrl?: string }) => c.websiteUrl).length;
+    const totalSocialHandles = competitors.filter((c: { handle?: string }) => c.handle).length;
+    const websiteSuccessRate = totalWebsites > 0 ? websitesScraped / totalWebsites : 0;
+    const socialSuccessRate = totalSocialHandles > 0 ? socialProfilesFound / totalSocialHandles : 0;
+    const hasSearchResults = searchResultsFound > totalCompetitors;
+    const overallConfidence: "high" | "medium" | "low" =
+      (websiteSuccessRate >= 0.7 && hasSearchResults) || (socialSuccessRate >= 0.7 && hasSearchResults) ? "high" :
+      websiteSuccessRate >= 0.3 || socialSuccessRate >= 0.3 || hasSearchResults ? "medium" : "low";
+
+    const dataQuality = {
+      websitesScraped,
+      websitesFailed,
+      socialProfilesFound,
+      searchResultsFound,
+      overallConfidence,
+    };
 
     const researchContext = researchResults
       .map((r) => `\n${"═".repeat(60)}\n   COMPETITOR: ${r.name} (@${r.handle} on ${r.platform})\n   Website: ${r.websiteUrl}\n${"═".repeat(60)}\n${r.research}`)
@@ -277,7 +329,7 @@ YOUR JOB: Produce the most comprehensive, brutally honest, data-backed competiti
 ABSOLUTE RULES:
 1. NEVER give similar scores to different companies. If Company A is clearly stronger in area X, their score MUST be significantly higher. Use the FULL 0-100 range. Some companies might score 25, others 92. Be bold.
 2. Reference SPECIFIC things you found in the scraped data: quote their taglines, mention their product names, cite their pricing, reference their team size, note their visual style.
-3. NEVER say "data not available", "no data found", "could not be determined", "information unavailable" or anything similar. If real data is missing for a field, use your expert industry knowledge to provide a realistic educated estimate. Write it confidently as analysis — the user should never see any "not available" text. Always fill every field with substantive, useful content.
+3. If real data is missing for a field, provide your best educated estimate based on industry knowledge, but mark it with [Estimated] prefix so users know it's not from direct data. Always fill every field with substantive, useful content — never leave fields empty or say "no data found".
 4. Each text field must be 3-6 sentences of DEEP, SPECIFIC analysis. No generic statements like "they have good content." Say exactly WHAT content, WHY it works, and HOW it compares.
 5. Scores MUST be justified. Don't just give a number — the surrounding text should make it obvious why that score is what it is.
 
@@ -291,7 +343,7 @@ Return ONLY a valid JSON object (no markdown, no code fences) with this structur
     "weaknesses": ["Each weakness must be SPECIFIC and reference observable gaps vs competitors. Explain the business impact and urgency. 3-4 sentences each. Minimum 6 weaknesses."],
     "opportunities": ["Each opportunity must reference a SPECIFIC gap found in competitor analysis. Include market size estimate, difficulty level, and time-to-capture. 3-4 sentences each. Minimum 5 opportunities."],
     "threats": ["Each threat must name the SPECIFIC competitor and their specific advantage that threatens you. Include urgency timeline. 3-4 sentences each. Minimum 5 threats."],
-    "overallScore": 58,
+    "overallScore": "[SCORE 0-100]",
     "marketPosition": "5-6 sentences describing exactly where the brand sits in the competitive hierarchy. Reference specific evidence: website quality comparison, content volume comparison, apparent audience size, product/service breadth, pricing position, market presence signals."
   },
 
@@ -325,8 +377,8 @@ Return ONLY a valid JSON object (no markdown, no code fences) with this structur
 
       "strengths": ["6+ specific strengths. Each 2-3 sentences with evidence. What they genuinely do better than others."],
       "weakPoints": ["6+ specific weaknesses. Each 2-3 sentences with evidence. Real vulnerabilities and gaps you can exploit."],
-      "threatLevel": 7,
-      "overallScore": 72,
+      "threatLevel": "[SCORE 1-10]",
+      "overallScore": "[SCORE 0-100]",
       "keyInsight": "4-5 sentences. The MOST important strategic insight about this competitor. What makes them dangerous OR what is their fatal weakness. Be specific, cite evidence, and explain the implication for your brand.",
       "stealThisMove": "3-4 sentences. One specific brilliant tactic from this competitor. Exactly what they do, why it works, and how your brand should adapt and improve upon it."
     }
@@ -334,9 +386,9 @@ Return ONLY a valid JSON object (no markdown, no code fences) with this structur
 
   "comparisonMatrix": {
     "categories": ["Website Quality", "Content Strategy", "Social Media Presence", "Visual Branding", "Customer Experience", "Product/Service Depth", "Pricing Competitiveness", "Brand Recognition", "Digital Innovation", "Saudi Market Fit", "Community Engagement", "SEO & Discoverability"],
-    "yourBrand": [45, 52, 38, 61, 55, 70, 65, 40, 35, 72, 30, 42],
+    "yourBrand": ["[SCORE]", "[SCORE]", "... one 0-100 score per category based on evidence"],
     "competitors": {
-      "CompetitorName": [78, 85, 72, 68, 80, 65, 55, 88, 60, 75, 82, 70]
+      "[CompetitorName]": ["[SCORE]", "[SCORE]", "... one 0-100 score per category based on evidence"]
     }
   },
 
@@ -404,7 +456,7 @@ ${"═".repeat(70)}
 INSTRUCTIONS:
 1. The above data is REAL — scraped from actual websites, social profiles, and Google searches. Use it extensively.
 2. Quote specific things you find: taglines, product names, pricing, team mentions, review scores.
-3. Where scraped data is thin, use your expert knowledge to fill in realistic analysis. NEVER leave anything blank or say "not available".
+3. Where scraped data is thin, use your expert knowledge to fill in realistic analysis marked with [Estimated] prefix. NEVER leave anything blank.
 4. Make scores DRAMATICALLY different between companies based on actual quality differences observed.
 5. This report should be so detailed and specific that the CEO would immediately know you actually researched every company.
 6. Cover EVERYTHING: not just social media — business strategy, products, pricing, reputation, technology, market position, customer sentiment.`;
@@ -451,7 +503,7 @@ INSTRUCTIONS:
       }
     }
 
-    return NextResponse.json({ success: true, analysis: analysisData });
+    return NextResponse.json({ success: true, analysis: analysisData, dataQuality });
   } catch (error) {
     console.error("Competitor analysis error:", error);
     return NextResponse.json(
