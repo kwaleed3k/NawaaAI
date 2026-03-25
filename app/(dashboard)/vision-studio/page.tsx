@@ -804,41 +804,62 @@ export default function VisionStudioPage() {
                 <p className="mt-2 text-lg text-[#8f96a3]">{tv.selectAndGenerate}</p>
               </div>
             ) : generating ? (
-              /* ── Loading State ── */
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-5">
-                  {[0, 1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="relative aspect-square overflow-hidden rounded-2xl border-2 border-[#e8eaef] shadow-md"
-                      style={{ background: "linear-gradient(135deg, #f4f6f8 0%, #fafbfd 50%, #f4f6f8 100%)" }}
-                    >
-                      <div
-                        className="absolute inset-0"
-                        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(35,171,126,0.08) 30%, rgba(124,58,237,0.08) 50%, rgba(35,171,126,0.08) 70%, transparent 100%)" }}
-                      />
-                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Sparkles className="h-14 w-14 text-[#8054b8]/30" />
-                      </div>
-                      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                        {[0, 1, 2].map((d) => (
-                          <div key={d} className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-[#23ab7e] to-[#8054b8]" />
-                        ))}
+              /* ── Full Loading Experience ── */
+              <div className="relative flex flex-col items-center justify-center py-20 sm:py-28 overflow-hidden">
+                {/* Background effects */}
+                <div className="absolute inset-0 nl-aurora-bg opacity-[0.06]" />
+                <div className="absolute inset-0 pointer-events-none" style={{ perspective: "600px", transformStyle: "preserve-3d" }}>
+                  {[
+                    { s: 30, t: "10%", l: "10%", b: "rgba(35,171,126,.12)", d: 16 },
+                    { s: 22, t: "20%", l: "80%", b: "rgba(128,84,184,.12)", d: 22, r: true },
+                    { s: 18, t: "70%", l: "15%", b: "rgba(230,122,243,.12)", d: 18 },
+                    { s: 25, t: "75%", l: "85%", b: "rgba(166,255,234,.14)", d: 24, r: true },
+                  ].map((c, i) => (
+                    <div key={i} className="absolute" style={{ top: c.t, left: c.l, transformStyle: "preserve-3d", animation: `nl-drift-${["a","b","c","d"][i]} ${14+i*2}s ease-in-out infinite` }}>
+                      <div className="nl-cube" style={{ width: c.s, height: c.s, animation: `nl-spin ${c.d}s linear infinite ${c.r ? "reverse" : ""}` }}>
+                        {[0,1,2,3,4,5].map(f => <div key={f} style={{ position: "absolute", width: c.s, height: c.s, borderRadius: "25%", border: `1.5px solid ${c.b}`, background: c.b.replace(/[^,]+\)/, "0.03)"), transform: [`translateZ(${c.s/2}px)`,`translateZ(${-c.s/2}px) rotateY(180deg)`,`translateX(${-c.s/2}px) rotateY(-90deg)`,`translateX(${c.s/2}px) rotateY(90deg)`,`translateY(${-c.s/2}px) rotateX(90deg)`,`translateY(${c.s/2}px) rotateX(-90deg)`][f] }} />)}
                       </div>
                     </div>
                   ))}
+                  {/* Ring */}
+                  <div className="absolute top-[30%] right-[25%] w-[60px] h-[60px] rounded-full" style={{ border: "1.5px solid rgba(128,84,184,.1)", transformStyle: "preserve-3d", animation: "nl-ring-rotate 12s linear infinite" }} />
+                  {/* Particles */}
+                  {Array.from({length: 10}).map((_, i) => {
+                    const s1 = (i * 7 + 13) % 100, s2 = (i * 11 + 37) % 100;
+                    return <div key={i} className="absolute rounded-full" style={{ width: 2 + (s1 % 3), height: 2 + (s2 % 3), top: `${s1}%`, left: `${s2}%`, background: ["#23ab7e","#8054b8","#e67af3","#a6ffea","#c4a8e8"][i%5], opacity: 0.12 + (s1 % 15)/100, animation: `nl-float-particle ${8+(s1%8)}s ease-in-out infinite`, animationDelay: `${(s2%40)/10}s` }} />;
+                  })}
                 </div>
-                <div className="text-center py-4">
-                  <p className="text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+
+                {/* Center circle */}
+                <div className="relative z-10 mb-10">
+                  <div className="absolute -inset-6 rounded-full opacity-20" style={{ background: "linear-gradient(135deg, #8054b8, #e67af3)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
+                  <div className="absolute -inset-12 rounded-full opacity-10" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", animation: "nl-glow-breathe 3s ease-in-out infinite 1s" }} />
+                  <div className="relative flex h-28 w-28 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #8054b8, #e67af3)", boxShadow: "0 16px 48px rgba(128,84,184,0.4), 0 0 80px rgba(230,122,243,0.15)" }}>
+                    <Sparkles className="h-14 w-14 text-white" style={{ animation: "nl-spin-slow 6s linear infinite" }} />
+                  </div>
+                  <div className="absolute -inset-3 rounded-full" style={{ border: "2px solid #8054b8", animation: "nl-pulse-ring 2.5s ease-in-out infinite" }} />
+                  <div className="absolute -inset-6 rounded-full" style={{ border: "1.5px solid #e67af3", animation: "nl-pulse-ring 2.5s ease-in-out infinite 0.8s" }} />
+                </div>
+
+                {/* Quote */}
+                <div className="relative z-10 text-center max-w-md px-4">
+                  <p className="text-2xl sm:text-3xl font-black text-[#2d3142] leading-snug" key={loadingQuoteIndex} style={{ animation: "nl-fade-up 0.4s ease forwards" }}>
                     {loadingQuotes[loadingQuoteIndex]}
                   </p>
-                  <div className="mt-4 mx-auto h-2 w-64 rounded-full bg-[#f4f6f8] overflow-hidden border border-[#e8eaef]">
-                    <div className="h-full w-full rounded-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] transition-all duration-700" />
-                  </div>
-                  <p className="mt-2 text-lg text-[#8f96a3]">
-                    {locale === "ar" ? "\u062C\u0627\u0631\u064A \u0627\u0644\u0625\u0646\u0634\u0627\u0621..." : "Creating your visuals..."}
+                  <p className="mt-3 text-base text-[#8f96a3]">
+                    {locale === "ar" ? "الذكاء الاصطناعي يبدع لك الآن..." : "AI is crafting your visuals..."}
                   </p>
+                </div>
+
+                {/* Progress */}
+                <div className="relative z-10 w-full max-w-xs mt-8">
+                  <div className="h-2.5 rounded-full bg-[#e8eaef] overflow-hidden">
+                    <div className="h-full rounded-full" style={{ width: "80%", background: "linear-gradient(90deg, #8054b8, #e67af3, #23ab7e)", backgroundSize: "200% 100%", animation: "nl-aurora 3s ease infinite" }} />
+                  </div>
+                  <div className="flex justify-between mt-3 text-xs font-bold text-[#8f96a3]">
+                    <span>{locale === "ar" ? "توليد" : "Generating"}</span>
+                    <span>{numImages} {locale === "ar" ? "صور" : "images"}</span>
+                  </div>
                 </div>
               </div>
             ) : (
