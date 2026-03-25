@@ -120,10 +120,16 @@ export default function MyCompetitorsPage() {
     setConfirmDeleteId(null);
   }
 
-  function handleExportPdf(analysis: SavedAnalysis) {
-    const company = companies.find((c) => c.id === analysis.company_id);
-    const companyName = company ? (isAr && company.name_ar ? company.name_ar : company.name) : "Analysis";
-    loadExportCompetitorPdf().then(fn => fn(analysis.analysis_data, companyName, analysis.competitors, (analysis.output_language || locale) as "en" | "ar"));
+  const [exportingId, setExportingId] = useState<string | null>(null);
+  async function handleExportPdf(analysis: SavedAnalysis) {
+    setExportingId(analysis.id);
+    try {
+      const company = companies.find((c) => c.id === analysis.company_id);
+      const companyName = company ? (isAr && company.name_ar ? company.name_ar : company.name) : "Analysis";
+      const fn = await loadExportCompetitorPdf();
+      await fn(analysis.analysis_data, companyName, analysis.competitors, "en");
+    } catch { /* toast handled by export fn */ }
+    setExportingId(null);
   }
 
   /* ── Loading ── */
