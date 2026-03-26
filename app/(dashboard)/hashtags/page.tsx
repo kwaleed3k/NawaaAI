@@ -81,34 +81,34 @@ export default function HashtagsPage() {
     : [];
 
   return (
-    <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10 pb-16">
+    <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-6 pb-16">
 
       {/* ═══════ HERO BANNER ═══════ */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-              <Hash className="h-8 w-8 text-white" />
+              <Hash className="h-7 w-7 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">{th.pageTitle}</h1>
-              <p className="mt-2 text-lg text-white/60">{th.pageSub}</p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">{th.pageTitle}</h1>
+              <p className="mt-2 text-base text-white/60">{th.pageSub}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* ═══════ TRENDING KSA ═══════ */}
-      <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+      <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
         <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8, #e67af3)" }} />
-        <div className="p-6 sm:p-8 lg:p-10">
-          <div className="flex items-center gap-4 mb-8">
+        <div className="p-4 sm:p-5 lg:p-6">
+          <div className="flex items-center gap-4 mb-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
               <TrendingUp className="h-7 w-7 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2d3142]">{th.trendingKSA}</h2>
+            <h2 className="text-lg sm:text-xl font-extrabold text-[#2d3142]">{th.trendingKSA}</h2>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -132,16 +132,16 @@ export default function HashtagsPage() {
       </div>
 
       {/* ═══════ GENERATE SECTION ═══════ */}
-      <div className="space-y-8">
+      <div className="space-y-5">
 
         {/* Platform Selector */}
-        <div className="rounded-3xl p-6 sm:p-8 lg:p-10" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
-          <div className="h-1.5 w-full rounded-full mb-8" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
-          <div className="flex items-center gap-4 mb-6">
+        <div className="rounded-2xl p-4 sm:p-5 lg:p-6" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <div className="h-1.5 w-full rounded-full mb-5" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
+          <div className="flex items-center gap-4 mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#e67af3] text-white text-base font-bold shadow-lg">1</div>
             <div>
-              <h3 className="text-xl font-bold text-[#2d3142]">{locale === "ar" ? "اختر المنصة" : "Choose Platform"}</h3>
-              <p className="text-base text-[#8f96a3]">{locale === "ar" ? "أي منصة تستهدف؟" : "Which platform are you targeting?"}</p>
+              <h3 className="text-lg font-bold text-[#2d3142]">{locale === "ar" ? "اختر المنصة" : "Choose Platform"}</h3>
+              <p className="text-sm text-[#8f96a3]">{locale === "ar" ? "أي منصة تستهدف؟" : "Which platform are you targeting?"}</p>
             </div>
           </div>
 
@@ -167,13 +167,13 @@ export default function HashtagsPage() {
         </div>
 
         {/* Topic Input */}
-        <div className="rounded-3xl p-6 sm:p-8 lg:p-10" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
-          <div className="h-1.5 w-full rounded-full mb-8" style={{ background: "linear-gradient(90deg, #23ab7e, #2dd4a0)" }} />
-          <div className="flex items-center gap-4 mb-6">
+        <div className="rounded-2xl p-4 sm:p-5 lg:p-6" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <div className="h-1.5 w-full rounded-full mb-5" style={{ background: "linear-gradient(90deg, #23ab7e, #2dd4a0)" }} />
+          <div className="flex items-center gap-4 mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#2dd4a0] text-white text-base font-bold shadow-lg">2</div>
             <div>
-              <h3 className="text-xl font-bold text-[#2d3142]">{locale === "ar" ? "الموضوع" : "Enter Topic"}</h3>
-              <p className="text-base text-[#8f96a3]">{locale === "ar" ? "عن ماذا تنشر؟" : "What are you posting about?"}</p>
+              <h3 className="text-lg font-bold text-[#2d3142]">{locale === "ar" ? "الموضوع" : "Enter Topic"}</h3>
+              <p className="text-sm text-[#8f96a3]">{locale === "ar" ? "عن ماذا تنشر؟" : "What are you posting about?"}</p>
             </div>
           </div>
 
@@ -193,7 +193,7 @@ export default function HashtagsPage() {
 
         {/* Generate Button */}
         <button onClick={handleGenerate} disabled={generating}
-          className="relative w-full h-16 sm:h-20 rounded-2xl sm:rounded-3xl border-none text-lg sm:text-2xl font-black text-white cursor-pointer transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+          className="relative w-full h-12 sm:h-14 rounded-2xl border-none text-sm sm:text-base font-black text-white cursor-pointer transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
           style={{ background: "linear-gradient(135deg, #8054b8, #e67af3, #23ab7e)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}
         >
           <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
@@ -207,20 +207,20 @@ export default function HashtagsPage() {
 
       {/* ═══════ RESULTS ═══════ */}
       {sets && (
-        <div className="grid gap-6 sm:gap-8 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-3">
           {SETS.map((cfg) => {
             const tags = sets[cfg.key] || [];
             return (
-              <div key={cfg.key} className="rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              <div key={cfg.key} className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", boxShadow: `0 8px 32px ${cfg.color}08, 0 0 0 1.5px #e8eaef` }}
               >
                 <div className="h-2 w-full" style={{ background: `linear-gradient(90deg, ${cfg.color}, ${cfg.color}66)` }} />
-                <div className="p-6 sm:p-7">
-                  <div className="flex items-center gap-3 mb-5">
+                <div className="p-4 sm:p-5">
+                  <div className="flex items-center gap-3 mb-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl shadow-md text-xl" style={{ background: `linear-gradient(135deg, ${cfg.color}, ${cfg.color}bb)` }}>
                       <span>{cfg.icon}</span>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-extrabold" style={{ color: cfg.color }}>{th[cfg.labelKey]}</h3>
+                    <h3 className="text-lg sm:text-xl font-extrabold" style={{ color: cfg.color }}>{th[cfg.labelKey]}</h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-6">
@@ -251,20 +251,20 @@ export default function HashtagsPage() {
 
       {/* ═══════ BRAND HASHTAGS ═══════ */}
       {brandHashtags.length > 0 && (
-        <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8)" }} />
-          <div className="p-6 sm:p-8 lg:p-10">
-            <div className="flex items-center gap-4 mb-8">
+          <div className="p-4 sm:p-5 lg:p-6">
+            <div className="flex items-center gap-4 mb-5">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
                 <Hash className="h-7 w-7 text-white" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2d3142]">{th.brandHashtags}</h2>
+              <h2 className="text-lg sm:text-xl font-extrabold text-[#2d3142]">{th.brandHashtags}</h2>
             </div>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               {brandHashtags.map((tag) => (
                 <button key={tag} type="button" onClick={() => { navigator.clipboard.writeText(tag); toast.success("Copied"); }}
-                  className="group relative rounded-2xl px-7 py-4 text-xl font-extrabold text-[#23ab7e] transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-0.5"
+                  className="group relative rounded-2xl px-4 py-2 text-base font-extrabold text-[#23ab7e] transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-0.5"
                   style={{ background: "linear-gradient(135deg, #23ab7e08, #8054b808)", border: "2px solid rgba(35,171,126,0.2)" }}
                 >
                   <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#23ab7e]/8 to-[#8054b8]/8" />

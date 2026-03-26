@@ -660,11 +660,11 @@ export default function CompaniesPage() {
         <div className="relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-              <Building2 className="h-8 w-8 text-white" />
+              <Building2 className="h-7 w-7 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">{tc.pageTitle}</h1>
-              <p className="mt-2 text-lg text-white/60">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">{tc.pageTitle}</h1>
+              <p className="mt-2 text-base text-white/60">
                 {locale === "ar" ? "بناء الهوية التجارية المتميزة بالذكاء الاصطناعي" : "Build & analyze your brand identity with AI"}
               </p>
             </div>
@@ -712,8 +712,8 @@ export default function CompaniesPage() {
               </div>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-black text-[#2d3142] text-center">{tc.noCompanies}</h2>
-            <p className="mt-3 text-lg sm:text-xl text-[#8f96a3] text-center max-w-lg">{tc.addFirst}</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142] text-center">{tc.noCompanies}</h2>
+            <p className="mt-3 text-base sm:text-lg text-[#8f96a3] text-center max-w-lg">{tc.addFirst}</p>
 
             {/* Benefit cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 max-w-2xl w-full">
@@ -881,11 +881,11 @@ export default function CompaniesPage() {
               </div>
               <div>
                 <DialogHeader className="p-0 space-y-0">
-                  <DialogTitle className="font-['Cairo'] text-2xl sm:text-3xl font-black text-white drop-shadow-lg">
+                  <DialogTitle className="font-['Cairo'] text-xl sm:text-2xl font-black text-white drop-shadow-lg">
                     {editingId ? tc.editCompany : tc.addCompany}
                   </DialogTitle>
                 </DialogHeader>
-                <p className="text-white/80 text-xl sm:text-2xl mt-1 flex items-center gap-2">
+                <p className="text-white/80 text-lg sm:text-xl mt-1 flex items-center gap-2">
                   <Sparkles className="h-3.5 w-3.5 text-[#A78BFA]" />
                   Premium Brand Builder
                   <Sparkles className="h-3.5 w-3.5 text-[#A78BFA]" />
@@ -903,7 +903,7 @@ export default function CompaniesPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                   <Building2 className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.basicInfo}</h3>
+                <h3 className="font-['Cairo'] text-xl sm:text-2xl font-black text-[#1a1d2e]">{tc.basicInfo}</h3>
               </div>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -1021,7 +1021,7 @@ export default function CompaniesPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
                   <Palette className="h-6 w-6 text-[#2d3142]" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.brandIdentity}</h3>
+                <h3 className="font-['Cairo'] text-xl sm:text-2xl font-black text-[#1a1d2e]">{tc.brandIdentity}</h3>
               </div>
 
               {/* Logo upload */}
@@ -1096,7 +1096,7 @@ export default function CompaniesPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                   <Megaphone className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.marketing}</h3>
+                <h3 className="font-['Cairo'] text-xl sm:text-2xl font-black text-[#1a1d2e]">{tc.marketing}</h3>
               </div>
               <div className="space-y-6">
                 <div>
@@ -1177,7 +1177,7 @@ export default function CompaniesPage() {
                 >
                   <Sparkles className="h-6 w-6 text-[#2d3142]" />
                 </div>
-                <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">{tc.analyzeAI}</h3>
+                <h3 className="font-['Cairo'] text-xl sm:text-2xl font-black text-[#1a1d2e]">{tc.analyzeAI}</h3>
               </div>
               <div className="mb-5 flex items-center gap-4">
                 <Label className="text-lg font-bold text-[#1a1d2e]">{tc.generateIn}</Label>
@@ -1336,7 +1336,7 @@ export default function CompaniesPage() {
 
                     <div>
                       <h2
-                        className="font-['Cairo'] text-2xl sm:text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg"
+                        className="font-['Cairo'] text-xl sm:text-2xl md:text-3xl font-extrabold text-white drop-shadow-lg"
                       >
                         {vc.name}
                       </h2>
@@ -1477,7 +1477,7 @@ export default function CompaniesPage() {
                         <Sparkles className="h-6 w-6 text-[#2d3142]" />
                       </div>
                       <div>
-                        <h3 className="font-['Cairo'] text-2xl sm:text-3xl font-black text-[#1a1d2e]">
+                        <h3 className="font-['Cairo'] text-xl sm:text-2xl font-black text-[#1a1d2e]">
                           {tc.aiAnalysis || "AI Brand Analysis"}
                         </h3>
                         <div className="flex items-center gap-2 mt-1">

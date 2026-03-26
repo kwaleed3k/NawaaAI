@@ -222,10 +222,10 @@ export default function DashboardPage() {
 
           {/* Text */}
           <div className="text-center">
-            <h2 className="text-3xl sm:text-4xl font-black text-[#2d3142]" style={{ animation: "nl-fade-up 0.6s ease forwards" }}>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142]" style={{ animation: "nl-fade-up 0.6s ease forwards" }}>
               {isRtl ? "جارٍ تحميل بياناتك" : "Loading your workspace"}
             </h2>
-            <p className="text-lg text-[#8f96a3] mt-2" style={{ animation: "nl-fade-up 0.6s ease forwards 0.15s", opacity: 0 }}>
+            <p className="text-base text-[#8f96a3] mt-2" style={{ animation: "nl-fade-up 0.6s ease forwards 0.15s", opacity: 0 }}>
               {isRtl ? "نجهز لوحة التحكم الخاصة بك" : "Preparing your personalized dashboard"}
             </p>
           </div>
@@ -276,10 +276,10 @@ export default function DashboardPage() {
   const isRtl = locale === "ar";
 
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className="space-y-10 pb-16">
+    <div dir={isRtl ? "rtl" : "ltr"} className="space-y-6 pb-10">
 
       {/* ═══════════════════ HERO ═══════════════════ */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
         {/* Decorative blobs */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
@@ -296,13 +296,13 @@ export default function DashboardPage() {
               </div>
               <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
               {t.greeting}, {displayName} {"\ud83d\udc4b"}
             </h1>
-            <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">{formatDate(new Date())}</p>
+            <p className="mt-3 text-base sm:text-lg font-medium text-white/70">{formatDate(new Date())}</p>
 
             {/* Mini inline stats in hero */}
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-5 flex flex-wrap gap-3">
               {statItems.slice(0, 3).map((s, i) => (
                 <div key={i} className="flex items-center gap-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3">
                   <s.icon className="h-6 w-6 text-[#a6ffea]" />
@@ -321,19 +321,19 @@ export default function DashboardPage() {
 
           {/* Right side - Rotating Quotes */}
           <div className="lg:max-w-lg xl:max-w-xl">
-            <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 p-8 lg:p-10 relative overflow-hidden">
-              <Quote className={`h-12 w-12 text-[#a6ffea]/30 mb-4 ${isRtl ? "scale-x-[-1]" : ""}`} />
+            <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 p-5 lg:p-6 relative overflow-hidden">
+              <Quote className={`h-8 w-8 text-[#a6ffea]/30 mb-3 ${isRtl ? "scale-x-[-1]" : ""}`} />
               <div key={quoteIndex} className="transition-opacity duration-500">
-                <p className="text-2xl lg:text-3xl font-bold text-white/95 leading-relaxed italic mb-6">
+                <p className="text-base lg:text-lg font-bold text-white/95 leading-relaxed italic mb-4">
                   &ldquo;{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].text}&rdquo;
                 </p>
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#a6ffea] to-[#23ab7e] flex items-center justify-center text-lg font-black text-white shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#a6ffea] to-[#23ab7e] flex items-center justify-center text-sm font-black text-white shadow-lg">
                     {(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].author.charAt(0)}
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-white">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].author}</p>
-                    <p className="text-base text-[#a6ffea]/70">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].role}</p>
+                    <p className="text-sm font-bold text-white">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].author}</p>
+                    <p className="text-xs text-[#a6ffea]/70">{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].role}</p>
                   </div>
                 </div>
               </div>
@@ -356,19 +356,19 @@ export default function DashboardPage() {
         {statItems.map((s) => (
           <div
             key={s.label}
-            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${s.gradient} p-7 shadow-xl ${s.glow} hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-default`}
+            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${s.gradient} p-5 shadow-xl ${s.glow} hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-default`}
           >
             <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
             <div className="relative z-10">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 mb-5">
-                <s.icon className="h-8 w-8 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 mb-3">
+                <s.icon className="h-5 w-5 text-white" />
               </div>
               {loading ? (
-                <div className="h-12 w-20 rounded-xl bg-white/20 animate-pulse mt-1" />
+                <div className="h-8 w-16 rounded-xl bg-white/20 animate-pulse mt-1" />
               ) : (
-                <p className="text-5xl lg:text-6xl font-black text-white tracking-tight">{s.value.toLocaleString()}</p>
+                <p className="text-2xl lg:text-3xl font-black text-white tracking-tight">{s.value.toLocaleString()}</p>
               )}
-              <p className="text-lg font-bold text-white/70 mt-2">{s.label}</p>
+              <p className="text-sm font-bold text-white/70 mt-1">{s.label}</p>
             </div>
           </div>
         ))}
@@ -380,20 +380,20 @@ export default function DashboardPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#1a8a64]">
             <Zap className="h-5 w-5 text-white" />
           </div>
-          <h2 className="text-3xl font-black text-[#1a1d2e]">{t.quickActions}</h2>
+          <h2 className="text-xl font-black text-[#1a1d2e]">{t.quickActions}</h2>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {quickActions.map((a) => (
             <div key={a.href}>
-              <Link href={a.href} className={`group relative block overflow-hidden rounded-2xl border-2 border-transparent bg-white p-8 shadow-lg ${a.glow} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1`}>
+              <Link href={a.href} className={`group relative block overflow-hidden rounded-2xl border-2 border-transparent bg-white p-5 shadow-lg ${a.glow} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1`}>
                 {/* Top gradient accent bar */}
                 <div className={`absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r ${a.gradient}`} />
-                <div className={`mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${a.gradient} shadow-lg`}>
-                  <a.icon className="h-8 w-8 text-white" />
+                <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${a.gradient} shadow-lg`}>
+                  <a.icon className="h-5 w-5 text-white" />
                 </div>
-                <h3 className="text-2xl font-extrabold text-[#1a1d2e] mb-2">{a.title}</h3>
-                <p className="text-lg text-[#8f96a3] leading-relaxed">{a.desc}</p>
-                <div className={`mt-6 inline-flex items-center gap-2 text-lg font-bold bg-gradient-to-r ${a.gradient} bg-clip-text text-transparent`}>
+                <h3 className="text-base font-extrabold text-[#1a1d2e] mb-1">{a.title}</h3>
+                <p className="text-sm text-[#8f96a3] leading-relaxed">{a.desc}</p>
+                <div className={`mt-4 inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r ${a.gradient} bg-clip-text text-transparent`}>
                   {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646" : "Get started"} <ArrowRight className={`h-5 w-5 text-[#23ab7e] group-hover:translate-x-1 transition-transform ${isRtl ? "rotate-180 group-hover:-translate-x-1" : ""}`} />
                 </div>
               </Link>
@@ -404,20 +404,20 @@ export default function DashboardPage() {
 
       {/* ═══════════════════ LATEST PLAN ═══════════════════ */}
       <div className="rounded-2xl border-2 border-[#e8eaef] bg-white overflow-hidden shadow-lg">
-        <div className="flex items-center justify-between p-7 border-b-2 border-[#e8eaef]">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e67af3] to-[#c4a8e8] shadow-lg shadow-[#e67af3]/20">
-              <Calendar className="h-6 w-6 text-white" />
+        <div className="flex items-center justify-between p-5 border-b-2 border-[#e8eaef]">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#e67af3] to-[#c4a8e8] shadow-lg shadow-[#e67af3]/20">
+              <Calendar className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.latestPlan}</h2>
+            <h2 className="text-lg sm:text-xl font-black text-[#1a1d2e]">{t.latestPlan}</h2>
           </div>
           {latestPlan && (
-            <Link href="/my-plans" className="flex items-center gap-2 text-lg font-bold text-[#23ab7e] hover:underline">
+            <Link href="/my-plans" className="flex items-center gap-2 text-sm font-bold text-[#23ab7e] hover:underline">
               {t.viewFullPlan} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
             </Link>
           )}
         </div>
-        <div className="p-7">
+        <div className="p-5">
           {days.length > 0 ? (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
               {days.map((d, i) => {
@@ -426,7 +426,7 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={i}
-                    className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] p-5 text-center hover:border-transparent hover:shadow-lg transition-all duration-300"
+                    className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] p-3 text-center hover:border-transparent hover:shadow-lg transition-all duration-300"
                   >
                     {/* Hover gradient overlay */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${grad} opacity-0 group-hover:opacity-5 transition-opacity`} />
@@ -460,7 +460,7 @@ export default function DashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#1a8a64]">
               <Building2 className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-3xl font-black text-[#1a1d2e]">{t.yourCompanies}</h2>
+            <h2 className="text-2xl font-black text-[#1a1d2e]">{t.yourCompanies}</h2>
           </div>
           <Link href="/companies" className="flex items-center gap-2 text-lg font-bold text-[#23ab7e] hover:underline">
             {locale === "ar" ? "\u0639\u0631\u0636 \u0627\u0644\u0643\u0644" : "View all"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
@@ -499,7 +499,7 @@ export default function DashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#a45dd4]">
               <ImageIcon className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-3xl font-black text-[#1a1d2e]">{t.recentImages}</h2>
+            <h2 className="text-2xl font-black text-[#1a1d2e]">{t.recentImages}</h2>
           </div>
           {recentImages.length > 0 && (
             <Link href="/my-generations" className="flex items-center gap-2 text-lg font-bold text-[#6d3fa0] hover:underline">

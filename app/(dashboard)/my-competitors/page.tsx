@@ -161,10 +161,10 @@ export default function MyCompetitorsPage() {
     return (
       <div className="space-y-8">
         <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-8 md:p-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white drop-shadow-sm">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white drop-shadow-sm">
             {isAr ? "تحليلاتي التنافسية" : "My Competitor Analyses"}
           </h1>
-          <div className="mt-3 flex items-center gap-2 text-white/80 text-xl sm:text-2xl">
+          <div className="mt-3 flex items-center gap-2 text-white/80 text-lg sm:text-xl">
             <Swords className="h-5 w-5" />
             <span>{isAr ? "عرض وإدارة جميع تحليلات المنافسين المحفوظة" : "View and manage all your saved competitor analyses"}</span>
           </div>
@@ -178,8 +178,8 @@ export default function MyCompetitorsPage() {
               <Sparkles className="h-5 w-5 text-white" />
             </div>
           </div>
-          <p className="mt-8 text-2xl font-bold text-[#1a1d2e]">{isAr ? "لا توجد تحليلات محفوظة بعد" : "No saved analyses yet"}</p>
-          <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">
+          <p className="mt-8 text-xl font-bold text-[#1a1d2e]">{isAr ? "لا توجد تحليلات محفوظة بعد" : "No saved analyses yet"}</p>
+          <p className="mt-3 text-base text-[#8f96a3] max-w-md text-center leading-relaxed">
             {isAr ? "انتقل إلى تحليل المنافسين لإنشاء وحفظ أول تحليل" : "Go to Competitor Analysis to create and save your first analysis"}
           </p>
           <a href="/competitor-analysis" className="mt-8 inline-flex h-14 items-center justify-center gap-3 px-10 text-lg font-bold rounded-2xl nl-aurora-bg text-white hover:shadow-md transition-all duration-300 shadow-lg hover:scale-[1.02]">
@@ -210,10 +210,10 @@ export default function MyCompetitorsPage() {
             </div>
             <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{isAr ? "تحليلاتي" : "My Analyses"}</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
             {isAr ? "تحليلات المنافسين المحفوظة" : "Saved Competitor Analyses"}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">
+          <p className="mt-4 text-lg sm:text-xl font-medium text-white/70">
             {isAr ? "راجع وقارن تحليلاتك السابقة" : "Review and compare your previous analyses"}
           </p>
         </div>
@@ -244,7 +244,7 @@ export default function MyCompetitorsPage() {
                 )}
 
                 {/* Competitors */}
-                <h3 className="text-2xl font-extrabold text-[#1a1d2e] leading-snug line-clamp-2">
+                <h3 className="text-xl font-extrabold text-[#1a1d2e] leading-snug line-clamp-2">
                   {isAr ? "vs " : "vs "}{competitorNames}
                 </h3>
 
@@ -325,7 +325,7 @@ export default function MyCompetitorsPage() {
                       <Swords className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl md:text-3xl font-extrabold text-white drop-shadow-sm">
+                      <h2 className="text-xl md:text-2xl font-extrabold text-white drop-shadow-sm">
                         {isAr ? "تحليل المنافسين" : "Competitor Analysis"} — {companyName}
                       </h2>
                       <p className="text-lg text-white/80">
@@ -343,14 +343,14 @@ export default function MyCompetitorsPage() {
             <div className="p-6 lg:p-8 space-y-6">
               {/* Executive Summary */}
               <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
-                <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-4"><Target className="h-6 w-6 text-[#23ab7e]" />{isAr ? "الملخص التنفيذي" : "Executive Summary"}</h3>
+                <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-4"><Target className="h-6 w-6 text-[#23ab7e]" />{isAr ? "الملخص التنفيذي" : "Executive Summary"}</h3>
                 <p className="text-lg leading-8 text-[#505868] whitespace-pre-line">{data.executiveSummary}</p>
               </div>
 
               {/* Brand Assessment */}
               <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
                 <div className="flex items-center justify-between mb-5">
-                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142]"><Shield className="h-6 w-6 text-[#23ab7e]" />{isAr ? "تقييم علامتك" : "Brand Assessment"}</h3>
+                  <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142]"><Shield className="h-6 w-6 text-[#23ab7e]" />{isAr ? "تقييم علامتك" : "Brand Assessment"}</h3>
                   <ScoreCircle score={data.brandAssessment.overallScore} size={72} />
                 </div>
                 {data.brandAssessment.marketPosition && (
@@ -372,7 +372,7 @@ export default function MyCompetitorsPage() {
 
               {/* Competitor Cards */}
               <div>
-                <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><Swords className="h-6 w-6 text-[#23ab7e]" />{isAr ? "ملفات المنافسين" : "Competitor Profiles"}</h3>
+                <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-5"><Swords className="h-6 w-6 text-[#23ab7e]" />{isAr ? "ملفات المنافسين" : "Competitor Profiles"}</h3>
                 <div className="grid gap-5 sm:grid-cols-2">
                   {data.competitors.map((comp, i) => (
                     <div key={i} className="rounded-2xl border-2 border-[#e8eaef] bg-white p-5">
@@ -435,7 +435,7 @@ export default function MyCompetitorsPage() {
               {/* Comparison Matrix */}
               {data.comparisonMatrix && (
                 <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
-                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><BarChart3 className="h-6 w-6 text-[#23ab7e]" />{isAr ? "مصفوفة المقارنة" : "Comparison Matrix"}</h3>
+                  <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-5"><BarChart3 className="h-6 w-6 text-[#23ab7e]" />{isAr ? "مصفوفة المقارنة" : "Comparison Matrix"}</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
@@ -519,7 +519,7 @@ export default function MyCompetitorsPage() {
 
               {/* Saudi Market */}
               <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
-                <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><Building2 className="h-6 w-6 text-[#23ab7e]" />{isAr ? "رؤى السوق السعودي" : "Saudi Market Insights"}</h3>
+                <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-5"><Building2 className="h-6 w-6 text-[#23ab7e]" />{isAr ? "رؤى السوق السعودي" : "Saudi Market Insights"}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
                     <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "التوافق مع الاتجاهات" : "Trend Alignment"}</h4>
@@ -545,7 +545,7 @@ export default function MyCompetitorsPage() {
               {/* Industry Analysis */}
               {data.industryAnalysis && (
                 <div className="rounded-2xl border-2 border-[#e8eaef] bg-white p-6">
-                  <h3 className="flex items-center gap-3 text-2xl font-black text-[#2d3142] mb-5"><TrendingUp className="h-6 w-6 text-[#23ab7e]" />{isAr ? "تحليل الصناعة" : "Industry Analysis"}</h3>
+                  <h3 className="flex items-center gap-3 text-xl font-black text-[#2d3142] mb-5"><TrendingUp className="h-6 w-6 text-[#23ab7e]" />{isAr ? "تحليل الصناعة" : "Industry Analysis"}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl bg-[#fafbfd] border border-[#e8eaef]">
                       <h4 className="font-black text-base text-[#23ab7e] mb-1">{isAr ? "نظرة عامة على السوق" : "Market Overview"}</h4>

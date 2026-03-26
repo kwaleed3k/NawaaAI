@@ -287,12 +287,12 @@ export default function MyPlansPage() {
                 <FolderOpen className="h-5 w-5 text-white" />
               </div>
               <div className="flex-1">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
                   <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
                     {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
                   </span>
                 </h1>
-                <p className="mt-1 text-xl sm:text-2xl text-slate-400">
+                <p className="mt-1 text-lg sm:text-xl text-slate-400">
                   {isAr ? "إدارة ومراجعة جميع خططك" : "Manage and review all your plans"}
                 </p>
               </div>
@@ -312,7 +312,7 @@ export default function MyPlansPage() {
                 <div className="w-8 h-8 rounded-xl bg-[#23ab7e] flex items-center justify-center shadow-lg"><Sparkles className="h-4 w-4 text-white" /></div>
               </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#2d3142] text-center">{isAr ? "لا توجد خطط محفوظة بعد" : "No saved plans yet"}</h2>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142] text-center">{isAr ? "لا توجد خطط محفوظة بعد" : "No saved plans yet"}</h2>
             <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">{isAr ? "انتقل إلى مخطط المحتوى لإنشاء وحفظ أول خطة لك" : "Go to the Content Planner to create and save your first plan"}</p>
             <a href="/planner" className="relative mt-10 h-16 px-12 text-xl font-black rounded-2xl text-white border-none cursor-pointer transition-all hover:-translate-y-1 overflow-hidden inline-flex items-center gap-3" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}>
               <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
@@ -337,13 +337,13 @@ export default function MyPlansPage() {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-            <FolderOpen className="h-8 w-8 text-white" />
+            <FolderOpen className="h-7 w-7 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
               {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
             </h1>
-            <p className="mt-2 text-lg text-white/60">
+            <p className="mt-2 text-base text-white/60">
               {isAr ? "إدارة ومراجعة جميع خططك" : "Manage and review all your plans"}
             </p>
           </div>
@@ -573,7 +573,7 @@ export default function MyPlansPage() {
                         <Calendar className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h2 className="font-['Cairo'] text-2xl sm:text-3xl font-extrabold text-white drop-shadow-sm">
+                        <h2 className="font-['Cairo'] text-xl sm:text-2xl font-extrabold text-white drop-shadow-sm">
                           {isAr
                             ? expandedPlan.plan_data?.weekThemeAr ??
                               expandedPlan.plan_data?.weekTheme

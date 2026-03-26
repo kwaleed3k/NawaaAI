@@ -115,20 +115,20 @@ export default function PlannerPage() {
   if (loadingCompanies) return (<div dir={isRtl ? "rtl" : "ltr"} className="space-y-6"><Skeleton className="h-48 rounded-2xl" /><Skeleton className="h-96 rounded-2xl" /></div>);
 
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className="space-y-10 pb-16">
+    <div dir={isRtl ? "rtl" : "ltr"} className="space-y-6 pb-16">
 
       {/* ═══════ HERO BANNER ═══════ */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-              <Calendar className="h-8 w-8 text-white" />
+              <Calendar className="h-7 w-7 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">{tp.pageTitle}</h1>
-              <p className="mt-2 text-lg text-white/60">{tp.pageSub}</p>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight">{tp.pageTitle}</h1>
+              <p className="mt-2 text-sm text-white/60">{tp.pageSub}</p>
             </div>
             <div className="flex flex-wrap gap-3">
               {[
@@ -166,10 +166,10 @@ export default function PlannerPage() {
 
       {!plan ? (
         /* ═══════ SETUP FORM — Glass Card ═══════ */
-        <div className="space-y-8">
+        <div className="space-y-5">
 
           {/* ── Step 1: Company ── */}
-          <div className="rounded-3xl p-8 sm:p-10" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(35,171,126,0.04)" }}>
+          <div className="rounded-2xl p-5 sm:p-6" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(35,171,126,0.04)" }}>
             <div className="flex items-center gap-4 mb-6">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-white text-base font-bold shadow-lg">1</div>
               <div>
@@ -269,7 +269,7 @@ export default function PlannerPage() {
             <div className="p-8 sm:p-10 lg:p-12 flex flex-col sm:flex-row sm:items-center justify-between gap-8">
               <div className="flex-1">
                 <span className="text-sm font-bold text-[#8054b8] tracking-widest uppercase">{isRtl ? "موضوع الأسبوع" : "Week Theme"}</span>
-                <h2 className="mt-3 text-3xl sm:text-4xl font-black text-[#2d3142] leading-tight">{outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}</h2>
+                <h2 className="mt-3 text-2xl sm:text-3xl font-black text-[#2d3142] leading-tight">{outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}</h2>
                 <div className="mt-4 flex items-center gap-2.5 text-[#8f96a3]">
                   <Calendar className="h-5 w-5 text-[#23ab7e]" />
                   <span className="text-lg font-medium">{weekStart && plan.days?.[0]?.date ? `${format(parseISO(plan.days[0].date), "MMM d")} – ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}` : weekStart}</span>
@@ -421,7 +421,7 @@ export default function PlannerPage() {
                         <div className="space-y-4">
                           <div className="rounded-2xl p-5" style={{ background: `${clr}08`, border: `1px solid ${clr}15` }}>
                             <div className="flex items-center gap-2 mb-2"><Clock className="h-5 w-5" style={{ color: clr }} /><span className="text-xs font-bold uppercase tracking-widest" style={{ color: clr }}>{isRtl ? "أفضل وقت" : "Best Time"}</span></div>
-                            <p className="text-3xl font-black" style={{ color: clr }}>{day.postingTime}</p>
+                            <p className="text-2xl font-black" style={{ color: clr }}>{day.postingTime}</p>
                             {day.postingTimeReason && <p className="mt-2 text-sm leading-relaxed" style={{ color: clr, opacity: 0.7 }}>{day.postingTimeReason}</p>}
                           </div>
                           {day.contentTips && (

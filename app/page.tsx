@@ -65,7 +65,7 @@ function Particles({ count, className }: { count: number; className?: string }) 
 /* Platform SVG Icons */
 function InstagramIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20">
+    <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16">
       <defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stopColor="#feda75"/><stop offset="25%" stopColor="#fa7e1e"/><stop offset="50%" stopColor="#d62976"/><stop offset="75%" stopColor="#962fbf"/><stop offset="100%" stopColor="#4f5bd5"/></linearGradient></defs>
       <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="url(#ig)" strokeWidth="1.5"/>
       <circle cx="12" cy="12" r="4.5" fill="none" stroke="url(#ig)" strokeWidth="1.5"/>
@@ -75,7 +75,7 @@ function InstagramIcon() {
 }
 function TikTokIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" fill="none">
+    <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16" fill="none">
       <path d="M16.6 5.82A4.27 4.27 0 0115.54 3h-3.09v12.4a2.59 2.59 0 01-2.59 2.5c-1.43 0-2.59-1.16-2.59-2.59a2.59 2.59 0 012.59-2.59c.27 0 .53.04.78.12V9.6a5.73 5.73 0 00-.78-.05A5.73 5.73 0 004.13 15.3a5.73 5.73 0 005.73 5.73 5.73 5.73 0 005.73-5.73V9.4a7.34 7.34 0 004.28 1.37V7.68A4.28 4.28 0 0116.6 5.82z" fill="#1a1d2e"/>
       <path d="M16.6 5.82A4.27 4.27 0 0115.54 3h-3.09v12.4a2.59 2.59 0 01-2.59 2.5c-1.43 0-2.59-1.16-2.59-2.59a2.59 2.59 0 012.59-2.59c.27 0 .53.04.78.12V9.6" fill="none" stroke="#25f4ee" strokeWidth="0.5"/>
     </svg>
@@ -83,28 +83,28 @@ function TikTokIcon() {
 }
 function SnapchatIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" fill="#FFFC00" stroke="#1a1d2e" strokeWidth="0.3">
+    <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16" fill="#FFFC00" stroke="#1a1d2e" strokeWidth="0.3">
       <path d="M12 2C8.13 2 5 5.13 5 9v.5c0 .55-.16 1-.45 1.36-.38.47-.88.7-1.38.84-.3.08-.5.35-.45.66.04.25.22.46.48.5.6.1 1.2.3 1.45.8.17.34.1.74-.2 1.26-.38.66-.97 1.18-1.57 1.56-.3.2-.38.6-.2.9.13.22.38.36.63.32a6.4 6.4 0 011.69.24c.5.16.87.47 1.33.87C7.6 19.68 9.5 22 12 22s4.4-2.32 5.67-3.19c.46-.4.83-.7 1.33-.87a6.4 6.4 0 011.69-.24c.25.04.5-.1.63-.32.18-.3.1-.7-.2-.9-.6-.38-1.19-.9-1.57-1.56-.3-.52-.37-.92-.2-1.26.25-.5.85-.7 1.45-.8.26-.04.44-.25.48-.5.05-.31-.15-.58-.45-.66-.5-.14-1-.37-1.38-.84A2.5 2.5 0 0119 9.5V9c0-3.87-3.13-7-7-7z"/>
     </svg>
   );
 }
 function XIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-11 h-11 sm:w-14 sm:h-14 lg:w-18 lg:h-18" fill="#ffffff">
+    <svg viewBox="0 0 24 24" className="w-9 h-9 sm:w-11 sm:h-11 lg:w-14 lg:h-14" fill="#ffffff">
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
     </svg>
   );
 }
 function LinkedInIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" fill="#0A66C2">
+    <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16" fill="#0A66C2">
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
     </svg>
   );
 }
 function YouTubeIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" fill="#FF0000">
+    <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16" fill="#FF0000">
       <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
     </svg>
   );
@@ -218,14 +218,14 @@ export default function LandingPage() {
     <div className="overflow-x-hidden bg-white text-[#2d3142] antialiased" dir={isRtl ? "rtl" : "ltr"}>
 
       {/* ══════════ NAVBAR ══════════ */}
-      <nav className={`fixed top-0 left-0 right-0 z-[1000] h-16 lg:h-20 flex items-center justify-between px-5 sm:px-8 lg:px-14 transition-all duration-300 nl-glass-nav ${scrolled ? "bg-white/96 shadow-[0_2px_20px_rgba(0,0,0,.06)]" : ""}`} style={{ borderBottom: "1px solid rgba(0,0,0,.04)" }}>
+      <nav className={`fixed top-0 left-0 right-0 z-[1000] h-14 lg:h-16 flex items-center justify-between px-5 sm:px-8 lg:px-14 transition-all duration-300 nl-glass-nav ${scrolled ? "bg-white/96 shadow-[0_2px_20px_rgba(0,0,0,.06)]" : ""}`} style={{ borderBottom: "1px solid rgba(0,0,0,.04)" }}>
         <Link href="/" className="flex items-center gap-3 shrink-0 no-underline">
-          <div className="w-11 h-11 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)", boxShadow: "0 4px 16px rgba(35,171,126,.3)" }}>
-            <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5 lg:w-7 lg:h-7">
+          <div className="w-9 h-9 lg:w-11 lg:h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)", boxShadow: "0 4px 16px rgba(35,171,126,.3)" }}>
+            <svg viewBox="0 0 32 32" fill="none" className="w-4 h-4 lg:w-6 lg:h-6">
               <path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           </div>
-          <span className="text-xl lg:text-2xl font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">AI</span></span>
+          <span className="text-lg lg:text-xl font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">AI</span></span>
         </Link>
         <ul className="hidden lg:flex list-none gap-2">
           {[{ href: "#features", label: N.features }, { href: "#how-it-works", label: L.howItWorks }, { href: "#platforms", label: isRtl ? "المنصات" : "Platforms" }].map((l) => (
@@ -240,7 +240,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ══════════ HERO ══════════ */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-24 lg:pt-32 px-5 sm:px-8 lg:px-14 pb-14 lg:pb-20" style={{ background: "linear-gradient(170deg,#f0fdf8 0%,#fff 25%,#f5f0ff 60%,#fef5ff 100%)" }}>
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 lg:pt-28 px-5 sm:px-8 lg:px-14 pb-14 lg:pb-20" style={{ background: "linear-gradient(170deg,#f0fdf8 0%,#fff 25%,#f5f0ff 60%,#fef5ff 100%)" }}>
         {/* 3D Scene */}
         <div ref={sceneRef} className="absolute inset-0 pointer-events-none" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
           {/* Cubes */}
@@ -295,23 +295,23 @@ export default function LandingPage() {
             {L.heroBadge}
           </div>
 
-          <h1 className="whitespace-nowrap pb-4" style={{ fontSize: "clamp(42px, 9vw, 120px)", fontFamily: headingFont, lineHeight: 1.2, fontWeight: 900, opacity: 0, animation: "nl-fade-up-lg .9s ease forwards .3s" }}>
+          <h1 className="whitespace-nowrap pb-4" style={{ fontSize: "clamp(24px, 3.5vw, 52px)", fontFamily: headingFont, lineHeight: 1.2, fontWeight: 900, opacity: 0, animation: "nl-fade-up-lg .9s ease forwards .3s" }}>
             <span className="block text-[#1a1d2e]">{L.heroLine1}</span>
             <span className="block nl-gradient-text pb-2">{L.heroLine2}</span>
           </h1>
 
-          <p className="text-lg sm:text-xl lg:text-2xl text-[#505868] leading-relaxed max-w-[650px] mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .5s" }}>
+          <p className="text-sm sm:text-base lg:text-lg text-[#505868] leading-relaxed max-w-[650px] mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .5s" }}>
             {L.heroSub}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .6s" }}>
             <Link href="/signup">
-              <button className="relative text-lg sm:text-xl font-bold text-white py-4 sm:py-5 px-10 sm:px-14 rounded-2xl border-none cursor-pointer w-full sm:w-auto overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,.4)]" style={{ background: "linear-gradient(135deg,#23ab7e,#1a8a64)", boxShadow: "0 8px 32px rgba(35,171,126,.35)" }}>
+              <button className="relative text-sm sm:text-base font-bold text-white py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl border-none cursor-pointer w-full sm:w-auto overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,.4)]" style={{ background: "linear-gradient(135deg,#23ab7e,#1a8a64)", boxShadow: "0 8px 32px rgba(35,171,126,.35)" }}>
                 <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg,transparent 30%,rgba(255,255,255,.15) 50%,transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
                 <span className="relative">{L.startFreeBilingual}</span>
               </button>
             </Link>
-            <button className="inline-flex items-center gap-3 text-lg font-semibold text-[#505868] py-4 px-8 rounded-2xl border-2 border-[#d1d6df] bg-white cursor-pointer hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">
+            <button className="inline-flex items-center gap-3 text-sm font-semibold text-[#505868] py-2.5 px-5 rounded-xl border-2 border-[#d1d6df] bg-white cursor-pointer hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">
               <Play className="w-5 h-5 fill-current" />
               {L.watchDemo}
             </button>
@@ -320,7 +320,7 @@ export default function LandingPage() {
           <div className="flex justify-center gap-10 sm:gap-16 mt-10 sm:mt-14" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .75s" }}>
             {[{ val: 500, suf: "+", label: L.statBrands }, { val: 50, suf: "K+", label: L.statPosts }, { val: 10, suf: "x", label: L.statFaster }].map((s) => (
               <div key={s.label}>
-                <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#23ab7e]">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[#23ab7e]">
                   <AnimatedCounter end={s.val} suffix={s.suf} duration={2000} />
                 </div>
                 <div className="text-sm sm:text-base text-[#8f96a3] mt-1 font-medium">{s.label}</div>
@@ -331,7 +331,7 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════ CASE STUDY ══════════ */}
-      <section id="case" className="relative overflow-hidden py-28 sm:py-36 lg:py-48 px-0 bg-[#1a1d2e]">
+      <section id="case" className="relative overflow-hidden py-16 sm:py-20 lg:py-28 px-0 bg-[#1a1d2e]">
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 0% 100%,rgba(35,171,126,.18),transparent 60%),radial-gradient(ellipse 60% 60% at 100% 0%,rgba(128,84,184,.12),transparent 50%)" }} />
         {/* Floating cubes in dark section */}
         <div className="absolute inset-0 pointer-events-none" style={{ perspective: "800px", transformStyle: "preserve-3d" }}>
@@ -353,7 +353,7 @@ export default function LandingPage() {
               <span className="w-10 h-0.5 rounded bg-[#a6ffea]" />
               {isRtl ? "قصة نجاح" : "Success Story"}
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.1] mb-8" style={{ fontFamily: headingFont }}>
+            <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-extrabold text-white leading-[1.1] mb-8" style={{ fontFamily: headingFont }}>
               {isRtl ? "كيف وفّر مقهى بلوم " : "How Bloom Café saved "}
               <span className="text-[#2dd4a0]">{isRtl ? "١٨,٠٠٠ ر.س/شهر" : "SAR 18,000/mo"}</span>
               {isRtl ? " مع نواة AI" : " with Nawaa AI"}
@@ -364,7 +364,7 @@ export default function LandingPage() {
             <div className="flex gap-12 flex-wrap">
               {[{ v: "82%", l: isRtl ? "توفير" : "Cost Saved" }, { v: "3.4x", l: isRtl ? "تفاعل" : "Engagement" }, { v: "10 min", l: isRtl ? "إعداد أسبوعي" : "Weekly Setup" }].map((n) => (
                 <div key={n.l}>
-                  <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#2dd4a0]">{n.v}</div>
+                  <div className="text-3xl sm:text-3xl lg:text-3xl font-black text-[#2dd4a0]">{n.v}</div>
                   <div className="text-base text-white/40 mt-2 font-medium">{n.l}</div>
                 </div>
               ))}
@@ -403,18 +403,18 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════ SERVICE CARDS — CENTER FOCUS ══════════ */}
-      <section id="features" className="relative overflow-hidden py-28 sm:py-36 lg:py-44" style={{ background: "linear-gradient(180deg,#f7f9fb 0%,#f0f4f8 50%,#f7f9fb 100%)" }}>
+      <section id="features" className="relative overflow-hidden py-16 sm:py-20 lg:py-24" style={{ background: "linear-gradient(180deg,#f7f9fb 0%,#f0f4f8 50%,#f7f9fb 100%)" }}>
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle,rgba(0,0,0,.04) 1px,transparent 1px)", backgroundSize: "28px 28px", maskImage: "radial-gradient(ellipse 60% 50% at 50% 50%,black,transparent)" }} />
 
-        <div className="text-center px-5 sm:px-8 pb-16 lg:pb-24 relative z-10 nl-reveal">
+        <div className="text-center px-5 sm:px-8 pb-10 lg:pb-14 relative z-10 nl-reveal">
           <div className="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[2.5px] text-[#23ab7e] mb-6">
             <span className="w-10 h-0.5 rounded bg-[#23ab7e]" />
             {L.featuresLabel}
           </div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#1a1d2e] leading-tight mb-5" style={{ fontFamily: headingFont }}>
+          <h2 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-[#1a1d2e] leading-tight mb-5" style={{ fontFamily: headingFont }}>
             {L.featuresTitle}
           </h2>
-          <p className="text-lg lg:text-2xl text-[#8f96a3] max-w-[650px] mx-auto">{L.featuresSub}</p>
+          <p className="text-lg lg:text-xl text-[#8f96a3] max-w-[650px] mx-auto">{L.featuresSub}</p>
         </div>
 
         <div ref={trackRef} className="nl-track flex gap-7 lg:gap-10 px-[calc(50vw-200px)] sm:px-[calc(50vw-220px)] lg:px-[calc(50vw-240px)] pb-10 overflow-x-auto overflow-y-visible snap-x snap-mandatory relative z-10" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x" }}>
@@ -424,7 +424,7 @@ export default function LandingPage() {
               <div
                 key={s.num}
                 data-scard
-                className="shrink-0 w-[400px] sm:w-[440px] lg:w-[480px] min-h-[500px] lg:min-h-[560px] snap-center relative flex flex-col select-none rounded-3xl p-9 sm:p-10 lg:p-12"
+                className="shrink-0 w-[320px] sm:w-[340px] lg:w-[360px] min-h-[380px] lg:min-h-[420px] snap-center relative flex flex-col select-none rounded-3xl p-6 sm:p-7 lg:p-8"
                 style={{
                   background: isActive ? "rgba(255,255,255,.95)" : "rgba(255,255,255,.6)",
                   backdropFilter: "blur(20px) saturate(1.5)",
@@ -440,7 +440,7 @@ export default function LandingPage() {
               >
                 <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: `linear-gradient(${isRtl ? "270deg" : "90deg"},${s.color},transparent)`, opacity: isActive ? 0.8 : 0.3 }} />
                 {isActive && <div className="absolute -bottom-6 left-[15%] right-[15%] h-8 rounded-full" style={{ background: s.color, filter: "blur(24px)", opacity: 0.3 }} />}
-                <div className="absolute top-6 text-7xl lg:text-8xl font-black leading-none tracking-[-4px]" style={{ color: isActive ? "#e8ecf0" : "#f4f6f8", insetInlineEnd: 28 }}>{s.num}</div>
+                <div className="absolute top-6 text-4xl lg:text-5xl font-black leading-none tracking-[-4px]" style={{ color: isActive ? "#e8ecf0" : "#f4f6f8", insetInlineEnd: 28 }}>{s.num}</div>
                 <div className="w-18 h-18 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-2xl flex items-center justify-center mb-7" style={{ background: s.bg }}>
                   <s.icon className="w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-11" style={{ color: s.color }} />
                 </div>
@@ -468,15 +468,15 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════ HOW IT WORKS — 3D Glass ══════════ */}
-      <section id="how-it-works" className="relative overflow-hidden px-5 sm:px-8 lg:px-14 py-28 sm:py-36 lg:py-44" style={{ background: "linear-gradient(170deg,#fff 0%,#f5f0ff 40%,#f0fdf8 70%,#fff 100%)" }}>
+      <section id="how-it-works" className="relative overflow-hidden px-5 sm:px-8 lg:px-14 py-16 sm:py-20 lg:py-24" style={{ background: "linear-gradient(170deg,#fff 0%,#f5f0ff 40%,#f0fdf8 70%,#fff 100%)" }}>
         <Particles count={15} className="absolute inset-0 pointer-events-none" />
         <div className="mx-auto max-w-[1300px]">
-          <div className="text-center mb-20 lg:mb-28 nl-reveal">
+          <div className="text-center mb-10 lg:mb-14 nl-reveal">
             <div className="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[2.5px] text-[#8054b8] mb-6">
               <span className="w-10 h-0.5 rounded bg-[#8054b8]" />
               {L.howItWorksLabel}
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#1a1d2e] leading-tight" style={{ fontFamily: headingFont }}>
+            <h2 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-[#1a1d2e] leading-tight" style={{ fontFamily: headingFont }}>
               {L.howItWorksTitle}
             </h2>
           </div>
@@ -493,17 +493,17 @@ export default function LandingPage() {
               { step: "3", icon: Download, title: L.downloadPost, desc: L.downloadPostDesc },
             ].map((s, i) => (
               <div key={s.step} className={`nl-reveal ${i > 0 ? `nl-reveal-d${i}` : ""} relative text-center`}>
-                <div className="nl-step-glass rounded-3xl p-8 sm:p-10 lg:p-12" style={{ boxShadow: `0 12px 40px ${stepColors[i]}15, 0 4px 12px rgba(0,0,0,.04)` }}>
+                <div className="nl-step-glass rounded-3xl p-5 sm:p-6 lg:p-7" style={{ boxShadow: `0 12px 40px ${stepColors[i]}15, 0 4px 12px rgba(0,0,0,.04)` }}>
                   {/* Glowing number circle */}
-                  <div className="relative mx-auto mb-8 w-24 h-24 lg:w-28 lg:h-28">
+                  <div className="relative mx-auto mb-8 w-16 h-16 lg:w-20 lg:h-20">
                     <div className="absolute inset-0 rounded-full" style={{ background: stepColors[i], opacity: 0.15, animation: "nl-glow-breathe 3s ease-in-out infinite", animationDelay: `${i * 0.5}s` }} />
                     <div className="absolute inset-0 rounded-full flex items-center justify-center" style={{ background: `linear-gradient(135deg,${stepColors[i]},${stepColors[i]}dd)`, boxShadow: `0 10px 40px ${stepColors[i]}40` }}>
-                      <s.icon className="w-10 h-10 lg:w-13 lg:h-13 text-white" />
+                      <s.icon className="w-7 h-7 lg:w-9 lg:h-9 text-white" />
                     </div>
                     {/* Pulse ring */}
                     <div className="absolute inset-0 rounded-full" style={{ border: `2.5px solid ${stepColors[i]}`, animation: "nl-pulse-ring 2.5s ease-in-out infinite", animationDelay: `${i * 0.8}s` }} />
                   </div>
-                  <span className="inline-block text-5xl lg:text-6xl font-black mb-4" style={{ color: stepColors[i] }}>{s.step}</span>
+                  <span className="inline-block text-3xl lg:text-4xl font-black mb-4" style={{ color: stepColors[i] }}>{s.step}</span>
                   <h3 className="text-2xl lg:text-3xl font-bold text-[#1a1d2e] mb-4">{s.title}</h3>
                   <p className="text-base lg:text-lg text-[#8f96a3] leading-relaxed">{s.desc}</p>
                 </div>
@@ -514,11 +514,11 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════ PLATFORMS ══════════ */}
-      <section id="platforms" className="px-5 sm:px-8 lg:px-14 py-24 sm:py-32 lg:py-40 bg-[#1a1d2e] relative overflow-hidden">
+      <section id="platforms" className="px-5 sm:px-8 lg:px-14 py-14 sm:py-18 lg:py-20 bg-[#1a1d2e] relative overflow-hidden">
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 60% at 50% 50%,rgba(35,171,126,.1),transparent 70%)" }} />
         <Particles count={14} className="absolute inset-0 pointer-events-none" />
         <div className="mx-auto max-w-[1100px] relative z-10">
-          <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-14 lg:mb-20 nl-reveal" style={{ fontFamily: headingFont }}>
+          <h2 className="text-center text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-white mb-8 lg:mb-10 nl-reveal" style={{ fontFamily: headingFont }}>
             {L.platformTitle}
           </h2>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-6 sm:gap-8 lg:gap-10 nl-reveal nl-reveal-d1">
@@ -540,9 +540,9 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════ CTA — Aurora ══════════ */}
-      <section className="px-5 sm:px-8 lg:px-14 py-24 sm:py-32 lg:py-40 relative overflow-hidden" style={{ background: "linear-gradient(170deg,#f0fdf8,#fff,#f5f0ff)" }}>
+      <section className="px-5 sm:px-8 lg:px-14 py-14 sm:py-18 lg:py-20 relative overflow-hidden" style={{ background: "linear-gradient(170deg,#f0fdf8,#fff,#f5f0ff)" }}>
         <div className="mx-auto max-w-[1100px]">
-          <div className="nl-reveal relative overflow-hidden rounded-[32px] lg:rounded-[40px] p-10 sm:p-16 lg:p-24 text-center nl-aurora-bg" style={{ boxShadow: "0 30px 80px rgba(35,171,126,.25),0 0 120px rgba(128,84,184,.1)" }}>
+          <div className="nl-reveal relative overflow-hidden rounded-[32px] lg:rounded-[40px] p-8 sm:p-10 lg:p-14 text-center nl-aurora-bg" style={{ boxShadow: "0 30px 80px rgba(35,171,126,.25),0 0 120px rgba(128,84,184,.1)" }}>
             {/* Floating 3D elements */}
             <div className="absolute inset-0 pointer-events-none" style={{ perspective: "600px", transformStyle: "preserve-3d" }}>
               <div className="absolute top-[10%] left-[8%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-c 12s ease-in-out infinite" }}>
@@ -557,13 +557,13 @@ export default function LandingPage() {
             <div className="absolute -top-28 h-[300px] w-[300px] rounded-full opacity-20" style={{ background: "radial-gradient(circle,#fff,transparent)", insetInlineEnd: -112 }} />
             <div className="absolute -bottom-24 -left-24 h-[250px] w-[250px] rounded-full opacity-15" style={{ background: "radial-gradient(circle,#fff,transparent)" }} />
 
-            <h2 className="relative text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8" style={{ fontFamily: headingFont }}>
+            <h2 className="relative text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-black text-white mb-6 lg:mb-8" style={{ fontFamily: headingFont }}>
               {L.ctaTitle}
             </h2>
-            <p className="relative text-white/80 text-xl lg:text-2xl mb-10 lg:mb-14 max-w-[700px] mx-auto">{L.ctaSub}</p>
+            <p className="relative text-white/80 text-base lg:text-lg mb-6 lg:mb-8 max-w-[700px] mx-auto">{L.ctaSub}</p>
 
             <Link href="/signup">
-              <button className="relative text-xl lg:text-2xl font-bold text-[#1a8a64] bg-white px-14 lg:px-20 py-5 lg:py-6 rounded-2xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,.2)] active:scale-[0.98]" style={{ boxShadow: "0 8px 32px rgba(0,0,0,.15)" }}>
+              <button className="relative text-base lg:text-lg font-bold text-[#1a8a64] bg-white px-8 lg:px-12 py-3 lg:py-3.5 rounded-2xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,.2)] active:scale-[0.98]" style={{ boxShadow: "0 8px 32px rgba(0,0,0,.15)" }}>
                 {L.ctaButton}
               </button>
             </Link>
@@ -581,7 +581,7 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════ FOOTER ══════════ */}
-      <footer className="relative overflow-hidden bg-[#1a1d2e] py-16 px-5 sm:px-8 lg:py-20 lg:px-14 pb-8">
+      <footer className="relative overflow-hidden bg-[#1a1d2e] py-10 px-5 sm:px-8 lg:py-14 lg:px-14 pb-8">
         <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: "linear-gradient(90deg,#23ab7e,#8054b8,#e67af3,#23ab7e)", backgroundSize: "300% 100%", animation: "nl-footer-line 6s linear infinite" }} />
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 md:gap-12 mb-12">

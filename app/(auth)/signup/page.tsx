@@ -88,13 +88,13 @@ export default function SignupPage() {
     if (error) { setLoading(false); toast.error(error.message); }
   }
 
-  const inputCls = `w-full py-4 rounded-2xl border-2 border-[#e8eaef] bg-white/80 backdrop-blur-sm text-base text-[#2d3142] outline-none transition-all placeholder:text-[#9ca3b0] placeholder:font-light focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.12)] focus:bg-white`;
+  const inputCls = `w-full py-2.5 px-4 rounded-2xl border-2 border-[#e8eaef] bg-white/80 backdrop-blur-sm text-base text-[#2d3142] outline-none transition-all placeholder:text-[#9ca3b0] placeholder:font-light focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.12)] focus:bg-white`;
 
   return (
     <div className="flex h-screen overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
 
       {/* ═══════ LEFT — 3D Brand Panel ═══════ */}
-      <div className="relative hidden lg:flex lg:w-[48%] flex-col justify-between overflow-hidden p-10 xl:p-12" style={{ background: "linear-gradient(165deg, #1a8a64 0%, #23ab7e 25%, #8054b8 60%, #a45dd4 85%, #e67af3 100%)" }}>
+      <div className="relative hidden lg:flex lg:w-[48%] flex-col justify-between overflow-hidden p-6 xl:p-7" style={{ background: "linear-gradient(165deg, #1a8a64 0%, #23ab7e 25%, #8054b8 60%, #a45dd4 85%, #e67af3 100%)" }}>
         <div className="absolute inset-0 z-[1] pointer-events-none opacity-[0.04]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
         <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 20% 80%, rgba(230,122,243,0.35), transparent 70%), radial-gradient(ellipse 60% 50% at 80% 20%, rgba(166,255,234,0.25), transparent 60%)" }} />
 
@@ -116,19 +116,19 @@ export default function SignupPage() {
         <div className="absolute top-[60%] left-[25%] z-[2]" style={{ animation: "nl-orbit-lg 22s linear infinite reverse" }}><div className="w-2 h-2 rounded-full bg-[#f5c6fa] opacity-35" /></div>
 
         <div className="relative z-10 flex items-center gap-3.5">
-          <div className="w-16 h-16 rounded-2xl bg-white/[.18] backdrop-blur-sm flex items-center justify-center border border-white/25">
-            <svg viewBox="0 0 32 32" fill="none" className="w-9 h-9"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2.5" fill="#a6ffea"/><circle cx="24" cy="16" r="2.5" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          <div className="w-12 h-12 rounded-2xl bg-white/[.18] backdrop-blur-sm flex items-center justify-center border border-white/25">
+            <svg viewBox="0 0 32 32" fill="none" className="w-7 h-7"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2.5" fill="#a6ffea"/><circle cx="24" cy="16" r="2.5" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
-          <div className="text-[36px] font-bold text-white tracking-tight">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#a6ffea] to-[#f5c6fa] bg-clip-text text-transparent">AI</span></div>
+          <div className="text-[28px] font-bold text-white tracking-tight">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#a6ffea] to-[#f5c6fa] bg-clip-text text-transparent">AI</span></div>
         </div>
 
-        <div className="relative z-10 flex-1 flex flex-col justify-center py-8">
-          <div className="rounded-[32px] p-11 max-w-[540px] transition-all duration-350" style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.15)", opacity: qVis ? 1 : 0, transform: qVis ? "translateY(0)" : "translateY(15px)" }}>
-            <div className="text-[80px] leading-[0.6] text-[rgba(166,255,234,0.5)] mb-3" style={{ fontFamily: "'Playfair Display',serif" }}>&ldquo;</div>
-            <p className="text-[30px] font-bold leading-[1.4] text-white mb-5" style={{ fontFamily: hFont }}>{quotes[quoteIdx].text}</p>
+        <div className="relative z-10 flex-1 flex flex-col justify-center py-5">
+          <div className="rounded-2xl p-6 max-w-[440px] transition-all duration-350" style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.15)", opacity: qVis ? 1 : 0, transform: qVis ? "translateY(0)" : "translateY(15px)" }}>
+            <div className="text-[52px] leading-[0.6] text-[rgba(166,255,234,0.5)] mb-3" style={{ fontFamily: "'Playfair Display',serif" }}>&ldquo;</div>
+            <p className="text-lg font-bold leading-[1.4] text-white mb-4" style={{ fontFamily: hFont }}>{quotes[quoteIdx].text}</p>
             <p className="text-base text-white/65 tracking-wide">— <strong className="text-white/90 font-semibold">{quotes[quoteIdx].author}</strong></p>
           </div>
-          <div className="flex gap-3 mt-7">
+          <div className="flex gap-3 mt-5">
             {quotes.map((_, i) => (<button key={i} onClick={() => { setQVis(false); setTimeout(() => { setQuoteIdx(i); setQVis(true); }, 300); }} className={`h-3 rounded-full transition-all duration-300 cursor-pointer ${i === quoteIdx ? "w-10 bg-gradient-to-r from-[#a6ffea] to-[#f5c6fa]" : "w-3 bg-white/25 hover:bg-white/40"}`} />))}
           </div>
         </div>
@@ -159,12 +159,12 @@ export default function SignupPage() {
           <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
             <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
-          <span className="text-lg font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="text-[#23ab7e]">AI</span></span>
+          <span className="text-sm font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="text-[#23ab7e]">AI</span></span>
         </div>
 
         {/* Form card */}
         <div
-          className="w-full max-w-full sm:max-w-[560px] relative z-10 mt-14 lg:mt-0 mx-4 sm:mx-10 rounded-2xl sm:rounded-[32px] p-5 sm:p-8 lg:p-10"
+          className="w-full max-w-full sm:max-w-[440px] relative z-10 mt-14 lg:mt-0 mx-4 sm:mx-10 rounded-2xl sm:rounded-2xl p-4 sm:p-5 lg:p-6"
           style={{
             background: "rgba(255,255,255,0.75)",
             backdropFilter: "blur(24px) saturate(1.5)",
@@ -174,22 +174,22 @@ export default function SignupPage() {
             animation: "nl-fade-up .7s ease forwards",
           }}
         >
-          <div className="flex bg-[#f4f6f8]/80 rounded-2xl p-[5px] mb-7">
-            <Link href="/login" className="flex-1 py-3.5 px-5 text-center text-base font-semibold text-[#9ca3b0] no-underline rounded-2xl hover:text-[#5a6275] transition-colors">{isRtl ? "تسجيل الدخول" : "Sign In"}</Link>
-            <div className="flex-1 py-3.5 px-5 text-center text-base font-semibold text-[#2d3142] bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] cursor-default">{isRtl ? "إنشاء حساب" : "Create Account"}</div>
+          <div className="flex bg-[#f4f6f8]/80 rounded-2xl p-[5px] mb-4">
+            <Link href="/login" className="flex-1 py-2.5 px-4 text-center text-sm font-semibold text-[#9ca3b0] no-underline rounded-2xl hover:text-[#5a6275] transition-colors">{isRtl ? "تسجيل الدخول" : "Sign In"}</Link>
+            <div className="flex-1 py-2.5 px-4 text-center text-sm font-semibold text-[#2d3142] bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] cursor-default">{isRtl ? "إنشاء حساب" : "Create Account"}</div>
           </div>
 
-          <div className="mb-6">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1a1d2e] tracking-tight mb-2" style={{ fontFamily: hFont }}>{t.joinNawaa}</h1>
+          <div className="mb-4">
+            <h1 className="text-lg sm:text-xl font-extrabold text-[#1a1d2e] tracking-tight mb-2" style={{ fontFamily: hFont }}>{t.joinNawaa}</h1>
             <p className="text-base text-[#9ca3b0]">{t.createAccount}</p>
           </div>
 
-          <button type="button" onClick={handleGoogle} disabled={loading} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl border-2 border-[#e8eaef] bg-white/80 backdrop-blur-sm text-base font-semibold text-[#2d3142] cursor-pointer transition-all hover:border-[#23ab7e] hover:shadow-[0_4px_20px_rgba(35,171,126,0.1)] hover:-translate-y-px disabled:opacity-50">
+          <button type="button" onClick={handleGoogle} disabled={loading} className="w-full flex items-center justify-center gap-3 py-2.5 rounded-2xl border-2 border-[#e8eaef] bg-white/80 backdrop-blur-sm text-sm font-semibold text-[#2d3142] cursor-pointer transition-all hover:border-[#23ab7e] hover:shadow-[0_4px_20px_rgba(35,171,126,0.1)] hover:-translate-y-px disabled:opacity-50">
             <svg viewBox="0 0 24 24" className="w-6 h-6"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
             {t.continueGoogle}
           </button>
 
-          <div className="flex items-center gap-4 my-6">
+          <div className="flex items-center gap-4 my-4">
             <div className="flex-1 h-px bg-[#e8eaef]" /><span className="text-sm font-medium text-[#9ca3b0] uppercase tracking-wider">{t.or}</span><div className="flex-1 h-px bg-[#e8eaef]" />
           </div>
 
@@ -242,17 +242,17 @@ export default function SignupPage() {
               )}
             </div>
 
-            <label className="flex items-center gap-3 mb-6 cursor-pointer">
+            <label className="flex items-center gap-3 mb-4 cursor-pointer">
               <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="w-5 h-5 rounded accent-[#23ab7e]" />
               <span className="text-sm text-[#5a6275]">{t.agreeTerms}</span>
             </label>
 
-            <button type="submit" disabled={loading} className="w-full py-4 rounded-2xl border-none text-base font-bold text-white cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(35,171,126,0.35)] disabled:opacity-50" style={{ background: "linear-gradient(135deg, #23ab7e 0%, #1e9670 40%, #8054b8 100%)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 4px 20px rgba(35,171,126,0.3), 0 2px 8px rgba(128,84,184,0.15)" }}>
+            <button type="submit" disabled={loading} className="w-full py-2.5 rounded-2xl border-none text-sm font-bold text-white cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(35,171,126,0.35)] disabled:opacity-50" style={{ background: "linear-gradient(135deg, #23ab7e 0%, #1e9670 40%, #8054b8 100%)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 4px 20px rgba(35,171,126,0.3), 0 2px 8px rgba(128,84,184,0.15)" }}>
               {loading ? (isRtl ? "جارٍ الإنشاء..." : "Creating...") : t.signUp}
             </button>
           </form>
 
-          <p className="text-center mt-6 text-base text-[#9ca3b0]">{t.hasAccount} <Link href="/login" className="text-[#23ab7e] font-semibold no-underline hover:text-[#8054b8] transition-colors">{isRtl ? "سجل دخول" : "Sign in"}</Link></p>
+          <p className="text-center mt-4 text-base text-[#9ca3b0]">{t.hasAccount} <Link href="/login" className="text-[#23ab7e] font-semibold no-underline hover:text-[#8054b8] transition-colors">{isRtl ? "سجل دخول" : "Sign in"}</Link></p>
           <p className="text-center mt-2 text-[11px] text-[#9ca3b0]">{isRtl ? "بإنشاء حساب، أنت توافق على " : "By creating an account, you agree to our "}<a href="#" className="text-[#5a6275] underline underline-offset-2">{isRtl ? "شروط الخدمة" : "Terms"}</a>{isRtl ? " و" : " & "}<a href="#" className="text-[#5a6275] underline underline-offset-2">{isRtl ? "الخصوصية" : "Privacy"}</a></p>
         </div>
       </div>

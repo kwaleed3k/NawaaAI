@@ -53,7 +53,7 @@ function NavLinks({
   onNavClick?: () => void;
 }) {
   return (
-    <nav className="flex-1 space-y-1.5 overflow-y-auto p-4 scrollbar-nawaa">
+    <nav className="flex-1 space-y-1 overflow-y-auto p-3 scrollbar-nawaa">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -63,7 +63,7 @@ function NavLinks({
             href={item.href}
             onClick={onNavClick}
             className={cn(
-              "relative flex items-center gap-4 rounded-xl px-4 py-3.5 text-lg font-bold transition-all duration-200",
+              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all duration-200",
               isActive
                 ? "bg-[#f4f6f8] dark:bg-[#1e2030] text-[#23ab7e]"
                 : "text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0]"
@@ -77,7 +77,7 @@ function NavLinks({
                 )}
               />
             )}
-            <Icon className={cn("h-7 w-7 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
+            <Icon className={cn("h-5 w-5 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
             {!collapsed && (
               <>
                 <span className="flex-1">{t[item.key]}</span>
@@ -107,7 +107,7 @@ function NavLinks({
             href={item.href}
             onClick={onNavClick}
             className={cn(
-              "relative flex items-center gap-4 rounded-xl px-4 py-3.5 text-lg font-bold transition-all duration-200",
+              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all duration-200",
               isActive
                 ? "bg-[#f4f6f8] dark:bg-[#1e2030] text-[#23ab7e]"
                 : "text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0]"
@@ -121,7 +121,7 @@ function NavLinks({
                 )}
               />
             )}
-            <Icon className={cn("h-7 w-7 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
+            <Icon className={cn("h-5 w-5 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
             {!collapsed && <span className="flex-1">{t[item.key]}</span>}
           </Link>
         );
@@ -137,21 +137,21 @@ function SidebarBottom({ t, collapsed, onNavClick }: {
   onNavClick?: () => void;
 }) {
   return (
-    <div className="border-t-2 border-[#e8eaef] dark:border-[#2a2d3e] p-4">
+    <div className="border-t-2 border-[#e8eaef] dark:border-[#2a2d3e] p-3">
       <Link
         href="/settings"
         onClick={onNavClick}
-        className="flex items-center gap-4 rounded-xl px-4 py-3 text-lg font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
+        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
       >
-        <Settings className="h-7 w-7" />
+        <Settings className="h-5 w-5" />
         {!collapsed && <span>{t.settings}</span>}
       </Link>
       <form action={signOut}>
         <button
           type="submit"
-          className="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-lg font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
         >
-          <LogOut className="h-7 w-7" />
+          <LogOut className="h-5 w-5" />
           {!collapsed && <span>{t.logout}</span>}
         </button>
       </form>
@@ -266,20 +266,20 @@ function MobileSidebar({
         aria-modal="true"
         aria-label="Navigation menu"
         className={cn(
-          "fixed top-0 z-[60] flex h-full w-72 flex-col overflow-hidden bg-white dark:bg-[#0c0e14] shadow-2xl lg:hidden transition-transform duration-300",
+          "fixed top-0 z-[60] flex h-full w-60 flex-col overflow-hidden bg-white dark:bg-[#0c0e14] shadow-2xl lg:hidden transition-transform duration-300",
           isRtl ? "right-0 border-l-2 border-[#e8eaef]" : "left-0 border-r-2 border-[#e8eaef]"
         )}
       >
-        <div className="flex h-24 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-5">
+        <div className="flex h-16 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-4">
           <Link
             href="/dashboard"
             className="flex items-center gap-3"
             onClick={onClose}
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
-              <Sparkles className="h-6 w-6 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
+              <Sparkles className="h-5 w-5 text-white" />
             </div>
-            <span className="text-2xl font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
+            <span className="text-lg font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
               {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
               <span className="text-[#8054b8]">AI</span>
             </span>
@@ -374,7 +374,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const displayName = user?.email?.split("@")[0] ?? "User";
   const t = messages[locale].nav;
   const isRtl = locale === "ar";
-  const sidebarWidth = collapsed ? 84 : 288;
+  const sidebarWidth = collapsed ? 64 : 240;
 
   return (
     <div className="flex min-h-screen bg-[#fafbfd] dark:bg-[#0c0e14] text-[#2d3142] dark:text-[#e2e8f0] text-base transition-colors duration-300">
@@ -404,13 +404,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         style={{ width: sidebarWidth }}
       >
         {/* Logo */}
-        <div className="flex h-24 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-5">
+        <div className="flex h-16 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-4">
           {!collapsed && (
             <Link href="/dashboard" className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
-                <Sparkles className="h-6 w-6 text-white" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
+                <Sparkles className="h-5 w-5 text-white" />
               </div>
-              <span className="text-2xl font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
+              <span className="text-lg font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
                 {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
                 <span className="text-[#8054b8]">AI</span>
               </span>
@@ -468,7 +468,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         `}</style>
         <div className="nawaa-desktop-content flex flex-1 flex-col min-w-0">
           {/* ── Topbar Header ── */}
-          <header className="sticky top-0 z-30 flex h-20 sm:h-24 items-center gap-3 sm:gap-4 border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-white/80 dark:bg-[#0c0e14]/80 backdrop-blur-sm px-4 sm:px-8">
+          <header className="sticky top-0 z-30 flex h-14 sm:h-16 items-center gap-3 sm:gap-4 border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-white/80 dark:bg-[#0c0e14]/80 backdrop-blur-sm px-4 sm:px-6">
             {/* Hamburger — visible only on mobile */}
             <button
               type="button"
@@ -492,7 +492,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   onChange={(e) => setSearchQuery(e.target.value)}
                   aria-label={t.search}
                   className={cn(
-                    "h-12 sm:h-14 w-full rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-[#fafbfd] dark:bg-[#141620] text-base sm:text-lg text-[#2d3142] dark:text-[#e2e8f0] placeholder:text-[#8f96a3]/50 focus:outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)]",
+                    "h-9 sm:h-10 w-full rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-[#fafbfd] dark:bg-[#141620] text-sm sm:text-base text-[#2d3142] dark:text-[#e2e8f0] placeholder:text-[#8f96a3]/50 focus:outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)]",
                     isRtl ? "pl-10 pr-12" : "pl-12 pr-10"
                   )}
                 />
@@ -522,7 +522,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 }}
                 aria-label={locale === "ar" ? "Switch to English" : "التبديل إلى العربية"}
                 className={cn(
-                  "rounded-xl border-2 px-3 py-2 sm:px-5 sm:py-2.5 text-base sm:text-lg font-bold transition-all duration-300",
+                  "rounded-xl border-2 px-2.5 py-1.5 sm:px-3 sm:py-2 text-sm font-bold transition-all duration-300",
                   localeSwitching
                     ? "border-[#23ab7e] bg-[#23ab7e] text-white scale-95"
                     : "border-[#e8eaef] text-[#505868] hover:bg-[#f4f6f8] hover:border-[#8054b8]"
@@ -531,14 +531,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {locale === "ar" ? "EN" : "عر"}
               </button>
               <ClientOnly fallback={
-                <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-lg font-bold text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]">
+                <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-sm font-bold text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]">
                   {extractInitials(displayName)}
                 </div>
               }>
                 <DropdownMenu>
                   <DropdownMenuTrigger
                     aria-label="User menu"
-                    className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-lg font-bold text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)] transition-shadow hover:shadow-[0_6px_20px_rgba(35,171,126,0.35)]"
+                    className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-sm font-bold text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)] transition-shadow hover:shadow-[0_6px_20px_rgba(35,171,126,0.35)]"
                   >
                     {extractInitials(displayName)}
                   </DropdownMenuTrigger>
@@ -546,15 +546,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     align="end"
                     className="border-2 border-[#e8eaef] bg-white text-[#2d3142] rounded-xl p-2"
                   >
-                    <DropdownMenuItem className="focus:bg-[#f4f6f8] rounded-lg px-3 py-2.5 text-lg font-bold">
+                    <DropdownMenuItem className="focus:bg-[#f4f6f8] rounded-lg px-3 py-2 text-sm font-bold">
                       {displayName}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-lg px-3 py-2.5 text-lg p-0">
+                    <DropdownMenuItem className="rounded-lg px-3 py-1.5 text-sm p-0">
                       <Link href="/settings" className="w-full flex items-center gap-2 px-3 py-2.5 no-underline text-[#2d3142]">
                         <Settings className="h-4 w-4 text-[#8f96a3]" />{t.settings}
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-lg px-3 py-2.5 text-lg p-0">
+                    <DropdownMenuItem className="rounded-lg px-3 py-1.5 text-sm p-0">
                       <form action={signOut} className="w-full">
                         <button type="submit" className="w-full text-left px-3 py-2.5 flex items-center gap-2">
                           <LogOut className="h-4 w-4 text-[#8f96a3]" />{t.logout}
@@ -567,7 +567,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </header>
 
-          <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 xl:p-10 scrollbar-nawaa">
+          <main className="flex-1 overflow-auto p-3 sm:p-4 lg:p-5 xl:p-6 scrollbar-nawaa">
             <Breadcrumbs pathname={pathname} locale={locale} />
             {children}
           </main>

@@ -239,13 +239,13 @@ export default function CompetitorAnalysisPage() {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-            <Swords className="h-8 w-8 text-white" />
+            <Swords className="h-7 w-7 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
               {t.pageTitle}
             </h1>
-            <p className="mt-2 text-lg text-white/60">{t.pageSub}</p>
+            <p className="mt-2 text-base text-white/60">{t.pageSub}</p>
           </div>
         </div>
       </div>
@@ -848,12 +848,12 @@ export default function CompetitorAnalysisPage() {
           </div>
 
           {/* Rotating fun quotes */}
-          <p className="text-3xl md:text-4xl font-black text-[#2d3142] max-w-2xl leading-tight mb-4 transition-all duration-500" style={{ animation: "fade-text 4s ease-in-out infinite" }}>
+          <p className="text-2xl md:text-3xl font-black text-[#2d3142] max-w-2xl leading-tight mb-4 transition-all duration-500" style={{ animation: "fade-text 4s ease-in-out infinite" }}>
             {funnyMessages[loadingMsg]}
           </p>
           <div className="flex items-center gap-3 mt-4">
             <Loader2 className="h-6 w-6 animate-spin text-[#23ab7e]" />
-            <p className="text-xl text-[#8f96a3] font-bold">{t.analyzing}...</p>
+            <p className="text-lg text-[#8f96a3] font-bold">{t.analyzing}...</p>
           </div>
 
           {/* Aurora progress bar */}

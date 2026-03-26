@@ -358,10 +358,10 @@ export default function MyGenerationsPage() {
                 {t.galleryLabel}
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
               {t.title}
             </h1>
-            <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">
+            <p className="mt-4 text-lg sm:text-xl font-medium text-white/70">
               {t.subtitle}
             </p>
 
@@ -431,10 +431,10 @@ export default function MyGenerationsPage() {
               </div>
             </div>
 
-            <p className="mt-8 text-2xl sm:text-3xl font-black text-[#1a1d2e]">
+            <p className="mt-8 text-xl sm:text-2xl font-black text-[#1a1d2e]">
               {t.noGenerations}
             </p>
-            <p className="mt-2 text-lg text-[#8f96a3]/70">{t.noGenerationsSub}</p>
+            <p className="mt-2 text-base text-[#8f96a3]/70">{t.noGenerationsSub}</p>
             <a
               href="/vision-studio"
               className="mt-8 inline-flex h-14 items-center rounded-2xl bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] px-10 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#8054b8]/25"
@@ -548,7 +548,7 @@ export default function MyGenerationsPage() {
             {/* ===== SECTION HEADER (showing current filter) ===== */}
             {activeFilter !== "all" && (
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">
+                <h2 className="text-xl sm:text-2xl font-black text-[#1a1d2e]">
                   {t.generationsFor}{" "}
                   <span className="text-[#8054b8]">
                     {activeFilter === "__none__"

@@ -85,10 +85,10 @@ export default function InsightsPage() {
 
   return (
     <div
-      dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10"
+      dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-6"
     >
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
+      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
@@ -101,25 +101,25 @@ export default function InsightsPage() {
             </div>
             <span className="text-xl font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "التحليلات" : "Insights"}</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
             {ti.pageTitle}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">{ti.pageSub}</p>
+          <p className="mt-4 text-base sm:text-lg font-medium text-white/70">{ti.pageSub}</p>
         </div>
       </div>
 
       {/* ── Coming Soon Hero Section ── */}
       <div className="relative">
         {/* Gradient border wrapper */}
-        <div className="relative rounded-3xl p-[3px]">
-          <div className="absolute inset-0 rounded-3xl nl-aurora-bg" />
-          <div className="relative rounded-3xl bg-gradient-to-b from-[#fafbfd] to-white px-8 py-12 sm:py-16 md:py-24 md:px-14 lg:py-32">
+        <div className="relative rounded-2xl p-[3px]">
+          <div className="absolute inset-0 rounded-2xl nl-aurora-bg" />
+          <div className="relative rounded-2xl bg-gradient-to-b from-[#fafbfd] to-white px-5 py-7 sm:py-10 md:py-14 md:px-8 lg:py-16">
             <div className="flex flex-col items-center justify-center text-center">
               {/* Animated icon */}
               <div
-                className="relative flex h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 items-center justify-center rounded-full nl-aurora-bg shadow-lg shadow-[#23ab7e]/25"
+                className="relative flex h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 items-center justify-center rounded-full nl-aurora-bg shadow-lg shadow-[#23ab7e]/25"
               >
-                <TrendingUp className="text-white" style={{ width: 80, height: 80 }} />
+                <TrendingUp className="text-white" style={{ width: 48, height: 48 }} />
                 {/* Outer ring pulse */}
                 <div
                   className="absolute inset-0 rounded-full border-4 border-[#23ab7e]/30"
@@ -127,27 +127,27 @@ export default function InsightsPage() {
               </div>
 
               {/* Coming Soon text */}
-              <h2 className="mt-12 text-6xl sm:text-7xl font-black bg-gradient-to-r from-[#23ab7e] via-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">
+              <h2 className="mt-7 text-xl sm:text-2xl font-black bg-gradient-to-r from-[#23ab7e] via-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">
                 {ti.comingSoon}
               </h2>
-              <p className="mt-6 max-w-xl text-3xl leading-relaxed text-[#8f96a3] font-medium">
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-[#8f96a3] font-medium">
                 {ti.comingSoonDesc}
               </p>
 
               {/* ── Preview Metric Cards ── */}
               <div
-                className="mt-16 grid w-full max-w-3xl grid-cols-1 gap-8 sm:grid-cols-3"
+                className="mt-7 grid w-full max-w-3xl grid-cols-1 gap-5 sm:grid-cols-3"
               >
                 {metricCards.map((item, i) => (
                   <div
                     key={item.label}
-                    className={`group cursor-default rounded-3xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-8 text-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40`}
+                    className={`group cursor-default rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-5 text-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40`}
                   >
                     <div
-                      className={`mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconBg} h-12 w-12 sm:h-[72px] sm:w-[72px]`}
+                      className={`mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconBg} h-10 w-10 sm:h-14 sm:w-14`}
                     >
                       <item.icon
-                        className="h-9 w-9 transition-transform duration-300 group-hover:rotate-12"
+                        className="h-6 w-6 transition-transform duration-300 group-hover:rotate-12"
                         style={{
                           color: item.gradient.includes("006C35")
                             ? "#23ab7e"
@@ -157,7 +157,7 @@ export default function InsightsPage() {
                         }}
                       />
                     </div>
-                    <p className="mt-5 text-2xl sm:text-3xl font-black text-[#1a1d2e]">{item.label}</p>
+                    <p className="mt-3 text-lg sm:text-xl font-black text-[#1a1d2e]">{item.label}</p>
                     <div className="mt-4 h-3.5 w-full overflow-hidden rounded-full bg-[#E8F5EC]">
                       <div
                         className={`h-full rounded-full bg-gradient-to-r ${item.barColor}`}
@@ -173,27 +173,27 @@ export default function InsightsPage() {
 
       {/* ── What to Expect Section ── */}
       <div>
-        <h3 className="mb-10 text-center text-4xl font-black text-[#23ab7e] md:text-5xl">
+        <h3 className="mb-6 text-center text-lg font-black text-[#23ab7e] md:text-xl">
           {locale === "ar" ? "ماذا تتوقع" : "What to Expect"}
         </h3>
         <div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
         >
           {featureCards.map((card, i) => (
             <div
               key={card.title}
-              className="group relative cursor-default overflow-hidden rounded-3xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40"
+              className="group relative cursor-default overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-b from-white to-[#f4f6f8] p-5 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-[#23ab7e]/40"
             >
               {/* Gradient accent bar at top */}
               <div className={`absolute inset-x-0 top-0 h-2 bg-gradient-to-r ${card.accentBar}`} />
 
               <div
-                className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${card.gradient} shadow-lg`}
+                className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${card.gradient} shadow-lg`}
               >
-                <card.icon className="h-8 w-8 text-white" />
+                <card.icon className="h-6 w-6 text-white" />
               </div>
-              <h4 className="mt-6 text-2xl sm:text-3xl font-black text-[#23ab7e]">{card.title}</h4>
-              <p className="mt-3 text-xl leading-relaxed text-[#8f96a3]">{card.description}</p>
+              <h4 className="mt-4 text-lg sm:text-xl font-black text-[#23ab7e]">{card.title}</h4>
+              <p className="mt-2 text-sm leading-relaxed text-[#8f96a3]">{card.description}</p>
             </div>
           ))}
         </div>

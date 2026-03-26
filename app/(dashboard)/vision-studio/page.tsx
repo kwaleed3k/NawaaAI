@@ -267,10 +267,10 @@ export default function VisionStudioPage() {
             </div>
             <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "استوديو الرؤية" : "Vision Studio"}</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
             {tv.pageTitle}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">{tv.pageSub}</p>
+          <p className="mt-4 text-lg sm:text-xl font-medium text-white/70">{tv.pageSub}</p>
         </div>
       </div>
 
@@ -786,7 +786,7 @@ export default function VisionStudioPage() {
         <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
           <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center justify-center gap-4 text-2xl md:text-3xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+            <CardTitle className="flex items-center justify-center gap-4 text-xl md:text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
                 <ImageIcon className="h-7 w-7 text-white" />
               </div>
@@ -800,8 +800,8 @@ export default function VisionStudioPage() {
                 <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e]/10 to-[#8054b8]/10 shadow-inner">
                   <ImageIcon className="h-12 w-12 text-[#8f96a3]/50" />
                 </div>
-                <p className="mt-6 text-2xl font-bold text-[#1a1d2e]">{tv.imagesHere}</p>
-                <p className="mt-2 text-lg text-[#8f96a3]">{tv.selectAndGenerate}</p>
+                <p className="mt-6 text-xl font-bold text-[#1a1d2e]">{tv.imagesHere}</p>
+                <p className="mt-2 text-base text-[#8f96a3]">{tv.selectAndGenerate}</p>
               </div>
             ) : generating ? (
               /* ── Full Loading Experience ── */
@@ -843,7 +843,7 @@ export default function VisionStudioPage() {
 
                 {/* Quote */}
                 <div className="relative z-10 text-center max-w-md px-4">
-                  <p className="text-2xl sm:text-3xl font-black text-[#2d3142] leading-snug" key={loadingQuoteIndex} style={{ animation: "nl-fade-up 0.4s ease forwards" }}>
+                  <p className="text-xl sm:text-2xl font-black text-[#2d3142] leading-snug" key={loadingQuoteIndex} style={{ animation: "nl-fade-up 0.4s ease forwards" }}>
                     {loadingQuotes[loadingQuoteIndex]}
                   </p>
                   <p className="mt-3 text-base text-[#8f96a3]">

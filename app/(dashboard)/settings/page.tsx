@@ -200,10 +200,10 @@ export default function SettingsPage() {
               {locale === "ar" ? "\u0627\u0644\u0625\u0639\u062f\u0627\u062f\u0627\u062a" : "Settings"}
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
             {t.pageTitle}
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-medium text-white/70">
+          <p className="mt-4 text-lg sm:text-xl font-medium text-white/70">
             {locale === "ar"
               ? "\u062e\u0635\u0635 \u0645\u0644\u0641\u0643 \u0627\u0644\u0634\u062e\u0635\u064a \u0648\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0648\u0643\u0627\u0644\u062a\u0643"
               : "Customize your profile and agency preferences"}
@@ -237,7 +237,7 @@ export default function SettingsPage() {
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
 
             <div className="flex-1">
-              <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142]">{t.profile}</h2>
+              <h2 className="text-xl sm:text-2xl font-black text-[#2d3142]">{t.profile}</h2>
               <p className="text-base text-[#8f96a3] mt-1">{user?.email}</p>
               {avatarError && <p className="text-sm font-bold text-red-500 mt-1">{avatarError}</p>}
             </div>
@@ -294,7 +294,7 @@ export default function SettingsPage() {
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#6d3fa0] shadow-lg shadow-[#8054b8]/20">
               <Lock className="h-7 w-7 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#1a1d2e]">{t.changePassword}</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-[#1a1d2e]">{t.changePassword}</h2>
           </div>
           <form onSubmit={(e) => { e.preventDefault(); handlePasswordUpdate(); }} className="space-y-6 max-w-lg" autoComplete="off">
             {/* New Password */}
@@ -432,10 +432,10 @@ export default function SettingsPage() {
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/20">
               <AlertTriangle className="h-7 w-7 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-red-700">{t.dangerZone}</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-red-700">{t.dangerZone}</h2>
           </div>
 
-          <p className="text-lg text-red-600/80 mb-6">
+          <p className="text-base text-red-600/80 mb-6">
             {locale === "ar"
               ? "\u0627\u0644\u0625\u062c\u0631\u0627\u0621\u0627\u062a \u0641\u064a \u0647\u0630\u0627 \u0627\u0644\u0642\u0633\u0645 \u0644\u0627 \u064a\u0645\u0643\u0646 \u0627\u0644\u062a\u0631\u0627\u062c\u0639 \u0639\u0646\u0647\u0627. \u064a\u0631\u062c\u0649 \u0627\u0644\u062a\u0623\u0643\u062f \u0642\u0628\u0644 \u0627\u0644\u0645\u062a\u0627\u0628\u0639\u0629."
               : "Actions in this section are irreversible. Please be certain before proceeding."}
