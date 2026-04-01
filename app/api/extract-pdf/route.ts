@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { genAI } from "@/lib/gemini";
 import { authenticateRequest, checkRateLimit } from "@/lib/api-auth";
 
-const MAX_PDF_SIZE = 10 * 1024 * 1024; // 10MB
+// Allow large PDF uploads (Next.js App Router body size config)
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
+
+const MAX_PDF_SIZE = 50 * 1024 * 1024; // 50MB
 // Gemini has a ~20MB inline data limit; we compress large PDFs to stay under
 const GEMINI_INLINE_LIMIT = 15 * 1024 * 1024;
 

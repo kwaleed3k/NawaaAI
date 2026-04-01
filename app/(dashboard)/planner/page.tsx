@@ -112,22 +112,22 @@ export default function PlannerPage() {
   async function handleExportPDF() { if (!plan || !selectedCompany || exporting) return; setExporting(true); try { const fn = await loadExportPlanToPDF(); await fn(plan, selectedCompany, "en"); toast.success("PDF downloaded"); } catch (e) { toast.error(e instanceof Error ? e.message : "Export failed"); } setExporting(false); }
   function getPlatformConfig(id: string) { return PLATFORMS.find((p) => p.id === id); }
 
-  if (loadingCompanies) return (<div dir={isRtl ? "rtl" : "ltr"} className="space-y-6"><Skeleton className="h-48 rounded-2xl" /><Skeleton className="h-96 rounded-2xl" /></div>);
+  if (loadingCompanies) return (<div dir={isRtl ? "rtl" : "ltr"} className="space-y-6"><Skeleton className="h-48 rounded-xl" /><Skeleton className="h-96 rounded-xl" /></div>);
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="space-y-6 pb-16">
 
       {/* ═══════ HERO BANNER ═══════ */}
-      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-3 sm:p-6 lg:p-8">
+        <div className="absolute top-0 right-0 w-28 h-28 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-              <Calendar className="h-7 w-7 text-white" />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm border border-white/20">
+              <Calendar className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight">{tp.pageTitle}</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight">{tp.pageTitle}</h1>
               <p className="mt-2 text-sm text-white/60">{tp.pageSub}</p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -150,13 +150,13 @@ export default function PlannerPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)" }}>
           <div className="w-full max-w-md mx-auto px-6 text-center">
             <div className="relative mb-8">
-              <div className="absolute -inset-6 rounded-3xl nl-aurora-bg opacity-20 animate-pulse" />
-              <div className="relative flex h-24 w-24 mx-auto items-center justify-center rounded-3xl nl-aurora-bg" style={{ boxShadow: "0 12px 40px rgba(35,171,126,0.3)" }}>
-                <Loader2 className="h-12 w-12 text-white animate-spin" />
+              <div className="absolute -inset-6 rounded-xl nl-aurora-bg opacity-20 animate-pulse" />
+              <div className="relative flex h-24 w-24 mx-auto items-center justify-center rounded-xl nl-aurora-bg" style={{ boxShadow: "0 12px 40px rgba(35,171,126,0.3)" }}>
+                <Loader2 className="h-8 w-8 text-white animate-spin" />
               </div>
             </div>
             <p key={loadingMsgIndex} className="text-xl font-bold text-[#2d3142] mb-2 transition-opacity">{loadingMessages[loadingMsgIndex]}</p>
-            <p className="text-base text-[#8f96a3] mb-8">{isRtl ? "نبني لك خطة محتوى احترافية" : "Building your professional content plan"}</p>
+            <p className="text-sm text-[#8f96a3] mb-8">{isRtl ? "نبني لك خطة محتوى احترافية" : "Building your professional content plan"}</p>
             <div className="h-2 rounded-full bg-[#e8eaef] overflow-hidden">
               <div className="h-full rounded-full animate-shimmer" style={{ width: "70%", background: "linear-gradient(90deg, #23ab7e, #8054b8, #e67af3)" }} />
             </div>
@@ -169,30 +169,30 @@ export default function PlannerPage() {
         <div className="space-y-5">
 
           {/* ── Step 1: Company ── */}
-          <div className="rounded-2xl p-5 sm:p-6" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(35,171,126,0.04)" }}>
+          <div className="rounded-xl p-3 sm:p-6" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(35,171,126,0.04)" }}>
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-white text-base font-bold shadow-lg">1</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] text-white text-sm font-bold shadow-lg">1</div>
               <div>
                 <h3 className="text-xl font-bold text-[#2d3142]">{tp.company}</h3>
-                <p className="text-base text-[#8f96a3]">{isRtl ? "اختر العلامة التجارية" : "Choose your brand"}</p>
+                <p className="text-sm text-[#8f96a3]">{isRtl ? "اختر العلامة التجارية" : "Choose your brand"}</p>
               </div>
             </div>
-            <select value={selectedCompany?.id ?? ""} onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }} className="w-full appearance-none rounded-2xl border-2 border-[#e8eaef] bg-white px-6 h-12 sm:h-14 lg:h-16 text-lg font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)] cursor-pointer">
+            <select value={selectedCompany?.id ?? ""} onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }} className="w-full appearance-none rounded-xl border-2 border-[#e8eaef] bg-white px-6 h-9 sm:h-10 lg:h-10 text-sm font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)] cursor-pointer">
               {companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
 
           {/* ── Step 2: Platforms ── */}
-          <div className="rounded-3xl p-8 sm:p-10" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(128,84,184,0.04)" }}>
+          <div className="rounded-xl p-4 sm:p-5" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(128,84,184,0.04)" }}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#e67af3] text-white text-base font-bold shadow-lg">2</div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#e67af3] text-white text-sm font-bold shadow-lg">2</div>
                 <div>
                   <h3 className="text-xl font-bold text-[#2d3142]">{tp.platforms}</h3>
-                  <p className="text-base text-[#8f96a3]">{isRtl ? "اختر المنصات" : "Select platforms"}</p>
+                  <p className="text-sm text-[#8f96a3]">{isRtl ? "اختر المنصات" : "Select platforms"}</p>
                 </div>
               </div>
-              <button type="button" onClick={() => setPlatforms(platforms.length === PLATFORMS.length ? [] : PLATFORMS.map(p => p.id))} className="text-base font-bold text-[#8054b8] hover:text-[#6d3fa0] transition-colors bg-transparent border-none cursor-pointer px-4 py-2 rounded-xl hover:bg-[#8054b8]/5">
+              <button type="button" onClick={() => setPlatforms(platforms.length === PLATFORMS.length ? [] : PLATFORMS.map(p => p.id))} className="text-sm font-bold text-[#8054b8] hover:text-[#6d3fa0] transition-colors bg-transparent border-none cursor-pointer px-4 py-2 rounded-xl hover:bg-[#8054b8]/5">
                 {platforms.length === PLATFORMS.length ? (isRtl ? "مسح الكل" : "Clear All") : (isRtl ? "تحديد الكل" : "Select All")}
               </button>
             </div>
@@ -200,12 +200,12 @@ export default function PlannerPage() {
               {PLATFORMS.map((p) => {
                 const selected = platforms.includes(p.id);
                 return (
-                  <button key={p.id} type="button" onClick={() => togglePlatform(p.id)} className={cn("relative flex flex-col items-center gap-4 rounded-2xl border-2 p-6 transition-all duration-300 cursor-pointer", selected ? "border-[#23ab7e] bg-gradient-to-br from-[#23ab7e]/5 to-[#8054b8]/5 shadow-[0_4px_20px_rgba(35,171,126,0.12)]" : "border-[#e8eaef] bg-white hover:border-[#c4a8e8] hover:shadow-md")}>
+                  <button key={p.id} type="button" onClick={() => togglePlatform(p.id)} className={cn("relative flex flex-col items-center gap-4 rounded-xl border-2 p-4 transition-all duration-300 cursor-pointer", selected ? "border-[#23ab7e] bg-gradient-to-br from-[#23ab7e]/5 to-[#8054b8]/5 shadow-[0_4px_20px_rgba(35,171,126,0.12)]" : "border-[#e8eaef] bg-white hover:border-[#c4a8e8] hover:shadow-md")}>
                     {selected && <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-[#23ab7e] flex items-center justify-center"><CheckCircle2 className="w-4 h-4 text-white" /></div>}
-                    <div className={cn("flex h-14 w-14 items-center justify-center rounded-xl", selected ? `bg-gradient-to-br ${p.gradient}` : "bg-[#f4f6f8]")}>
-                      <span style={!selected ? { color: p.color } : undefined}><p.Icon className={cn("h-7 w-7", selected ? "text-white" : "")} /></span>
+                    <div className={cn("flex h-8 w-8 items-center justify-center rounded-xl", selected ? `bg-gradient-to-br ${p.gradient}` : "bg-[#f4f6f8]")}>
+                      <span style={!selected ? { color: p.color } : undefined}><p.Icon className={cn("h-5 w-5", selected ? "text-white" : "")} /></span>
                     </div>
-                    <span className={cn("text-base font-bold", selected ? "text-[#2d3142]" : "text-[#8f96a3]")}>{p.label}</span>
+                    <span className={cn("text-sm font-bold", selected ? "text-[#2d3142]" : "text-[#8f96a3]")}>{p.label}</span>
                   </button>
                 );
               })}
@@ -213,22 +213,22 @@ export default function PlannerPage() {
           </div>
 
           {/* ── Step 3 & 4: Week + Language ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="rounded-3xl p-8" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(0,0,0,0.02)" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="rounded-xl p-8" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(0,0,0,0.02)" }}>
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#2dd4a0] to-[#23ab7e] text-white text-sm font-bold shadow-md">3</div>
-                <h3 className="text-lg font-bold text-[#2d3142]">{tp.weekStart}</h3>
+                <h3 className="text-sm font-bold text-[#2d3142]">{tp.weekStart}</h3>
               </div>
-              <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="w-full rounded-2xl border-2 border-[#e8eaef] bg-white px-6 h-12 sm:h-14 lg:h-16 text-lg font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]" />
+              <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="w-full rounded-xl border-2 border-[#e8eaef] bg-white px-6 h-9 sm:h-10 lg:h-10 text-sm font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]" />
             </div>
-            <div className="rounded-3xl p-8" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(0,0,0,0.02)" }}>
+            <div className="rounded-xl p-8" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(0,0,0,0.02)" }}>
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#c4a8e8] to-[#8054b8] text-white text-sm font-bold shadow-md">4</div>
-                <h3 className="text-lg font-bold text-[#2d3142]">{tp.generateIn}</h3>
+                <h3 className="text-sm font-bold text-[#2d3142]">{tp.generateIn}</h3>
               </div>
               <div className="flex gap-3">
                 {[{ val: "en" as const, flag: "🇺🇸", label: "English" }, { val: "ar" as const, flag: "🇸🇦", label: "العربية" }].map((l) => (
-                  <button key={l.val} type="button" onClick={() => setOutputLanguage(l.val)} className={cn("flex-1 h-12 sm:h-14 lg:h-16 rounded-2xl border-2 text-lg font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer", outputLanguage === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8]")}>
+                  <button key={l.val} type="button" onClick={() => setOutputLanguage(l.val)} className={cn("flex-1 h-9 sm:h-10 lg:h-10 rounded-xl border-2 text-sm font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer", outputLanguage === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8]")}>
                     <span className="text-xl">{l.flag}</span>{l.label}
                   </button>
                 ))}
@@ -237,22 +237,27 @@ export default function PlannerPage() {
           </div>
 
           {/* ── Step 5: Special focus ── */}
-          <div className="rounded-3xl p-8 sm:p-10" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(230,122,243,0.03)" }}>
+          <div className="rounded-xl p-4 sm:p-5" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(230,122,243,0.03)" }}>
             <div className="flex items-center gap-4 mb-5">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#e67af3] to-[#f5c6fa] text-white text-base font-bold shadow-lg">5</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#e67af3] to-[#f5c6fa] text-white text-sm font-bold shadow-lg">5</div>
               <div>
                 <h3 className="text-xl font-bold text-[#2d3142]">{tp.specialFocus}</h3>
-                <p className="text-base text-[#8f96a3]">{isRtl ? "اختياري — وجّه الذكاء الاصطناعي" : "Optional — guide the AI output"}</p>
+                <p className="text-sm text-[#8f96a3]">{isRtl ? "اختياري — وجّه الذكاء الاصطناعي" : "Optional — guide the AI output"}</p>
               </div>
             </div>
-            <Textarea value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} placeholder={tp.focusPlaceholder} className="min-h-[80px] sm:min-h-[120px] rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3] focus:border-[#e67af3] focus:ring-0 focus:shadow-[0_0_0_4px_rgba(230,122,243,0.1)] transition-all resize-none p-5" />
+            <Textarea value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} placeholder={tp.focusPlaceholder} className="min-h-[80px] sm:min-h-[120px] rounded-xl border-2 border-[#e8eaef] bg-white text-sm text-[#2d3142] placeholder:text-[#8f96a3] focus:border-[#e67af3] focus:ring-0 focus:shadow-[0_0_0_4px_rgba(230,122,243,0.1)] transition-all resize-none p-3" />
+            <div className="flex justify-end mt-1.5 px-1">
+              <span className={cn("text-xs font-medium tabular-nums", userPrompt.length > 4500 ? "text-red-500" : userPrompt.length > 3000 ? "text-[#e67af3]" : "text-[#8f96a3]/60")}>
+                {userPrompt.length.toLocaleString()} / 5,000
+              </span>
+            </div>
           </div>
 
           {/* ── Generate Button ── */}
-          <button onClick={handleGenerate} disabled={generating} className="relative w-full h-14 sm:h-16 lg:h-20 rounded-3xl border-none text-lg sm:text-xl lg:text-2xl font-black text-white cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,0.4)] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden" style={{ background: "linear-gradient(135deg, #23ab7e, #1a8a64, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(35,171,126,0.3), 0 4px 12px rgba(128,84,184,0.15)" }}>
+          <button onClick={handleGenerate} disabled={generating} className="relative w-full h-10 sm:h-16 lg:h-20 rounded-xl border-none text-sm sm:text-sm lg:text-xl font-black text-white cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,0.4)] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden" style={{ background: "linear-gradient(135deg, #23ab7e, #1a8a64, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(35,171,126,0.3), 0 4px 12px rgba(128,84,184,0.15)" }}>
             <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
             <span className="relative flex items-center justify-center gap-4">
-              <Sparkles className="h-7 w-7" />
+              <Sparkles className="h-5 w-5" />
               {tp.generatePlan}
               <ArrowRight className={cn("h-6 w-6", isRtl && "rotate-180")} />
             </span>
@@ -264,15 +269,15 @@ export default function PlannerPage() {
         <div className="space-y-8">
 
           {/* Week Theme + Progress */}
-          <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(35,171,126,0.04)" }}>
+          <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 8px 32px rgba(35,171,126,0.04)" }}>
             <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8, #e67af3)" }} />
-            <div className="p-8 sm:p-10 lg:p-12 flex flex-col sm:flex-row sm:items-center justify-between gap-8">
+            <div className="p-4 sm:p-5 lg:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
               <div className="flex-1">
                 <span className="text-sm font-bold text-[#8054b8] tracking-widest uppercase">{isRtl ? "موضوع الأسبوع" : "Week Theme"}</span>
-                <h2 className="mt-3 text-2xl sm:text-3xl font-black text-[#2d3142] leading-tight">{outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}</h2>
+                <h2 className="mt-3 text-sm sm:text-xl font-black text-[#2d3142] leading-tight">{outputLanguage === "ar" ? (plan.weekThemeAr || plan.weekTheme) : (plan.weekTheme || plan.weekThemeAr)}</h2>
                 <div className="mt-4 flex items-center gap-2.5 text-[#8f96a3]">
                   <Calendar className="h-5 w-5 text-[#23ab7e]" />
-                  <span className="text-lg font-medium">{weekStart && plan.days?.[0]?.date ? `${format(parseISO(plan.days[0].date), "MMM d")} – ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}` : weekStart}</span>
+                  <span className="text-sm font-medium">{weekStart && plan.days?.[0]?.date ? `${format(parseISO(plan.days[0].date), "MMM d")} – ${format(parseISO(plan.days[6]?.date ?? weekStart), "MMM d, yyyy")}` : weekStart}</span>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-2">
@@ -283,7 +288,7 @@ export default function PlannerPage() {
                     <defs><linearGradient id="prog" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#23ab7e" /><stop offset="100%" stopColor="#8054b8" /></linearGradient></defs>
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-black text-[#2d3142]">{completedDays.size}/7</span>
+                    <span className="text-sm font-black text-[#2d3142]">{completedDays.size}/7</span>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-[#8f96a3]">{isRtl ? "مكتمل" : "Done"}</span>
@@ -299,14 +304,14 @@ export default function PlannerPage() {
               { onClick: handleExportPDF, icon: exporting ? Loader2 : Download, label: tp.exportPDF, bg: "from-[#e67af3] to-[#c054d4]", shadow: "rgba(230,122,243,0.25)", disabled: exporting, spin: exporting },
               { onClick: () => setPlan(null), icon: RotateCcw, label: tp.generateNew, bg: "from-[#505868] to-[#8f96a3]", shadow: "rgba(0,0,0,0.1)" },
             ].map((btn) => (
-              <button key={btn.label} onClick={btn.onClick} disabled={btn.disabled} className={`flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r ${btn.bg} text-white font-bold text-base transition-all hover:-translate-y-0.5 disabled:opacity-50`} style={{ boxShadow: `0 4px 16px ${btn.shadow}` }}>
+              <button key={btn.label} onClick={btn.onClick} disabled={btn.disabled} className={`flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r ${btn.bg} text-white font-bold text-sm transition-all hover:-translate-y-0.5 disabled:opacity-50`} style={{ boxShadow: `0 4px 16px ${btn.shadow}` }}>
                 <btn.icon className={cn("h-5 w-5", btn.spin && "animate-spin")} />
                 {btn.label}
               </button>
             ))}
 
             {/* View Toggle */}
-            <div className="flex ml-auto rounded-2xl border-2 border-[#e8eaef] bg-white p-1 gap-1">
+            <div className="flex ml-auto rounded-xl border-2 border-[#e8eaef] bg-white p-1 gap-1">
               <button onClick={() => setViewMode("list")} className={cn("flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer border-none", viewMode === "list" ? "bg-[#23ab7e] text-white shadow-md" : "bg-transparent text-[#8f96a3] hover:text-[#2d3142]")}>
                 <LayoutGrid className="h-4 w-4" />{isRtl ? "قائمة" : "List"}
               </button>
@@ -318,7 +323,7 @@ export default function PlannerPage() {
 
           {/* ═══════ CALENDAR VIEW ═══════ */}
           {viewMode === "calendar" && plan.days && (
-            <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid #e8eaef" }}>
+            <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid #e8eaef" }}>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
                 {plan.days.map((day, idx) => {
                   const pCfg = getPlatformConfig(day.platform);
@@ -376,11 +381,11 @@ export default function PlannerPage() {
               const clr = DAY_COLORS[idx % DAY_COLORS.length];
 
               return (
-                <div key={day.dayIndex} className={cn("group rounded-2xl transition-all duration-300 overflow-hidden", done ? "shadow-[0_0_0_2px_#23ab7e40]" : "hover:shadow-lg")} style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", border: `1px solid ${open ? clr + "40" : "#e8eaef"}` }}>
+                <div key={day.dayIndex} className={cn("group rounded-xl transition-all duration-300 overflow-hidden", done ? "shadow-[0_0_0_2px_#23ab7e40]" : "hover:shadow-lg")} style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", border: `1px solid ${open ? clr + "40" : "#e8eaef"}` }}>
                   <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${clr}, transparent)` }} />
 
-                  <button type="button" onClick={() => setExpandedDay(open ? null : day.dayIndex)} className="w-full flex items-center gap-4 p-5 sm:p-6 text-left cursor-pointer bg-transparent border-none">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-white font-black text-xl shadow-lg" style={{ background: clr, boxShadow: `0 6px 20px ${clr}30` }}>
+                  <button type="button" onClick={() => setExpandedDay(open ? null : day.dayIndex)} className="w-full flex items-center gap-4 p-3 sm:p-6 text-left cursor-pointer bg-transparent border-none">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-white font-black text-xl shadow-lg" style={{ background: clr, boxShadow: `0 6px 20px ${clr}30` }}>
                       {idx + 1}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -388,7 +393,7 @@ export default function PlannerPage() {
                         <span className="text-xl font-bold text-[#2d3142]">{outputLanguage === "ar" ? (day.dayAr || day.dayEn) : (day.dayEn || day.dayAr)}</span>
                         <span className="text-sm font-medium text-[#8f96a3] bg-[#f4f6f8] px-3 py-1 rounded-lg">{day.date}</span>
                       </div>
-                      <p className="mt-1 text-base font-semibold text-[#505868] truncate">{outputLanguage === "ar" ? (day.topicAr || day.topic) : (day.topic || day.topicAr)}</p>
+                      <p className="mt-1 text-sm font-semibold text-[#505868] truncate">{outputLanguage === "ar" ? (day.topicAr || day.topic) : (day.topic || day.topicAr)}</p>
                     </div>
                     {PIcon && <div className={cn("hidden sm:flex items-center gap-2 rounded-xl px-4 py-2.5 border text-sm font-bold", pCfg?.pillBg)}><PIcon className="h-4 w-4" />{pCfg?.label}</div>}
                     <div className="hidden md:flex items-center gap-2 text-sm font-bold rounded-xl px-4 py-2.5 border border-[#e8eaef] bg-[#f4f6f8]" style={{ color: clr }}>
@@ -402,16 +407,16 @@ export default function PlannerPage() {
 
                   {open && (
                     <div className="px-5 sm:px-6 pb-6 border-t border-[#e8eaef]/50" style={{ animation: "nl-fade-up 0.3s ease" }}>
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
                         <div className="lg:col-span-2 space-y-5">
                           <div className="flex items-center gap-3 sm:hidden flex-wrap">
                             {PIcon && <div className={cn("flex items-center gap-2 rounded-xl px-3 py-2 border text-sm font-bold", pCfg?.pillBg)}><PIcon className="h-4 w-4" />{pCfg?.label}</div>}
                             <div className="flex items-center gap-2 text-sm font-bold rounded-xl px-3 py-2 border border-[#e8eaef] bg-[#f4f6f8]" style={{ color: clr }}><Clock className="h-4 w-4" />{day.postingTime}</div>
                           </div>
-                          <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-[#8f96a3]" /><span className="text-base font-semibold text-[#505868]">{day.contentType}</span></div>
-                          <div className="rounded-2xl p-6" style={{ background: `${clr}08`, border: `1px solid ${clr}15` }}>
+                          <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-[#8f96a3]" /><span className="text-sm font-semibold text-[#505868]">{day.contentType}</span></div>
+                          <div className="rounded-xl p-4" style={{ background: `${clr}08`, border: `1px solid ${clr}15` }}>
                             <div className="flex items-center gap-2 mb-3"><MessageSquare className="h-5 w-5" style={{ color: clr }} /><span className="text-xs font-bold uppercase tracking-widest" style={{ color: clr }}>{isRtl ? "الكابشن" : "Caption"}</span></div>
-                            <p className="text-lg text-[#2d3142] leading-relaxed whitespace-pre-wrap">{outputLanguage === "ar" ? (day.captionAr || day.caption) : (day.caption || day.captionAr)}</p>
+                            <p className="text-sm text-[#2d3142] leading-relaxed whitespace-pre-wrap">{outputLanguage === "ar" ? (day.captionAr || day.caption) : (day.caption || day.captionAr)}</p>
                           </div>
                           <div>
                             <div className="flex items-center gap-2 mb-3"><Hash className="h-5 w-5" style={{ color: clr }} /><span className="text-xs font-bold uppercase tracking-widest" style={{ color: clr }}>{isRtl ? "الهاشتاقات" : "Hashtags"}</span></div>
@@ -419,19 +424,19 @@ export default function PlannerPage() {
                           </div>
                         </div>
                         <div className="space-y-4">
-                          <div className="rounded-2xl p-5" style={{ background: `${clr}08`, border: `1px solid ${clr}15` }}>
+                          <div className="rounded-xl p-3" style={{ background: `${clr}08`, border: `1px solid ${clr}15` }}>
                             <div className="flex items-center gap-2 mb-2"><Clock className="h-5 w-5" style={{ color: clr }} /><span className="text-xs font-bold uppercase tracking-widest" style={{ color: clr }}>{isRtl ? "أفضل وقت" : "Best Time"}</span></div>
-                            <p className="text-2xl font-black" style={{ color: clr }}>{day.postingTime}</p>
+                            <p className="text-xl font-black" style={{ color: clr }}>{day.postingTime}</p>
                             {day.postingTimeReason && <p className="mt-2 text-sm leading-relaxed" style={{ color: clr, opacity: 0.7 }}>{day.postingTimeReason}</p>}
                           </div>
                           {day.contentTips && (
-                            <div className="rounded-2xl p-5 bg-[#e67af3]/5 border border-[#e67af3]/10">
+                            <div className="rounded-xl p-3 bg-[#e67af3]/5 border border-[#e67af3]/10">
                               <div className="flex items-center gap-2 mb-2"><Lightbulb className="h-5 w-5 text-[#e67af3]" /><span className="text-xs font-bold text-[#e67af3] uppercase tracking-widest">{isRtl ? "نصائح" : "Tips"}</span></div>
                               <p className="text-sm text-[#505868] leading-relaxed">{day.contentTips}</p>
                             </div>
                           )}
                           {day.imagePromptHint && (
-                            <div className="rounded-2xl p-5 bg-[#8054b8]/5 border border-[#8054b8]/10">
+                            <div className="rounded-xl p-3 bg-[#8054b8]/5 border border-[#8054b8]/10">
                               <div className="flex items-center gap-2 mb-2"><Image className="h-5 w-5 text-[#8054b8]" /><span className="text-xs font-bold text-[#8054b8] uppercase tracking-widest">{isRtl ? "فكرة الصورة" : "Image Idea"}</span></div>
                               <p className="text-sm text-[#505868] leading-relaxed">{day.imagePromptHint}</p>
                             </div>
@@ -445,7 +450,7 @@ export default function PlannerPage() {
                             companyLogo={selectedCompany?.logo_url}
                             locale={locale as "en" | "ar"}
                           />
-                          <button type="button" onClick={(e) => { e.stopPropagation(); setCompletedDays((prev) => { const n = new Set(prev); if (n.has(day.dayIndex)) n.delete(day.dayIndex); else n.add(day.dayIndex); return n; }); }} className={cn("w-full h-14 rounded-2xl text-base font-bold flex items-center justify-center gap-2 transition-all duration-300 border-2 cursor-pointer", done ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e]")}>
+                          <button type="button" onClick={(e) => { e.stopPropagation(); setCompletedDays((prev) => { const n = new Set(prev); if (n.has(day.dayIndex)) n.delete(day.dayIndex); else n.add(day.dayIndex); return n; }); }} className={cn("w-full h-10 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all duration-300 border-2 cursor-pointer", done ? "border-[#23ab7e] bg-[#23ab7e] text-white shadow-[0_4px_16px_rgba(35,171,126,0.25)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e]")}>
                             {done ? <><CheckCircle2 className="h-5 w-5" /> {isRtl ? "تم ✨" : "Done ✨"}</> : <><Circle className="h-5 w-5" /> {isRtl ? "تحديد كمنجز" : "Mark as done"}</>}
                           </button>
                         </div>
@@ -461,12 +466,12 @@ export default function PlannerPage() {
 
       {/* ═══════ Refine Dialog ═══════ */}
       <Dialog open={refineOpen} onOpenChange={setRefineOpen}>
-        <DialogContent className="border border-[#e8eaef] bg-white text-[#2d3142] sm:max-w-lg rounded-2xl overflow-hidden" style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.15)" }}>
+        <DialogContent className="border border-[#e8eaef] bg-white text-[#2d3142] sm:max-w-lg rounded-xl overflow-hidden" style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.15)" }}>
           <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
-          <DialogHeader className="pt-2"><DialogTitle className="text-2xl font-bold flex items-center gap-2"><Wand2 className="h-6 w-6 text-[#8054b8]" />{tp.refineAI}</DialogTitle></DialogHeader>
+          <DialogHeader className="pt-2"><DialogTitle className="text-xl font-bold flex items-center gap-2"><Wand2 className="h-6 w-6 text-[#8054b8]" />{tp.refineAI}</DialogTitle></DialogHeader>
           <p className="text-sm text-[#8f96a3]">{tp.refineTell}</p>
-          <Textarea value={refineText} onChange={(e) => setRefineText(e.target.value)} className="min-h-[120px] rounded-2xl border-2 border-[#e8eaef] bg-white text-base text-[#2d3142] focus:border-[#8054b8] focus:shadow-[0_0_0_4px_rgba(128,84,184,0.1)] transition-all resize-none" placeholder={tp.refinePlaceholder} />
-          <Button className="h-14 rounded-2xl bg-gradient-to-r from-[#8054b8] to-[#e67af3] text-base font-bold text-white transition-all hover:-translate-y-0.5" style={{ boxShadow: "0 4px 16px rgba(128,84,184,0.25)" }} onClick={async () => { setRefineOpen(false); const fp = refineText.trim(); setRefineText(""); if (fp) setUserPrompt(fp); setPlan(null); setGenerating(true); try { const res = await fetch("/api/generate-plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ company: selectedCompany, platforms: platforms.length ? platforms : PLATFORMS.map(p => p.id), weekStart, userPrompt: fp || userPrompt, outputLanguage }) }); const json = await res.json(); if (!res.ok) throw new Error(json.error); setPlan(json.plan); toast.success("Plan refined"); } catch (e) { toast.error(e instanceof Error ? e.message : "Failed"); } setGenerating(false); }}>
+          <Textarea value={refineText} onChange={(e) => setRefineText(e.target.value)} className="min-h-[120px] rounded-xl border-2 border-[#e8eaef] bg-white text-sm text-[#2d3142] focus:border-[#8054b8] focus:shadow-[0_0_0_4px_rgba(128,84,184,0.1)] transition-all resize-none" placeholder={tp.refinePlaceholder} />
+          <Button className="h-10 rounded-xl bg-gradient-to-r from-[#8054b8] to-[#e67af3] text-sm font-bold text-white transition-all hover:-translate-y-0.5" style={{ boxShadow: "0 4px 16px rgba(128,84,184,0.25)" }} onClick={async () => { setRefineOpen(false); const fp = refineText.trim(); setRefineText(""); if (fp) setUserPrompt(fp); setPlan(null); setGenerating(true); try { const res = await fetch("/api/generate-plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ company: selectedCompany, platforms: platforms.length ? platforms : PLATFORMS.map(p => p.id), weekStart, userPrompt: fp || userPrompt, outputLanguage }) }); const json = await res.json(); if (!res.ok) throw new Error(json.error); setPlan(json.plan); toast.success("Plan refined"); } catch (e) { toast.error(e instanceof Error ? e.message : "Failed"); } setGenerating(false); }}>
             {tp.regenerate}
           </Button>
         </DialogContent>

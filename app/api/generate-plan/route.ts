@@ -86,8 +86,8 @@ export async function POST(request: NextRequest) {
     if (typeof company.name !== "string" || company.name.length > 500) {
       return NextResponse.json({ error: "Company name must be under 500 characters" }, { status: 400 });
     }
-    if (userPrompt && typeof userPrompt === "string" && userPrompt.length > 2000) {
-      return NextResponse.json({ error: "Focus prompt must be under 2000 characters" }, { status: 400 });
+    if (userPrompt && typeof userPrompt === "string" && userPrompt.length > 5000) {
+      return NextResponse.json({ error: "Focus prompt must be under 5000 characters" }, { status: 400 });
     }
 
     // Trim company data to essential fields to stay within token limits
