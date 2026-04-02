@@ -1,48 +1,74 @@
 import { NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
 
+// Fetch all rows from a table (Supabase defaults to 1000 limit)
+async function fetchAll(supabase: any, table: string, select: string) {
+  const allRows: any[] = [];
+  const pageSize = 1000;
+  let offset = 0;
+  while (true) {
+    const { data, error } = await supabase
+      .from(table)
+      .select(select)
+      .range(offset, offset + pageSize - 1)
+      .order("created_at", { ascending: false });
+    if (error) { console.error(`Error fetching ${table}:`, error.message); break; }
+    if (!data || data.length === 0) break;
+    allRows.push(...data);
+    if (data.length < pageSize) break;
+    offset += pageSize;
+  }
+  return allRows;
+}
+
 export async function GET() {
-  const supabase = await createServerSupabaseClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const authSupabase = await createServerSupabaseClient();
+  const { data: { user } } = await authSupabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
   try {
-    // Fetch all data in parallel
-    const [
-      usersRes,
-      companiesRes,
-      plansRes,
-      imagesRes,
-      competitorRes,
-    ] = await Promise.all([
-      supabase.auth.admin.listUsers({ perPage: 1000 }),
-      supabase.from("companies").select("id, user_id, name, brand_analysis, analysis_count, created_at, scraped_data"),
-      supabase.from("content_plans").select("id, user_id, company_id, title, week_start, platforms, created_at"),
-      supabase.from("generated_images").select("id, user_id, company_id, image_urls, created_at"),
-      supabase.from("competitor_analyses").select("id, user_id, company_id, output_language, created_at"),
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+    let supabase: any;
+    if (serviceKey && supabaseUrl) {
+      supabase = createClient(supabaseUrl, serviceKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+    } else {
+      supabase = authSupabase;
+    }
+
+    // Fetch all data with pagination
+    const [companies, plans, images, competitors] = await Promise.all([
+      fetchAll(supabase, "companies", "id, user_id, name, brand_analysis, analysis_count, created_at, scraped_data"),
+      fetchAll(supabase, "content_plans", "id, user_id, company_id, title, week_start, platforms, created_at"),
+      fetchAll(supabase, "generated_images", "id, user_id, company_id, image_urls, day_label, created_at"),
+      fetchAll(supabase, "competitor_analyses", "id, user_id, company_id, output_language, created_at"),
     ]);
 
-    // Users — may fail if not admin, fall back to counting from other tables
-    const users = usersRes.data?.users ?? [];
+    // Try to get all auth users (service role only)
+    let authUsers: any[] = [];
+    try {
+      const { data } = await supabase.auth.admin.listUsers({ perPage: 1000 });
+      authUsers = data?.users ?? [];
+    } catch { /* no service role — skip */ }
 
-    const companies = companiesRes.data ?? [];
-    const plans = plansRes.data ?? [];
-    const images = imagesRes.data ?? [];
-    const competitors = competitorRes.data ?? [];
-
-    // Unique user IDs across all tables
-    const allUserIds = new Set([
+    // Build complete user set: auth users + any user_ids from tables
+    const allUserIds = new Set<string>([
+      ...authUsers.map((u: any) => u.id),
       ...companies.map((c: any) => c.user_id),
       ...plans.map((p: any) => p.user_id),
       ...images.map((i: any) => i.user_id),
       ...competitors.map((c: any) => c.user_id),
     ]);
 
-    // Count total generated images (each row can have multiple URLs)
+    // Count total generated images (each row has an array of URLs)
     const totalImageCount = images.reduce((sum: number, row: any) => {
       const urls = row.image_urls;
       if (Array.isArray(urls)) return sum + urls.length;
@@ -50,29 +76,19 @@ export async function GET() {
       return sum;
     }, 0);
 
-    // Brand analyses done
     const totalAnalyses = companies.reduce((sum: number, c: any) => sum + (c.analysis_count || 0), 0);
-
-    // Website scrapes done
     const totalScrapes = companies.filter((c: any) => c.scraped_data).length;
 
-    // Per-user breakdown
-    const userMap: Record<string, {
-      email: string;
-      companies: number;
-      plans: number;
-      images: number;
-      analyses: number;
-      competitors: number;
-      lastActive: string;
-    }> = {};
-
-    for (const uid of allUserIds) {
-      const userObj = users.find((u: any) => u.id === uid);
+    // Per-user breakdown (includes ALL users, even with 0 activity)
+    const userList = [...allUserIds].map((uid) => {
+      const authUser = authUsers.find((u: any) => u.id === uid);
       const userCompanies = companies.filter((c: any) => c.user_id === uid);
       const userPlans = plans.filter((p: any) => p.user_id === uid);
       const userImages = images.filter((i: any) => i.user_id === uid);
       const userCompetitors = competitors.filter((c: any) => c.user_id === uid);
+
+      const imageCount = userImages.reduce((s: number, i: any) => s + (Array.isArray(i.image_urls) ? i.image_urls.length : 0), 0);
+      const analysisCount = userCompanies.reduce((s: number, c: any) => s + (c.analysis_count || 0), 0);
 
       const allDates = [
         ...userCompanies.map((c: any) => c.created_at),
@@ -81,18 +97,28 @@ export async function GET() {
         ...userCompetitors.map((c: any) => c.created_at),
       ].filter(Boolean).sort().reverse();
 
-      userMap[uid] = {
-        email: userObj?.email || uid.slice(0, 8) + "...",
+      return {
+        id: uid,
+        email: authUser?.email || uid.slice(0, 12) + "...",
+        createdAt: authUser?.created_at || "",
         companies: userCompanies.length,
         plans: userPlans.length,
-        images: userImages.reduce((s: number, i: any) => s + (Array.isArray(i.image_urls) ? i.image_urls.length : 0), 0),
-        analyses: userCompanies.reduce((s: number, c: any) => s + (c.analysis_count || 0), 0),
+        images: imageCount,
+        imageRows: userImages.length,
+        analyses: analysisCount,
         competitors: userCompetitors.length,
-        lastActive: allDates[0] || "",
+        lastActive: allDates[0] || authUser?.created_at || "",
       };
-    }
+    }).sort((a, b) => (b.lastActive || "").localeCompare(a.lastActive || ""));
 
-    // Activity over last 30 days (daily counts)
+    // Activity over ALL time (group by month if > 90 days of data, otherwise daily)
+    const allDates = [
+      ...plans.map((p: any) => p.created_at),
+      ...images.map((i: any) => i.created_at),
+      ...companies.map((c: any) => c.created_at),
+    ].filter(Boolean).sort();
+
+    // Daily activity for last 30 days
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     const dailyActivity: Record<string, { plans: number; images: number; companies: number; analyses: number }> = {};
@@ -101,7 +127,6 @@ export async function GET() {
       const key = d.toISOString().split("T")[0];
       dailyActivity[key] = { plans: 0, images: 0, companies: 0, analyses: 0 };
     }
-
     for (const p of plans) {
       const key = p.created_at?.split("T")[0];
       if (key && dailyActivity[key]) dailyActivity[key].plans++;
@@ -115,15 +140,15 @@ export async function GET() {
       if (key && dailyActivity[key]) dailyActivity[key].companies++;
     }
 
-    // Estimated API costs (rough estimates)
+    // Estimated API costs
     const costs = {
-      planGeneration: plans.length * 0.03,        // GPT-4o per plan ~$0.03
-      imageGeneration: totalImageCount * 0.02,     // Gemini image ~$0.02
-      brandAnalysis: totalAnalyses * 0.05,         // GPT-4o analysis ~$0.05
-      competitorAnalysis: competitors.length * 0.04, // GPT-4o competitor ~$0.04
-      pdfExtraction: 0,                            // Gemini flash ~free tier
-      aiSuggestions: 0,                            // GPT-4o-mini ~negligible
-      websiteScraping: totalScrapes * 0.001,       // Minimal cost
+      planGeneration: plans.length * 0.03,
+      imageGeneration: totalImageCount * 0.02,
+      brandAnalysis: totalAnalyses * 0.05,
+      competitorAnalysis: competitors.length * 0.04,
+      pdfExtraction: 0,
+      aiSuggestions: 0,
+      websiteScraping: totalScrapes * 0.001,
       total: 0,
     };
     costs.total = costs.planGeneration + costs.imageGeneration + costs.brandAnalysis + costs.competitorAnalysis + costs.websiteScraping;
@@ -131,18 +156,17 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       overview: {
-        totalUsers: Math.max(users.length, allUserIds.size),
+        totalUsers: allUserIds.size,
         totalCompanies: companies.length,
         totalPlans: plans.length,
         totalImages: totalImageCount,
+        totalImageRows: images.length,
         totalAnalyses,
         totalCompetitorAnalyses: competitors.length,
         totalScrapes,
       },
       costs,
-      users: Object.entries(userMap)
-        .map(([id, data]) => ({ id, ...data }))
-        .sort((a, b) => (b.lastActive || "").localeCompare(a.lastActive || "")),
+      users: userList,
       dailyActivity: Object.entries(dailyActivity).map(([date, counts]) => ({ date, ...counts })),
     });
   } catch (e) {
