@@ -229,13 +229,13 @@ export default function LandingPage() {
         </Link>
         <ul className="hidden lg:flex list-none gap-2">
           {[{ href: "#features", label: N.features }, { href: "#how-it-works", label: L.howItWorks }, { href: "#platforms", label: isRtl ? "المنصات" : "Platforms" }].map((l) => (
-            <li key={l.href}><a href={l.href} className="text-base font-medium text-[#505868] no-underline px-4 py-2 rounded-lg hover:text-[#2d3142] hover:bg-[#f4f6f8] transition-all">{l.label}</a></li>
+            <li key={l.href}><a href={l.href} className="text-sm font-medium text-[#505868] no-underline px-3 py-1.5 rounded-lg hover:text-[#2d3142] hover:bg-[#f4f6f8] transition-all">{l.label}</a></li>
           ))}
         </ul>
         <div className="flex items-center gap-3">
-          <button onClick={() => setLocale(locale === "ar" ? "en" : "ar")} className="text-sm font-semibold text-[#505868] px-4 py-2 rounded-xl border border-[#e8ecf0] bg-white cursor-pointer hover:bg-[#f4f6f8] transition-all">{locale === "ar" ? "EN" : "عر"}</button>
-          <Link href="/login" className="hidden sm:block"><button className="text-base font-semibold text-[#505868] px-5 py-2.5 rounded-lg border-none bg-transparent cursor-pointer hover:text-[#2d3142]">{N.login}</button></Link>
-          <Link href="/signup"><button className="text-sm lg:text-base font-bold text-white px-5 lg:px-8 py-2.5 lg:py-3.5 rounded-xl border-none cursor-pointer transition-all hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg,#23ab7e,#1a8a64)", boxShadow: "0 4px 16px rgba(35,171,126,.3)" }}>{N.signUp}</button></Link>
+          <button onClick={() => setLocale(locale === "ar" ? "en" : "ar")} className="text-xs font-semibold text-[#505868] px-3 py-1.5 rounded-lg border border-[#e8ecf0] bg-white cursor-pointer hover:bg-[#f4f6f8] transition-all">{locale === "ar" ? "EN" : "عر"}</button>
+          <Link href="/login" className="hidden sm:block"><button className="text-sm font-semibold text-[#505868] px-4 py-2 rounded-lg border-none bg-transparent cursor-pointer hover:text-[#2d3142]">{N.login}</button></Link>
+          <Link href="/signup"><button className="text-xs lg:text-sm font-bold text-white px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl border-none cursor-pointer transition-all hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg,#23ab7e,#1a8a64)", boxShadow: "0 4px 16px rgba(35,171,126,.3)" }}>{N.signUp}</button></Link>
         </div>
       </nav>
 
@@ -353,7 +353,7 @@ export default function LandingPage() {
               <span className="w-10 h-0.5 rounded bg-[#a6ffea]" />
               {isRtl ? "قصة نجاح" : "Success Story"}
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-extrabold text-white leading-[1.1] mb-8" style={{ fontFamily: headingFont }}>
+            <h2 className="text-2xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-white leading-[1.1] mb-8" style={{ fontFamily: headingFont }}>
               {isRtl ? "كيف وفّر مقهى بلوم " : "How Bloom Café saved "}
               <span className="text-[#2dd4a0]">{isRtl ? "١٨,٠٠٠ ر.س/شهر" : "SAR 18,000/mo"}</span>
               {isRtl ? " مع نواة AI" : " with Nawaa AI"}
@@ -364,7 +364,7 @@ export default function LandingPage() {
             <div className="flex gap-12 flex-wrap">
               {[{ v: "82%", l: isRtl ? "توفير" : "Cost Saved" }, { v: "3.4x", l: isRtl ? "تفاعل" : "Engagement" }, { v: "10 min", l: isRtl ? "إعداد أسبوعي" : "Weekly Setup" }].map((n) => (
                 <div key={n.l}>
-                  <div className="text-3xl sm:text-3xl lg:text-3xl font-black text-[#2dd4a0]">{n.v}</div>
+                  <div className="text-2xl sm:text-2xl lg:text-2xl font-black text-[#2dd4a0]">{n.v}</div>
                   <div className="text-base text-white/40 mt-2 font-medium">{n.l}</div>
                 </div>
               ))}
@@ -374,7 +374,7 @@ export default function LandingPage() {
           <div className="nl-reveal nl-reveal-d1" style={{ perspective: "1000px" }}>
             <div className="rounded-3xl overflow-hidden nl-mock-3d" style={{ background: "rgba(255,255,255,.06)", border: "1.5px solid rgba(255,255,255,.12)", boxShadow: "-20px 20px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.06) inset,0 0 100px rgba(35,171,126,.1)" }}>
               <div className="flex items-center gap-4 px-8 sm:px-10 py-7 sm:py-8" style={{ background: "linear-gradient(135deg,#23ab7e,#1a8a64)" }}>
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/20 flex items-center justify-center text-2xl sm:text-3xl">🌸</div>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 flex items-center justify-center text-xl sm:text-2xl">🌸</div>
                 <div>
                   <div className="text-xl sm:text-2xl font-bold text-white">Bloom Café</div>
                   <div className="text-sm sm:text-base text-white/70">Coffee &amp; Pastry · Riyadh</div>
@@ -411,10 +411,10 @@ export default function LandingPage() {
             <span className="w-10 h-0.5 rounded bg-[#23ab7e]" />
             {L.featuresLabel}
           </div>
-          <h2 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-[#1a1d2e] leading-tight mb-5" style={{ fontFamily: headingFont }}>
+          <h2 className="text-2xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-[#1a1d2e] leading-tight mb-5" style={{ fontFamily: headingFont }}>
             {L.featuresTitle}
           </h2>
-          <p className="text-lg lg:text-xl text-[#8f96a3] max-w-[650px] mx-auto">{L.featuresSub}</p>
+          <p className="text-base lg:text-base text-[#8f96a3] max-w-[650px] mx-auto">{L.featuresSub}</p>
         </div>
 
         <div ref={trackRef} className="nl-track flex gap-7 lg:gap-10 px-[calc(50vw-200px)] sm:px-[calc(50vw-220px)] lg:px-[calc(50vw-240px)] pb-10 overflow-x-auto overflow-y-visible snap-x snap-mandatory relative z-10" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x" }}>
@@ -440,11 +440,11 @@ export default function LandingPage() {
               >
                 <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: `linear-gradient(${isRtl ? "270deg" : "90deg"},${s.color},transparent)`, opacity: isActive ? 0.8 : 0.3 }} />
                 {isActive && <div className="absolute -bottom-6 left-[15%] right-[15%] h-8 rounded-full" style={{ background: s.color, filter: "blur(24px)", opacity: 0.3 }} />}
-                <div className="absolute top-6 text-4xl lg:text-5xl font-black leading-none tracking-[-4px]" style={{ color: isActive ? "#e8ecf0" : "#f4f6f8", insetInlineEnd: 28 }}>{s.num}</div>
-                <div className="w-18 h-18 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-2xl flex items-center justify-center mb-7" style={{ background: s.bg }}>
-                  <s.icon className="w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-11" style={{ color: s.color }} />
+                <div className="absolute top-6 text-3xl lg:text-4xl font-black leading-none tracking-[-4px]" style={{ color: isActive ? "#e8ecf0" : "#f4f6f8", insetInlineEnd: 28 }}>{s.num}</div>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 rounded-2xl flex items-center justify-center mb-7" style={{ background: s.bg }}>
+                  <s.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9" style={{ color: s.color }} />
                 </div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-[#1a1d2e] mb-3">{s.title}</h3>
+                <h3 className="text-lg lg:text-xl font-bold text-[#1a1d2e] mb-3">{s.title}</h3>
                 <p className="text-base lg:text-lg text-[#8f96a3] leading-relaxed flex-1">{s.desc}</p>
                 <span className="inline-block self-start mt-6 px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider" style={{ background: s.bg, color: s.color }}>{s.tag}</span>
               </div>
@@ -453,7 +453,7 @@ export default function LandingPage() {
         </div>
 
         <div className="flex items-center justify-center gap-4 relative z-10 pt-6">
-          <button onClick={() => goToCard(activeCard - (isRtl ? -1 : 1))} className="w-12 h-12 rounded-full border-2 border-[#d1d6df] bg-white flex items-center justify-center cursor-pointer text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all active:scale-95">
+          <button onClick={() => goToCard(activeCard - (isRtl ? -1 : 1))} className="w-10 h-10 rounded-full border-2 border-[#d1d6df] bg-white flex items-center justify-center cursor-pointer text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all active:scale-95">
             {isRtl ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           </button>
           <div className="flex gap-2">
@@ -461,7 +461,7 @@ export default function LandingPage() {
               <div key={i} onClick={() => goToCard(i)} className={`h-2.5 rounded-full cursor-pointer transition-all duration-400 ${i === activeCard ? "w-8 bg-gradient-to-r from-[#23ab7e] to-[#8054b8]" : "w-2.5 bg-[#d1d6df] hover:bg-[#8f96a3]"}`} />
             ))}
           </div>
-          <button onClick={() => goToCard(activeCard + (isRtl ? -1 : 1))} className="w-12 h-12 rounded-full border-2 border-[#d1d6df] bg-white flex items-center justify-center cursor-pointer text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all active:scale-95">
+          <button onClick={() => goToCard(activeCard + (isRtl ? -1 : 1))} className="w-10 h-10 rounded-full border-2 border-[#d1d6df] bg-white flex items-center justify-center cursor-pointer text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all active:scale-95">
             {isRtl ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
           </button>
         </div>
@@ -476,7 +476,7 @@ export default function LandingPage() {
               <span className="w-10 h-0.5 rounded bg-[#8054b8]" />
               {L.howItWorksLabel}
             </div>
-            <h2 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-[#1a1d2e] leading-tight" style={{ fontFamily: headingFont }}>
+            <h2 className="text-2xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-[#1a1d2e] leading-tight" style={{ fontFamily: headingFont }}>
               {L.howItWorksTitle}
             </h2>
           </div>
@@ -495,7 +495,7 @@ export default function LandingPage() {
               <div key={s.step} className={`nl-reveal ${i > 0 ? `nl-reveal-d${i}` : ""} relative text-center`}>
                 <div className="nl-step-glass rounded-3xl p-5 sm:p-6 lg:p-7" style={{ boxShadow: `0 12px 40px ${stepColors[i]}15, 0 4px 12px rgba(0,0,0,.04)` }}>
                   {/* Glowing number circle */}
-                  <div className="relative mx-auto mb-8 w-16 h-16 lg:w-20 lg:h-20">
+                  <div className="relative mx-auto mb-8 w-12 h-12 lg:w-14 lg:h-14">
                     <div className="absolute inset-0 rounded-full" style={{ background: stepColors[i], opacity: 0.15, animation: "nl-glow-breathe 3s ease-in-out infinite", animationDelay: `${i * 0.5}s` }} />
                     <div className="absolute inset-0 rounded-full flex items-center justify-center" style={{ background: `linear-gradient(135deg,${stepColors[i]},${stepColors[i]}dd)`, boxShadow: `0 10px 40px ${stepColors[i]}40` }}>
                       <s.icon className="w-7 h-7 lg:w-9 lg:h-9 text-white" />
@@ -503,8 +503,8 @@ export default function LandingPage() {
                     {/* Pulse ring */}
                     <div className="absolute inset-0 rounded-full" style={{ border: `2.5px solid ${stepColors[i]}`, animation: "nl-pulse-ring 2.5s ease-in-out infinite", animationDelay: `${i * 0.8}s` }} />
                   </div>
-                  <span className="inline-block text-3xl lg:text-4xl font-black mb-4" style={{ color: stepColors[i] }}>{s.step}</span>
-                  <h3 className="text-2xl lg:text-3xl font-bold text-[#1a1d2e] mb-4">{s.title}</h3>
+                  <span className="inline-block text-2xl lg:text-3xl font-black mb-4" style={{ color: stepColors[i] }}>{s.step}</span>
+                  <h3 className="text-lg lg:text-xl font-bold text-[#1a1d2e] mb-4">{s.title}</h3>
                   <p className="text-base lg:text-lg text-[#8f96a3] leading-relaxed">{s.desc}</p>
                 </div>
               </div>
@@ -518,7 +518,7 @@ export default function LandingPage() {
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 60% at 50% 50%,rgba(35,171,126,.1),transparent 70%)" }} />
         <Particles count={14} className="absolute inset-0 pointer-events-none" />
         <div className="mx-auto max-w-[1100px] relative z-10">
-          <h2 className="text-center text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-white mb-8 lg:mb-10 nl-reveal" style={{ fontFamily: headingFont }}>
+          <h2 className="text-center text-2xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-white mb-8 lg:mb-10 nl-reveal" style={{ fontFamily: headingFont }}>
             {L.platformTitle}
           </h2>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-6 sm:gap-8 lg:gap-10 nl-reveal nl-reveal-d1">
@@ -557,13 +557,13 @@ export default function LandingPage() {
             <div className="absolute -top-28 h-[300px] w-[300px] rounded-full opacity-20" style={{ background: "radial-gradient(circle,#fff,transparent)", insetInlineEnd: -112 }} />
             <div className="absolute -bottom-24 -left-24 h-[250px] w-[250px] rounded-full opacity-15" style={{ background: "radial-gradient(circle,#fff,transparent)" }} />
 
-            <h2 className="relative text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-black text-white mb-6 lg:mb-8" style={{ fontFamily: headingFont }}>
+            <h2 className="relative text-2xl sm:text-2xl lg:text-2xl xl:text-3xl font-black text-white mb-6 lg:mb-8" style={{ fontFamily: headingFont }}>
               {L.ctaTitle}
             </h2>
             <p className="relative text-white/80 text-base lg:text-lg mb-6 lg:mb-8 max-w-[700px] mx-auto">{L.ctaSub}</p>
 
             <Link href="/signup">
-              <button className="relative text-base lg:text-lg font-bold text-[#1a8a64] bg-white px-8 lg:px-12 py-3 lg:py-3.5 rounded-2xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,.2)] active:scale-[0.98]" style={{ boxShadow: "0 8px 32px rgba(0,0,0,.15)" }}>
+              <button className="relative text-sm lg:text-base font-bold text-[#1a8a64] bg-white px-8 lg:px-12 py-3 lg:py-3.5 rounded-2xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,.2)] active:scale-[0.98]" style={{ boxShadow: "0 8px 32px rgba(0,0,0,.15)" }}>
                 {L.ctaButton}
               </button>
             </Link>
@@ -587,7 +587,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 md:gap-12 mb-12">
             <div>
               <Link href="/" className="flex items-center gap-2.5 no-underline mb-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
                   <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
                 <span className="text-xl font-extrabold text-white">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">AI</span></span>

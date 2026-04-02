@@ -221,7 +221,7 @@ export default function KimzChat() {
       {/* ═══ Chat Panel ═══ */}
       {isOpen && (
         <div
-          className={`fixed bottom-24 z-50 w-[680px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] rounded-3xl border-2 border-[#8054b8]/20 bg-white shadow-[0_24px_80px_rgba(124,58,237,0.18)] flex flex-col overflow-hidden ${
+          className={`fixed bottom-24 z-50 w-[680px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] rounded-xl border-2 border-[#8054b8]/20 bg-white shadow-[0_24px_80px_rgba(124,58,237,0.18)] flex flex-col overflow-hidden ${
             isRtl ? "left-3 sm:left-6" : "right-3 sm:right-6"
           }`}
           style={{ height: "min(780px, calc(100vh - 8rem))" }}
@@ -232,17 +232,17 @@ export default function KimzChat() {
             {/* Gradient bg */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#8054b8] via-[#6D28D9] to-[#3B82F6]" />
             {/* Decorative circles */}
-            <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-white/10 blur-sm" />
-            <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-white/10 blur-sm" />
-            <div className="absolute top-1/2 right-1/3 h-16 w-16 rounded-full bg-white/5 blur-sm" />
+            <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-white/10 blur-sm" />
+            <div className="absolute -bottom-6 -left-6 h-16 w-16 rounded-full bg-white/10 blur-sm" />
+            <div className="absolute top-1/2 right-1/3 h-10 w-10 rounded-full bg-white/5 blur-sm" />
 
             <div className="relative flex items-center justify-between px-7 py-5">
               <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm shadow-inner">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm shadow-inner">
                   <Sparkles className="h-7 w-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-2xl text-white leading-tight tracking-tight">
+                  <h3 className="font-bold text-sm text-white leading-tight tracking-tight">
                     {t.title}
                   </h3>
                   <div className="flex items-center gap-2 mt-0.5">
@@ -255,7 +255,7 @@ export default function KimzChat() {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm hover:bg-white/30 transition-all"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm hover:bg-white/30 transition-all"
               >
                 <X className="h-5 w-5 text-white" />
               </button>
@@ -263,17 +263,17 @@ export default function KimzChat() {
           </div>
 
           {/* ── Messages Area ── */}
-          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5 scrollbar-nawaa bg-gradient-to-b from-[#F5F3FF]/50 to-white">
+          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5 scrollbar-nawaa bg-gradient-to-b from-[#F5F3FF]/50 to-white">
             {/* Welcome card */}
             {chatMessages.length === 0 && !loading && (
               <div className="space-y-6">
                 {/* Welcome bubble */}
                 <div className="flex items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#3B82F6] shadow-md">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#3B82F6] shadow-md">
                     <Bot className="h-6 w-6 text-white" />
                   </div>
                   <div
-                    className={`max-w-[85%] px-5 py-4 rounded-2xl text-base bg-gradient-to-br from-[#F5F3FF] to-[#EEF2FF] text-[#2d3142] border border-[#8054b8]/10 shadow-sm leading-relaxed ${
+                    className={`max-w-[85%] px-3 py-2.5 rounded-xl text-xs bg-gradient-to-br from-[#F5F3FF] to-[#EEF2FF] text-[#2d3142] border border-[#8054b8]/10 shadow-sm leading-relaxed ${
                       isRtl ? "rounded-tr-sm" : "rounded-tl-sm"
                     }`}
                   >
@@ -287,16 +287,16 @@ export default function KimzChat() {
                     <Zap className="h-4 w-4" />
                     {locale === "ar" ? "إجراءات سريعة" : "Quick Actions"}
                   </p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     {quickActions.map((action, i) => {
                       const Icon = action.icon as React.ComponentType<{ className?: string }>;
                       return (
                         <button
                           key={i}
                           onClick={() => sendMessage(action.msg)}
-                          className="group flex items-center gap-3 rounded-2xl border border-[#e8eaef] bg-white px-4 py-4 text-left hover:border-[#8054b8]/30 hover:shadow-md hover:shadow-[#8054b8]/5 transition-all duration-200"
+                          className="group flex items-center gap-3 rounded-2xl border border-[#e8eaef] bg-white px-3 py-2.5 text-left hover:border-[#8054b8]/30 hover:shadow-md hover:shadow-[#8054b8]/5 transition-all duration-200"
                         >
-                          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${"color" in action ? action.color : "from-[#23ab7e] to-[#8054b8]"} shadow-sm group-hover:scale-110 transition-transform`}>
+                          <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${"color" in action ? action.color : "from-[#23ab7e] to-[#8054b8]"} shadow-sm group-hover:scale-110 transition-transform`}>
                             <Icon className="h-5 w-5 text-white" />
                           </div>
                           <span className="text-sm font-semibold text-[#505868] group-hover:text-[#8054b8] transition-colors leading-tight">
@@ -322,7 +322,7 @@ export default function KimzChat() {
               >
                 {/* Avatar */}
                 <div
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl shadow-sm ${
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm ${
                     msg.role === "user"
                       ? "bg-gradient-to-br from-[#23ab7e] to-teal-500"
                       : "bg-gradient-to-br from-[#8054b8] to-[#3B82F6]"
@@ -337,7 +337,7 @@ export default function KimzChat() {
 
                 {/* Bubble */}
                 <div
-                  className={`max-w-[80%] px-5 py-4 rounded-2xl text-base leading-relaxed shadow-sm ${
+                  className={`max-w-[80%] px-3 py-2.5 rounded-xl text-xs leading-relaxed shadow-sm ${
                     msg.role === "user"
                       ? `bg-gradient-to-br from-[#8054b8] to-[#6D28D9] text-white ${
                           isRtl ? "rounded-tl-sm" : "rounded-tr-sm"
@@ -359,18 +359,18 @@ export default function KimzChat() {
             {/* Loading animation */}
             {loading && (
               <div className="flex items-start gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#3B82F6] shadow-sm">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#3B82F6] shadow-sm">
                   <Bot className="h-5 w-5 text-white animate-pulse" />
                 </div>
                 <div
-                  className={`px-5 py-4 rounded-2xl bg-gradient-to-br from-[#F5F3FF] to-[#EEF2FF] border border-[#8054b8]/10 shadow-sm ${
+                  className={`px-3 py-2.5 rounded-xl bg-gradient-to-br from-[#F5F3FF] to-[#EEF2FF] border border-[#8054b8]/10 shadow-sm ${
                     isRtl ? "rounded-tr-sm" : "rounded-tl-sm"
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-[#8054b8] animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="h-3 w-3 rounded-full bg-[#3B82F6] animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="h-3 w-3 rounded-full bg-[#06B6D4] animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="h-2 w-2 rounded-full bg-[#8054b8] animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="h-2 w-2 rounded-full bg-[#3B82F6] animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="h-2 w-2 rounded-full bg-[#06B6D4] animate-bounce" style={{ animationDelay: "300ms" }} />
                   </div>
                 </div>
               </div>
@@ -380,7 +380,7 @@ export default function KimzChat() {
           </div>
 
           {/* ── Input Area ── */}
-          <div className="shrink-0 border-t border-[#8054b8]/10 bg-white px-6 py-5">
+          <div className="shrink-0 border-t border-[#8054b8]/10 bg-white px-3 py-3">
             <div className="flex items-center gap-4">
               <input
                 ref={inputRef}
@@ -389,15 +389,15 @@ export default function KimzChat() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t.placeholder}
-                className="flex-1 px-5 py-4 rounded-2xl bg-[#F5F3FF] text-base text-[#2d3142] placeholder:text-[#8f96a3]/50 outline-none focus:ring-2 focus:ring-[#8054b8]/30 border border-[#8054b8]/15 transition-all focus:bg-white"
+                className="flex-1 px-3 py-2.5 rounded-xl bg-[#F5F3FF] text-base text-[#2d3142] placeholder:text-[#8f96a3]/50 outline-none focus:ring-2 focus:ring-[#8054b8]/30 border border-[#8054b8]/15 transition-all focus:bg-white"
                 disabled={loading}
               />
               <button
                 onClick={() => sendMessage()}
                 disabled={!input.trim() || loading}
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#3B82F6] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-[#8054b8]/25 hover:scale-105 active:scale-95 transition-all"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#3B82F6] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-[#8054b8]/25 hover:scale-105 active:scale-95 transition-all"
               >
-                <Send className={`h-6 w-6 ${isRtl ? "rotate-180" : ""}`} />
+                <Send className={`h-4 w-4 ${isRtl ? "rotate-180" : ""}`} />
               </button>
             </div>
             <p className="mt-3 text-center text-xs text-[#8f96a3]/50">
@@ -414,17 +414,17 @@ export default function KimzChat() {
           isRtl ? "left-4 sm:left-6" : "right-4 sm:right-6"
         } ${!hasAnimated ? "animate-pulse-subtle" : ""} ${
           isOpen
-            ? "h-16 w-16 bg-gradient-to-br from-red-500 to-pink-500"
-            : "h-18 w-18 bg-gradient-to-br from-[#8054b8] via-[#6D28D9] to-[#3B82F6]"
+            ? "h-11 w-11 bg-gradient-to-br from-red-500 to-pink-500"
+            : "h-12 w-12 bg-gradient-to-br from-[#8054b8] via-[#6D28D9] to-[#3B82F6]"
         }`}
-        style={isOpen ? {} : { width: 72, height: 72 }}
+        style={isOpen ? {} : { width: 48, height: 48 }}
         aria-label="Chat with Kimz"
       >
         {isOpen ? (
           <X className="h-7 w-7 text-white" />
         ) : (
           <>
-            <MessageCircle className="h-8 w-8 text-white group-hover:scale-110 transition-transform" />
+            <MessageCircle className="h-5 w-5 text-white group-hover:scale-110 transition-transform" />
             {/* Notification dot — only show when chat hasn't been opened */}
             {chatMessages.length === 0 && (
               <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5">

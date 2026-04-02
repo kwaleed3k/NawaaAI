@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { format, nextSaturday, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 const loadExportPlanToPDF = () => import("@/lib/export-plan-pdf").then(m => m.exportPlanToPDF);
 import toast from "react-hot-toast";
@@ -79,7 +79,14 @@ export default function PlannerPage() {
   const [expandedDay, setExpandedDay] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
 
-  useEffect(() => { setWeekStart(format(nextSaturday(new Date()), "yyyy-MM-dd")); }, []);
+  useEffect(() => {
+    const today = new Date();
+    const day = today.getDay();
+    const daysUntilSun = day === 0 ? 0 : (7 - day);
+    const nextSun = new Date(today);
+    nextSun.setDate(nextSun.getDate() + daysUntilSun);
+    setWeekStart(format(nextSun, "yyyy-MM-dd"));
+  }, []);
   useEffect(() => { if (!user) { setLoadingCompanies(false); return; } (async () => { const { data } = await supabase.from("companies").select("*").eq("user_id", user.id).order("created_at", { ascending: false }); setCompanies((data as Company[]) ?? []); if (data?.length && !selectedCompany) setSelectedCompany(data[0] as Company); setLoadingCompanies(false); })(); }, [user, selectedCompany, setSelectedCompany]);
   useEffect(() => { if (!generating) return; const t = setInterval(() => setLoadingMsgIndex((i) => (i + 1) % loadingMessages.length), 2500); return () => clearInterval(t); }, [generating, loadingMessages.length]);
 
@@ -219,7 +226,21 @@ export default function PlannerPage() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#2dd4a0] to-[#23ab7e] text-white text-sm font-bold shadow-md">3</div>
                 <h3 className="text-sm font-bold text-[#2d3142]">{tp.weekStart}</h3>
               </div>
-              <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="w-full rounded-xl border-2 border-[#e8eaef] bg-white px-6 h-9 sm:h-10 lg:h-10 text-sm font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]" />
+              <input type="date" value={weekStart} onChange={(e) => {
+                const val = e.target.value;
+                if (!val) return;
+                const picked = parseISO(val);
+                const day = picked.getDay();
+                if (day !== 0) {
+                  const diff = (7 - day);
+                  const snapped = new Date(picked);
+                  snapped.setDate(snapped.getDate() + diff);
+                  setWeekStart(format(snapped, "yyyy-MM-dd"));
+                  toast(locale === "ar" ? "تم تعديل التاريخ لأقرب يوم أحد" : "Adjusted to nearest Sunday (work week start)", { icon: "📅" });
+                } else {
+                  setWeekStart(val);
+                }
+              }} className="w-full rounded-xl border-2 border-[#e8eaef] bg-white px-6 h-9 sm:h-10 lg:h-10 text-sm font-medium text-[#2d3142] outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]" />
             </div>
             <div className="rounded-xl p-8" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(20px)", border: "1px solid #e8eaef", boxShadow: "0 4px 16px rgba(0,0,0,0.02)" }}>
               <div className="flex items-center gap-3 mb-5">

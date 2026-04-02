@@ -208,13 +208,13 @@ export default function DashboardPage() {
         </div>
 
         {/* Center content */}
-        <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-lg px-6">
+        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-lg px-6">
           {/* Animated logo with glow */}
           <div className="relative">
             <div className="absolute -inset-8 rounded-[32px] opacity-20" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
             <div className="absolute -inset-16 rounded-[40px] opacity-10" style={{ background: "linear-gradient(135deg, #8054b8, #e67af3)", animation: "nl-glow-breathe 3s ease-in-out infinite 1s" }} />
             <div className="relative flex h-24 w-24 items-center justify-center rounded-[24px]" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 16px 48px rgba(35,171,126,0.4), 0 0 80px rgba(128,84,184,0.15)" }}>
-              <Sparkles className="h-12 w-12 text-white" style={{ animation: "nl-spin-slow 8s linear infinite" }} />
+              <Sparkles className="h-8 w-8 text-white" style={{ animation: "nl-spin-slow 8s linear infinite" }} />
             </div>
             {/* Pulse ring */}
             <div className="absolute -inset-3 rounded-[28px]" style={{ border: "2px solid #23ab7e", animation: "nl-pulse-ring 2.5s ease-in-out infinite" }} />
@@ -222,19 +222,19 @@ export default function DashboardPage() {
 
           {/* Text */}
           <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142]" style={{ animation: "nl-fade-up 0.6s ease forwards" }}>
+            <h2 className="text-sm sm:text-xl font-black text-[#2d3142]" style={{ animation: "nl-fade-up 0.6s ease forwards" }}>
               {isRtl ? "جارٍ تحميل بياناتك" : "Loading your workspace"}
             </h2>
-            <p className="text-base text-[#8f96a3] mt-2" style={{ animation: "nl-fade-up 0.6s ease forwards 0.15s", opacity: 0 }}>
+            <p className="text-sm text-[#8f96a3] mt-2" style={{ animation: "nl-fade-up 0.6s ease forwards 0.15s", opacity: 0 }}>
               {isRtl ? "نجهز لوحة التحكم الخاصة بك" : "Preparing your personalized dashboard"}
             </p>
           </div>
 
           {/* Rotating message card */}
-          <div className="w-full rounded-2xl border border-[#e8eaef] p-5 transition-all duration-300" style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(12px)" }}>
+          <div className="w-full rounded-xl border border-[#e8eaef] p-3 transition-all duration-300" style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(12px)" }}>
             <div className="flex items-center gap-4">
               <span className="text-3xl shrink-0">{current.emoji}</span>
-              <p className="text-base font-semibold text-[#2d3142] leading-snug">{current.text}</p>
+              <p className="text-sm font-semibold text-[#2d3142] leading-snug">{current.text}</p>
             </div>
           </div>
 
@@ -279,38 +279,38 @@ export default function DashboardPage() {
     <div dir={isRtl ? "rtl" : "ltr"} className="space-y-6 pb-10">
 
       {/* ═══════════════════ HERO ═══════════════════ */}
-      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-3 sm:p-6 lg:p-8">
         {/* Decorative blobs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute top-24 right-40 w-1.5 h-1.5 rounded-full bg-white/20 animate-pulse" style={{ animationDelay: "0.5s" }} />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
           {/* Left side - Greeting */}
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
                 <Sparkles className="h-5 w-5 text-[#a6ffea]" />
               </div>
-              <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI</span>
+              <span className="text-sm font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight tracking-tight">
               {t.greeting}, {displayName} {"\ud83d\udc4b"}
             </h1>
-            <p className="mt-3 text-base sm:text-lg font-medium text-white/70">{formatDate(new Date())}</p>
+            <p className="mt-3 text-sm sm:text-sm font-medium text-white/70">{formatDate(new Date())}</p>
 
             {/* Mini inline stats in hero */}
             <div className="mt-5 flex flex-wrap gap-3">
               {statItems.slice(0, 3).map((s, i) => (
-                <div key={i} className="flex items-center gap-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3">
+                <div key={i} className="flex items-center gap-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3">
                   <s.icon className="h-6 w-6 text-[#a6ffea]" />
                   <div>
                     {loading ? (
                       <div className="h-7 w-10 rounded-lg bg-white/20 animate-pulse" />
                     ) : (
-                      <p className="text-2xl font-black text-white">{s.value}</p>
+                      <p className="text-xl font-black text-white">{s.value}</p>
                     )}
                     <p className="text-sm font-medium text-[#a6ffea]/60">{s.label}</p>
                   </div>
@@ -321,10 +321,10 @@ export default function DashboardPage() {
 
           {/* Right side - Rotating Quotes */}
           <div className="lg:max-w-lg xl:max-w-xl">
-            <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 p-5 lg:p-6 relative overflow-hidden">
+            <div className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 p-3 lg:p-6 relative overflow-hidden">
               <Quote className={`h-8 w-8 text-[#a6ffea]/30 mb-3 ${isRtl ? "scale-x-[-1]" : ""}`} />
               <div key={quoteIndex} className="transition-opacity duration-500">
-                <p className="text-base lg:text-lg font-bold text-white/95 leading-relaxed italic mb-4">
+                <p className="text-sm lg:text-sm font-bold text-white/95 leading-relaxed italic mb-4">
                   &ldquo;{(locale === "ar" ? MARKETING_QUOTES_AR : MARKETING_QUOTES_EN)[quoteIndex].text}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
@@ -352,11 +352,11 @@ export default function DashboardPage() {
       <GettingStartedCard stats={stats} locale={locale} />
 
       {/* ═══════════════════ STATS GRID ═══════════════════ */}
-      <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         {statItems.map((s) => (
           <div
             key={s.label}
-            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${s.gradient} p-5 shadow-xl ${s.glow} hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-default`}
+            className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${s.gradient} p-3 shadow-xl ${s.glow} hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-default`}
           >
             <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
             <div className="relative z-10">
@@ -366,7 +366,7 @@ export default function DashboardPage() {
               {loading ? (
                 <div className="h-8 w-16 rounded-xl bg-white/20 animate-pulse mt-1" />
               ) : (
-                <p className="text-2xl lg:text-3xl font-black text-white tracking-tight">{s.value.toLocaleString()}</p>
+                <p className="text-xl font-black text-white tracking-tight">{s.value.toLocaleString()}</p>
               )}
               <p className="text-sm font-bold text-white/70 mt-1">{s.label}</p>
             </div>
@@ -382,16 +382,16 @@ export default function DashboardPage() {
           </div>
           <h2 className="text-xl font-black text-[#1a1d2e]">{t.quickActions}</h2>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {quickActions.map((a) => (
             <div key={a.href}>
-              <Link href={a.href} className={`group relative block overflow-hidden rounded-2xl border-2 border-transparent bg-white p-5 shadow-lg ${a.glow} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1`}>
+              <Link href={a.href} className={`group relative block overflow-hidden rounded-xl border-2 border-transparent bg-white p-3 shadow-lg ${a.glow} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1`}>
                 {/* Top gradient accent bar */}
                 <div className={`absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r ${a.gradient}`} />
                 <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${a.gradient} shadow-lg`}>
                   <a.icon className="h-5 w-5 text-white" />
                 </div>
-                <h3 className="text-base font-extrabold text-[#1a1d2e] mb-1">{a.title}</h3>
+                <h3 className="text-sm font-extrabold text-[#1a1d2e] mb-1">{a.title}</h3>
                 <p className="text-sm text-[#8f96a3] leading-relaxed">{a.desc}</p>
                 <div className={`mt-4 inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r ${a.gradient} bg-clip-text text-transparent`}>
                   {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646" : "Get started"} <ArrowRight className={`h-5 w-5 text-[#23ab7e] group-hover:translate-x-1 transition-transform ${isRtl ? "rotate-180 group-hover:-translate-x-1" : ""}`} />
@@ -403,13 +403,13 @@ export default function DashboardPage() {
       </div>
 
       {/* ═══════════════════ LATEST PLAN ═══════════════════ */}
-      <div className="rounded-2xl border-2 border-[#e8eaef] bg-white overflow-hidden shadow-lg">
-        <div className="flex items-center justify-between p-5 border-b-2 border-[#e8eaef]">
+      <div className="rounded-xl border-2 border-[#e8eaef] bg-white overflow-hidden shadow-lg">
+        <div className="flex items-center justify-between p-3 border-b-2 border-[#e8eaef]">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#e67af3] to-[#c4a8e8] shadow-lg shadow-[#e67af3]/20">
               <Calendar className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-lg sm:text-xl font-black text-[#1a1d2e]">{t.latestPlan}</h2>
+            <h2 className="text-sm sm:text-xl font-black text-[#1a1d2e]">{t.latestPlan}</h2>
           </div>
           {latestPlan && (
             <Link href="/my-plans" className="flex items-center gap-2 text-sm font-bold text-[#23ab7e] hover:underline">
@@ -426,14 +426,14 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={i}
-                    className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] p-3 text-center hover:border-transparent hover:shadow-lg transition-all duration-300"
+                    className="group relative overflow-hidden rounded-xl border-2 border-[#e8eaef] p-3 text-center hover:border-transparent hover:shadow-lg transition-all duration-300"
                   >
                     {/* Hover gradient overlay */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${grad} opacity-0 group-hover:opacity-5 transition-opacity`} />
                     <div className={`mx-auto mb-3 h-1.5 w-12 rounded-full bg-gradient-to-r ${grad}`} />
-                    <p className="text-lg font-bold text-[#1a1d2e]">{locale === "ar" ? d.dayAr : d.dayEn || d.dayAr}</p>
+                    <p className="text-sm font-bold text-[#1a1d2e]">{locale === "ar" ? d.dayAr : d.dayEn || d.dayAr}</p>
                     <p className="my-3 text-4xl">{PLATFORM_EMOJI[key] || "\ud83d\udce2"}</p>
-                    <p className="text-base text-[#505868] leading-snug line-clamp-2">{locale === "ar" ? d.topicAr : d.topic || d.topicAr}</p>
+                    <p className="text-sm text-[#505868] leading-snug line-clamp-2">{locale === "ar" ? d.topicAr : d.topic || d.topicAr}</p>
                     <span className={`mt-3 inline-block rounded-xl bg-gradient-to-r ${grad} px-3 py-1 text-sm font-bold text-white capitalize`}>{d.platform}</span>
                   </div>
                 );
@@ -441,11 +441,11 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="py-16 text-center">
-              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e8eaef] to-orange-100">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-[#e8eaef] to-orange-100">
                 <Calendar className="h-10 w-10 text-[#e67af3]" />
               </div>
               <p className="text-xl text-[#8f96a3]">{t.noPlansYet}</p>
-              <Link href="/planner" className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-amber-600 hover:underline">
+              <Link href="/planner" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-amber-600 hover:underline">
                 {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646" : "Create one now"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
               </Link>
             </div>
@@ -460,31 +460,31 @@ export default function DashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#1a8a64]">
               <Building2 className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl font-black text-[#1a1d2e]">{t.yourCompanies}</h2>
+            <h2 className="text-xl font-black text-[#1a1d2e]">{t.yourCompanies}</h2>
           </div>
-          <Link href="/companies" className="flex items-center gap-2 text-lg font-bold text-[#23ab7e] hover:underline">
+          <Link href="/companies" className="flex items-center gap-2 text-sm font-bold text-[#23ab7e] hover:underline">
             {locale === "ar" ? "\u0639\u0631\u0636 \u0627\u0644\u0643\u0644" : "View all"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
           </Link>
         </div>
-        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-nawaa">
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-nawaa">
           {companies.map((c, i) => (
             <div key={c.id}>
-              <Link href="/companies" className="group block min-w-[240px] sm:min-w-[280px] shrink-0 rounded-2xl border-2 border-[#e8eaef] bg-white p-7 text-center hover:border-[#2dd4a0] hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <Link href="/companies" className="group block min-w-[240px] sm:min-w-[280px] shrink-0 rounded-xl border-2 border-[#e8eaef] bg-white p-7 text-center hover:border-[#2dd4a0] hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div
-                  className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-2xl text-4xl font-black text-white overflow-hidden shadow-lg"
+                  className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-xl text-4xl font-black text-white overflow-hidden shadow-lg"
                   style={{ backgroundColor: c.brand_colors?.[0] || "#23ab7e" }}
                 >
                   {c.logo_url ? <Image src={c.logo_url} alt={c.name || "Company logo"} width={96} height={96} className="h-full w-full object-cover" /> : c.name?.charAt(0) || "?"}
                 </div>
                 <p className="text-xl font-extrabold text-[#1a1d2e] truncate">{c.name}</p>
                 {c.industry && (
-                  <span className="mt-3 inline-block rounded-xl bg-gradient-to-r from-[#f4f6f8] to-[#f4f6f8] border border-[#a6ffea] px-4 py-1.5 text-base font-semibold text-[#1a8a64]">{c.industry}</span>
+                  <span className="mt-3 inline-block rounded-xl bg-gradient-to-r from-[#f4f6f8] to-[#f4f6f8] border border-[#a6ffea] px-4 py-1.5 text-sm font-semibold text-[#1a8a64]">{c.industry}</span>
                 )}
               </Link>
             </div>
           ))}
-          <Link href="/companies" className="min-w-[240px] sm:min-w-[280px] shrink-0 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] p-7 hover:border-[#2dd4a0] hover:bg-[#f4f6f8]/50 transition-all duration-300 group">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white group-hover:bg-[#a6ffea] transition-colors">
+          <Link href="/companies" className="min-w-[240px] sm:min-w-[280px] shrink-0 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e8eaef] p-7 hover:border-[#2dd4a0] hover:bg-[#f4f6f8]/50 transition-all duration-300 group">
+            <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-xl bg-white group-hover:bg-[#a6ffea] transition-colors">
               <Plus className="h-8 w-8 text-[#1a8a64]" />
             </div>
             <span className="text-xl font-extrabold text-[#1a1d2e]">{t.addCompany}</span>
@@ -499,10 +499,10 @@ export default function DashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#a45dd4]">
               <ImageIcon className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl font-black text-[#1a1d2e]">{t.recentImages}</h2>
+            <h2 className="text-xl font-black text-[#1a1d2e]">{t.recentImages}</h2>
           </div>
           {recentImages.length > 0 && (
-            <Link href="/my-generations" className="flex items-center gap-2 text-lg font-bold text-[#6d3fa0] hover:underline">
+            <Link href="/my-generations" className="flex items-center gap-2 text-sm font-bold text-[#6d3fa0] hover:underline">
               {locale === "ar" ? "\u0639\u0631\u0636 \u0627\u0644\u0643\u0644" : "View all"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
             </Link>
           )}
@@ -512,11 +512,11 @@ export default function DashboardPage() {
             {recentImages.filter(img => img.image_urls?.[0]).slice(0, 5).map((img, i) => (
               <div
                 key={img.id}
-                className="group relative aspect-square overflow-hidden rounded-2xl border-2 border-[#e8eaef] shadow-md hover:shadow-xl hover:border-[#c4a8e8] transition-all duration-300"
+                className="group relative aspect-square overflow-hidden rounded-xl border-2 border-[#e8eaef] shadow-md hover:shadow-xl hover:border-[#c4a8e8] transition-all duration-300"
               >
                 <Image src={img.image_urls![0]} alt={locale === "ar" ? "صورة مولدة" : "Generated image"} fill className="object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" />
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="rounded-xl bg-white/90 backdrop-blur-sm px-5 py-2.5 text-lg font-bold text-[#1a1d2e] flex items-center gap-2 shadow-lg">
+                  <span className="rounded-xl bg-white/90 backdrop-blur-sm px-5 py-2.5 text-sm font-bold text-[#1a1d2e] flex items-center gap-2 shadow-lg">
                     <Eye className="h-5 w-5" /> {locale === "ar" ? "\u0639\u0631\u0636" : "View"}
                   </span>
                 </div>
@@ -524,12 +524,12 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border-2 border-dashed border-[#c4a8e8] bg-gradient-to-br from-[#f4f6f8] to-purple-50 py-16 text-center">
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e8eaef] to-purple-100">
+          <div className="rounded-xl border-2 border-dashed border-[#c4a8e8] bg-gradient-to-br from-[#f4f6f8] to-purple-50 py-16 text-center">
+            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-[#e8eaef] to-purple-100">
               <ImageIcon className="h-10 w-10 text-[#8054b8]" />
             </div>
             <p className="text-xl text-[#c4a8e8] font-semibold">{t.noImagesYet}</p>
-            <Link href="/vision-studio" className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-[#6d3fa0] hover:underline">
+            <Link href="/vision-studio" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#6d3fa0] hover:underline">
               {locale === "ar" ? "\u0627\u0628\u062f\u0623 \u0627\u0644\u0625\u0646\u0634\u0627\u0621" : "Start creating"} <ArrowRight className={`h-5 w-5 ${isRtl ? "rotate-180" : ""}`} />
             </Link>
           </div>

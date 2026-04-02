@@ -117,6 +117,7 @@ You specialize in creating marketing content for Saudi Arabian brands that looks
 - "graphic": Clean flat-lay or product arrangement on textured surface. Top-down or 45° angle. Geometric props that echo Saudi patterns. Shot on 50mm macro, even studio light.
 - "luxury": Single hero product/moment with dramatic negative space. Dark moody background with one precise light source. Shot on medium format, razor-thin DOF. Think: Vogue Arabia ad.
 - "heritage": Modern-traditional fusion. Contemporary subject framed by traditional Saudi architectural elements. Warm tungsten + cool daylight mix. Shot on 24mm wide angle, deep DOF.
+- "social_media": Professional social media marketing graphic/post design (NOT a photograph). Clean modern layout with brand colors as bold geometric shapes (circles, rings, gradients, abstract blobs). Include device mockups (laptop, phone) showing dashboards/apps where relevant. Bold headline text in Arabic or English prominently placed. Company logo area at top. White or solid-color background with brand-colored accent shapes. Think: Canva/Behance professional social media template. NO realistic photography — this is graphic design.
 
 ═══ OUTPUT FORMAT ═══
 Return ONLY JSON — no explanation:
@@ -184,11 +185,9 @@ async function fetchLogoAsTransparentBase64(logoUrl: string): Promise<string | n
   }
 }
 
-// Try multiple Gemini model names in order of preference
+// Gemini image generation models in order of preference
 const GEMINI_MODELS = [
-  "gemini-2.0-flash-exp",
   "gemini-3-pro-image-preview",
-  "gemini-2.0-flash-preview-image-generation",
 ];
 
 async function generateImageWithGemini(
@@ -297,8 +296,32 @@ export async function POST(request: NextRequest) {
       ? `Include the text "${imageText}" prominently in the image as a stylish overlay/sign/banner that fits the scene naturally. The text should be in ${langName} and clearly readable.`
       : "Do NOT include any text, words, or letters in the image.";
 
+    // Build brand DNA context for unique-per-company generation
+    const brandDna = company.brand_analysis;
+    const brandContext = brandDna ? [
+      `\n═══ BRAND DNA (use this to make images UNIQUE to this brand) ═══`,
+      brandDna.brandPersonality?.summary ? `Brand Personality: ${brandDna.brandPersonality.summary}` : "",
+      brandDna.brandPersonality ? `Personality Scores — Innovation: ${brandDna.brandPersonality.innovation}/100, Trust: ${brandDna.brandPersonality.trust}/100, Energy: ${brandDna.brandPersonality.energy}/100, Elegance: ${brandDna.brandPersonality.elegance}/100, Boldness: ${brandDna.brandPersonality.boldness}/100` : "",
+      brandDna.contentPillars?.length ? `Content Pillars: ${brandDna.contentPillars.map((p: { name: string; description: string }) => `${p.name} (${p.description})`).join("; ")}` : "",
+      brandDna.toneGuide?.doUse?.length ? `Tone — Use: ${brandDna.toneGuide.doUse.join(", ")}` : "",
+      brandDna.toneGuide?.avoid?.length ? `Tone — Avoid: ${brandDna.toneGuide.avoid.join(", ")}` : "",
+      brandDna.audienceInsights?.primaryAge ? `Target Age: ${brandDna.audienceInsights.primaryAge}` : "",
+      brandDna.audienceInsights?.interests?.length ? `Audience Interests: ${brandDna.audienceInsights.interests.join(", ")}` : "",
+      brandDna.audienceInsights?.saudiSpecific ? `Saudi Insight: ${brandDna.audienceInsights.saudiSpecific}` : "",
+      brandDna.vision2030Alignment ? `Vision 2030: ${brandDna.vision2030Alignment}` : "",
+      brandDna.platformStrategy?.rationale ? `Platform Strategy: ${brandDna.platformStrategy.rationale}` : "",
+    ].filter(Boolean).join("\n") : "";
+
+    const companyDescription = company.description ? `\nCompany Description: ${company.description.slice(0, 500)}` : "";
+    const targetAudience = company.target_audience ? `\nTarget Audience: ${company.target_audience}` : "";
+    const uniqueValue = company.unique_value ? `\nUnique Value: ${company.unique_value}` : "";
+
     const userMsg = [
       `Brand: "${company.name}" — ${company.industry || "general"} industry, ${company.tone || "professional"} tone`,
+      companyDescription,
+      targetAudience,
+      uniqueValue,
+      brandContext,
       additionalInstructions ? `⚠️ MANDATORY CLIENT REQUIREMENTS (must follow exactly): ${additionalInstructions}` : "",
       `Content topic: ${dayContent.topic}`,
       `Platform: ${dayContent.platform || "Instagram"}`,
@@ -307,7 +330,7 @@ export async function POST(request: NextRequest) {
       sizeDirective,
       `Language: ${langDirective}`,
       textDirective,
-      referenceImagesData.length ? `⚠️ REFERENCE PHOTOS PROVIDED (${referenceImagesData.length} photo(s)): The client uploaded real photos of their actual products/venue/dishes. These are NOT just inspiration — they are the REAL thing. The generated images MUST:\n  1. Recreate the SAME environment/setting as closely as possible (same type of space, same decor style, same surfaces and backgrounds)\n  2. Match the exact visual style, lighting mood, color palette, and atmosphere\n  3. Feature the same products/dishes/items with matching textures, plating, and presentation\n  4. Feel like they were taken in the SAME photoshoot session — same photographer, same location, same day\n  5. If it's a place (restaurant, cafe, store), generate images that look like they were shot IN that exact place\n  6. If it's a product/dish, show the same item from different angles or in complementary compositions` : "",
+      referenceImagesData.length ? `⚠️ REFERENCE IMAGES PROVIDED (${referenceImagesData.length} photo(s)) — USE FOR STYLE INSPIRATION ONLY:\n  1. Extract the COLOR PALETTE, tones, and color harmony from the references\n  2. Match the MOOD, ATMOSPHERE, and LIGHTING style\n  3. Capture the same VISUAL ENERGY and aesthetic feeling\n  4. Do NOT copy any TEXT, WORDS, LOGOS, or TYPOGRAPHY from the references\n  5. Do NOT recreate the exact same scene — create a NEW original composition\n  6. Think of references as a mood board — match the vibe, not the content` : "",
       includeLogo ? "Composition note: leave a clean corner area (bottom-right preferred) where a logo watermark can be overlaid in post-production." : "",
     ]
       .filter(Boolean)
@@ -342,10 +365,15 @@ export async function POST(request: NextRequest) {
     // Step 2: Generate images with Gemini (try multiple models)
     const images: { id: number; style_label: string; url?: string; prompt_used: string }[] = [];
 
-    // Append photorealism booster to every prompt
-    const realisticSuffix = " Photorealistic, shot on a professional camera, natural lighting, real textures, subtle film grain, shallow depth of field. Micro-imperfections visible: natural fabric wrinkles, real surface wear, authentic environment details. Natural color grading — slightly muted tones like analog film, not oversaturated or HDR. Must look like a real photograph, never CGI or digitally rendered.";
+    // Style-specific suffix
+    const isGraphicDesign = style === "social_media";
+    const realisticSuffix = isGraphicDesign
+      ? " Professional social media marketing graphic design. Clean modern layout, bold brand colors as geometric shapes and gradients, device mockups where relevant, bold headline typography, white or solid background. This is a GRAPHIC DESIGN post — NOT a photograph. Think: professional Canva/Behance marketing template with brand identity."
+      : " Photorealistic, shot on a professional camera, natural lighting, real textures, subtle film grain, shallow depth of field. Micro-imperfections visible: natural fabric wrinkles, real surface wear, authentic environment details. Natural color grading — slightly muted tones like analog film, not oversaturated or HDR. Must look like a real photograph, never CGI or digitally rendered.";
     const colorReminder = brandColors.length
-      ? ` At least 2 brand colors MUST be clearly visible: ${brandColors.map((c: string, i: number) => `${c} on ${colorObjectHints[i]?.split(",")[0] || "props"}`).join(", ")}.`
+      ? isGraphicDesign
+        ? ` Brand colors MUST dominate the design as primary colors: ${brandColors.join(", ")}. Use them for shapes, gradients, backgrounds, and text accents.`
+        : ` At least 2 brand colors MUST be clearly visible: ${brandColors.map((c: string, i: number) => `${c} on ${colorObjectHints[i]?.split(",")[0] || "props"}`).join(", ")}.`
       : "";
 
     for (const p of prompts.slice(0, imageCount)) {
@@ -366,7 +394,7 @@ export async function POST(request: NextRequest) {
       // Add reference images
       if (referenceImagesData.length > 0) {
         contentParts.push({
-          text: "⚠️ CRITICAL REFERENCE PHOTOS — these are real photos from the client's actual place/products. You MUST replicate the same environment, setting, surfaces, lighting, and vibe as closely as possible. The generated image should look like it was taken in the SAME location during the SAME photoshoot. Match everything: wall colors, table surfaces, decor, plating style, product appearance, spatial layout. Do NOT create a generic scene — recreate THIS specific place/product:",
+          text: "⚠️ REFERENCE IMAGES FOR STYLE INSPIRATION — Extract and match the COLOR PALETTE, MOOD, ATMOSPHERE, LIGHTING, VISUAL STYLE, and OVERALL VIBE from these reference images. Do NOT copy any text, words, logos, or typography from the references. Do NOT recreate the exact same scene or layout. Instead, create a NEW original composition that captures the same aesthetic feeling, color harmony, and visual energy. Use the references purely for: color tones, lighting mood, visual atmosphere, design style, and overall vibe.",
         });
         for (const refUri of referenceImagesData.slice(0, MAX_REFERENCE_IMAGES)) {
           const [header, base64Data] = refUri.split(",");
@@ -378,7 +406,9 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      contentParts.push({ text: `Generate this photorealistic marketing image: ${fullPrompt}` });
+      contentParts.push({ text: isGraphicDesign
+        ? `Generate this professional social media marketing graphic design (NOT a photo): ${fullPrompt}`
+        : `Generate this photorealistic marketing image: ${fullPrompt}` });
 
       const result = await generateImageWithGemini(contentParts, aspectRatio);
 

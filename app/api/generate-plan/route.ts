@@ -22,7 +22,7 @@ PLATFORM-SPECIFIC CAPTIONS (CRITICAL — each platform MUST have its own unique 
 - Instagram: Engaging, emoji-rich, storytelling format. 3-5 sentences. Include a call-to-action. Use line breaks for readability. Add relevant emojis between sentences.
 - TikTok: Short hook-first caption. 1-2 punchy sentences max. Use trending phrases and viral hooks. Keep it casual and energetic.
 - X (Twitter): Concise and witty. MUST be under 280 characters. Conversation-starting. Can include a question or bold statement.
-- LinkedIn: Professional thought-leadership style. 8-12 sentences minimum. Write a full story or lesson with a hook, body, and takeaway. Use paragraph breaks and line spacing for readability. Share personal insights, industry knowledge, or behind-the-scenes stories. End with a question to drive engagement. LinkedIn rewards long-form content — make it substantial (300-500 words).
+- LinkedIn: Professional thought-leadership style. MUST be a mini blog post (300-500 words MINIMUM). Write a compelling hook in the first line, then a full story or lesson with a body and clear takeaway. Use paragraph breaks and line spacing for readability. Share personal insights, industry knowledge, or behind-the-scenes stories. End with a thought-provoking question to drive engagement. LinkedIn rewards long-form content — short captions will be rejected. Aim for 8-15 sentences at minimum.
 - Snapchat: Ultra-casual, personal, urgency-driven. 1-2 short sentences. Use slang where appropriate. Create FOMO.
 
 Return ONLY valid JSON in this exact structure:
@@ -32,8 +32,8 @@ Return ONLY valid JSON in this exact structure:
   "days": [
     {
       "dayIndex": 0,
-      "dayEn": "Saturday",
-      "dayAr": "السبت",
+      "dayEn": "Sunday",
+      "dayAr": "الأحد",
       "date": "YYYY-MM-DD",
       "platform": "instagram",
       "contentType": "Carousel",
@@ -52,7 +52,7 @@ Return ONLY valid JSON in this exact structure:
   "expectedEngagement": "What results to expect this week"
 }
 
-Generate exactly 7 days starting from Saturday (Saudi week).
+Generate exactly 7 days starting from Sunday (Saudi/Middle East work week — Friday and Saturday are off days).
 Make each day unique and varied across different platforms.
 If the user provided a special focus, build the week around it.
 If no focus given, analyze the company data to create the most relevant strategy.
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
     const userMessage = [
       `Company: ${JSON.stringify(companySlim)}`,
       `Platforms to use: ${platforms.join(", ") || "all"}`,
-      `Week start (Saturday): ${weekStart}`,
+      `Week start (Sunday): ${weekStart}`,
       `Output language: ${outputLanguage}`,
       `IMPORTANT: The output language is "${outputLanguage}". ${outputLanguage === "ar" ? "Write ALL captions, topics, strategy, and tips in Arabic only. No English mixing in captions." : "Write ALL captions, topics, strategy, and tips in English only. No Arabic mixing in captions."}`,
       userPrompt ? `Special focus: ${userPrompt}` : "",
@@ -119,14 +119,30 @@ export async function POST(request: NextRequest) {
       .filter(Boolean)
       .join("\n");
 
+    // Compute 7 exact dates starting from weekStart (Sunday-based week)
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayNamesAr = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    const startDate = new Date(weekStart + "T00:00:00");
+    const dateConstraints = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      const dow = d.getDay();
+      return `Day ${i + 1}: ${dayNames[dow]} / ${dayNamesAr[dow]} — ${yyyy}-${mm}-${dd}`;
+    }).join("\n");
+
+    const dateConstraintBlock = `\n\nCRITICAL DATE CONSTRAINT — use these EXACT dates and day names:\n${dateConstraints}\nDo NOT deviate from these dates or day names.`;
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userMessage + "\n\nReturn JSON only." },
+        { role: "user", content: userMessage + dateConstraintBlock + "\n\nReturn JSON only." },
       ],
       temperature: 0.7,
-      max_tokens: 6000,
+      max_tokens: 8000,
     });
 
     const text = completion.choices[0]?.message?.content?.trim() || "{}";
@@ -139,6 +155,31 @@ export async function POST(request: NextRequest) {
         { error: "AI response missing plan days. Please try again." },
         { status: 500 }
       );
+    }
+
+    // 7-day padding fallback: if AI returned fewer than 7 days, pad with placeholder days
+    while (parsed.days.length < 7) {
+      const i = parsed.days.length;
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      const dow = d.getDay();
+      parsed.days.push({
+        dayIndex: i,
+        dayEn: dayNames[dow],
+        dayAr: dayNamesAr[dow],
+        date: `${yyyy}-${mm}-${dd}`,
+        platform: parsed.days[i % parsed.days.length]?.platform || "instagram",
+        contentType: "Post",
+        topic: "Content day " + (i + 1),
+        topicAr: "يوم محتوى " + (i + 1),
+        caption: "Caption coming soon.",
+        captionAr: "الكابشن قريبًا.",
+        hashtags: [],
+        postingTime: "8:00 PM",
+      });
     }
 
     return NextResponse.json({ success: true, plan: parsed });

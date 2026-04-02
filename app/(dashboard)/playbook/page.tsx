@@ -119,10 +119,10 @@ function CompaniesStep1({ accentColor }: { accentColor: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3">
       <div
-        className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg"
+        className="flex h-8 w-8 items-center justify-center rounded-lg shadow-lg"
         style={{ backgroundColor: accentColor }}
       >
-        <Plus className="h-7 w-7 text-white" />
+        <Plus className="h-4 w-4 text-white" />
       </div>
       <span className="text-sm font-bold text-[#1a1d2e]/70">Add Company</span>
     </div>
@@ -410,39 +410,39 @@ export default function PlaybookPage() {
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="space-y-6 pb-16">
       {/* ═══════════════════ HERO BANNER ═══════════════════ */}
-      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-4 sm:p-5 lg:p-6">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
               <Sparkles className="h-6 w-6 text-[#a6ffea]" />
             </div>
-            <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">
+            <span className="text-sm font-bold text-[#a6ffea]/80 tracking-wide">
               {locale === "ar" ? "\u062f\u0644\u064a\u0644 \u0627\u0644\u0627\u0633\u062a\u062e\u062f\u0627\u0645" : "Playbook"}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight tracking-tight">
             {t.pageTitle}
           </h1>
-          <p className="mt-4 text-base sm:text-lg font-medium text-white/70">{t.pageSub}</p>
+          <p className="mt-4 text-sm sm:text-sm font-medium text-white/70">{t.pageSub}</p>
 
           {/* Quick stats */}
           <div className="mt-5 flex flex-wrap gap-3">
-            <div className="flex items-center gap-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-2.5">
+            <div className="flex items-center gap-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-2.5">
               <span className="text-xl">{"📚"}</span>
               <div>
-                <p className="text-lg font-black text-white">{guides.length}</p>
+                <p className="text-sm font-black text-white">{guides.length}</p>
                 <p className="text-sm font-medium text-[#a6ffea]/60">{locale === "ar" ? "\u0623\u062f\u0644\u0629" : "Guides"}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-2.5">
+            <div className="flex items-center gap-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-2.5">
               <span className="text-xl">{"🎯"}</span>
               <div>
-                <p className="text-lg font-black text-white">15</p>
+                <p className="text-sm font-black text-white">15</p>
                 <p className="text-sm font-medium text-[#a6ffea]/60">{t.steps}</p>
               </div>
             </div>
@@ -451,9 +451,9 @@ export default function PlaybookPage() {
       </div>
 
       {/* ═══════════════════ PROGRESS BAR ═══════════════════ */}
-      <div className="rounded-2xl bg-white/70 backdrop-blur-md border border-[#e8eaef] p-5 sm:p-6 shadow-md">
+      <div className="rounded-xl bg-white/70 backdrop-blur-md border border-[#e8eaef] p-5 sm:p-6 shadow-md">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-lg font-bold text-[#1a1d2e]">
+          <span className="text-sm font-bold text-[#1a1d2e]">
             {locale === "ar"
               ? `${completedCount}/${TOTAL_GUIDES} أدلة مكتملة`
               : `${completedCount}/${TOTAL_GUIDES} guides completed`}
@@ -482,7 +482,7 @@ export default function PlaybookPage() {
           return (
             <div
               key={i}
-              className={`group rounded-3xl overflow-hidden transition-all duration-300 ${
+              className={`group rounded-xl overflow-hidden transition-all duration-300 ${
                 isOpen
                   ? "shadow-xl shadow-black/5"
                   : "shadow-md hover:shadow-lg hover:-translate-y-0.5"
@@ -503,14 +503,14 @@ export default function PlaybookPage() {
               <button
                 type="button"
                 onClick={() => toggle(i)}
-                className="flex w-full items-center gap-4 p-4 sm:p-5 text-left hover:bg-white/40 transition-colors"
+                className="flex w-full items-center gap-3 p-3 sm:p-4 text-left hover:bg-white/40 transition-colors"
               >
-                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${guide.color} shadow-lg ${guide.glow}`}>
-                  <Icon className="h-6 w-6 text-white" />
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${guide.color} shadow-lg ${guide.glow}`}>
+                  <Icon className="h-4 w-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <h3 className="text-lg sm:text-xl font-black text-[#1a1d2e]">{tTitle}</h3>
+                    <h3 className="text-sm sm:text-base font-black text-[#1a1d2e]">{tTitle}</h3>
                     <span className={`rounded-xl px-3 py-1 text-sm font-bold ${
                       guide.difficulty === "beginner"
                         ? "bg-gradient-to-r from-[#f4f6f8] to-[#f4f6f8] text-[#23ab7e] border border-[#a6ffea]"
@@ -535,9 +535,9 @@ export default function PlaybookPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="hidden sm:inline text-base font-bold text-[#8f96a3]">{guide.steps.length} {t.steps}</span>
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isOpen ? "bg-[#23ab7e] text-white" : "bg-[#f4f6f8] text-[#8f96a3]"} transition-all`}>
-                    <ChevronDown className={`h-6 w-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                  <span className="hidden sm:inline text-sm font-bold text-[#8f96a3]">{guide.steps.length} {t.steps}</span>
+                  <div className={`flex h-7 w-7 items-center justify-center rounded-xl ${isOpen ? "bg-[#23ab7e] text-white" : "bg-[#f4f6f8] text-[#8f96a3]"} transition-all`}>
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
                   </div>
                 </div>
               </button>
@@ -557,7 +557,7 @@ export default function PlaybookPage() {
                         <div key={si} className="flex gap-4">
                           {/* Step number with gradient circle */}
                           <div className="flex flex-col items-center">
-                            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${guide.color} text-base font-black text-white shadow-lg ${guide.glow}`}>
+                            <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${guide.color} text-sm font-black text-white shadow-lg ${guide.glow}`}>
                               {si + 1}
                             </div>
                             {si < guide.steps.length - 1 && (
@@ -566,11 +566,11 @@ export default function PlaybookPage() {
                           </div>
                           {/* Step content */}
                           <div className="flex-1 pb-4">
-                            <h4 className="text-base sm:text-lg font-extrabold text-[#1a1d2e]">{stepTitle}</h4>
+                            <h4 className="text-sm sm:text-base font-extrabold text-[#1a1d2e]">{stepTitle}</h4>
                             <p className="text-sm text-[#8f96a3] mt-2 leading-relaxed">{stepDesc}</p>
                             {/* Visual illustration */}
                             <div
-                              className="mt-4 min-h-[7rem] rounded-2xl border border-black/5 flex items-center justify-center p-4"
+                              className="mt-4 min-h-[7rem] rounded-lg border border-black/5 flex items-center justify-center p-3"
                               style={{
                                 background: `linear-gradient(135deg, ${guide.colorFrom}08, ${guide.colorFrom}15)`,
                               }}
@@ -590,7 +590,7 @@ export default function PlaybookPage() {
                     <button
                       type="button"
                       onClick={() => toggleComplete(i)}
-                      className={`flex items-center justify-center gap-2 w-full rounded-2xl px-4 py-2 text-sm font-bold transition-all duration-300 ${
+                      className={`flex items-center justify-center gap-2 w-full rounded-xl px-4 py-2 text-sm font-bold transition-all duration-300 ${
                         isCompleted
                           ? "bg-[#23ab7e] text-white shadow-lg shadow-[#23ab7e]/20 hover:bg-[#1a8a64]"
                           : "bg-white text-[#8f96a3] border-2 border-[#e8eaef] hover:border-[#23ab7e]/40 hover:text-[#23ab7e]"
@@ -612,9 +612,9 @@ export default function PlaybookPage() {
                     {/* Try it now button */}
                     <Link
                       href={guide.href}
-                      className={`flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r ${guide.color} px-5 py-2.5 text-sm font-black text-white shadow-lg ${guide.glow} hover:shadow-xl hover:scale-[1.02] transition-all duration-300`}
+                      className={`flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r ${guide.color} px-5 py-2.5 text-sm font-black text-white shadow-lg ${guide.glow} hover:shadow-xl hover:scale-[1.02] transition-all duration-300`}
                     >
-                      {t.tryItNow} <ArrowRight className={`h-6 w-6 ${isRtl ? "rotate-180" : ""}`} />
+                      {t.tryItNow} <ArrowRight className={`h-4 w-4 ${isRtl ? "rotate-180" : ""}`} />
                     </Link>
                   </div>
                 </div>

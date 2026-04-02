@@ -66,7 +66,7 @@ const PLATFORMS = [
   "LinkedIn",
 ];
 
-const FALLBACK_COLORS = ["#23ab7e", "#8054b8", "#8054b8", "#0B1A0F", "#D0EBDA"];
+const FALLBACK_COLORS = ["#23ab7e", "#8054b8", "#0B1A0F", "#D0EBDA"];
 
 /* ── Platform config with rich visual data (matches planner/hashtags) ── */
 const PLATFORM_CARDS: Record<string, { emoji: string; selectedBg: string; selectedBorder: string; unselectedBg: string; color: string }> = {
@@ -364,10 +364,12 @@ export default function CompaniesPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeSteps, setAnalyzeSteps] = useState<{ step: string; message: string; details?: Record<string, unknown> }[]>([]);
   const [scrapingWebsite, setScrapingWebsite] = useState(false);
+  const [aiSuggesting, setAiSuggesting] = useState<string | null>(null);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [pdfProgress, setPdfProgress] = useState<{ step: number; label: string } | null>(null);
   const [extractedPdfText, setExtractedPdfText] = useState<string | null>(null);
+  const [scrapedData, setScrapedData] = useState<{ title: string; metaDescription: string; ogImage: string; text: string; cssColors: string[]; charCount: number } | null>(null);
   const [brandAnalysis, setBrandAnalysis] = useState<Record<string, unknown> | null>(null);
   const [outputLanguage, setOutputLanguage] = useState<"en" | "ar">("ar");
   const [viewingCompany, setViewingCompany] = useState<Company | null>(null);
@@ -430,6 +432,7 @@ export default function CompaniesPage() {
     setShowCustomIndustry(false);
     setExtractedPdfText(null);
     setPdfProgress(null);
+    setScrapedData(null);
     setFormOpen(true);
   }
 
@@ -454,6 +457,15 @@ export default function CompaniesPage() {
     setBrandAnalysis(c.brand_analysis ?? null);
     setExtractedPdfText(null);
     setPdfProgress(null);
+    const saved = c.scraped_data as { title?: string; metaDescription?: string; ogImage?: string; text?: string; cssColors?: string[]; charCount?: number } | null;
+    setScrapedData(saved ? {
+      title: saved.title || "",
+      metaDescription: saved.metaDescription || "",
+      ogImage: saved.ogImage || "",
+      text: saved.text || "",
+      cssColors: saved.cssColors || [],
+      charCount: saved.charCount || 0,
+    } : null);
     setFormOpen(true);
   }
 
@@ -469,7 +481,7 @@ export default function CompaniesPage() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Upload failed");
       if (json.url) setForm((f) => ({ ...f, logo_url: json.url }));
-      if (json.colors?.length) setForm((f) => ({ ...f, brand_colors: json.colors.slice(0, 5) }));
+      if (json.colors?.length) setForm((f) => ({ ...f, brand_colors: json.colors.slice(0, 4) }));
       toast.success("Logo uploaded & colors extracted!", { id: "logo-upload" });
     } catch (err) {
       console.error("Logo upload error:", err);
@@ -512,13 +524,31 @@ export default function CompaniesPage() {
         });
       }, 2500);
 
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/extract-pdf", { method: "POST", body: fd });
-      const json = await res.json();
+      // Convert PDF to base64 on client and send as JSON.
+      // This avoids FormData body-size limits on platforms like Vercel.
+      const buf = await file.arrayBuffer();
+      const bytes = new Uint8Array(buf);
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      const base64 = btoa(binary);
+
+      const res = await fetch("/api/extract-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileName: file.name, base64, mimeType: "application/pdf" }),
+      });
 
       clearInterval(progressTimer);
 
+      // Handle non-JSON responses (e.g. "Request Entity Too Large" from server)
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text.includes("Too Large") || text.includes("too large")
+          ? (locale === "ar" ? "حجم الملف كبير جداً. الحد الأقصى 50 ميجابايت" : "File too large. Maximum size is 50MB")
+          : (locale === "ar" ? "فشل استخراج الملف" : "PDF extraction failed"));
+      }
+      const json = await res.json();
       if (!res.ok) throw new Error(json.error || "PDF extraction failed");
       if (json.text) {
         setPdfProgress({ step: steps.length - 1, label: steps[steps.length - 1] });
@@ -536,43 +566,96 @@ export default function CompaniesPage() {
     }
   }
 
+  async function handleAiSuggest(field: "target_audience" | "unique_value" | "competitors") {
+    if (!form.name.trim()) {
+      toast.error(locale === "ar" ? "أدخل اسم الشركة أولاً" : "Enter company name first");
+      return;
+    }
+    setAiSuggesting(field);
+    try {
+      const res = await fetch("/api/ai-suggest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          field,
+          company: {
+            name: form.name,
+            name_ar: form.name_ar,
+            industry: form.industry,
+            description: form.description,
+            website: form.website,
+          },
+          language: locale,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Suggestion failed");
+      if (json.text) {
+        setForm((f) => ({ ...f, [field]: json.text }));
+        toast.success(locale === "ar" ? "تم التوليد بنجاح" : "Generated successfully");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Suggestion failed");
+    } finally {
+      setAiSuggesting(null);
+    }
+  }
+
   async function handleScrapeWebsite() {
     const url = form.website.trim();
-    if (!url) { toast.error(locale === "ar" ? "أدخل رابط الموقع أولاً" : "Enter a website URL first"); return; }
+    if (!url) {
+      toast.error(locale === "ar" ? "أدخل رابط الموقع أولاً" : "Enter a website URL first");
+      return;
+    }
     setScrapingWebsite(true);
-    toast.loading(locale === "ar" ? "جارٍ استخراج بيانات الموقع..." : "Scraping website...", { id: "scrape" });
+    setScrapedData(null);
     try {
       const res = await fetch("/api/scrape-website", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url }),
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Scraping failed");
-      const parts: string[] = [];
-      if (json.title) parts.push(json.title);
-      if (json.metaDescription) parts.push(json.metaDescription);
-      if (json.text) parts.push(json.text);
-      const scraped = parts.join("\n\n");
-      if (!scraped) throw new Error("No content found on website");
-      setForm((f) => ({
-        ...f,
-        description: f.description ? f.description + "\n\n--- Website Content ---\n" + scraped : scraped,
-      }));
+      const text = await res.text();
+      let json;
+      try { json = JSON.parse(text); } catch { throw new Error("Scraping failed — invalid response"); }
+      if (!res.ok) {
+        const errMsg = typeof json.error === "string" ? json.error : "Scraping failed";
+        throw new Error(errMsg);
+      }
+
+      setScrapedData({
+        title: json.title || "",
+        metaDescription: json.metaDescription || "",
+        ogImage: json.ogImage || "",
+        text: json.text || "",
+        cssColors: json.cssColors || [],
+        charCount: json.charCount || 0,
+      });
+
+      // Auto-fill description if empty
+      if (!form.description.trim() && json.text) {
+        const parts: string[] = [];
+        if (json.title) parts.push(json.title);
+        if (json.metaDescription) parts.push(json.metaDescription);
+        if (json.text) parts.push(json.text);
+        setForm((f) => ({ ...f, description: parts.join("\n\n") }));
+      }
+
+      // Merge scraped colors into brand colors
       if (json.cssColors?.length) {
         setForm((f) => ({
           ...f,
-          brand_colors: [...new Set([...f.brand_colors, ...json.cssColors])].slice(0, 5),
+          brand_colors: [...new Set([...f.brand_colors, ...json.cssColors])].slice(0, 4),
         }));
       }
+
       toast.success(
         locale === "ar"
-          ? `تم استخراج ${scraped.length} حرف + ${json.cssColors?.length || 0} ألوان`
-          : `Scraped ${scraped.length} chars + ${json.cssColors?.length || 0} colors`,
-        { id: "scrape" }
+          ? `تم استخراج ${json.charCount || 0} حرف + ${json.cssColors?.length || 0} ألوان`
+          : `Scraped ${json.charCount || 0} chars + ${json.cssColors?.length || 0} colors`
       );
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Scraping failed", { id: "scrape" });
+      toast.error(err instanceof Error ? err.message : "Scraping failed");
     } finally {
       setScrapingWebsite(false);
     }
@@ -609,6 +692,7 @@ export default function CompaniesPage() {
       unique_value: form.unique_value.trim() || null,
       competitors: form.competitors.trim() || null,
       platforms: form.platforms,
+      scraped_data: scrapedData || undefined,
     };
     if (editingId) {
       const { error } = await supabase
@@ -929,7 +1013,7 @@ export default function CompaniesPage() {
                     <div className="mt-4 flex items-center justify-between">
                       {c.brand_colors?.length ? (
                         <div className="flex gap-1.5">
-                          {c.brand_colors.slice(0, 5).map((hex, idx) => (
+                          {c.brand_colors.slice(0, 4).map((hex, idx) => (
                             <div key={idx} className="h-6 w-6 rounded-lg border-2 border-white shadow-sm ring-1 ring-[#e8eaef]/50" style={{ backgroundColor: hex }} />
                           ))}
                         </div>
@@ -1089,9 +1173,101 @@ export default function CompaniesPage() {
                       className="h-11 px-4 rounded-xl bg-gradient-to-r from-[#23ab7e] to-[#1a8a64] text-white text-xs font-bold hover:shadow-md transition-all disabled:opacity-50 shrink-0"
                     >
                       {scrapingWebsite ? <Loader2 className="h-4 w-4 animate-spin" /> : <Globe className="h-4 w-4" />}
-                      <span className="ml-1.5">{locale === "ar" ? "استخراج" : "Scrape"}</span>
+                      <span className="ml-1.5">{scrapingWebsite ? (locale === "ar" ? "جاري الاستخراج..." : "Scraping...") : (locale === "ar" ? "استخراج" : "Scrape")}</span>
                     </Button>
                   </div>
+
+                  {/* Scraped Website Results */}
+                  {scrapedData && (
+                    <div className="mt-3 rounded-2xl border-2 border-[#23ab7e]/20 bg-gradient-to-br from-[#f0fdf7] to-[#ecfdf3] overflow-hidden shadow-sm">
+                      {/* Header */}
+                      <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-[#23ab7e] to-[#1a8a64]">
+                        <div className="flex items-center gap-2">
+                          <Globe className="h-4 w-4 text-white" />
+                          <span className="text-xs font-bold text-white">
+                            {locale === "ar" ? "بيانات الموقع المستخرجة" : "Scraped Website Data"}
+                          </span>
+                        </div>
+                        <button type="button" onClick={() => setScrapedData(null)} className="flex h-6 w-6 items-center justify-center rounded-md bg-white/20 hover:bg-white/30 transition-colors">
+                          <X className="h-3 w-3 text-white" />
+                        </button>
+                      </div>
+
+                      <div className="p-4 space-y-3">
+                        {/* Title */}
+                        {scrapedData.title && (
+                          <div className="flex items-start gap-2.5">
+                            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#23ab7e]/10">
+                              <span className="text-xs">🏷️</span>
+                            </div>
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-[#8f96a3]">{locale === "ar" ? "عنوان الموقع" : "Site Title"}</p>
+                              <p className="text-sm font-semibold text-[#1a1d2e]">{scrapedData.title}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Meta Description */}
+                        {scrapedData.metaDescription && (
+                          <div className="flex items-start gap-2.5">
+                            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#8054b8]/10">
+                              <span className="text-xs">📝</span>
+                            </div>
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-[#8f96a3]">{locale === "ar" ? "الوصف" : "Description"}</p>
+                              <p className="text-sm text-[#2d3142] leading-relaxed">{scrapedData.metaDescription}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Brand Colors */}
+                        {scrapedData.cssColors.length > 0 && (
+                          <div className="flex items-start gap-2.5">
+                            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#e67af3]/10">
+                              <span className="text-xs">🎨</span>
+                            </div>
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-[#8f96a3] mb-1.5">{locale === "ar" ? "ألوان العلامة" : "Brand Colors"}</p>
+                              <div className="flex flex-wrap gap-2">
+                                {scrapedData.cssColors.map((color, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 rounded-lg bg-white border border-[#e8eaef] px-2 py-1 shadow-sm">
+                                    <div className="h-4 w-4 rounded-md shadow-inner border border-black/5" style={{ backgroundColor: color }} />
+                                    <span className="text-[10px] font-mono font-bold text-[#2d3142]">{color}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Content Preview */}
+                        {scrapedData.text && (
+                          <div className="flex items-start gap-2.5">
+                            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#3B82F6]/10">
+                              <span className="text-xs">📄</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-[#8f96a3] mb-1">{locale === "ar" ? "محتوى الصفحة" : "Page Content"}</p>
+                              <p className="text-xs text-[#2d3142]/70 leading-relaxed line-clamp-3">{scrapedData.text.slice(0, 300)}...</p>
+                              <span className="inline-block mt-1 text-[10px] font-semibold text-[#23ab7e] bg-[#23ab7e]/10 rounded-full px-2 py-0.5">
+                                {scrapedData.charCount.toLocaleString()} {locale === "ar" ? "حرف" : "chars"}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between px-4 py-2 border-t border-[#23ab7e]/10 bg-[#f0fdf7]/50">
+                        <span className="text-[10px] font-medium text-[#23ab7e]">
+                          {locale === "ar" ? "تم ملء الوصف والألوان تلقائياً" : "Description & colors auto-filled"}
+                        </span>
+                        <button type="button" onClick={() => setScrapedData(null)} className="text-[10px] font-bold text-[#8054b8] hover:text-[#6d3fa0] transition-colors">
+                          {locale === "ar" ? "إخفاء" : "Dismiss"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="mt-5">
@@ -1308,19 +1484,68 @@ export default function CompaniesPage() {
                 </div>
               </div>
 
-              {/* Brand Colors */}
+              {/* Brand Colors — 4 slots with roles */}
               <div className="mb-6">
-                <Label className="text-sm font-bold text-[#1a1d2e] mb-3 block">Brand Colors</Label>
-                <div className="flex flex-wrap gap-3">
-                  {form.brand_colors.map((hex, idx) => (
-                    <div
-                      key={idx}
-                      className="h-8 w-8 rounded-xl border-2 border-white cursor-pointer shadow-md ring-2 ring-[#e8eaef] hover:ring-[#8054b8] transition-all"
-                      style={{ backgroundColor: hex }}
-                      title={hex}
-                    />
-                  ))}
+                <Label className="text-sm font-bold text-[#1a1d2e] mb-3 block">
+                  {locale === "ar" ? "ألوان العلامة التجارية" : "Brand Colors"}
+                </Label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {(() => {
+                    const rolesEn = ["Main", "Secondary", "Accent 1", "Accent 2"];
+                    const rolesAr = ["رئيسي", "ثانوي", "تمييز ١", "تمييز ٢"];
+                    const roles = locale === "ar" ? rolesAr : rolesEn;
+                    // Ensure we always have exactly 4 colors
+                    const colors = [...form.brand_colors];
+                    while (colors.length < 4) colors.push(FALLBACK_COLORS[colors.length] || "#cccccc");
+                    return colors.slice(0, 4).map((hex, idx) => (
+                      <div key={idx} className="relative group rounded-xl border-2 border-[#e8eaef] bg-white p-3 hover:border-[#8054b8]/40 hover:shadow-md transition-all">
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-[#8f96a3] mb-2">{roles[idx]}</p>
+                        <div className="flex items-center gap-2">
+                          <label className="cursor-pointer">
+                            <input
+                              type="color"
+                              value={hex}
+                              onChange={(e) => {
+                                const updated = [...form.brand_colors];
+                                while (updated.length < 4) updated.push(FALLBACK_COLORS[updated.length] || "#cccccc");
+                                updated[idx] = e.target.value;
+                                setForm((f) => ({ ...f, brand_colors: updated.slice(0, 4) }));
+                              }}
+                              className="sr-only"
+                            />
+                            <div
+                              className="h-9 w-9 rounded-lg border-2 border-white shadow-md ring-2 ring-[#e8eaef] group-hover:ring-[#8054b8]/40 cursor-pointer transition-all"
+                              style={{ backgroundColor: hex }}
+                            />
+                          </label>
+                          <div className="flex-1 min-w-0">
+                            <input
+                              type="text"
+                              value={hex}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (/^#[0-9a-fA-F]{0,6}$/.test(val)) {
+                                  const updated = [...form.brand_colors];
+                                  while (updated.length < 4) updated.push(FALLBACK_COLORS[updated.length] || "#cccccc");
+                                  updated[idx] = val;
+                                  setForm((f) => ({ ...f, brand_colors: updated.slice(0, 4) }));
+                                }
+                              }}
+                              className="w-full text-[11px] font-mono font-bold text-[#2d3142] bg-[#fafbfd] border border-[#e8eaef] rounded-lg px-2 py-1.5 focus:border-[#8054b8] focus:outline-none transition-colors"
+                              placeholder="#000000"
+                              maxLength={7}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ));
+                  })()}
                 </div>
+                <p className="mt-2 text-[10px] text-[#8f96a3]">
+                  {locale === "ar"
+                    ? "انقر على المربع الملون لاختيار لون، أو اكتب رمز اللون مباشرة"
+                    : "Click the color swatch to pick a color, or type a hex code directly"}
+                </p>
               </div>
 
               {/* Tone */}
@@ -1354,7 +1579,18 @@ export default function CompaniesPage() {
               </div>
               <div className="space-y-6">
                 <div>
-                  <Label className="text-sm font-bold text-[#1a1d2e] mb-2 block">{tc.targetAudience}</Label>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="text-sm font-bold text-[#1a1d2e]">{tc.targetAudience}</Label>
+                    <button
+                      type="button"
+                      onClick={() => handleAiSuggest("target_audience")}
+                      disabled={aiSuggesting === "target_audience"}
+                      className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#8054b8] to-[#A78BFA] px-3 py-1.5 text-[10px] font-bold text-white hover:shadow-md transition-all disabled:opacity-50"
+                    >
+                      {aiSuggesting === "target_audience" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                      {locale === "ar" ? "توليد بالذكاء" : "AI Generate"}
+                    </button>
+                  </div>
                   <Textarea
                     value={form.target_audience}
                     onChange={(e) => setForm((f) => ({ ...f, target_audience: e.target.value }))}
@@ -1364,7 +1600,18 @@ export default function CompaniesPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-bold text-[#1a1d2e] mb-2 block">{tc.uniqueValue}</Label>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="text-sm font-bold text-[#1a1d2e]">{tc.uniqueValue}</Label>
+                    <button
+                      type="button"
+                      onClick={() => handleAiSuggest("unique_value")}
+                      disabled={aiSuggesting === "unique_value"}
+                      className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#8054b8] to-[#A78BFA] px-3 py-1.5 text-[10px] font-bold text-white hover:shadow-md transition-all disabled:opacity-50"
+                    >
+                      {aiSuggesting === "unique_value" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                      {locale === "ar" ? "توليد بالذكاء" : "AI Generate"}
+                    </button>
+                  </div>
                   <Textarea
                     value={form.unique_value}
                     onChange={(e) => setForm((f) => ({ ...f, unique_value: e.target.value }))}
@@ -1374,7 +1621,18 @@ export default function CompaniesPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-bold text-[#1a1d2e] mb-2 block">{tc.competitors}</Label>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="text-sm font-bold text-[#1a1d2e]">{tc.competitors}</Label>
+                    <button
+                      type="button"
+                      onClick={() => handleAiSuggest("competitors")}
+                      disabled={aiSuggesting === "competitors"}
+                      className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#8054b8] to-[#A78BFA] px-3 py-1.5 text-[10px] font-bold text-white hover:shadow-md transition-all disabled:opacity-50"
+                    >
+                      {aiSuggesting === "competitors" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                      {locale === "ar" ? "توليد بالذكاء" : "AI Generate"}
+                    </button>
+                  </div>
                   <Input
                     value={form.competitors}
                     onChange={(e) => setForm((f) => ({ ...f, competitors: e.target.value }))}

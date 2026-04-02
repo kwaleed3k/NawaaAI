@@ -84,31 +84,31 @@ export default function HashtagsPage() {
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-6 pb-16">
 
       {/* ═══════ HERO BANNER ═══════ */}
-      <div className="relative overflow-hidden rounded-2xl nl-aurora-bg p-5 sm:p-6 lg:p-8">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-4 sm:p-4 lg:p-5">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm border border-white/20">
               <Hash className="h-7 w-7 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">{th.pageTitle}</h1>
-              <p className="mt-2 text-base text-white/60">{th.pageSub}</p>
+              <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight">{th.pageTitle}</h1>
+              <p className="mt-2 text-sm text-white/60">{th.pageSub}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* ═══════ TRENDING KSA ═══════ */}
-      <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+      <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
         <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8, #e67af3)" }} />
-        <div className="p-4 sm:p-5 lg:p-6">
+        <div className="p-3 sm:p-4 lg:p-6">
           <div className="flex items-center gap-4 mb-5">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
               <TrendingUp className="h-7 w-7 text-white" />
             </div>
-            <h2 className="text-lg sm:text-xl font-extrabold text-[#2d3142]">{th.trendingKSA}</h2>
+            <h2 className="text-sm sm:text-base font-extrabold text-[#2d3142]">{th.trendingKSA}</h2>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -116,11 +116,11 @@ export default function HashtagsPage() {
               const clr = TRENDING_COLORS[i];
               return (
                 <button key={t.tag} type="button" onClick={() => { navigator.clipboard.writeText(t.tag); toast.success("Copied " + t.tag); }}
-                  className="relative flex flex-col items-center gap-3 rounded-2xl p-5 sm:p-6 text-white transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-1 hover:shadow-xl"
+                  className="relative flex flex-col items-center gap-3 rounded-xl p-3 sm:p-4 text-white transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-1 hover:shadow-xl"
                   style={{ background: `linear-gradient(135deg, ${clr}, ${clr}cc)`, boxShadow: `0 6px 24px ${clr}30` }}
                 >
                   <span className="text-3xl">🔥</span>
-                  <span className="text-base sm:text-lg font-extrabold text-center leading-tight">{t.tag}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-center leading-tight">{t.tag}</span>
                   <span className="rounded-full bg-white/25 px-3 py-1 text-sm font-bold">{t.reach}</span>
                   <span className="rounded-full bg-black/15 px-2.5 py-0.5 text-xs font-bold">{t.category}</span>
                   <Copy className="absolute top-3 right-3 h-4 w-4 text-white/40" />
@@ -135,12 +135,12 @@ export default function HashtagsPage() {
       <div className="space-y-5">
 
         {/* Platform Selector */}
-        <div className="rounded-2xl p-4 sm:p-5 lg:p-6" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <div className="rounded-xl p-3 sm:p-4 lg:p-6" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full rounded-full mb-5" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
           <div className="flex items-center gap-4 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#e67af3] text-white text-base font-bold shadow-lg">1</div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#e67af3] text-white text-sm font-bold shadow-lg">1</div>
             <div>
-              <h3 className="text-lg font-bold text-[#2d3142]">{locale === "ar" ? "اختر المنصة" : "Choose Platform"}</h3>
+              <h3 className="text-sm font-bold text-[#2d3142]">{locale === "ar" ? "اختر المنصة" : "Choose Platform"}</h3>
               <p className="text-sm text-[#8f96a3]">{locale === "ar" ? "أي منصة تستهدف؟" : "Which platform are you targeting?"}</p>
             </div>
           </div>
@@ -150,16 +150,16 @@ export default function HashtagsPage() {
               const selected = platform === p.id;
               return (
                 <button key={p.id} type="button" onClick={() => setPlatform(p.id)}
-                  className={cn("relative flex flex-col items-center gap-3 rounded-2xl border-2 p-5 sm:p-6 transition-all duration-300 cursor-pointer",
+                  className={cn("relative flex flex-col items-center gap-3 rounded-xl border-2 p-3 sm:p-4 transition-all duration-300 cursor-pointer",
                     selected ? "border-[#23ab7e] shadow-[0_4px_20px_rgba(35,171,126,0.12)]" : "border-[#e8eaef] bg-white hover:border-[#c4a8e8] hover:shadow-md"
                   )}
                   style={selected ? { background: `linear-gradient(135deg, ${p.color}10, #8054b810)` } : undefined}
                 >
                   {selected && <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#23ab7e] flex items-center justify-center"><CheckCircle2 className="w-4 h-4 text-white" /></div>}
-                  <div className={cn("flex h-14 w-14 items-center justify-center rounded-xl", selected ? `bg-gradient-to-br ${p.gradient}` : "bg-[#f4f6f8]")}>
+                  <div className={cn("flex h-8 w-8 items-center justify-center rounded-xl", selected ? `bg-gradient-to-br ${p.gradient}` : "bg-[#f4f6f8]")}>
                     <span style={!selected ? { color: p.color } : undefined}><p.Icon className={cn("h-7 w-7", selected ? "text-white" : "")} /></span>
                   </div>
-                  <span className={cn("text-base font-bold", selected ? "text-[#2d3142]" : "text-[#8f96a3]")}>{p.label}</span>
+                  <span className={cn("text-sm font-bold", selected ? "text-[#2d3142]" : "text-[#8f96a3]")}>{p.label}</span>
                 </button>
               );
             })}
@@ -167,12 +167,12 @@ export default function HashtagsPage() {
         </div>
 
         {/* Topic Input */}
-        <div className="rounded-2xl p-4 sm:p-5 lg:p-6" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <div className="rounded-xl p-3 sm:p-4 lg:p-6" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full rounded-full mb-5" style={{ background: "linear-gradient(90deg, #23ab7e, #2dd4a0)" }} />
           <div className="flex items-center gap-4 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#2dd4a0] text-white text-base font-bold shadow-lg">2</div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#2dd4a0] text-white text-sm font-bold shadow-lg">2</div>
             <div>
-              <h3 className="text-lg font-bold text-[#2d3142]">{locale === "ar" ? "الموضوع" : "Enter Topic"}</h3>
+              <h3 className="text-sm font-bold text-[#2d3142]">{locale === "ar" ? "الموضوع" : "Enter Topic"}</h3>
               <p className="text-sm text-[#8f96a3]">{locale === "ar" ? "عن ماذا تنشر؟" : "What are you posting about?"}</p>
             </div>
           </div>
@@ -186,14 +186,14 @@ export default function HashtagsPage() {
               onChange={(e) => setTopic(e.target.value)}
               placeholder={th.topicPlaceholder}
               onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
-              className="w-full h-16 pl-14 pr-5 rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]"
+              className="w-full h-10 pl-14 pr-5 rounded-lg border-2 border-[#e8eaef] bg-white text-sm text-[#2d3142] placeholder:text-[#8f96a3]/50 outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_4px_rgba(35,171,126,0.1)]"
             />
           </div>
         </div>
 
         {/* Generate Button */}
         <button onClick={handleGenerate} disabled={generating}
-          className="relative w-full h-12 sm:h-14 rounded-2xl border-none text-sm sm:text-base font-black text-white cursor-pointer transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+          className="relative w-full h-9 sm:h-10 rounded-lg border-none text-sm sm:text-sm font-black text-white cursor-pointer transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
           style={{ background: "linear-gradient(135deg, #8054b8, #e67af3, #23ab7e)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}
         >
           <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
@@ -211,16 +211,16 @@ export default function HashtagsPage() {
           {SETS.map((cfg) => {
             const tags = sets[cfg.key] || [];
             return (
-              <div key={cfg.key} className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              <div key={cfg.key} className="rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", boxShadow: `0 8px 32px ${cfg.color}08, 0 0 0 1.5px #e8eaef` }}
               >
                 <div className="h-2 w-full" style={{ background: `linear-gradient(90deg, ${cfg.color}, ${cfg.color}66)` }} />
                 <div className="p-4 sm:p-5">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl shadow-md text-xl" style={{ background: `linear-gradient(135deg, ${cfg.color}, ${cfg.color}bb)` }}>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl shadow-md text-xl" style={{ background: `linear-gradient(135deg, ${cfg.color}, ${cfg.color}bb)` }}>
                       <span>{cfg.icon}</span>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-extrabold" style={{ color: cfg.color }}>{th[cfg.labelKey]}</h3>
+                    <h3 className="text-sm sm:text-base font-extrabold" style={{ color: cfg.color }}>{th[cfg.labelKey]}</h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-6">
@@ -236,7 +236,7 @@ export default function HashtagsPage() {
                   </div>
 
                   <button onClick={() => copySet(tags)}
-                    className="w-full h-12 rounded-2xl text-base font-bold text-white flex items-center justify-center gap-2 cursor-pointer border-none transition-all hover:-translate-y-0.5 overflow-hidden"
+                    className="w-full h-9 rounded-lg text-sm font-bold text-white flex items-center justify-center gap-2 cursor-pointer border-none transition-all hover:-translate-y-0.5 overflow-hidden"
                     style={{ background: `linear-gradient(135deg, ${cfg.color}, ${cfg.color}cc)`, boxShadow: `0 4px 16px ${cfg.color}25` }}
                   >
                     <Copy className="h-4 w-4" />
@@ -251,23 +251,23 @@ export default function HashtagsPage() {
 
       {/* ═══════ BRAND HASHTAGS ═══════ */}
       {brandHashtags.length > 0 && (
-        <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8)" }} />
-          <div className="p-4 sm:p-5 lg:p-6">
+          <div className="p-3 sm:p-4 lg:p-6">
             <div className="flex items-center gap-4 mb-5">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
                 <Hash className="h-7 w-7 text-white" />
               </div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-[#2d3142]">{th.brandHashtags}</h2>
+              <h2 className="text-sm sm:text-base font-extrabold text-[#2d3142]">{th.brandHashtags}</h2>
             </div>
 
             <div className="flex flex-wrap gap-3">
               {brandHashtags.map((tag) => (
                 <button key={tag} type="button" onClick={() => { navigator.clipboard.writeText(tag); toast.success("Copied"); }}
-                  className="group relative rounded-2xl px-4 py-2 text-base font-extrabold text-[#23ab7e] transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-0.5"
+                  className="group relative rounded-lg px-4 py-2 text-sm font-extrabold text-[#23ab7e] transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-0.5"
                   style={{ background: "linear-gradient(135deg, #23ab7e08, #8054b808)", border: "2px solid rgba(35,171,126,0.2)" }}
                 >
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#23ab7e]/8 to-[#8054b8]/8" />
+                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#23ab7e]/8 to-[#8054b8]/8" />
                   <span className="relative flex items-center gap-2">
                     {tag}
                     <Copy className="h-5 w-5 text-[#8f96a3] group-hover:text-[#23ab7e] transition-colors" />

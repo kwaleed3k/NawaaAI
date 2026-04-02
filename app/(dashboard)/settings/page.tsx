@@ -185,25 +185,25 @@ export default function SettingsPage() {
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="space-y-10 pb-16">
       {/* ═══════════════════ HERO BANNER ═══════════════════ */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-4 sm:p-5 lg:p-6">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute top-24 right-40 w-1.5 h-1.5 rounded-full bg-white/20 animate-pulse" style={{ animationDelay: "0.5s" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
               <Settings className="h-6 w-6 text-[#a6ffea]" />
             </div>
             <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">
               {locale === "ar" ? "\u0627\u0644\u0625\u0639\u062f\u0627\u062f\u0627\u062a" : "Settings"}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight tracking-tight">
             {t.pageTitle}
           </h1>
-          <p className="mt-4 text-lg sm:text-xl font-medium text-white/70">
+          <p className="mt-4 text-sm sm:text-base font-medium text-white/70">
             {locale === "ar"
               ? "\u062e\u0635\u0635 \u0645\u0644\u0641\u0643 \u0627\u0644\u0634\u062e\u0635\u064a \u0648\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0648\u0643\u0627\u0644\u062a\u0643"
               : "Customize your profile and agency preferences"}
@@ -212,24 +212,24 @@ export default function SettingsPage() {
       </div>
 
       {/* ═══════════════════ PROFILE + AVATAR ═══════════════════ */}
-      <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
+      <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.04), 0 0 0 1.5px #e8eaef" }}>
         <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8)" }} />
-        <div className="p-8 sm:p-10">
+        <div className="p-4 sm:p-5">
           <div className="flex items-center gap-6 mb-8">
             {/* Avatar */}
             <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploadingAvatar} className="group relative flex-shrink-0" aria-label={t.uploadAvatar}>
               <div className="absolute -inset-[3px] rounded-full opacity-80 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)" }} />
-              <div className="relative flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full bg-white overflow-hidden">
+              <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-white overflow-hidden">
                 {isUploadingAvatar ? (
                   <svg className="animate-spin h-8 w-8 text-[#8054b8]" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
                 ) : avatarUrl ? (
                   <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
                 ) : (
-                  <span className="text-3xl font-black text-[#8054b8]">{initials}</span>
+                  <span className="text-xl font-black text-[#8054b8]">{initials}</span>
                 )}
                 {!isUploadingAvatar && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Camera className="h-7 w-7 text-white" />
+                    <Camera className="h-5 w-5 text-white" />
                   </div>
                 )}
               </div>
@@ -237,7 +237,7 @@ export default function SettingsPage() {
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
 
             <div className="flex-1">
-              <h2 className="text-xl sm:text-2xl font-black text-[#2d3142]">{t.profile}</h2>
+              <h2 className="text-lg sm:text-xl font-black text-[#2d3142]">{t.profile}</h2>
               <p className="text-base text-[#8f96a3] mt-1">{user?.email}</p>
               {avatarError && <p className="text-sm font-bold text-red-500 mt-1">{avatarError}</p>}
             </div>
@@ -246,19 +246,19 @@ export default function SettingsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.fullName}</label>
-              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-base text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all" />
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-10 w-full rounded-lg border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-sm text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all" />
             </div>
             <div>
               <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.email}</label>
-              <input type="email" value={user?.email || ""} readOnly className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#f4f6f8] px-5 text-base text-[#8f96a3] cursor-not-allowed" />
+              <input type="email" value={user?.email || ""} readOnly className="h-10 w-full rounded-lg border-2 border-[#e8eaef] bg-[#f4f6f8] px-5 text-sm text-[#8f96a3] cursor-not-allowed" />
             </div>
             <div>
               <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.agencyName}</label>
-              <input type="text" value={agencyName} onChange={(e) => setAgencyName(e.target.value)} placeholder={t.agencyNamePlaceholder} className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-base text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all" />
+              <input type="text" value={agencyName} onChange={(e) => setAgencyName(e.target.value)} placeholder={t.agencyNamePlaceholder} className="h-10 w-full rounded-lg border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-sm text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all" />
             </div>
             <div>
               <label className="block text-sm font-bold text-[#2d3142] mb-2">{t.agencyType}</label>
-              <select value={agencyType} onChange={(e) => setAgencyType(e.target.value)} className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-base text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all">
+              <select value={agencyType} onChange={(e) => setAgencyType(e.target.value)} className="h-10 w-full rounded-lg border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-sm text-[#2d3142] focus:outline-none focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)] transition-all">
                 <option value="">{t.selectType}</option>
                 {AGENCY_TYPES.map((type) => <option key={type} value={type}>{t[type]}</option>)}
               </select>
@@ -270,7 +270,7 @@ export default function SettingsPage() {
             <label className="block text-sm font-bold text-[#2d3142] mb-3">{t.language}</label>
             <div className="flex gap-3 max-w-sm">
               {[{ val: "en" as const, label: "English" }, { val: "ar" as const, label: "العربية" }].map((l) => (
-                <button key={l.val} type="button" onClick={() => setLocale(l.val)} className={`flex-1 h-12 rounded-2xl border-2 text-base font-bold transition-all ${locale === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e]/40"}`}>
+                <button key={l.val} type="button" onClick={() => setLocale(l.val)} className={`flex-1 h-9 rounded-lg border-2 text-base font-bold transition-all ${locale === l.val ? "border-[#23ab7e] bg-[#23ab7e] text-white" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#23ab7e]/40"}`}>
                   {l.label}
                 </button>
               ))}
@@ -278,7 +278,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Save */}
-          <button type="button" onClick={handleSave} disabled={saving} className="mt-8 relative h-14 px-10 rounded-2xl text-base font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 overflow-hidden border-none cursor-pointer" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 4px 16px rgba(35,171,126,0.25)" }}>
+          <button type="button" onClick={handleSave} disabled={saving} className="mt-8 relative h-10 px-6 rounded-lg text-base font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 overflow-hidden border-none cursor-pointer" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 4px 16px rgba(35,171,126,0.25)" }}>
             <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
             <span className="relative flex items-center gap-2">{saving ? <><svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>{t.saving}</> : <><Sparkles className="h-5 w-5" />{t.save}</>}</span>
           </button>
@@ -287,25 +287,25 @@ export default function SettingsPage() {
       </div>
 
       {/* ═══════════════════ CHANGE PASSWORD ═══════════════════ */}
-      <div className="rounded-3xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
+      <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
         <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
-        <div className="p-8">
+        <div className="p-4">
           <div className="flex items-center gap-4 mb-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#6d3fa0] shadow-lg shadow-[#8054b8]/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#6d3fa0] shadow-lg shadow-[#8054b8]/20">
               <Lock className="h-7 w-7 text-white" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-[#1a1d2e]">{t.changePassword}</h2>
+            <h2 className="text-lg sm:text-xl font-black text-[#1a1d2e]">{t.changePassword}</h2>
           </div>
           <form onSubmit={(e) => { e.preventDefault(); handlePasswordUpdate(); }} className="space-y-6 max-w-lg" autoComplete="off">
             {/* New Password */}
             <div>
-              <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.newPassword}</label>
+              <label className="block text-sm font-bold text-[#1a1d2e] mb-2">{t.newPassword}</label>
               <div className="relative">
                 <input
                   type={showNewPassword ? "text" : "password"}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-lg text-[#2d3142] focus:outline-none focus:border-[#8054b8] focus:shadow-[0_0_0_3px_rgba(128,84,184,0.08)] transition-all"
+                  className="h-10 w-full rounded-lg border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-sm text-[#2d3142] focus:outline-none focus:border-[#8054b8] focus:shadow-[0_0_0_3px_rgba(128,84,184,0.08)] transition-all"
                   style={{ paddingInlineEnd: "3.5rem" }}
                 />
                 <button
@@ -343,13 +343,13 @@ export default function SettingsPage() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-lg font-bold text-[#1a1d2e] mb-2">{t.confirmPassword}</label>
+              <label className="block text-sm font-bold text-[#1a1d2e] mb-2">{t.confirmPassword}</label>
               <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="h-14 w-full rounded-2xl border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-lg text-[#2d3142] focus:outline-none focus:border-[#8054b8] focus:shadow-[0_0_0_3px_rgba(128,84,184,0.08)] transition-all"
+                  className="h-10 w-full rounded-lg border-2 border-[#e8eaef] bg-[#fafbfd] px-5 text-sm text-[#2d3142] focus:outline-none focus:border-[#8054b8] focus:shadow-[0_0_0_3px_rgba(128,84,184,0.08)] transition-all"
                   style={{ paddingInlineEnd: "3.5rem" }}
                 />
                 <button
@@ -380,7 +380,7 @@ export default function SettingsPage() {
             <button
               type="submit"
               disabled={!passwordsMatch || !isPasswordLongEnough || isUpdatingPassword}
-              className="group/btn relative h-14 w-full rounded-2xl bg-gradient-to-r from-[#8054b8] to-[#6d3fa0] text-lg font-black text-white shadow-lg shadow-[#8054b8]/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-40 disabled:hover:scale-100 overflow-hidden"
+              className="group/btn relative h-10 w-full rounded-lg bg-gradient-to-r from-[#8054b8] to-[#6d3fa0] text-sm font-black text-white shadow-lg shadow-[#8054b8]/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-40 disabled:hover:scale-100 overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
               <span className="relative z-10 flex items-center justify-center gap-2">
@@ -415,7 +415,7 @@ export default function SettingsPage() {
                 ) : (
                   <AlertTriangle className="h-5 w-5 text-red-500" />
                 )}
-                <p className={`text-lg font-bold ${passwordMessage.type === "success" ? "text-[#1a8a64]" : "text-red-600"}`}>
+                <p className={`text-sm font-bold ${passwordMessage.type === "success" ? "text-[#1a8a64]" : "text-red-600"}`}>
                   {passwordMessage.text}
                 </p>
               </div>
@@ -427,12 +427,12 @@ export default function SettingsPage() {
       {/* ═══════════════════ DANGER ZONE ═══════════════════ */}
       <div className="group relative overflow-hidden rounded-2xl border-2 border-red-200 bg-red-50/50 shadow-lg transition-all duration-300">
         <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-500 to-red-400" />
-        <div className="p-8">
+        <div className="p-4">
           <div className="flex items-center gap-4 mb-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/20">
               <AlertTriangle className="h-7 w-7 text-white" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-red-700">{t.dangerZone}</h2>
+            <h2 className="text-lg sm:text-xl font-black text-red-700">{t.dangerZone}</h2>
           </div>
 
           <p className="text-base text-red-600/80 mb-6">
@@ -445,7 +445,7 @@ export default function SettingsPage() {
             <button
               type="button"
               onClick={() => setShowDeleteDialog(true)}
-              className="group/btn relative h-14 px-8 rounded-2xl bg-gradient-to-r from-red-500 to-red-600 text-lg font-black text-white shadow-lg shadow-red-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden"
+              className="group/btn relative h-10 px-8 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-sm font-black text-white shadow-lg shadow-red-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
               <span className="relative z-10 flex items-center gap-2">
@@ -455,7 +455,7 @@ export default function SettingsPage() {
             </button>
           ) : (
             <div className="space-y-4 max-w-lg rounded-2xl border-2 border-red-200 bg-white p-6">
-              <p className="text-lg font-bold text-red-700">{t.deleteConfirm}</p>
+              <p className="text-sm font-bold text-red-700">{t.deleteConfirm}</p>
               {agencyName && (
                 <div>
                   <label className="block text-sm font-semibold text-red-600 mb-2">
@@ -465,7 +465,7 @@ export default function SettingsPage() {
                     type="text"
                     value={deleteConfirmText}
                     onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    className="h-14 w-full rounded-2xl border-2 border-red-200 bg-[#fafbfd] px-5 text-lg text-[#2d3142] focus:outline-none focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.08)] transition-all"
+                    className="h-10 w-full rounded-lg border-2 border-red-200 bg-[#fafbfd] px-5 text-sm text-[#2d3142] focus:outline-none focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.08)] transition-all"
                     placeholder={agencyName}
                   />
                 </div>
@@ -477,7 +477,7 @@ export default function SettingsPage() {
                     setShowDeleteDialog(false);
                     setDeleteConfirmText("");
                   }}
-                  className="h-12 flex-1 rounded-2xl border-2 border-[#e8eaef] bg-white text-lg font-bold text-[#8f96a3] hover:border-[#8f96a3] transition-all"
+                  className="h-9 flex-1 rounded-lg border-2 border-[#e8eaef] bg-white text-sm font-bold text-[#8f96a3] hover:border-[#8f96a3] transition-all"
                 >
                   {t.cancel}
                 </button>
@@ -485,7 +485,7 @@ export default function SettingsPage() {
                   type="button"
                   onClick={handleDeleteAccount}
                   disabled={agencyName ? deleteConfirmText !== agencyName : false}
-                  className="h-12 flex-1 rounded-2xl bg-gradient-to-r from-red-500 to-red-600 text-lg font-bold text-white disabled:opacity-40 hover:scale-[1.02] transition-all"
+                  className="h-9 flex-1 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-sm font-bold text-white disabled:opacity-40 hover:scale-[1.02] transition-all"
                 >
                   {t.deleteAccount}
                 </button>
@@ -497,7 +497,7 @@ export default function SettingsPage() {
           {deleteToast && (
             <div className="mt-4 flex items-center gap-2 rounded-2xl bg-white border border-red-200 px-6 py-3 shadow-sm">
               <AlertTriangle className="h-5 w-5 text-red-500" />
-              <p className="text-lg font-bold text-red-600">{deleteToast}</p>
+              <p className="text-sm font-bold text-red-600">{deleteToast}</p>
             </div>
           )}
         </div>

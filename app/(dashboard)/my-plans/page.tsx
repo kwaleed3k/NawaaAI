@@ -232,26 +232,26 @@ export default function MyPlansPage() {
     return (
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
         {/* Skeleton banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef] p-8">
+        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef] p-8">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
           <Skeleton className="h-10 w-80 rounded-xl bg-white/50" />
           <Skeleton className="mt-3 h-6 w-60 rounded-lg bg-white/30" />
         </div>
 
         {/* Skeleton cards */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white"
+              className="relative overflow-hidden rounded-xl border-2 border-[#e8eaef] bg-white"
             >
               {/* Accent bar skeleton */}
               <div className="h-2 bg-gradient-to-r from-[#e8eaef] via-[#E8F5EC] to-[#e8eaef]">
                 <div className="h-full w-full bg-gradient-to-r from-transparent via-white/60 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
               </div>
-              <div className="p-6 space-y-4">
+              <div className="p-4 space-y-4">
                 <div className="flex items-center gap-3">
-                  <Skeleton className="h-12 w-12 rounded-xl bg-[#e8eaef]/50" />
+                  <Skeleton className="h-8 w-8 rounded-xl bg-[#e8eaef]/50" />
                   <Skeleton className="h-5 w-32 rounded-lg bg-[#e8eaef]/40" />
                 </div>
                 <Skeleton className="h-6 w-full rounded-lg bg-[#e8eaef]/40" />
@@ -261,8 +261,8 @@ export default function MyPlansPage() {
                   <Skeleton className="h-8 w-20 rounded-xl bg-[#e8eaef]/30" />
                 </div>
                 <div className="flex gap-2">
-                  <Skeleton className="h-12 flex-1 rounded-xl bg-[#e8eaef]/20" />
-                  <Skeleton className="h-12 w-12 rounded-xl bg-[#e8eaef]/20" />
+                  <Skeleton className="h-9 flex-1 rounded-xl bg-[#e8eaef]/20" />
+                  <Skeleton className="h-8 w-8 rounded-xl bg-[#e8eaef]/20" />
                 </div>
               </div>
             </div>
@@ -279,20 +279,20 @@ export default function MyPlansPage() {
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
         {/* ===== PAGE HEADER BANNER ===== */}
         <div className="relative overflow-hidden rounded-[2rem] nl-aurora-bg">
-          <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
-          <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
-          <div className="relative z-10 p-6 sm:p-8">
-            <div className="flex items-center gap-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
+          <div className="absolute -top-20 -right-20 w-32 h-32 rounded-full bg-gradient-to-br from-[#6d3fa0]/30 to-fuchsia-600/10 blur-3xl" />
+          <div className="absolute -bottom-16 -left-16 w-28 h-28 rounded-full bg-gradient-to-tr from-[#6d3fa0]/20 to-cyan-500/10 blur-3xl" />
+          <div className="relative z-10 p-4 sm:p-5">
+            <div className="flex items-center gap-4">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#8054b8] shadow-lg shadow-[#8054b8]/25">
                 <FolderOpen className="h-5 w-5 text-white" />
               </div>
               <div className="flex-1">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+                <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight tracking-tight">
                   <span className="bg-gradient-to-r from-white via-[#c4a8e8] to-blue-200 bg-clip-text text-transparent">
                     {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
                   </span>
                 </h1>
-                <p className="mt-1 text-lg sm:text-xl text-slate-400">
+                <p className="mt-1 text-sm sm:text-sm text-slate-400">
                   {isAr ? "إدارة ومراجعة جميع خططك" : "Manage and review all your plans"}
                 </p>
               </div>
@@ -301,20 +301,20 @@ export default function MyPlansPage() {
         </div>
 
         {/* Empty state card */}
-        <div className="relative overflow-hidden rounded-3xl py-24 px-8" style={{ background: "linear-gradient(170deg, #ffffff 0%, #f7f9fb 40%, #f0fdf8 70%, #f5f0ff 100%)", border: "1.5px solid #e8eaef" }}>
+        <div className="relative overflow-hidden rounded-xl py-24 px-8" style={{ background: "linear-gradient(170deg, #ffffff 0%, #f7f9fb 40%, #f0fdf8 70%, #f5f0ff 100%)", border: "1.5px solid #e8eaef" }}>
           <div className="relative z-10 flex flex-col items-center">
             <div className="relative mb-8">
               <div className="absolute -inset-4 rounded-[28px] opacity-20" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
               <div className="relative flex h-28 w-28 items-center justify-center rounded-[24px] shadow-xl" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", boxShadow: "0 12px 40px rgba(128,84,184,0.3)" }}>
-                <FolderOpen className="h-14 w-14 text-white" />
+                <FolderOpen className="h-8 w-8 text-white" />
               </div>
               <div className="absolute -top-3 -right-3" style={{ animation: "nl-pulse-dot 2s ease infinite" }}>
                 <div className="w-8 h-8 rounded-xl bg-[#23ab7e] flex items-center justify-center shadow-lg"><Sparkles className="h-4 w-4 text-white" /></div>
               </div>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#2d3142] text-center">{isAr ? "لا توجد خطط محفوظة بعد" : "No saved plans yet"}</h2>
-            <p className="mt-3 text-lg text-[#8f96a3] max-w-md text-center leading-relaxed">{isAr ? "انتقل إلى مخطط المحتوى لإنشاء وحفظ أول خطة لك" : "Go to the Content Planner to create and save your first plan"}</p>
-            <a href="/planner" className="relative mt-10 h-16 px-12 text-xl font-black rounded-2xl text-white border-none cursor-pointer transition-all hover:-translate-y-1 overflow-hidden inline-flex items-center gap-3" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}>
+            <h2 className="text-sm sm:text-xl font-black text-[#2d3142] text-center">{isAr ? "لا توجد خطط محفوظة بعد" : "No saved plans yet"}</h2>
+            <p className="mt-3 text-sm text-[#8f96a3] max-w-md text-center leading-relaxed">{isAr ? "انتقل إلى مخطط المحتوى لإنشاء وحفظ أول خطة لك" : "Go to the Content Planner to create and save your first plan"}</p>
+            <a href="/planner" className="relative mt-10 h-16 px-12 text-xl font-black rounded-xl text-white border-none cursor-pointer transition-all hover:-translate-y-1 overflow-hidden inline-flex items-center gap-3" style={{ background: "linear-gradient(135deg, #8054b8, #23ab7e)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}>
               <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.15) 50%, transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
               <Calendar className="h-6 w-6 relative z-10" />
               <span className="relative z-10">{isAr ? "اذهب إلى المخطط" : "Go to Planner"}</span>
@@ -332,18 +332,18 @@ export default function MyPlansPage() {
   return (
     <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-            <FolderOpen className="h-7 w-7 text-white" />
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-4 sm:p-5 lg:p-6">
+        <div className="absolute top-0 right-0 w-28 h-28 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-4">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm border border-white/20">
+            <FolderOpen className="h-5 w-5 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight">
               {isAr ? "خطط المحتوى المحفوظة" : "Saved Content Plans"}
             </h1>
-            <p className="mt-2 text-base text-white/60">
+            <p className="mt-2 text-sm text-white/60">
               {isAr ? "إدارة ومراجعة جميع خططك" : "Manage and review all your plans"}
             </p>
           </div>
@@ -359,7 +359,7 @@ export default function MyPlansPage() {
 
       {/* ── Plan Cards Grid ── */}
       <div
-        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
       >
         {plans.map((plan, i) => {
           const isExpanded = expandedPlanId === plan.id;
@@ -380,7 +380,7 @@ export default function MyPlansPage() {
             <div
               key={plan.id}
               className={cn(
-                "group relative overflow-hidden rounded-3xl transition-all duration-300 hover:-translate-y-1",
+                "group relative overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-1",
                 isExpanded
                   ? "shadow-[0_12px_40px_rgba(35,171,126,0.1)]"
                   : "hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)]"
@@ -400,7 +400,7 @@ export default function MyPlansPage() {
                 {company && (
                   <div className="mb-4 flex items-center gap-3">
                     <div
-                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#e8eaef] shadow-sm"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl overflow-hidden border-2 border-[#e8eaef] shadow-sm"
                       style={{
                         backgroundColor:
                           company.brand_colors?.[0] || "#f4f6f8",
@@ -418,7 +418,7 @@ export default function MyPlansPage() {
                         </span>
                       )}
                     </div>
-                    <span className="text-lg font-bold text-[#1a1d2e]">
+                    <span className="text-sm font-bold text-[#1a1d2e]">
                       {isAr
                         ? company.name_ar || company.name
                         : company.name}
@@ -427,7 +427,7 @@ export default function MyPlansPage() {
                 )}
 
                 {/* Title */}
-                <h3 className="font-['Cairo'] text-2xl font-extrabold text-[#1a1d2e] leading-snug line-clamp-2">
+                <h3 className="font-['Cairo'] text-xl font-extrabold text-[#1a1d2e] leading-snug line-clamp-2">
                   {plan.title ??
                     (isAr
                       ? plan.plan_data?.weekThemeAr ?? plan.plan_data?.weekTheme
@@ -439,7 +439,7 @@ export default function MyPlansPage() {
                 </h3>
 
                 {/* Date range with icon badge */}
-                <div className="mt-3 flex items-center gap-2.5 text-lg text-[#2d3142]">
+                <div className="mt-3 flex items-center gap-2.5 text-sm text-[#2d3142]">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#8054b8]">
                     <Calendar className="h-4 w-4 text-white" />
                   </div>
@@ -449,7 +449,7 @@ export default function MyPlansPage() {
                 </div>
 
                 {/* Day count with icon badge */}
-                <div className="mt-2 flex items-center gap-2.5 text-lg text-[#2d3142]">
+                <div className="mt-2 flex items-center gap-2.5 text-sm text-[#2d3142]">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#A78BFA]">
                     <FolderOpen className="h-4 w-4 text-white" />
                   </div>
@@ -472,7 +472,7 @@ export default function MyPlansPage() {
                             "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white border-[#e8eaef]"
                         )}
                       >
-                        <span className="text-base">
+                        <span className="text-sm">
                           {PLATFORM_EMOJI[p.toLowerCase()] ?? p.charAt(0).toUpperCase()}
                         </span>
                         <span className="capitalize">{p}</span>
@@ -482,7 +482,7 @@ export default function MyPlansPage() {
                 )}
 
                 {/* Created date pill */}
-                <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base text-[#8f96a3]">
+                <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-sm text-[#8f96a3]">
                   <Clock className="h-3.5 w-3.5" />
                   <span>
                     {isAr ? "\u062A\u0645 \u0627\u0644\u062D\u0641\u0638: " : "Saved: "}
@@ -501,7 +501,7 @@ export default function MyPlansPage() {
                   <Button
                     onClick={() => toggleExpand(plan.id)}
                     className={cn(
-                      "flex-1 h-12 rounded-xl text-base font-bold transition-all duration-300",
+                      "flex-1 h-9 rounded-xl text-sm font-bold transition-all duration-300",
                       isExpanded
                         ? "bg-[#23ab7e] text-white hover:bg-[#23ab7e]/90"
                         : "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white hover:shadow-sm shadow-md hover:scale-[1.02]"
@@ -526,7 +526,7 @@ export default function MyPlansPage() {
                       <Button
                         onClick={() => handleDelete(plan.id)}
                         disabled={deletingId === plan.id}
-                        className="h-12 px-4 rounded-xl bg-red-500 text-white hover:bg-red-600 text-base font-bold shadow-md hover:shadow-sm"
+                        className="h-9 px-4 rounded-xl bg-red-500 text-white hover:bg-red-600 text-sm font-bold shadow-md hover:shadow-sm"
                       >
                         {deletingId === plan.id ? (
                           <Loader2 className="h-5 w-5 animate-spin" />
@@ -539,7 +539,7 @@ export default function MyPlansPage() {
                       <Button
                         onClick={() => setConfirmDeleteId(null)}
                         variant="outline"
-                        className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-[#8f96a3] text-base hover:bg-[#f4f6f8]"
+                        className="h-9 px-4 rounded-xl border-2 border-[#e8eaef] text-[#8f96a3] text-sm hover:bg-[#f4f6f8]"
                       >
                         <X className="h-5 w-5" />
                       </Button>
@@ -548,7 +548,7 @@ export default function MyPlansPage() {
                     <Button
                       onClick={() => setConfirmDeleteId(plan.id)}
                       variant="outline"
-                      className="h-12 px-4 rounded-xl border-2 border-[#e8eaef] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-sm transition-all duration-300"
+                      className="h-9 px-4 rounded-xl border-2 border-[#e8eaef] text-red-400 hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-sm transition-all duration-300"
                     >
                       <Trash2 className="h-5 w-5" />
                     </Button>
@@ -563,17 +563,17 @@ export default function MyPlansPage() {
       {/* ── Expanded Plan Detail View ── */}
       {expandedPlan && (
         <div className="overflow-hidden">
-            <div className="rounded-2xl border-2 border-[#23ab7e]/20 bg-[#fafbfd] overflow-hidden">
+            <div className="rounded-xl border-2 border-[#23ab7e]/20 bg-[#fafbfd] overflow-hidden">
               {/* ── Gradient header bar ── */}
               <div className="relative overflow-hidden nl-aurora-bg px-6 py-6 lg:px-8 lg:py-8">
                 <div className="relative flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 border border-white/30">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/20 border border-white/30">
                         <Calendar className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h2 className="font-['Cairo'] text-xl sm:text-2xl font-extrabold text-white drop-shadow-sm">
+                        <h2 className="font-['Cairo'] text-sm sm:text-xl font-extrabold text-white drop-shadow-sm">
                           {isAr
                             ? expandedPlan.plan_data?.weekThemeAr ??
                               expandedPlan.plan_data?.weekTheme
@@ -581,7 +581,7 @@ export default function MyPlansPage() {
                               expandedPlan.plan_data?.weekThemeAr ??
                               (isAr ? "\u0645\u0648\u0636\u0648\u0639 \u0627\u0644\u0623\u0633\u0628\u0648\u0639" : "Week Theme")}
                         </h2>
-                        <p className="text-lg text-white/80">
+                        <p className="text-sm text-white/80">
                           {formatWeekRange(expandedPlan.week_start)}
                         </p>
                       </div>
@@ -590,10 +590,10 @@ export default function MyPlansPage() {
                     {/* Weekly strategy */}
                     {expandedPlan.plan_data?.weeklyStrategy && (
                       <div className="mt-5 max-w-2xl rounded-xl bg-white/15 border border-white/25 p-4">
-                        <p className="text-lg font-bold uppercase tracking-wider text-white/90 mb-1.5">
+                        <p className="text-sm font-bold uppercase tracking-wider text-white/90 mb-1.5">
                           {isAr ? "\u0627\u0633\u062A\u0631\u0627\u062A\u064A\u062C\u064A\u0629 \u0627\u0644\u0623\u0633\u0628\u0648\u0639" : "Weekly Strategy"}
                         </p>
-                        <p className="text-lg text-white/90 leading-relaxed">
+                        <p className="text-sm text-white/90 leading-relaxed">
                           {expandedPlan.plan_data.weeklyStrategy}
                         </p>
                       </div>
@@ -602,7 +602,7 @@ export default function MyPlansPage() {
 
                   <Button
                     onClick={() => setExpandedPlanId(null)}
-                    className="h-12 px-5 rounded-xl bg-white/20 border border-white/30 text-white hover:bg-white/30 transition-all text-base font-bold"
+                    className="h-9 px-5 rounded-xl bg-white/20 border border-white/30 text-white hover:bg-white/30 transition-all text-sm font-bold"
                   >
                     <ChevronUp className="mr-2 h-5 w-5" />
                     {isAr ? "\u0625\u063A\u0644\u0627\u0642" : "Close"}
@@ -611,9 +611,9 @@ export default function MyPlansPage() {
               </div>
 
               {/* ── Day cards grid ── */}
-              <div className="p-6 lg:p-8">
+              <div className="p-4 lg:p-8">
                 <div
-                  className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 >
                   {expandedPlan.plan_data?.days?.map((day, i) => {
                     const platformKey = day.platform?.toLowerCase() ?? "";
@@ -625,7 +625,7 @@ export default function MyPlansPage() {
                     return (
                       <div
                         key={day.dayIndex}
-                        className="group/day overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white transition-all duration-300 hover:border-[#23ab7e]/30 hover:shadow-md"
+                        className="group/day overflow-hidden rounded-xl border-2 border-[#e8eaef] bg-white transition-all duration-300 hover:border-[#23ab7e]/30 hover:shadow-md"
                       >
                         {/* Platform-colored top bar */}
                         <div
@@ -643,7 +643,7 @@ export default function MyPlansPage() {
                                 ? day.dayAr || day.dayEn
                                 : day.dayEn || day.dayAr}
                             </span>
-                            <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base font-medium text-[#8f96a3]">
+                            <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-sm font-medium text-[#8f96a3]">
                               {day.date}
                             </span>
                           </div>
@@ -657,10 +657,10 @@ export default function MyPlansPage() {
                                   "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white border-[#e8eaef]"
                               )}
                             >
-                              <span className="text-base">{emoji}</span>
+                              <span className="text-sm">{emoji}</span>
                               <span className="capitalize">{day.platform}</span>
                             </span>
-                            <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1.5 text-base font-medium text-[#505868]">
+                            <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1.5 text-sm font-medium text-[#505868]">
                               {day.contentType}
                             </span>
                           </div>
@@ -673,7 +673,7 @@ export default function MyPlansPage() {
                           </p>
 
                           {/* Caption */}
-                          <p className="mt-2.5 text-lg text-[#505868] leading-relaxed line-clamp-4">
+                          <p className="mt-2.5 text-sm text-[#505868] leading-relaxed line-clamp-4">
                             {isAr
                               ? day.captionAr || day.caption
                               : day.caption || day.captionAr}
@@ -686,7 +686,7 @@ export default function MyPlansPage() {
                                 <span
                                   key={tag}
                                   className={cn(
-                                    "rounded-xl px-3 py-1 text-base font-semibold",
+                                    "rounded-xl px-3 py-1 text-sm font-semibold",
                                     HASHTAG_PILL_COLORS[
                                       tagIdx % HASHTAG_PILL_COLORS.length
                                     ]
@@ -696,7 +696,7 @@ export default function MyPlansPage() {
                                 </span>
                               ))}
                               {day.hashtags.length > 5 && (
-                                <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-base font-medium text-[#8f96a3]">
+                                <span className="rounded-xl bg-[#f4f6f8] border border-[#e8eaef] px-3 py-1 text-sm font-medium text-[#8f96a3]">
                                   +{day.hashtags.length - 5}
                                 </span>
                               )}
@@ -705,7 +705,7 @@ export default function MyPlansPage() {
 
                           {/* Posting time — gold-tinted box */}
                           <div className="mt-4 flex items-center gap-2 rounded-xl bg-[#8054b8]/10 border border-[#8054b8]/25 px-3 py-2">
-                            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#A78BFA]">
+                            <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-gradient-to-br from-[#8054b8] to-[#A78BFA]">
                               <Clock className="h-3.5 w-3.5 text-white" />
                             </div>
                             <span className="text-xl font-bold text-[#8054b8]">
@@ -713,7 +713,7 @@ export default function MyPlansPage() {
                             </span>
                           </div>
                           {day.postingTimeReason && (
-                            <p className="mt-1.5 text-lg text-[#8f96a3] italic leading-snug px-1">
+                            <p className="mt-1.5 text-sm text-[#8f96a3] italic leading-snug px-1">
                               {day.postingTimeReason}
                             </p>
                           )}
@@ -726,11 +726,11 @@ export default function MyPlansPage() {
                                 <div className="h-full w-full rounded-[10px] bg-white" />
                               </div>
                               <div className="relative p-3.5">
-                                <p className="text-lg font-bold text-[#23ab7e] mb-1 flex items-center gap-1.5">
+                                <p className="text-sm font-bold text-[#23ab7e] mb-1 flex items-center gap-1.5">
                                   <Sparkles className="h-4 w-4 text-[#8054b8]" />
                                   {isAr ? "\u0646\u0635\u0627\u0626\u062D" : "Tips"}
                                 </p>
-                                <p className="text-lg text-[#505868] leading-relaxed">
+                                <p className="text-sm text-[#505868] leading-relaxed">
                                   {day.contentTips}
                                 </p>
                               </div>

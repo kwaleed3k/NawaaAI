@@ -39,10 +39,8 @@ export default function VisionStudioPage() {
   const tv = messages[locale].visionStudio;
 
   const STYLES = [
-    { id: "lifestyle", label: tv.lifestyleLabel, emoji: "\uD83D\uDCF8", desc: tv.lifestyleDesc, best: tv.lifestyleBest },
-    { id: "graphic", label: tv.graphicLabel, emoji: "\uD83D\uDED2", desc: tv.graphicDesc, best: tv.graphicBest },
-    { id: "luxury", label: tv.luxuryLabel, emoji: "\uD83D\uDC8E", desc: tv.luxuryDesc, best: tv.luxuryBest },
-    { id: "heritage", label: tv.heritageLabel, emoji: "\uD83D\uDD4C", desc: tv.heritageDesc, best: tv.heritageBest },
+    { id: "lifestyle", label: tv.realisticLabel || "Realistic Photography", emoji: "\uD83D\uDCF8", desc: tv.realisticDesc || "Professional photorealistic images — lifestyle, product, luxury, and heritage styles. Looks like a real photoshoot.", best: tv.realisticBest || "Best for: products, food, fashion, real estate, lifestyle content" },
+    { id: "social_media", label: tv.socialMediaLabel, emoji: "\uD83D\uDCDD", desc: tv.socialMediaDesc, best: tv.socialMediaBest },
   ];
 
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -176,7 +174,7 @@ export default function VisionStudioPage() {
         referenceBase64.push(dataUri);
       }
 
-      // Send only essential company fields to avoid bloated requests
+      // Send company fields + brand DNA for unique image generation
       const companySlim = {
         name: selectedCompany.name,
         name_ar: selectedCompany.name_ar,
@@ -184,6 +182,10 @@ export default function VisionStudioPage() {
         tone: selectedCompany.tone,
         brand_colors: selectedCompany.brand_colors,
         logo_url: selectedCompany.logo_url,
+        description: selectedCompany.description,
+        target_audience: selectedCompany.target_audience,
+        unique_value: selectedCompany.unique_value,
+        brand_analysis: selectedCompany.brand_analysis,
       };
       const res = await fetch("/api/generate-images", {
         method: "POST",
@@ -237,14 +239,14 @@ export default function VisionStudioPage() {
   if (loading) {
     return (
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-8">
-        <Skeleton className="h-40 w-full rounded-2xl" style={{ backgroundColor: "#e8eaef" }} />
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+        <Skeleton className="h-40 w-full rounded-xl" style={{ backgroundColor: "#e8eaef" }} />
+        <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-44 rounded-2xl" style={{ backgroundColor: "#f4f6f8", border: "2px solid #e8eaef" }} />
+            <Skeleton key={i} className="h-44 rounded-xl" style={{ backgroundColor: "#f4f6f8", border: "2px solid #e8eaef" }} />
           ))}
         </div>
-        <Skeleton className="h-20 w-full max-w-2xl mx-auto rounded-2xl" style={{ backgroundColor: "#e8eaef" }} />
-        <Skeleton className="h-[200px] sm:h-[300px] lg:h-[400px] w-full max-w-5xl mx-auto rounded-2xl" style={{ backgroundColor: "#f4f6f8", border: "2px solid #e8eaef" }} />
+        <Skeleton className="h-20 w-full max-w-2xl mx-auto rounded-xl" style={{ backgroundColor: "#e8eaef" }} />
+        <Skeleton className="h-[200px] sm:h-[300px] lg:h-[400px] w-full max-w-5xl mx-auto rounded-xl" style={{ backgroundColor: "#f4f6f8", border: "2px solid #e8eaef" }} />
       </div>
     );
   }
@@ -254,40 +256,40 @@ export default function VisionStudioPage() {
       dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-10"
     >
       {/* ===== PAGE HEADER BANNER ===== */}
-      <div className="relative overflow-hidden rounded-3xl nl-aurora-bg p-8 sm:p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
+      <div className="relative overflow-hidden rounded-xl nl-aurora-bg p-4 sm:p-5 lg:p-6">
+        <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-[#8054b8]/30 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-[#2dd4a0]/20 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
         <div className="absolute top-10 right-20 w-2 h-2 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute bottom-8 left-32 w-2.5 h-2.5 rounded-full bg-white/25 animate-pulse" style={{ animationDelay: "1s" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
               <ImagePlus className="h-6 w-6 text-[#a6ffea]" />
             </div>
-            <span className="text-lg font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "استوديو الرؤية" : "Vision Studio"}</span>
+            <span className="text-sm font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "استوديو الرؤية" : "Vision Studio"}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight tracking-tight">
             {tv.pageTitle}
           </h1>
-          <p className="mt-4 text-lg sm:text-xl font-medium text-white/70">{tv.pageSub}</p>
+          <p className="mt-4 text-sm sm:text-sm font-medium text-white/70">{tv.pageSub}</p>
         </div>
       </div>
 
       {/* ===== ROW 1: Company + Content Day ===== */}
-      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+      <div className="grid gap-5 grid-cols-1 lg:grid-cols-2">
         {/* ── Company Selector ── */}
-        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.06), 0 0 0 1.5px #e8eaef" }}>
+        <Card className="rounded-xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(35,171,126,0.06), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #23ab7e, #8054b8)" }} />
-          <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#2d3142]">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
-                <Camera className="h-7 w-7 text-white" />
+          <CardHeader className="p-3 sm:p-8 pb-4">
+            <CardTitle className="flex items-center gap-4 text-xl font-extrabold text-[#2d3142]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl shadow-lg" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", boxShadow: "0 6px 20px rgba(35,171,126,0.25)" }}>
+                <Camera className="h-5 w-5 text-white" />
               </div>
               {tv.company}
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 sm:p-8 pt-2 space-y-5">
+          <CardContent className="p-3 sm:p-8 pt-2 space-y-5">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none z-10">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8]">
@@ -297,7 +299,7 @@ export default function VisionStudioPage() {
               <select
                 value={selectedCompany?.id ?? ""}
                 onChange={(e) => { const c = companies.find((x) => x.id === e.target.value); if (c) setSelectedCompany(c); }}
-                className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white pl-14 pr-4 text-lg text-[#2d3142] font-medium transition-all focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 hover:border-[#23ab7e]/40"
+                className="w-full h-10 rounded-xl border-2 border-[#e8eaef] bg-white pl-14 pr-4 text-sm text-[#2d3142] font-medium transition-all focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 hover:border-[#23ab7e]/40"
               >
                 {companies.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
@@ -305,24 +307,24 @@ export default function VisionStudioPage() {
 
             {/* ── Company Info Preview ── */}
             {selectedCompany && (
-              <div className="rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] p-5 space-y-4">
+              <div className="rounded-xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] p-3 space-y-4">
                 {/* Logo + Name row */}
                 <div className="flex items-center gap-4">
                   {selectedCompany.logo_url ? (
                     <img
                       src={selectedCompany.logo_url}
                       alt={selectedCompany.name}
-                      className="h-16 w-16 rounded-2xl object-contain border-2 border-[#e8eaef] bg-white p-1 shadow-sm"
+                      className="h-8 w-8 rounded-xl object-contain border-2 border-[#e8eaef] bg-white p-1 shadow-sm"
                     />
                   ) : (
-                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-[#e8eaef] bg-white shadow-sm">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl border-2 border-[#e8eaef] bg-white shadow-sm">
                       <Building2 className="h-8 w-8 text-[#8f96a3]/50" />
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
                     <p className="text-xl font-extrabold text-[#1a1d2e] truncate">{selectedCompany.name}</p>
                     {selectedCompany.name_ar && (
-                      <p className="text-lg font-bold text-[#8f96a3] truncate" dir="rtl">{selectedCompany.name_ar}</p>
+                      <p className="text-sm font-bold text-[#8f96a3] truncate" dir="rtl">{selectedCompany.name_ar}</p>
                     )}
                   </div>
                 </div>
@@ -349,7 +351,7 @@ export default function VisionStudioPage() {
                     {selectedCompany.platforms.map((p, i) => {
                       const emoji = PLATFORM_EMOJI[p.toLowerCase()] || "\uD83C\uDF10";
                       return (
-                        <span key={i} className="inline-flex items-center gap-1 rounded-lg bg-white border border-[#e8eaef] px-2.5 py-1 text-lg font-semibold text-[#8f96a3] shadow-sm">
+                        <span key={i} className="inline-flex items-center gap-1 rounded-lg bg-white border border-[#e8eaef] px-2.5 py-1 text-sm font-semibold text-[#8f96a3] shadow-sm">
                           <span className="text-xl">{emoji}</span> {p}
                         </span>
                       );
@@ -360,7 +362,7 @@ export default function VisionStudioPage() {
                 {/* Brand colors */}
                 {selectedCompany.brand_colors?.length ? (
                   <div className="flex items-center gap-3">
-                    <span className="text-lg font-bold text-[#8f96a3]">{locale === "ar" ? "الألوان" : "Colors"}</span>
+                    <span className="text-sm font-bold text-[#8f96a3]">{locale === "ar" ? "الألوان" : "Colors"}</span>
                     <div className="flex gap-2">
                       {selectedCompany.brand_colors.slice(0, 5).map((hex, i) => (
                         <div
@@ -379,21 +381,21 @@ export default function VisionStudioPage() {
         </Card>
 
         {/* ── Content Day Selector ── */}
-        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <Card className="rounded-xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #8054b8, #e67af3)" }} />
-          <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
-                <ImageIcon className="h-7 w-7 text-white" />
+          <CardHeader className="p-3 sm:p-8 pb-4">
+            <CardTitle className="flex items-center gap-4 text-xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
+                <ImageIcon className="h-5 w-5 text-white" />
               </div>
               {tv.contentDay}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-5 p-5 sm:p-8 pt-2">
+          <CardContent className="space-y-5 p-3 sm:p-8 pt-2">
             <select
               value={selectedPlan?.id ?? ""}
               onChange={(e) => { const p = plans.find((x) => x.id === e.target.value); setSelectedPlan(p ?? null); setSelectedDayIndex(0); }}
-              className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-5 text-lg text-[#2d3142] font-medium transition-all focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 hover:border-[#23ab7e]/40"
+              className="w-full h-10 rounded-xl border-2 border-[#e8eaef] bg-white px-5 text-sm text-[#2d3142] font-medium transition-all focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 hover:border-[#23ab7e]/40"
             >
               {plans.filter((p) => p.company_id === selectedCompany?.id && p.plan_data?.days?.length).map((p) => (<option key={p.id} value={p.id}>{p.title || p.week_start}</option>))}
             </select>
@@ -409,7 +411,7 @@ export default function VisionStudioPage() {
                       type="button"
                       onClick={() => setSelectedDayIndex(i)}
                       className={cn(
-                        "relative flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all duration-300 cursor-pointer",
+                        "relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all duration-300 cursor-pointer",
                         selected
                           ? "bg-gradient-to-br from-[#23ab7e] to-[#8054b8] border-[#23ab7e] text-white shadow-lg shadow-[#23ab7e]/20"
                           : "bg-[#fafbfd] border-[#e8eaef] text-[#8f96a3] hover:border-[#23ab7e]/40 hover:bg-[#f4f6f8]"
@@ -423,7 +425,7 @@ export default function VisionStudioPage() {
                         </div>
                       )}
                       <span className="text-2xl leading-none">{platformEmoji}</span>
-                      <span className={cn("text-lg font-bold leading-tight text-center", selected ? "text-white" : "text-[#1a1d2e]")}>
+                      <span className={cn("text-sm font-bold leading-tight text-center", selected ? "text-white" : "text-[#1a1d2e]")}>
                         {locale === "ar" ? (d.dayAr || d.dayEn) : (d.dayEn || d.dayAr)}
                       </span>
                     </button>
@@ -433,43 +435,43 @@ export default function VisionStudioPage() {
             ) : null}
 
             {currentDay ? (
-              <div className="rounded-2xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] p-5">
-                <p className="text-lg font-bold text-[#1a1d2e]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
-                <p className="mt-2 text-lg text-[#8f96a3]">{currentDay.imagePromptHint}</p>
+              <div className="rounded-xl border-2 border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] p-3">
+                <p className="text-sm font-bold text-[#1a1d2e]">{locale === "ar" ? (currentDay.topicAr || currentDay.topic) : (currentDay.topic || currentDay.topicAr)}</p>
+                <p className="mt-2 text-sm text-[#8f96a3]">{currentDay.imagePromptHint}</p>
               </div>
             ) : (
-              <p className="text-lg text-[#8f96a3]">{tv.noPlan}</p>
+              <p className="text-sm text-[#8f96a3]">{tv.noPlan}</p>
             )}
           </CardContent>
         </Card>
       </div>
 
       {/* ===== ROW 2: Reference Photos + Style ===== */}
-      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+      <div className="grid gap-5 grid-cols-1 lg:grid-cols-2">
         {/* ── Reference Images ── */}
-        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <Card className="rounded-xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
-          <CardHeader className="p-5 sm:p-8 pb-4">
+          <CardHeader className="p-3 sm:p-8 pb-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
-                <Upload className="h-7 w-7 text-white" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
+                <Upload className="h-5 w-5 text-white" />
               </div>
               <div>
-                <CardTitle className="text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+                <CardTitle className="text-xl font-extrabold text-[#1a1d2e] font-['Cairo']">
                   {locale === "ar" ? "\u0635\u0648\u0631 \u0645\u0631\u062C\u0639\u064A\u0629" : "Reference Photos"}
                 </CardTitle>
-                <p className="text-lg text-[#8f96a3] mt-1">
+                <p className="text-sm text-[#8f96a3] mt-1">
                   {locale === "ar" ? "\u0623\u0636\u0641 \u0635\u0648\u0631 \u0623\u0637\u0628\u0627\u0642\u0643\u060C \u0645\u0643\u0627\u0646\u0643\u060C \u0623\u0648 \u0645\u0646\u062A\u062C\u0627\u062A\u0643 \u0644\u064A\u0633\u062A\u062E\u062F\u0645\u0647\u0627 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064A" : "Add photos of your dishes, place, or products for AI to reference"}
                 </p>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-5 sm:p-8 pt-2">
+          <CardContent className="p-3 sm:p-8 pt-2">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {referenceImages.map((img, i) => (
                 <div
                   key={i}
-                  className="relative group aspect-square rounded-2xl overflow-hidden border-2 border-[#e8eaef] shadow-md"
+                  className="relative group aspect-square rounded-xl overflow-hidden border-2 border-[#e8eaef] shadow-md"
                 >
                   <img src={img.preview} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
@@ -484,7 +486,7 @@ export default function VisionStudioPage() {
               ))}
               {referenceImages.length < 6 && (
                 <label
-                  className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-[#fafbfd] hover:bg-[#f4f6f8] transition-all duration-300"
+                  className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-[#fafbfd] hover:bg-[#f4f6f8] transition-all duration-300"
                   style={{ borderColor: "#23ab7e", borderImage: "linear-gradient(135deg, #23ab7e, #8054b8) 1" }}
                 >
                   <input
@@ -494,15 +496,15 @@ export default function VisionStudioPage() {
                     className="hidden"
                     onChange={handleReferenceUpload}
                   />
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-md mb-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-md mb-2">
                     <Upload className="h-6 w-6 text-white" />
                   </div>
-                  <span className="text-lg font-bold text-[#1a1d2e]">{locale === "ar" ? "\u0625\u0636\u0627\u0641\u0629" : "Add"}</span>
+                  <span className="text-sm font-bold text-[#1a1d2e]">{locale === "ar" ? "\u0625\u0636\u0627\u0641\u0629" : "Add"}</span>
                 </label>
               )}
             </div>
             {referenceImages.length > 0 && (
-              <p className="mt-3 text-lg font-semibold text-[#8f96a3]">
+              <p className="mt-3 text-sm font-semibold text-[#8f96a3]">
                 {referenceImages.length}/6 {locale === "ar" ? "\u0635\u0648\u0631" : "photos"}
               </p>
             )}
@@ -510,17 +512,17 @@ export default function VisionStudioPage() {
         </Card>
 
         {/* ── Style Selector ── */}
-        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <Card className="rounded-xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#8054b8] via-[#23ab7e] to-[#8054b8]" />
-          <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center gap-4 text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
-                <Paintbrush className="h-7 w-7 text-white" />
+          <CardHeader className="p-3 sm:p-8 pb-4">
+            <CardTitle className="flex items-center gap-4 text-xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#A78BFA] shadow-lg">
+                <Paintbrush className="h-5 w-5 text-white" />
               </div>
               {tv.style}
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 sm:p-8 pt-2">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3 sm:p-8 pt-2">
             {STYLES.map((s) => {
               const selected = style === s.id;
               return (
@@ -529,14 +531,14 @@ export default function VisionStudioPage() {
                   type="button"
                   onClick={() => setStyle(s.id)}
                   className={cn(
-                    "relative rounded-2xl border-2 p-5 text-left transition-all duration-300 overflow-hidden",
+                    "relative rounded-xl border-2 p-3 text-left transition-all duration-300 overflow-hidden",
                     selected
                       ? "border-[#23ab7e] bg-gradient-to-br from-[#23ab7e]/10 via-[#8054b8]/5 to-[#8054b8]/10 shadow-lg shadow-[#23ab7e]/10"
                       : "border-[#e8eaef] bg-white hover:border-[#8054b8]/40"
                   )}
                 >
                   {selected && (
-                    <div className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md z-10">
+                    <div className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-md z-10">
                       <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#23ab7e] to-[#8054b8] flex items-center justify-center">
                         <Check className="h-3.5 w-3.5 text-white" />
                       </div>
@@ -547,9 +549,9 @@ export default function VisionStudioPage() {
                   )}
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">{s.emoji}</span>
-                    <p className="text-lg font-extrabold text-[#1a1d2e]">{s.label}</p>
+                    <p className="text-sm font-extrabold text-[#1a1d2e]">{s.label}</p>
                   </div>
-                  <p className="mt-2 text-lg leading-relaxed text-[#8f96a3]">{s.desc}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#8f96a3]">{s.desc}</p>
                   <p className={cn(
                     "mt-2 text-sm font-bold rounded-lg px-2.5 py-1 inline-block",
                     selected
@@ -566,7 +568,7 @@ export default function VisionStudioPage() {
       </div>
 
       {/* ===== ROW 3: Options + Instructions ===== */}
-      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+      <div className="grid gap-5 grid-cols-1 lg:grid-cols-2">
         {/* ── Left: Language, Logo, Text toggles ── */}
         <div className="space-y-6">
           {/* Language Toggle */}
@@ -583,7 +585,7 @@ export default function VisionStudioPage() {
                   type="button"
                   variant={outputLanguage === "en" ? "default" : "outline"}
                   className={cn(
-                    "w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300",
+                    "w-full h-10 rounded-xl text-sm font-bold transition-all duration-300",
                     outputLanguage === "en"
                       ? "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#23ab7e]/20 border-2 border-[#23ab7e]"
                       : "border-2 border-[#e8eaef] text-[#8f96a3] bg-white hover:border-[#23ab7e]/40"
@@ -598,7 +600,7 @@ export default function VisionStudioPage() {
                   type="button"
                   variant={outputLanguage === "ar" ? "default" : "outline"}
                   className={cn(
-                    "w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300",
+                    "w-full h-10 rounded-xl text-sm font-bold transition-all duration-300",
                     outputLanguage === "ar"
                       ? "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white shadow-lg shadow-[#23ab7e]/20 border-2 border-[#23ab7e]"
                       : "border-2 border-[#e8eaef] text-[#8f96a3] bg-white hover:border-[#23ab7e]/40"
@@ -617,7 +619,7 @@ export default function VisionStudioPage() {
               type="button"
               onClick={() => setIncludeLogo(!includeLogo)}
               className={cn(
-                "w-full flex items-center gap-5 rounded-2xl border-2 p-5 text-left transition-all duration-300 overflow-hidden relative",
+                "w-full flex items-center gap-5 rounded-xl border-2 p-3 text-left transition-all duration-300 overflow-hidden relative",
                 includeLogo
                   ? "border-[#23ab7e] bg-gradient-to-br from-[#23ab7e]/5 to-[#8054b8]/5 shadow-lg shadow-[#23ab7e]/10"
                   : "border-[#e8eaef] bg-white hover:border-[#8054b8]/40"
@@ -627,14 +629,14 @@ export default function VisionStudioPage() {
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] origin-left" />
               )}
               <div className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 shadow-md",
+                "flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-300 shadow-md",
                 includeLogo ? "bg-gradient-to-br from-[#23ab7e] to-[#8054b8]" : "bg-[#f4f6f8]"
               )}>
                 <ImagePlus className={cn("h-6 w-6", includeLogo ? "text-white" : "text-[#8f96a3]")} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className={cn("text-lg font-bold", includeLogo ? "text-[#1a1d2e]" : "text-[#8f96a3]")}>{tv.includeLogo}</p>
-                <p className="text-lg text-[#8f96a3]">{tv.logoNote}</p>
+                <p className={cn("text-sm font-bold", includeLogo ? "text-[#1a1d2e]" : "text-[#8f96a3]")}>{tv.includeLogo}</p>
+                <p className="text-sm text-[#8f96a3]">{tv.logoNote}</p>
               </div>
               <div className={cn(
                 "h-7 w-12 rounded-full transition-all duration-300 relative flex-shrink-0",
@@ -653,7 +655,7 @@ export default function VisionStudioPage() {
               type="button"
               onClick={() => setAddTextToImage(!addTextToImage)}
               className={cn(
-                "w-full flex items-center gap-5 rounded-2xl border-2 p-5 text-left transition-all duration-300 overflow-hidden relative",
+                "w-full flex items-center gap-5 rounded-xl border-2 p-3 text-left transition-all duration-300 overflow-hidden relative",
                 addTextToImage
                   ? "border-[#23ab7e] bg-gradient-to-br from-[#23ab7e]/5 to-[#8054b8]/5 shadow-lg shadow-[#23ab7e]/10"
                   : "border-[#e8eaef] bg-white hover:border-[#8054b8]/40"
@@ -663,14 +665,14 @@ export default function VisionStudioPage() {
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] origin-left" />
               )}
               <div className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 shadow-md",
+                "flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-300 shadow-md",
                 addTextToImage ? "bg-gradient-to-br from-[#23ab7e] to-[#8054b8]" : "bg-[#f4f6f8]"
               )}>
                 <Type className={cn("h-6 w-6", addTextToImage ? "text-white" : "text-[#8f96a3]")} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className={cn("text-lg font-bold", addTextToImage ? "text-[#1a1d2e]" : "text-[#8f96a3]")}>{tv.addText}</p>
-                <p className="text-lg text-[#8f96a3]">{tv.addTextDesc}</p>
+                <p className={cn("text-sm font-bold", addTextToImage ? "text-[#1a1d2e]" : "text-[#8f96a3]")}>{tv.addText}</p>
+                <p className="text-sm text-[#8f96a3]">{tv.addTextDesc}</p>
               </div>
               <div className={cn(
                 "h-7 w-12 rounded-full transition-all duration-300 relative flex-shrink-0",
@@ -688,9 +690,9 @@ export default function VisionStudioPage() {
                   value={imageText}
                   onChange={(e) => setImageText(e.target.value)}
                   placeholder={tv.imageTextPlaceholder}
-                  className="w-full h-14 rounded-2xl border-2 border-[#e8eaef] bg-white px-5 text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40"
+                  className="w-full h-10 rounded-xl border-2 border-[#e8eaef] bg-white px-5 text-sm text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40"
                 />
-                <p className="mt-2 text-lg text-[#8f96a3]">
+                <p className="mt-2 text-sm text-[#8f96a3]">
                   {outputLanguage === "ar" ? "سيظهر النص بالعربية" : "Text will appear in English"}
                 </p>
               </div>
@@ -710,16 +712,16 @@ export default function VisionStudioPage() {
             value={additionalInstructions}
             onChange={(e) => setAdditionalInstructions(e.target.value)}
             placeholder={tv.extraPlaceholder}
-            className="min-h-[120px] sm:min-h-[200px] lg:min-h-[280px] rounded-2xl border-2 border-[#e8eaef] bg-white text-lg text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40 p-5"
+            className="min-h-[120px] sm:min-h-[200px] lg:min-h-[280px] rounded-xl border-2 border-[#e8eaef] bg-white text-sm text-[#2d3142] placeholder:text-[#8f96a3]/50 focus:border-[#23ab7e] focus:ring-2 focus:ring-[#23ab7e]/20 transition-all hover:border-[#23ab7e]/40 p-3"
           />
         </div>
       </div>
 
       {/* ===== NUMBER OF IMAGES + SIZE ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Number */}
-        <div className="rounded-3xl p-7" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(230,122,243,0.04), 0 0 0 1.5px #e8eaef" }}>
-          <label className="mb-4 flex items-center gap-3 text-lg font-extrabold text-[#2d3142]">
+        <div className="rounded-xl p-7" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(230,122,243,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <label className="mb-4 flex items-center gap-3 text-sm font-extrabold text-[#2d3142]">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#e67af3] to-[#f5c6fa] shadow-md">
               <ImageIcon className="h-5 w-5 text-white" />
             </div>
@@ -727,7 +729,7 @@ export default function VisionStudioPage() {
           </label>
           <div className="flex gap-3">
             {[1, 2, 3, 4, 5].map((n) => (
-              <button key={n} type="button" onClick={() => setNumImages(n)} className={cn("flex-1 h-14 rounded-2xl border-2 text-xl font-black flex items-center justify-center transition-all duration-200 cursor-pointer", numImages === n ? "border-[#e67af3] bg-gradient-to-br from-[#e67af3]/10 to-[#8054b8]/10 text-[#e67af3] shadow-[0_4px_16px_rgba(230,122,243,0.2)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8] hover:text-[#8054b8]")}>
+              <button key={n} type="button" onClick={() => setNumImages(n)} className={cn("flex-1 h-10 rounded-xl border-2 text-xl font-black flex items-center justify-center transition-all duration-200 cursor-pointer", numImages === n ? "border-[#e67af3] bg-gradient-to-br from-[#e67af3]/10 to-[#8054b8]/10 text-[#e67af3] shadow-[0_4px_16px_rgba(230,122,243,0.2)]" : "border-[#e8eaef] bg-white text-[#8f96a3] hover:border-[#c4a8e8] hover:text-[#8054b8]")}>
                 {n}
               </button>
             ))}
@@ -735,8 +737,8 @@ export default function VisionStudioPage() {
         </div>
 
         {/* Size / Aspect Ratio */}
-        <div className="rounded-3xl p-7" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
-          <label className="mb-4 flex items-center gap-3 text-lg font-extrabold text-[#2d3142]">
+        <div className="rounded-xl p-7" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(128,84,184,0.04), 0 0 0 1.5px #e8eaef" }}>
+          <label className="mb-4 flex items-center gap-3 text-sm font-extrabold text-[#2d3142]">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#8054b8] to-[#c4a8e8] shadow-md">
               <Maximize2 className="h-5 w-5 text-white" />
             </div>
@@ -750,7 +752,7 @@ export default function VisionStudioPage() {
               { id: "16:9", label: "16:9", desc: locale === "ar" ? "عريض" : "Wide", w: 34, h: 20 },
               { id: "3:4", label: "3:4", desc: locale === "ar" ? "بورتريه" : "Portrait", w: 24, h: 32 },
             ].map((s) => (
-              <button key={s.id} type="button" onClick={() => setImageSize(s.id)} className={cn("flex flex-col items-center gap-2 rounded-2xl border-2 py-3 px-2 transition-all duration-200 cursor-pointer", imageSize === s.id ? "border-[#8054b8] bg-gradient-to-br from-[#8054b8]/10 to-[#e67af3]/10 shadow-[0_4px_16px_rgba(128,84,184,0.15)]" : "border-[#e8eaef] bg-white hover:border-[#c4a8e8]")}>
+              <button key={s.id} type="button" onClick={() => setImageSize(s.id)} className={cn("flex flex-col items-center gap-2 rounded-xl border-2 py-3 px-2 transition-all duration-200 cursor-pointer", imageSize === s.id ? "border-[#8054b8] bg-gradient-to-br from-[#8054b8]/10 to-[#e67af3]/10 shadow-[0_4px_16px_rgba(128,84,184,0.15)]" : "border-[#e8eaef] bg-white hover:border-[#c4a8e8]")}>
                 <div className="flex items-center justify-center" style={{ width: 40, height: 40 }}>
                   <div className={cn("rounded-sm border-2 transition-colors", imageSize === s.id ? "border-[#8054b8] bg-[#8054b8]/20" : "border-[#8f96a3]/30 bg-[#f4f6f8]")} style={{ width: s.w, height: s.h }} />
                 </div>
@@ -767,7 +769,7 @@ export default function VisionStudioPage() {
         <button
           onClick={handleGenerate}
           disabled={generating || !currentDay}
-          className="relative w-full max-w-2xl h-20 rounded-2xl text-white text-2xl font-extrabold transition-all duration-500 overflow-hidden group cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+          className="relative w-full max-w-2xl h-20 rounded-xl text-white text-xl font-extrabold transition-all duration-500 overflow-hidden group cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
           style={{ background: "linear-gradient(135deg, #8054b8, #A78BFA, #8054b8)", backgroundSize: "200% 200%", animation: "nl-aurora 6s ease infinite", boxShadow: "0 8px 32px rgba(128,84,184,0.3)" }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
@@ -783,25 +785,25 @@ export default function VisionStudioPage() {
 
       {/* ===== GENERATED IMAGES (full width, centered) ===== */}
       <div className="w-full">
-        <Card className="rounded-3xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
+        <Card className="rounded-xl border-0 overflow-hidden" style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.04), 0 0 0 1.5px #e8eaef" }}>
           <div className="h-1.5 w-full bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8]" />
-          <CardHeader className="p-5 sm:p-8 pb-4">
-            <CardTitle className="flex items-center justify-center gap-4 text-xl md:text-2xl font-extrabold text-[#1a1d2e] font-['Cairo']">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
-                <ImageIcon className="h-7 w-7 text-white" />
+          <CardHeader className="p-3 sm:p-8 pb-4">
+            <CardTitle className="flex items-center justify-center gap-4 text-xl font-extrabold text-[#1a1d2e] font-['Cairo']">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-lg">
+                <ImageIcon className="h-5 w-5 text-white" />
               </div>
               {tv.generatedImages}
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 sm:p-8 pt-2">
+          <CardContent className="p-3 sm:p-8 pt-2">
             {images.length === 0 && !generating ? (
               /* ── Empty State ── */
-              <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] py-20">
-                <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-[#23ab7e]/10 to-[#8054b8]/10 shadow-inner">
-                  <ImageIcon className="h-12 w-12 text-[#8f96a3]/50" />
+              <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e8eaef] bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8] py-20">
+                <div className="flex h-24 w-24 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e]/10 to-[#8054b8]/10 shadow-inner">
+                  <ImageIcon className="h-8 w-8 text-[#8f96a3]/50" />
                 </div>
                 <p className="mt-6 text-xl font-bold text-[#1a1d2e]">{tv.imagesHere}</p>
-                <p className="mt-2 text-base text-[#8f96a3]">{tv.selectAndGenerate}</p>
+                <p className="mt-2 text-sm text-[#8f96a3]">{tv.selectAndGenerate}</p>
               </div>
             ) : generating ? (
               /* ── Full Loading Experience ── */
@@ -835,7 +837,7 @@ export default function VisionStudioPage() {
                   <div className="absolute -inset-6 rounded-full opacity-20" style={{ background: "linear-gradient(135deg, #8054b8, #e67af3)", animation: "nl-glow-breathe 3s ease-in-out infinite" }} />
                   <div className="absolute -inset-12 rounded-full opacity-10" style={{ background: "linear-gradient(135deg, #23ab7e, #8054b8)", animation: "nl-glow-breathe 3s ease-in-out infinite 1s" }} />
                   <div className="relative flex h-28 w-28 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #8054b8, #e67af3)", boxShadow: "0 16px 48px rgba(128,84,184,0.4), 0 0 80px rgba(230,122,243,0.15)" }}>
-                    <Sparkles className="h-14 w-14 text-white" style={{ animation: "nl-spin-slow 6s linear infinite" }} />
+                    <Sparkles className="h-8 w-8 text-white" style={{ animation: "nl-spin-slow 6s linear infinite" }} />
                   </div>
                   <div className="absolute -inset-3 rounded-full" style={{ border: "2px solid #8054b8", animation: "nl-pulse-ring 2.5s ease-in-out infinite" }} />
                   <div className="absolute -inset-6 rounded-full" style={{ border: "1.5px solid #e67af3", animation: "nl-pulse-ring 2.5s ease-in-out infinite 0.8s" }} />
@@ -843,10 +845,10 @@ export default function VisionStudioPage() {
 
                 {/* Quote */}
                 <div className="relative z-10 text-center max-w-md px-4">
-                  <p className="text-xl sm:text-2xl font-black text-[#2d3142] leading-snug" key={loadingQuoteIndex} style={{ animation: "nl-fade-up 0.4s ease forwards" }}>
+                  <p className="text-sm sm:text-sm font-black text-[#2d3142] leading-snug" key={loadingQuoteIndex} style={{ animation: "nl-fade-up 0.4s ease forwards" }}>
                     {loadingQuotes[loadingQuoteIndex]}
                   </p>
-                  <p className="mt-3 text-base text-[#8f96a3]">
+                  <p className="mt-3 text-sm text-[#8f96a3]">
                     {locale === "ar" ? "الذكاء الاصطناعي يبدع لك الآن..." : "AI is crafting your visuals..."}
                   </p>
                 </div>
@@ -868,7 +870,7 @@ export default function VisionStudioPage() {
                 {images.map((img) => (
                   <div
                     key={img.id}
-                    className="group relative overflow-hidden rounded-2xl border-2 border-[#e8eaef] bg-white shadow-md transition-all duration-300"
+                    className="group relative overflow-hidden rounded-xl border-2 border-[#e8eaef] bg-white shadow-md transition-all duration-300"
                   >
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#23ab7e] via-[#8054b8] to-[#8054b8] z-10" />
                     {img.url ? (
@@ -883,7 +885,7 @@ export default function VisionStudioPage() {
                           if (parent) {
                             const fallback = document.createElement("div");
                             fallback.className = "aspect-square w-full flex items-center justify-center bg-[#f4f6f8]";
-                            fallback.innerHTML = '<p class="text-[#8f96a3] text-center px-4 text-lg">Image failed to load</p>';
+                            fallback.innerHTML = '<p class="text-[#8f96a3] text-center px-4 text-sm">Image failed to load</p>';
                             parent.insertBefore(fallback, target);
                           }
                         }}
@@ -891,8 +893,8 @@ export default function VisionStudioPage() {
                     ) : (
                       <div className="aspect-square w-full flex items-center justify-center bg-gradient-to-br from-[#fafbfd] to-[#f4f6f8]">
                         <div className="text-center">
-                          <ImageIcon className="h-12 w-12 text-[#8f96a3] mx-auto mb-3" />
-                          <p className="text-lg text-[#8f96a3]">Generation failed</p>
+                          <ImageIcon className="h-8 w-8 text-[#8f96a3] mx-auto mb-3" />
+                          <p className="text-sm text-[#8f96a3]">Generation failed</p>
                         </div>
                       </div>
                     )}
@@ -901,20 +903,20 @@ export default function VisionStudioPage() {
                         <button
                           type="button"
                           onClick={() => setLightboxUrl(img.url!)}
-                          className="rounded-2xl bg-white/95 border-2 border-[#e8eaef] px-5 py-3 text-lg font-bold text-[#1a1d2e] flex items-center gap-2.5 shadow-xl"
+                          className="rounded-xl bg-white/95 border-2 border-[#e8eaef] px-5 py-3 text-sm font-bold text-[#1a1d2e] flex items-center gap-2.5 shadow-xl"
                         >
                           <Maximize2 className="h-5 w-5" /> {tv.fullScreen}
                         </button>
                         <a
                           href={img.url}
                           download
-                          className="rounded-2xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-5 py-3 text-lg font-bold text-white flex items-center gap-2.5 shadow-xl"
+                          className="rounded-xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-5 py-3 text-sm font-bold text-white flex items-center gap-2.5 shadow-xl"
                         >
                           <Download className="h-5 w-5" />
                         </a>
                       </div>
                     )}
-                    <span className="absolute bottom-3 left-3 rounded-xl bg-white/95 border-2 border-[#e8eaef] px-4 py-2 text-lg font-bold text-[#1a1d2e] shadow-md">
+                    <span className="absolute bottom-3 left-3 rounded-xl bg-white/95 border-2 border-[#e8eaef] px-4 py-2 text-sm font-bold text-[#1a1d2e] shadow-md">
                       {img.style_label}
                     </span>
                   </div>
@@ -929,7 +931,7 @@ export default function VisionStudioPage() {
                   onClick={handleSave}
                   disabled={saved || saving}
                   className={cn(
-                    "relative h-16 px-10 rounded-2xl text-xl font-extrabold shadow-lg transition-all duration-500 border-2 overflow-hidden group",
+                    "relative h-16 px-10 rounded-xl text-xl font-extrabold shadow-lg transition-all duration-500 border-2 overflow-hidden group",
                     saved
                       ? "bg-gradient-to-r from-[#e8eaef] to-[#f4f6f8] text-[#8f96a3] border-[#e8eaef] cursor-default"
                       : "bg-gradient-to-r from-[#23ab7e] to-[#8054b8] text-white border-[#23ab7e]/30 hover:shadow-md"
@@ -965,20 +967,20 @@ export default function VisionStudioPage() {
             <img
               src={lightboxUrl}
               alt=""
-              className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl ring-2 ring-white/20"
+              className="max-h-[85vh] max-w-[85vw] rounded-xl object-contain shadow-2xl ring-2 ring-white/20"
             />
             <button
               type="button"
               onClick={() => setLightboxUrl(null)}
-              className="absolute -top-5 -right-5 flex h-14 w-14 items-center justify-center rounded-full bg-white border-2 border-[#e8eaef] shadow-xl text-[#1a1d2e] hover:bg-[#f4f6f8] transition-colors"
+              className="absolute -top-5 -right-5 flex h-8 w-8 items-center justify-center rounded-full bg-white border-2 border-[#e8eaef] shadow-xl text-[#1a1d2e] hover:bg-[#f4f6f8] transition-colors"
             >
-              <X className="h-7 w-7" />
+              <X className="h-5 w-5" />
             </button>
             <div className="absolute bottom-5 right-5 flex gap-3">
               <a
                 href={lightboxUrl}
                 download
-                className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-7 py-4 text-lg font-extrabold text-white shadow-xl border-2 border-white/20"
+                className="flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#23ab7e] to-[#8054b8] px-7 py-4 text-sm font-extrabold text-white shadow-xl border-2 border-white/20"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Download className="h-6 w-6" /> Download

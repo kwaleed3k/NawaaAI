@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useCallback, type ReactNode } from "react";
 import {
-  BarChart3, BookOpen, Building2, Calendar, ChevronLeft, ChevronRight,
+  Activity, BarChart3, BookOpen, Building2, Calendar, ChevronLeft, ChevronRight,
   FolderOpen, Hash, ImageIcon, LogOut, Menu, Moon, Search, Settings, Sparkles, Sun, Swords, TrendingUp, X,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
@@ -35,6 +35,7 @@ const savedItems = [
   { href: "/my-generations", key: "myGenerations" as const, icon: ImageIcon },
   { href: "/my-competitors", key: "myCompetitors" as const, icon: Swords },
   { href: "/playbook", key: "playbook" as const, icon: BookOpen },
+  { href: "/monitor", key: "monitor" as const, icon: Activity },
 ];
 
 function NavLinks({
@@ -53,7 +54,7 @@ function NavLinks({
   onNavClick?: () => void;
 }) {
   return (
-    <nav className="flex-1 space-y-1 overflow-y-auto p-3 scrollbar-nawaa">
+    <nav className="flex-1 min-h-0 space-y-0.5 overflow-y-auto p-2 scrollbar-nawaa">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -63,7 +64,7 @@ function NavLinks({
             href={item.href}
             onClick={onNavClick}
             className={cn(
-              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all duration-200",
+              "relative flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all duration-200",
               isActive
                 ? "bg-[#f4f6f8] dark:bg-[#1e2030] text-[#23ab7e]"
                 : "text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0]"
@@ -77,7 +78,7 @@ function NavLinks({
                 )}
               />
             )}
-            <Icon className={cn("h-5 w-5 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
+            <Icon className={cn("h-4 w-4 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
             {!collapsed && (
               <>
                 <span className="flex-1">{t[item.key]}</span>
@@ -107,7 +108,7 @@ function NavLinks({
             href={item.href}
             onClick={onNavClick}
             className={cn(
-              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all duration-200",
+              "relative flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all duration-200",
               isActive
                 ? "bg-[#f4f6f8] dark:bg-[#1e2030] text-[#23ab7e]"
                 : "text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0]"
@@ -121,7 +122,7 @@ function NavLinks({
                 )}
               />
             )}
-            <Icon className={cn("h-5 w-5 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
+            <Icon className={cn("h-4 w-4 shrink-0 transition-colors", isActive && "text-[#23ab7e]")} />
             {!collapsed && <span className="flex-1">{t[item.key]}</span>}
           </Link>
         );
@@ -137,21 +138,21 @@ function SidebarBottom({ t, collapsed, onNavClick }: {
   onNavClick?: () => void;
 }) {
   return (
-    <div className="border-t-2 border-[#e8eaef] dark:border-[#2a2d3e] p-3">
+    <div className="border-t border-[#e8eaef] dark:border-[#2a2d3e] p-2 shrink-0">
       <Link
         href="/settings"
         onClick={onNavClick}
-        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
+        className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
       >
-        <Settings className="h-5 w-5" />
+        <Settings className="h-4 w-4" />
         {!collapsed && <span>{t.settings}</span>}
       </Link>
       <form action={signOut}>
         <button
           type="submit"
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
+          className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#8f96a3] hover:bg-[#f4f6f8] dark:hover:bg-[#1e2030] hover:text-[#1a1d2e] dark:hover:text-[#e2e8f0] transition-colors"
         >
-          <LogOut className="h-5 w-5" />
+          <LogOut className="h-4 w-4" />
           {!collapsed && <span>{t.logout}</span>}
         </button>
       </form>
@@ -172,6 +173,7 @@ const PAGE_LABELS: Record<string, { en: string; ar: string }> = {
   "my-generations": { en: "My Generations", ar: "صوري" },
   "my-competitors": { en: "My Competitors", ar: "منافسي" },
   playbook: { en: "Playbook", ar: "دليل التشغيل" },
+  monitor: { en: "Usage Monitor", ar: "لوحة المراقبة" },
   settings: { en: "Settings", ar: "الإعدادات" },
 };
 
@@ -266,20 +268,20 @@ function MobileSidebar({
         aria-modal="true"
         aria-label="Navigation menu"
         className={cn(
-          "fixed top-0 z-[60] flex h-full w-60 flex-col overflow-hidden bg-white dark:bg-[#0c0e14] shadow-2xl lg:hidden transition-transform duration-300",
+          "fixed top-0 z-[60] flex h-full w-52 flex-col overflow-hidden bg-white dark:bg-[#0c0e14] shadow-2xl lg:hidden transition-transform duration-300",
           isRtl ? "right-0 border-l-2 border-[#e8eaef]" : "left-0 border-r-2 border-[#e8eaef]"
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-4">
+        <div className="flex h-12 items-center justify-between border-b border-[#e8eaef] dark:border-[#2a2d3e] px-3 shrink-0">
           <Link
             href="/dashboard"
-            className="flex items-center gap-3"
+            className="flex items-center gap-2"
             onClick={onClose}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
+              <Sparkles className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="text-lg font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
+            <span className="text-sm font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
               {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
               <span className="text-[#8054b8]">AI</span>
             </span>
@@ -288,9 +290,9 @@ function MobileSidebar({
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f4f6f8] text-[#8f96a3] hover:text-[#23ab7e] transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f4f6f8] text-[#8f96a3] hover:text-[#23ab7e] transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
@@ -329,14 +331,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (stored === "en" || stored === "ar") setLocale(stored);
   }, [setLocale]);
 
-  // Initialize theme from localStorage
+  // Force light theme — dark mode disabled
   useEffect(() => {
-    const savedTheme = typeof window !== "undefined" ? window.localStorage.getItem("nawaa-theme") : null;
-    if (savedTheme === "dark" || savedTheme === "light") {
-      setTheme(savedTheme);
-    } else if (typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    }
+    setTheme("light");
   }, [setTheme]);
 
   useEffect(() => {
@@ -374,7 +371,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const displayName = user?.email?.split("@")[0] ?? "User";
   const t = messages[locale].nav;
   const isRtl = locale === "ar";
-  const sidebarWidth = collapsed ? 64 : 240;
+  const sidebarWidth = collapsed ? 56 : 200;
 
   return (
     <div className="flex min-h-screen bg-[#fafbfd] dark:bg-[#0c0e14] text-[#2d3142] dark:text-[#e2e8f0] text-base transition-colors duration-300">
@@ -404,13 +401,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         style={{ width: sidebarWidth }}
       >
         {/* Logo */}
-        <div className="flex h-16 items-center justify-between border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] px-4">
+        <div className="flex h-12 items-center justify-between border-b border-[#e8eaef] dark:border-[#2a2d3e] px-3 shrink-0">
           {!collapsed && (
-            <Link href="/dashboard" className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
-                <Sparkles className="h-5 w-5 text-white" />
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
+                <Sparkles className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="text-lg font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
+              <span className="text-sm font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
                 {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
                 <span className="text-[#8054b8]">AI</span>
               </span>
@@ -419,13 +416,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10 shrink-0 text-[#8f96a3] hover:text-[#23ab7e] hover:bg-[#f4f6f8] rounded-xl"
+            className="h-8 w-8 shrink-0 text-[#8f96a3] hover:text-[#23ab7e] hover:bg-[#f4f6f8] rounded-lg"
             onClick={() => setCollapsed((c) => !c)}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed
-              ? (isRtl ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />)
-              : (isRtl ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />)
+              ? (isRtl ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />)
+              : (isRtl ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />)
             }
           </Button>
         </div>
@@ -468,7 +465,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         `}</style>
         <div className="nawaa-desktop-content flex flex-1 flex-col min-w-0">
           {/* ── Topbar Header ── */}
-          <header className="sticky top-0 z-30 flex h-14 sm:h-16 items-center gap-3 sm:gap-4 border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-white/80 dark:bg-[#0c0e14]/80 backdrop-blur-sm px-4 sm:px-6">
+          <header className="sticky top-0 z-30 flex h-12 sm:h-14 items-center gap-3 sm:gap-4 border-b-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-white/80 dark:bg-[#0c0e14]/80 backdrop-blur-sm px-4 sm:px-6">
             {/* Hamburger — visible only on mobile */}
             <button
               type="button"
@@ -482,7 +479,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex flex-1 items-center gap-3 min-w-0">
               <div className={cn("relative flex-1 max-w-lg min-w-0", isRtl && "flex-row-reverse")}>
                 <Search className={cn(
-                  "absolute top-1/2 h-5 w-5 sm:h-6 sm:w-6 -translate-y-1/2 text-[#8f96a3]",
+                  "absolute top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-[#8f96a3]",
                   isRtl ? "right-4" : "left-4"
                 )} />
                 <input
@@ -492,7 +489,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   onChange={(e) => setSearchQuery(e.target.value)}
                   aria-label={t.search}
                   className={cn(
-                    "h-9 sm:h-10 w-full rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-[#fafbfd] dark:bg-[#141620] text-sm sm:text-base text-[#2d3142] dark:text-[#e2e8f0] placeholder:text-[#8f96a3]/50 focus:outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)]",
+                    "h-8 sm:h-9 w-full rounded-xl border-2 border-[#e8eaef] dark:border-[#2a2d3e] bg-[#fafbfd] dark:bg-[#141620] text-sm sm:text-base text-[#2d3142] dark:text-[#e2e8f0] placeholder:text-[#8f96a3]/50 focus:outline-none transition-all focus:border-[#23ab7e] focus:shadow-[0_0_0_3px_rgba(35,171,126,0.08)]",
                     isRtl ? "pl-10 pr-12" : "pl-12 pr-10"
                   )}
                 />
