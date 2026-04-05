@@ -278,13 +278,7 @@ function MobileSidebar({
             className="flex items-center gap-2"
             onClick={onClose}
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
-              <Sparkles className="h-3.5 w-3.5 text-white" />
-            </div>
-            <span className="text-sm font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
-              {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
-              <span className="text-[#8054b8]">AI</span>
-            </span>
+            <img src="/nawaa-logo.svg" alt="Nawaa AI" className="h-40 w-auto" />
           </Link>
           <button
             type="button"
@@ -402,17 +396,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       >
         {/* Logo */}
         <div className="flex h-12 items-center justify-between border-b border-[#e8eaef] dark:border-[#2a2d3e] px-3 shrink-0">
-          {!collapsed && (
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#8054b8] shadow-[0_4px_12px_rgba(35,171,126,0.25)]">
-                <Sparkles className="h-3.5 w-3.5 text-white" />
-              </div>
-              <span className="text-sm font-bold text-[#1a1d2e] dark:text-[#e2e8f0]">
-                {locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"}{" "}
-                <span className="text-[#8054b8]">AI</span>
-              </span>
-            </Link>
-          )}
+          <Link href="/dashboard" className="flex items-center">
+            <img src="/nawaa-logo.svg" alt="Nawaa AI" className={collapsed ? "h-20 w-auto" : "h-40 w-auto"} />
+          </Link>
           <Button
             variant="ghost"
             size="icon"

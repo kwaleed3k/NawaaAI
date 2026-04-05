@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Script from "next/script";
 import { useEffect, useRef, useState, useCallback } from "react";
 import {
   Brain, Calendar, Sparkles, Globe, Target, Download,
@@ -50,7 +51,7 @@ function Particles({ count, className }: { count: number; className?: string }) 
               height: 3 + (s2 % 5),
               top: `${s1}%`,
               left: `${s2}%`,
-              background: ["#23ab7e", "#8054b8", "#e67af3", "#a6ffea", "#c4a8e8"][i % 5],
+              background: ["#23ab7e", "#003986", "#921cb4", "#a6ffea", "#003986"][i % 5],
               opacity: 0.15 + (s1 % 25) / 100,
               animation: `nl-float-particle ${8 + (s1 % 12)}s ease-in-out infinite`,
               animationDelay: `${(s2 % 60) / 10}s`,
@@ -205,27 +206,22 @@ export default function LandingPage() {
 
   const services = [
     { num: "01", icon: Brain, title: L.feature1Title, desc: L.feature1Desc, tag: isRtl ? "استراتيجي العلامة" : "Brand Strategist", color: "#23ab7e", bg: "rgba(35,171,126,.08)" },
-    { num: "02", icon: Calendar, title: L.feature2Title, desc: L.feature2Desc, tag: isRtl ? "استراتيجي المحتوى" : "Content Strategist", color: "#8054b8", bg: "rgba(128,84,184,.08)" },
-    { num: "03", icon: ImageIcon, title: L.feature3Title, desc: L.feature3Desc, tag: isRtl ? "المصمم" : "Graphic Designer", color: "#e67af3", bg: "rgba(230,122,243,.08)" },
+    { num: "02", icon: Calendar, title: L.feature2Title, desc: L.feature2Desc, tag: isRtl ? "استراتيجي المحتوى" : "Content Strategist", color: "#003986", bg: "rgba(0,57,134,.08)" },
+    { num: "03", icon: ImageIcon, title: L.feature3Title, desc: L.feature3Desc, tag: isRtl ? "المصمم" : "Graphic Designer", color: "#921cb4", bg: "rgba(146,28,180,.08)" },
     { num: "04", icon: Hash, title: L.feature4Title, desc: L.feature4Desc, tag: isRtl ? "مدير التواصل" : "Social Manager", color: "#2dd4a0", bg: "rgba(45,212,160,.08)" },
-    { num: "05", icon: Target, title: L.feature5Title, desc: L.feature5Desc, tag: isRtl ? "ذكاء استراتيجي" : "Intelligence", color: "#c4a8e8", bg: "rgba(196,168,232,.08)" },
-    { num: "06", icon: Download, title: L.feature6Title, desc: L.feature6Desc, tag: isRtl ? "خزنة المحتوى" : "Content Vault", color: "#f5c6fa", bg: "rgba(245,198,250,.08)" },
+    { num: "05", icon: Target, title: L.feature5Title, desc: L.feature5Desc, tag: isRtl ? "ذكاء استراتيجي" : "Intelligence", color: "#003986", bg: "rgba(0,57,134,.08)" },
+    { num: "06", icon: Download, title: L.feature6Title, desc: L.feature6Desc, tag: isRtl ? "خزنة المحتوى" : "Content Vault", color: "#921cb4", bg: "rgba(245,198,250,.08)" },
   ];
 
-  const stepColors = ["#23ab7e", "#8054b8", "#e67af3"];
+  const stepColors = ["#23ab7e", "#003986", "#921cb4"];
 
   return (
     <div className="overflow-x-hidden bg-white text-[#2d3142] antialiased" dir={isRtl ? "rtl" : "ltr"}>
 
       {/* ══════════ NAVBAR ══════════ */}
       <nav className={`fixed top-0 left-0 right-0 z-[1000] h-14 lg:h-16 flex items-center justify-between px-5 sm:px-8 lg:px-14 transition-all duration-300 nl-glass-nav ${scrolled ? "bg-white/96 shadow-[0_2px_20px_rgba(0,0,0,.06)]" : ""}`} style={{ borderBottom: "1px solid rgba(0,0,0,.04)" }}>
-        <Link href="/" className="flex items-center gap-3 shrink-0 no-underline">
-          <div className="w-9 h-9 lg:w-11 lg:h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)", boxShadow: "0 4px 16px rgba(35,171,126,.3)" }}>
-            <svg viewBox="0 0 32 32" fill="none" className="w-4 h-4 lg:w-6 lg:h-6">
-              <path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <span className="text-lg lg:text-xl font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">AI</span></span>
+        <Link href="/" className="flex items-center shrink-0 no-underline">
+          <img src="/nawaa-logo.svg" alt="Nawaa AI" className="h-56 lg:h-64 w-auto" />
         </Link>
         <ul className="hidden lg:flex list-none gap-2">
           {[{ href: "#features", label: N.features }, { href: "#how-it-works", label: L.howItWorks }, { href: "#platforms", label: isRtl ? "المنصات" : "Platforms" }].map((l) => (
@@ -241,108 +237,122 @@ export default function LandingPage() {
 
       {/* ══════════ HERO ══════════ */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 lg:pt-28 px-5 sm:px-8 lg:px-14 pb-14 lg:pb-20" style={{ background: "linear-gradient(170deg,#f0fdf8 0%,#fff 25%,#f5f0ff 60%,#fef5ff 100%)" }}>
-        {/* 3D Scene */}
-        <div ref={sceneRef} className="absolute inset-0 pointer-events-none" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
-          {/* Cubes */}
-          <div className="absolute top-[6%] left-[2%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-a 16s ease-in-out infinite" }}>
-            <Cube3D size={80} border="rgba(35,171,126,.2)" bg="rgba(35,171,126,.05)" dur={18} />
-          </div>
-          <div className="absolute top-[10%] right-[4%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-b 18s ease-in-out infinite" }}>
-            <Cube3D size={60} border="rgba(128,84,184,.2)" bg="rgba(128,84,184,.05)" dur={24} reverse />
-          </div>
-          <div className="absolute bottom-[18%] left-[4%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-c 14s ease-in-out infinite" }}>
-            <Cube3D size={50} border="rgba(230,122,243,.2)" bg="rgba(230,122,243,.05)" dur={15} />
-          </div>
-          <div className="absolute bottom-[10%] right-[3%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-a 20s ease-in-out infinite reverse" }}>
-            <Cube3D size={70} border="rgba(166,255,234,.22)" bg="rgba(166,255,234,.05)" dur={22} reverse />
-          </div>
-          <div className="absolute top-[40%] left-[12%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-d 22s ease-in-out infinite" }}>
-            <Cube3D size={35} border="rgba(196,168,232,.18)" bg="rgba(196,168,232,.04)" dur={20} />
-          </div>
-          <div className="absolute top-[25%] right-[15%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-c 19s ease-in-out infinite" }}>
-            <Cube3D size={42} border="rgba(245,198,250,.2)" bg="rgba(245,198,250,.04)" dur={26} reverse />
-          </div>
-
-          {/* 3D Rings */}
-          <div className="absolute top-[28%] right-[6%] w-[140px] h-[140px] lg:w-[200px] lg:h-[200px] rounded-full" style={{ border: "2.5px solid rgba(166,255,234,.22)", transformStyle: "preserve-3d", animation: "nl-ring-rotate 14s linear infinite" }}>
-            <div className="absolute inset-[18px] rounded-full" style={{ border: "2px solid rgba(128,84,184,.15)" }} />
-          </div>
-          <div className="absolute bottom-[30%] left-[8%] w-[90px] h-[90px] lg:w-[130px] lg:h-[130px] rounded-full" style={{ border: "2px solid rgba(230,122,243,.15)", transformStyle: "preserve-3d", animation: "nl-ring-rotate-2 18s linear infinite" }}>
-            <div className="absolute inset-[12px] rounded-full" style={{ border: "1.5px solid rgba(35,171,126,.12)" }} />
-          </div>
-
-          {/* Spheres */}
-          <div className="absolute bottom-[5%] right-[3%] w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] rounded-full" style={{ background: "radial-gradient(circle at 30% 30%,rgba(166,255,234,.4),rgba(35,171,126,.04) 70%)", animation: "nl-drift-b 20s ease-in-out infinite" }} />
-          <div className="absolute top-[5%] left-[12%] w-[120px] h-[120px] lg:w-[180px] lg:h-[180px] rounded-full" style={{ background: "radial-gradient(circle at 30% 30%,rgba(196,168,232,.4),rgba(128,84,184,.04) 70%)", animation: "nl-drift-c 16s ease-in-out infinite" }} />
-          <div className="absolute top-[55%] right-[20%] w-[60px] h-[60px] lg:w-[100px] lg:h-[100px] rounded-full" style={{ background: "radial-gradient(circle at 40% 40%,rgba(230,122,243,.3),transparent 70%)", animation: "nl-drift-d 15s ease-in-out infinite" }} />
-
-          {/* Orbiting dots */}
-          <div className="absolute top-[20%] left-[30%]" style={{ animation: "nl-orbit 12s linear infinite" }}>
-            <div className="w-3 h-3 rounded-full bg-[#23ab7e] opacity-40" />
-          </div>
-          <div className="absolute top-[50%] right-[25%]" style={{ animation: "nl-orbit-lg 16s linear infinite reverse" }}>
-            <div className="w-2.5 h-2.5 rounded-full bg-[#8054b8] opacity-35" />
-          </div>
-
-          {/* Particles */}
-          <Particles count={20} className="absolute inset-0" />
+        {/* Gradient glow background */}
+        <div ref={sceneRef} className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] lg:w-[900px] lg:h-[900px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(35,171,126,.3) 0%, rgba(0,57,134,.2) 30%, rgba(146,28,180,.1) 60%, transparent 80%)" }} />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center w-full max-w-[1000px]">
-          <div className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full text-sm sm:text-base font-semibold text-[#1a8a64] mb-8 sm:mb-10" style={{ background: "rgba(35,171,126,.08)", border: "1.5px solid rgba(35,171,126,.15)", opacity: 0, animation: "nl-fade-up .7s ease forwards .2s" }}>
-            <span className="w-2.5 h-2.5 rounded-full bg-[#23ab7e]" style={{ animation: "nl-pulse-dot 2s ease infinite" }} />
-            {L.heroBadge}
+        {/* Floating Process Cards — LEFT side */}
+        <div className="hidden lg:block absolute left-[3%] top-[12%] z-10 space-y-5" style={{ opacity: 0, animation: "nl-fade-up .8s ease forwards .3s" }}>
+          {/* Card 1: Add Company */}
+          <div className="relative rounded-2xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-xl px-5 py-4 w-[240px]" style={{ animation: "nl-drift-a 10s ease-in-out infinite" }}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#23ab7e] mb-2">Step 1</p>
+            <p className="text-sm font-bold text-[#1a1d2e] mb-1.5">{isRtl ? "أضف شركتك" : "Add Your Company"}</p>
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#23ab7e] to-[#1a8a64] flex items-center justify-center"><Building2 className="h-4 w-4 text-white" /></div>
+              <div className="flex-1 h-2 rounded-full bg-[#e8eaef]"><div className="h-full w-[85%] rounded-full bg-[#23ab7e]" /></div>
+            </div>
           </div>
-
-          <h1 className="whitespace-nowrap pb-4" style={{ fontSize: "clamp(24px, 3.5vw, 52px)", fontFamily: headingFont, lineHeight: 1.2, fontWeight: 900, opacity: 0, animation: "nl-fade-up-lg .9s ease forwards .3s" }}>
-            <span className="block text-[#1a1d2e]">{L.heroLine1}</span>
-            <span className="block nl-gradient-text pb-2">{L.heroLine2}</span>
-          </h1>
-
-          <p className="text-sm sm:text-base lg:text-lg text-[#505868] leading-relaxed max-w-[650px] mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .5s" }}>
-            {L.heroSub}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .6s" }}>
-            <Link href="/signup">
-              <button className="relative text-sm sm:text-base font-bold text-white py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl border-none cursor-pointer w-full sm:w-auto overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(35,171,126,.4)]" style={{ background: "linear-gradient(135deg,#23ab7e,#1a8a64)", boxShadow: "0 8px 32px rgba(35,171,126,.35)" }}>
-                <span className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(120deg,transparent 30%,rgba(255,255,255,.15) 50%,transparent 70%)", backgroundSize: "300% 100%", animation: "nl-shine 3s ease infinite" }} />
-                <span className="relative">{L.startFreeBilingual}</span>
-              </button>
-            </Link>
-            <button className="inline-flex items-center gap-3 text-sm font-semibold text-[#505868] py-2.5 px-5 rounded-xl border-2 border-[#d1d6df] bg-white cursor-pointer hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all">
-              <Play className="w-5 h-5 fill-current" />
-              {L.watchDemo}
-            </button>
+          {/* Card 2: Brand Analysis */}
+          <div className="relative rounded-2xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-xl px-5 py-4 w-[260px] ml-6" style={{ animation: "nl-drift-b 12s ease-in-out infinite" }}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#003986] mb-2">Step 2</p>
+            <p className="text-sm font-bold text-[#1a1d2e] mb-1.5">{isRtl ? "تحليل العلامة التجارية" : "AI Brand Analysis"}</p>
+            <div className="flex gap-1.5">
+              {["Innovation", "Trust", "Energy"].map((t) => (
+                <span key={t} className="text-[9px] font-bold bg-[#003986]/10 text-[#003986] px-2 py-0.5 rounded-full">{t}</span>
+              ))}
+            </div>
           </div>
-
-          <div className="flex justify-center gap-10 sm:gap-16 mt-10 sm:mt-14" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .75s" }}>
-            {[{ val: 500, suf: "+", label: L.statBrands }, { val: 50, suf: "K+", label: L.statPosts }, { val: 10, suf: "x", label: L.statFaster }].map((s) => (
-              <div key={s.label}>
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[#23ab7e]">
-                  <AnimatedCounter end={s.val} suffix={s.suf} duration={2000} />
+          {/* Card 3: Content Plan */}
+          <div className="relative rounded-2xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-xl px-5 py-4 w-[250px] ml-2" style={{ animation: "nl-drift-c 14s ease-in-out infinite" }}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#921cb4] mb-2">Step 3</p>
+            <p className="text-sm font-bold text-[#1a1d2e] mb-1.5">{isRtl ? "خطة المحتوى الأسبوعية" : "Weekly Content Plan"}</p>
+            <div className="flex gap-1">
+              {["Sun", "Mon", "Tue", "Wed", "Thu"].map((d, i) => (
+                <div key={d} className="flex flex-col items-center gap-0.5">
+                  <span className="text-[8px] text-[#8f96a3]">{d}</span>
+                  <div className={`h-5 w-5 rounded-md ${i < 3 ? "bg-[#23ab7e]" : "bg-[#e8eaef]"}`} />
                 </div>
-                <div className="text-sm sm:text-base text-[#8f96a3] mt-1 font-medium">{s.label}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        </div>
+
+        {/* Floating Process Cards — RIGHT side */}
+        <div className="hidden lg:block absolute right-[3%] top-[15%] z-10 space-y-5" style={{ opacity: 0, animation: "nl-fade-up .8s ease forwards .5s" }}>
+          {/* Card 4: Vision Studio */}
+          <div className="relative rounded-2xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-xl px-5 py-4 w-[240px]" style={{ animation: "nl-drift-b 11s ease-in-out infinite" }}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#23ab7e] mb-2">Step 4</p>
+            <p className="text-sm font-bold text-[#1a1d2e] mb-1.5">{isRtl ? "استوديو الرؤية" : "Generate Visuals"}</p>
+            <div className="grid grid-cols-3 gap-1">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-10 rounded-lg" style={{ background: ["linear-gradient(135deg,#23ab7e,#003986)", "linear-gradient(135deg,#921cb4,#003986)", "linear-gradient(135deg,#23ab7e,#921cb4)"][i] }} />
+              ))}
+            </div>
+          </div>
+          {/* Card 5: Hashtags */}
+          <div className="relative rounded-2xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-xl px-5 py-4 w-[230px] mr-4" style={{ animation: "nl-drift-a 13s ease-in-out infinite" }}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#003986] mb-2">Step 5</p>
+            <p className="text-sm font-bold text-[#1a1d2e] mb-1.5">{isRtl ? "هاشتاقات ذكية" : "Smart Hashtags"}</p>
+            <div className="flex flex-wrap gap-1">
+              {["#marketing", "#KSA", "#AI", "#brand"].map((h) => (
+                <span key={h} className="text-[9px] font-bold bg-[#23ab7e]/10 text-[#23ab7e] px-2 py-0.5 rounded-full">{h}</span>
+              ))}
+            </div>
+          </div>
+          {/* Card 6: Competitor Analysis */}
+          <div className="relative rounded-2xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-xl px-5 py-4 w-[250px] mr-8" style={{ animation: "nl-drift-d 15s ease-in-out infinite" }}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#921cb4] mb-2">Step 6</p>
+            <p className="text-sm font-bold text-[#1a1d2e] mb-1.5">{isRtl ? "تحليل المنافسين" : "Competitor Intel"}</p>
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="h-7 w-7 rounded-full border-2 border-white" style={{ background: ["#23ab7e", "#003986", "#921cb4"][i] }} />
+                ))}
+              </div>
+              <span className="text-[10px] font-bold text-[#8f96a3]">3 {isRtl ? "منافسين" : "rivals"}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile floating cards (simplified — 2 cards) */}
+        <div className="lg:hidden absolute top-[8%] left-[3%] z-10" style={{ opacity: 0, animation: "nl-fade-up .6s ease forwards .3s" }}>
+          <div className="rounded-xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-lg px-3 py-2.5 w-[140px]" style={{ animation: "nl-drift-a 10s ease-in-out infinite" }}>
+            <p className="text-[8px] font-bold uppercase tracking-widest text-[#23ab7e]">Content Plan</p>
+            <div className="flex gap-0.5 mt-1">{[...Array(5)].map((_, i) => <div key={i} className={`h-3 w-3 rounded-sm ${i < 3 ? "bg-[#23ab7e]" : "bg-[#e8eaef]"}`} />)}</div>
+          </div>
+        </div>
+        <div className="lg:hidden absolute top-[10%] right-[3%] z-10" style={{ opacity: 0, animation: "nl-fade-up .6s ease forwards .4s" }}>
+          <div className="rounded-xl bg-white/90 backdrop-blur-md border border-[#e8eaef] shadow-lg px-3 py-2.5 w-[130px]" style={{ animation: "nl-drift-b 12s ease-in-out infinite" }}>
+            <p className="text-[8px] font-bold uppercase tracking-widest text-[#921cb4]">Vision Studio</p>
+            <div className="grid grid-cols-3 gap-0.5 mt-1">{[...Array(3)].map((_, i) => <div key={i} className="h-5 rounded-sm" style={{ background: ["#23ab7e", "#003986", "#921cb4"][i] }} />)}</div>
+          </div>
+        </div>
+
+        {/* Center Content — Logo */}
+        <div className="relative z-10 text-center w-full max-w-[1000px]">
+          <div className="flex justify-center mb-4" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .1s" }}>
+            <img src="/nawaa-logo.svg" alt="Nawaa AI" className="w-auto drop-shadow-2xl" style={{ height: "clamp(400px, 35vw, 550px)" }} />
+          </div>
+          <p className="text-base sm:text-lg lg:text-xl font-bold text-[#505868] tracking-wide" style={{ opacity: 0, animation: "nl-fade-up .7s ease forwards .4s" }}>
+            {isRtl ? "حلول تسويقية للمستقبل" : "MARKETING SOLUTIONS FOR TOMORROW"}
+          </p>
         </div>
       </section>
 
       {/* ══════════ CASE STUDY ══════════ */}
       <section id="case" className="relative overflow-hidden py-16 sm:py-20 lg:py-28 px-0 bg-[#1a1d2e]">
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 0% 100%,rgba(35,171,126,.18),transparent 60%),radial-gradient(ellipse 60% 60% at 100% 0%,rgba(128,84,184,.12),transparent 50%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 60% at 0% 100%,rgba(35,171,126,.18),transparent 60%),radial-gradient(ellipse 60% 60% at 100% 0%,rgba(0,57,134,.12),transparent 50%)" }} />
         {/* Floating cubes in dark section */}
         <div className="absolute inset-0 pointer-events-none" style={{ perspective: "800px", transformStyle: "preserve-3d" }}>
           <div className="absolute top-[8%] right-[6%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-b 20s ease-in-out infinite" }}>
             <Cube3D size={55} border="rgba(35,171,126,.2)" bg="rgba(35,171,126,.05)" dur={20} />
           </div>
           <div className="absolute bottom-[12%] left-[4%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-a 18s ease-in-out infinite" }}>
-            <Cube3D size={40} border="rgba(128,84,184,.2)" bg="rgba(128,84,184,.05)" dur={16} reverse />
+            <Cube3D size={40} border="rgba(0,57,134,.2)" bg="rgba(0,57,134,.05)" dur={16} reverse />
           </div>
           <div className="absolute top-[45%] left-[50%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-d 22s ease-in-out infinite" }}>
-            <Cube3D size={30} border="rgba(230,122,243,.15)" bg="rgba(230,122,243,.04)" dur={25} />
+            <Cube3D size={30} border="rgba(146,28,180,.15)" bg="rgba(146,28,180,.04)" dur={25} />
           </div>
           <Particles count={18} className="absolute inset-0" />
         </div>
@@ -383,8 +393,8 @@ export default function LandingPage() {
               <div className="px-8 sm:px-10 py-6 sm:py-8">
                 {[
                   { label: isRtl ? "المحتوى الأسبوعي" : "Weekly Content", value: "28 Posts", cls: "text-[#2dd4a0]" },
-                  { label: isRtl ? "التفاعل" : "Engagement", value: "8.7%", cls: "text-[#c4a8e8]", bar: 87, bc: "#c4a8e8" },
-                  { label: isRtl ? "درجة العلامة" : "Brand Score", value: "96%", cls: "text-[#f5c6fa]", bar: 96, bc: "#f5c6fa" },
+                  { label: isRtl ? "التفاعل" : "Engagement", value: "8.7%", cls: "text-[#003986]", bar: 87, bc: "#003986" },
+                  { label: isRtl ? "درجة العلامة" : "Brand Score", value: "96%", cls: "text-[#921cb4]", bar: 96, bc: "#921cb4" },
                   { label: isRtl ? "التوفير الشهري" : "Monthly Savings", value: "SAR 18,200", cls: "text-[#2dd4a0]" },
                   { label: isRtl ? "جودة العربية" : "Arabic Quality", value: "94%", cls: "text-[#2dd4a0]", bar: 94, bc: "#2dd4a0" },
                 ].map((r, i, a) => (
@@ -458,7 +468,7 @@ export default function LandingPage() {
           </button>
           <div className="flex gap-2">
             {services.map((_, i) => (
-              <div key={i} onClick={() => goToCard(i)} className={`h-2.5 rounded-full cursor-pointer transition-all duration-400 ${i === activeCard ? "w-8 bg-gradient-to-r from-[#23ab7e] to-[#8054b8]" : "w-2.5 bg-[#d1d6df] hover:bg-[#8f96a3]"}`} />
+              <div key={i} onClick={() => goToCard(i)} className={`h-2.5 rounded-full cursor-pointer transition-all duration-400 ${i === activeCard ? "w-8 bg-gradient-to-r from-[#23ab7e] to-[#003986]" : "w-2.5 bg-[#d1d6df] hover:bg-[#8f96a3]"}`} />
             ))}
           </div>
           <button onClick={() => goToCard(activeCard + (isRtl ? -1 : 1))} className="w-10 h-10 rounded-full border-2 border-[#d1d6df] bg-white flex items-center justify-center cursor-pointer text-[#8f96a3] hover:border-[#23ab7e] hover:text-[#23ab7e] transition-all active:scale-95">
@@ -472,8 +482,8 @@ export default function LandingPage() {
         <Particles count={15} className="absolute inset-0 pointer-events-none" />
         <div className="mx-auto max-w-[1300px]">
           <div className="text-center mb-10 lg:mb-14 nl-reveal">
-            <div className="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[2.5px] text-[#8054b8] mb-6">
-              <span className="w-10 h-0.5 rounded bg-[#8054b8]" />
+            <div className="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[2.5px] text-[#003986] mb-6">
+              <span className="w-10 h-0.5 rounded bg-[#003986]" />
               {L.howItWorksLabel}
             </div>
             <h2 className="text-2xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-[#1a1d2e] leading-tight" style={{ fontFamily: headingFont }}>
@@ -484,7 +494,7 @@ export default function LandingPage() {
           <div className="relative grid gap-10 sm:grid-cols-3 sm:gap-8 lg:gap-12">
             {/* Animated connecting line */}
             <div className="absolute top-[80px] lg:top-[90px] hidden sm:block h-1.5 rounded-full overflow-hidden" style={{ left: "18%", right: "18%" }}>
-              <div className="h-full w-full rounded-full" style={{ background: "linear-gradient(90deg,#23ab7e,#8054b8,#e67af3)", backgroundSize: "200% 100%", animation: "nl-aurora 4s ease infinite" }} />
+              <div className="h-full w-full rounded-full" style={{ background: "linear-gradient(90deg,#23ab7e,#003986,#921cb4)", backgroundSize: "200% 100%", animation: "nl-aurora 4s ease infinite" }} />
             </div>
 
             {[
@@ -542,7 +552,7 @@ export default function LandingPage() {
       {/* ══════════ CTA — Aurora ══════════ */}
       <section className="px-5 sm:px-8 lg:px-14 py-14 sm:py-18 lg:py-20 relative overflow-hidden" style={{ background: "linear-gradient(170deg,#f0fdf8,#fff,#f5f0ff)" }}>
         <div className="mx-auto max-w-[1100px]">
-          <div className="nl-reveal relative overflow-hidden rounded-[32px] lg:rounded-[40px] p-8 sm:p-10 lg:p-14 text-center nl-aurora-bg" style={{ boxShadow: "0 30px 80px rgba(35,171,126,.25),0 0 120px rgba(128,84,184,.1)" }}>
+          <div className="nl-reveal relative overflow-hidden rounded-[32px] lg:rounded-[40px] p-8 sm:p-10 lg:p-14 text-center nl-aurora-bg" style={{ boxShadow: "0 30px 80px rgba(35,171,126,.25),0 0 120px rgba(0,57,134,.1)" }}>
             {/* Floating 3D elements */}
             <div className="absolute inset-0 pointer-events-none" style={{ perspective: "600px", transformStyle: "preserve-3d" }}>
               <div className="absolute top-[10%] left-[8%]" style={{ transformStyle: "preserve-3d", animation: "nl-drift-c 12s ease-in-out infinite" }}>
@@ -582,15 +592,12 @@ export default function LandingPage() {
 
       {/* ══════════ FOOTER ══════════ */}
       <footer className="relative overflow-hidden bg-[#1a1d2e] py-10 px-5 sm:px-8 lg:py-14 lg:px-14 pb-8">
-        <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: "linear-gradient(90deg,#23ab7e,#8054b8,#e67af3,#23ab7e)", backgroundSize: "300% 100%", animation: "nl-footer-line 6s linear infinite" }} />
+        <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: "linear-gradient(90deg,#23ab7e,#003986,#921cb4,#23ab7e)", backgroundSize: "300% 100%", animation: "nl-footer-line 6s linear infinite" }} />
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 md:gap-12 mb-12">
             <div>
-              <Link href="/" className="flex items-center gap-2.5 no-underline mb-3">
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
-                  <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                </div>
-                <span className="text-xl font-extrabold text-white">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#23ab7e] to-[#8054b8] bg-clip-text text-transparent">AI</span></span>
+              <Link href="/" className="flex items-center no-underline mb-3">
+                <img src="/nawaa-logo-dark.svg" alt="Nawaa AI" className="h-48 w-auto" />
               </Link>
               <p className="text-sm text-white/45 leading-relaxed max-w-[280px] mt-3">{L.footerBuilt}</p>
               <p className="text-xs text-white/30 mt-2">{L.footerTagline}</p>

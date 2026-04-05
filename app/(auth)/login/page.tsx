@@ -141,12 +141,7 @@ export default function LoginPage() {
         </div>
 
         {/* Logo */}
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-2xl bg-white/[.18] backdrop-blur-sm flex items-center justify-center border border-white/25">
-            <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2.5" fill="#a6ffea"/><circle cx="24" cy="16" r="2.5" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
-          </div>
-          <div className="text-xl font-bold text-white tracking-tight">{isRtl ? "نواة" : "Nawaa"} <span className="bg-gradient-to-r from-[#a6ffea] to-[#f5c6fa] bg-clip-text text-transparent">AI</span></div>
-        </div>
+        <img src="/nawaa-logo-dark.svg" alt="Nawaa AI" className="h-56 w-auto" />
 
         {/* Quote */}
         <div className="relative z-10 flex-1 flex flex-col justify-center py-6">
@@ -189,11 +184,8 @@ export default function LoginPage() {
         </div>
 
         {/* Mobile logo */}
-        <div className="absolute top-16 left-4 sm:top-20 sm:left-12 flex items-center gap-3 lg:hidden">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#23ab7e,#8054b8)" }}>
-            <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5"><path d="M16 4C16 4 8 8 8 16C8 20.4 11.6 24 16 24C20.4 24 24 20.4 24 16" stroke="white" strokeWidth="2.2" strokeLinecap="round"/><circle cx="16" cy="8" r="2" fill="#a6ffea"/><circle cx="24" cy="16" r="2" fill="#e67af3"/><path d="M14 14L18 18M18 14L14 18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
-          </div>
-          <span className="text-base font-extrabold text-[#1a1d2e]">{isRtl ? "نواة" : "Nawaa"} <span className="text-[#23ab7e]">AI</span></span>
+        <div className="absolute top-16 left-4 sm:top-20 sm:left-12 flex items-center lg:hidden">
+          <img src="/nawaa-logo.svg" alt="Nawaa AI" className="h-48 w-auto" />
         </div>
 
         {/* Form card with glassmorphism */}

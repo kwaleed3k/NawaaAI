@@ -211,28 +211,9 @@ export default function VisionStudioPage() {
 
   async function handleSave() {
     if (!selectedCompany || !images.length) return;
-    const urls = images.map((i) => i.url).filter(Boolean);
-    if (!urls.length) { toast.error("No images to save"); return; }
-    setSaving(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { toast.error("Not authenticated"); setSaving(false); return; }
-      const currentDay = selectedPlan?.plan_data?.days?.[selectedDayIndex ?? 0];
-      await supabase.from("generated_images").insert({
-        user_id: user.id,
-        company_id: selectedCompany.id,
-        plan_id: selectedPlan?.id ?? null,
-        day_label: currentDay ? (locale === "ar" ? currentDay.dayAr : currentDay.dayEn) || currentDay.dayAr : null,
-        prompt_used: images.map((i) => i.prompt_used).join("\n---\n"),
-        image_urls: urls,
-      });
-      setSaved(true);
-      toast.success(locale === "ar" ? "\u062A\u0645 \u0627\u0644\u062D\u0641\u0638 \u0628\u0646\u062C\u0627\u062D" : "Images saved!");
-    } catch (e) {
-      toast.error("Save failed");
-    } finally {
-      setSaving(false);
-    }
+    // Images are auto-saved by the API on generation — this just confirms to the user
+    setSaved(true);
+    toast.success(locale === "ar" ? "\u062A\u0645 \u0627\u0644\u062D\u0641\u0638 \u0628\u0646\u062C\u0627\u062D" : "Images saved!");
   }
 
   /* ── Loading skeleton ── */

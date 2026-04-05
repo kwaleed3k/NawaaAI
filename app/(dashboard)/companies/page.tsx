@@ -68,13 +68,33 @@ const PLATFORMS = [
 
 const FALLBACK_COLORS = ["#23ab7e", "#8054b8", "#0B1A0F", "#D0EBDA"];
 
-/* ── Platform config with rich visual data (matches planner/hashtags) ── */
-const PLATFORM_CARDS: Record<string, { emoji: string; selectedBg: string; selectedBorder: string; unselectedBg: string; color: string }> = {
-  "Instagram":    { emoji: "\uD83D\uDCF8", selectedBg: "bg-gradient-to-br from-pink-500 to-rose-500", selectedBorder: "border-pink-400", unselectedBg: "bg-pink-50", color: "text-pink-600" },
-  "X (Twitter)":  { emoji: "\uD835\uDD4F", selectedBg: "bg-gradient-to-br from-slate-700 to-slate-900", selectedBorder: "border-slate-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
-  "TikTok":       { emoji: "\uD83C\uDFB5", selectedBg: "bg-gradient-to-br from-slate-800 to-cyan-500", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", color: "text-slate-700" },
-  "Snapchat":     { emoji: "\uD83D\uDC7B", selectedBg: "bg-gradient-to-br from-yellow-400 to-[#e67af3]", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700" },
-  "LinkedIn":     { emoji: "\uD83D\uDCBC", selectedBg: "bg-gradient-to-br from-[#8054b8] to-blue-700", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-[#6d3fa0]" },
+/* ── Platform config with real SVG logos ── */
+const PLATFORM_LOGOS: Record<string, { svg: React.ReactNode; svgWhite: React.ReactNode; selectedBg: string; selectedBorder: string; unselectedBg: string; color: string }> = {
+  "Instagram": {
+    svg: <svg viewBox="0 0 24 24" className="w-8 h-8"><defs><linearGradient id="ig" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#feda75"/><stop offset=".25" stopColor="#fa7e1e"/><stop offset=".5" stopColor="#d62976"/><stop offset=".75" stopColor="#962fbf"/><stop offset="1" stopColor="#4f5bd5"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#ig)"/><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="white" strokeWidth="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" strokeWidth="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="white"/></svg>,
+    svgWhite: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="white" fillOpacity="0.25"/><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="white" strokeWidth="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" strokeWidth="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="white"/></svg>,
+    selectedBg: "bg-gradient-to-br from-[#f58529] via-[#dd2a7b] to-[#8134af]", selectedBorder: "border-pink-400", unselectedBg: "bg-pink-50", color: "text-pink-600",
+  },
+  "X (Twitter)": {
+    svg: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="#000"/><path d="M13.5 10.5L18.5 5h-1.2l-4.3 4.8L9.3 5H5l5.2 7.6L5 19h1.2l4.5-5.3L14.7 19H19l-5.5-8.5zm-1.6 1.9l-.5-.7L7 6h1.7l3.3 4.7.5.7L17.5 18h-1.7l-4.1-5.6z" fill="white"/></svg>,
+    svgWhite: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="white" fillOpacity="0.25"/><path d="M13.5 10.5L18.5 5h-1.2l-4.3 4.8L9.3 5H5l5.2 7.6L5 19h1.2l4.5-5.3L14.7 19H19l-5.5-8.5zm-1.6 1.9l-.5-.7L7 6h1.7l3.3 4.7.5.7L17.5 18h-1.7l-4.1-5.6z" fill="white"/></svg>,
+    selectedBg: "bg-gradient-to-br from-slate-800 to-black", selectedBorder: "border-slate-400", unselectedBg: "bg-slate-50", color: "text-slate-700",
+  },
+  "TikTok": {
+    svg: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="#000"/><path d="M16.5 4.5h-2v10a2.5 2.5 0 11-2-2.45V9.5a5 5 0 104.5 5V9.5a5.5 5.5 0 003 .9V7.9a3.5 3.5 0 01-3.5-3.4z" fill="#25F4EE"/><path d="M15.5 4.5h-2v10a2.5 2.5 0 11-2-2.45V9.5a5 5 0 104.5 5V9.5a5.5 5.5 0 003 .9V7.9a3.5 3.5 0 01-3.5-3.4z" fill="#FE2C55" fillOpacity=".7"/><path d="M14.5 4.5h-2v10a2.5 2.5 0 11-2-2.45V9.5a5 5 0 104.5 5V9.5a5.5 5.5 0 003 .9V7.9a3.5 3.5 0 01-3.5-3.4z" fill="white"/></svg>,
+    svgWhite: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="white" fillOpacity="0.25"/><path d="M14.5 4.5h-2v10a2.5 2.5 0 11-2-2.45V9.5a5 5 0 104.5 5V9.5a5.5 5.5 0 003 .9V7.9a3.5 3.5 0 01-3.5-3.4z" fill="white"/></svg>,
+    selectedBg: "bg-gradient-to-br from-black to-[#25F4EE]", selectedBorder: "border-cyan-400", unselectedBg: "bg-slate-50", color: "text-slate-700",
+  },
+  "Snapchat": {
+    svg: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="#FFFC00"/><path d="M12 5c-1.8 0-3.2.8-3.8 2.2-.2.5-.3 1.2-.3 1.8v1.5c-.5.1-1 .3-1 .7 0 .4.4.6.9.7-.2.8-.6 1.5-1.5 2.2-.3.2-.1.5.2.6.6.2 1.2.3 1.5.7.2.3.1.6.4.8.4.2 1 0 1.6 0 .5 0 .9.3 1.9.3s1.4-.3 1.9-.3c.6 0 1.2.2 1.6 0 .3-.2.2-.5.4-.8.3-.4.9-.5 1.5-.7.3-.1.5-.4.2-.6-.9-.7-1.3-1.4-1.5-2.2.5-.1.9-.3.9-.7 0-.4-.5-.6-1-.7V9c0-.6-.1-1.3-.3-1.8C15.2 5.8 13.8 5 12 5z" fill="#333"/></svg>,
+    svgWhite: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="white" fillOpacity="0.25"/><path d="M12 5c-1.8 0-3.2.8-3.8 2.2-.2.5-.3 1.2-.3 1.8v1.5c-.5.1-1 .3-1 .7 0 .4.4.6.9.7-.2.8-.6 1.5-1.5 2.2-.3.2-.1.5.2.6.6.2 1.2.3 1.5.7.2.3.1.6.4.8.4.2 1 0 1.6 0 .5 0 .9.3 1.9.3s1.4-.3 1.9-.3c.6 0 1.2.2 1.6 0 .3-.2.2-.5.4-.8.3-.4.9-.5 1.5-.7.3-.1.5-.4.2-.6-.9-.7-1.3-1.4-1.5-2.2.5-.1.9-.3.9-.7 0-.4-.5-.6-1-.7V9c0-.6-.1-1.3-.3-1.8C15.2 5.8 13.8 5 12 5z" fill="white"/></svg>,
+    selectedBg: "bg-gradient-to-br from-[#FFFC00] to-[#FFD700]", selectedBorder: "border-yellow-400", unselectedBg: "bg-yellow-50", color: "text-yellow-700",
+  },
+  "LinkedIn": {
+    svg: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="#0A66C2"/><path d="M8.5 10v7H6v-7h2.5zM7.25 9a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zM18 17h-2.5v-3.5c0-1-.4-1.5-1.2-1.5-.9 0-1.3.6-1.3 1.5V17H10.5v-7H13v1s.7-1.2 2.2-1.2c1.5 0 2.8.9 2.8 3V17z" fill="white"/></svg>,
+    svgWhite: <svg viewBox="0 0 24 24" className="w-8 h-8"><rect width="24" height="24" rx="6" fill="white" fillOpacity="0.25"/><path d="M8.5 10v7H6v-7h2.5zM7.25 9a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zM18 17h-2.5v-3.5c0-1-.4-1.5-1.2-1.5-.9 0-1.3.6-1.3 1.5V17H10.5v-7H13v1s.7-1.2 2.2-1.2c1.5 0 2.8.9 2.8 3V17z" fill="white"/></svg>,
+    selectedBg: "bg-gradient-to-br from-[#0A66C2] to-[#004182]", selectedBorder: "border-blue-400", unselectedBg: "bg-blue-50", color: "text-blue-600",
+  },
 };
 
 /* ── Card accent gradient rotation ── */
@@ -1643,9 +1663,9 @@ export default function CompaniesPage() {
                 {/* Platform selector as emoji cards */}
                 <div>
                   <Label className="text-sm font-bold text-[#1a1d2e] mb-3 block">{tc.platforms}</Label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                     {PLATFORMS.map((p) => {
-                      const config = PLATFORM_CARDS[p];
+                      const config = PLATFORM_LOGOS[p];
                       const isSelected = form.platforms.includes(p);
                       return (
                         <button
@@ -1653,19 +1673,17 @@ export default function CompaniesPage() {
                           type="button"
                           onClick={() => togglePlatform(p)}
                           className={cn(
-                            "relative flex flex-col items-center gap-2 rounded-xl border-2 p-3 text-sm font-bold transition-all duration-300 shadow-sm overflow-hidden",
+                            "relative flex flex-col items-center gap-2.5 rounded-xl border-2 p-4 text-sm font-bold transition-all duration-300 shadow-sm overflow-hidden",
                             isSelected
-                              ? cn(config?.selectedBg ?? "bg-gradient-to-br from-[#23ab7e] to-[#8054b8]", config?.selectedBorder ?? "border-[#23ab7e]", "text-white shadow-lg")
+                              ? cn(config?.selectedBg ?? "bg-gradient-to-br from-[#23ab7e] to-[#003986]", config?.selectedBorder ?? "border-[#23ab7e]", "text-white shadow-lg scale-[1.03]")
                               : cn(config?.unselectedBg ?? "bg-[#fafbfd]", "border-[#e8eaef]", config?.color ?? "text-[#8f96a3]", "hover:border-[#23ab7e] hover:shadow-md")
                           )}
                         >
-                          <span className="text-3xl">{config?.emoji ?? "\uD83D\uDCF1"}</span>
-                          <span className={cn("text-sm font-extrabold", isSelected ? "text-white" : "")}>{p}</span>
+                          {isSelected ? config?.svgWhite : config?.svg}
+                          <span className={cn("text-xs font-extrabold", isSelected ? "text-white" : "")}>{p}</span>
                           {isSelected && (
-                            <div
-                              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/30"
-                            >
-                              <span className="text-sm text-white font-bold">{"\u2713"}</span>
+                            <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-white/30">
+                              <span className="text-xs text-white font-bold">{"\u2713"}</span>
                             </div>
                           )}
                         </button>
@@ -1987,10 +2005,10 @@ export default function CompaniesPage() {
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {vc.platforms.map((p) => {
-                            const config = PLATFORM_CARDS[p];
+                            const config = PLATFORM_LOGOS[p];
                             return (
-                              <span key={p} className={cn("rounded-xl px-4 py-2 text-sm font-bold text-white", config?.selectedBg ?? "bg-[#23ab7e]")}>
-                                {config?.emoji ?? "\uD83D\uDCF1"} {p}
+                              <span key={p} className={cn("inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-bold text-white", config?.selectedBg ?? "bg-[#23ab7e]")}>
+                                {config?.svgWhite ?? null} {p}
                               </span>
                             );
                           })}

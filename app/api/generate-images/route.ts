@@ -430,6 +430,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Auto-log every generation to DB for monitoring (regardless of user saving)
+    const successUrls = images.map((i) => i.url).filter(Boolean);
+    if (successUrls.length > 0 && user) {
+      const { createServerSupabaseClient } = await import("@/lib/supabase/server");
+      const supabase = await createServerSupabaseClient();
+      await supabase.from("generated_images").insert({
+        user_id: user.id,
+        company_id: company.id || null,
+        day_label: dayContent.topic?.slice(0, 100) || null,
+        prompt_used: images.map((i) => i.prompt_used).join("\n---\n"),
+        image_urls: successUrls,
+      }).then(
+        () => {},
+        (err: unknown) => console.error("Auto-log images error:", err)
+      );
+    }
+
     return NextResponse.json({ success: true, images });
   } catch (e) {
     console.error("generate-images error:", e);

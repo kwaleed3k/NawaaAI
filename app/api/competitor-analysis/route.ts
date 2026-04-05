@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { companyName, companyDescription, competitors, outputLanguage } = body;
+    let { companyName, companyDescription, competitors, outputLanguage } = body;
 
     // Validate inputs
     const nameErr = validateStringInput(companyName, "Company name", MAX_STRING_LENGTH);
@@ -205,8 +205,9 @@ export async function POST(request: NextRequest) {
     if (competitors.length > 5) {
       return NextResponse.json({ error: "Maximum 5 competitors allowed" }, { status: 400 });
     }
-    if (companyDescription && typeof companyDescription === "string" && companyDescription.length > 2000) {
-      return NextResponse.json({ error: "Company description must be under 2000 characters" }, { status: 400 });
+    // Trim long descriptions instead of rejecting them
+    if (companyDescription && typeof companyDescription === "string" && companyDescription.length > 10000) {
+      companyDescription = companyDescription.slice(0, 10000);
     }
 
     // Validate each competitor's fields and URLs
@@ -478,28 +479,39 @@ INSTRUCTIONS:
 
     let analysisData;
     try {
-      const cleaned = content
+      let cleaned = content
         .replace(/```json\s*/g, "")
         .replace(/```\s*/g, "")
         .trim();
+      // Fix truncated JSON — try to close unclosed braces/brackets
+      const openBraces = (cleaned.match(/\{/g) || []).length;
+      const closeBraces = (cleaned.match(/\}/g) || []).length;
+      const openBrackets = (cleaned.match(/\[/g) || []).length;
+      const closeBrackets = (cleaned.match(/\]/g) || []).length;
+      for (let i = 0; i < openBrackets - closeBrackets; i++) cleaned += "]";
+      for (let i = 0; i < openBraces - closeBraces; i++) cleaned += "}";
+      // Remove trailing comma before closing brace/bracket
+      cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
       analysisData = JSON.parse(cleaned);
     } catch {
-      return NextResponse.json({ error: "Failed to parse AI response", raw: content }, { status: 500 });
+      return NextResponse.json({ error: "Failed to parse AI response. Please try again." }, { status: 500 });
     }
 
-    if (!analysisData.executiveSummary || !Array.isArray(analysisData.competitors) || analysisData.competitors.length === 0) {
+    // Gracefully fix common AI response issues instead of rejecting
+    if (!analysisData.executiveSummary) {
+      analysisData.executiveSummary = "Analysis completed. See competitor details below.";
+    }
+    if (!Array.isArray(analysisData.competitors) || analysisData.competitors.length === 0) {
       return NextResponse.json(
-        { error: "AI response missing required fields. Please try again." },
+        { error: "AI response missing competitor data. Please try again." },
         { status: 500 }
       );
     }
-    // Validate each competitor has required fields
+    // Fix incomplete competitor entries instead of failing
     for (const comp of analysisData.competitors) {
-      if (!comp.name || typeof comp.overallScore !== "number") {
-        return NextResponse.json(
-          { error: "AI response has incomplete competitor data. Please try again." },
-          { status: 500 }
-        );
+      if (!comp.name) comp.name = "Unknown";
+      if (typeof comp.overallScore !== "number") {
+        comp.overallScore = typeof comp.overallScore === "string" ? parseInt(comp.overallScore, 10) || 50 : 50;
       }
     }
 

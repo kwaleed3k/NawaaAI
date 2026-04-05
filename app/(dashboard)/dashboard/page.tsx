@@ -291,10 +291,7 @@ export default function DashboardPage() {
           {/* Left side - Greeting */}
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
-                <Sparkles className="h-5 w-5 text-[#a6ffea]" />
-              </div>
-              <span className="text-sm font-bold text-[#a6ffea]/80 tracking-wide">{locale === "ar" ? "\u0646\u0648\u0627\u0629" : "Nawaa"} AI</span>
+              <img src="/nawaa-logo.svg" alt="Nawaa AI" className="h-40 w-auto" />
             </div>
             <h1 className="text-xl sm:text-2xl lg:text-2xl font-black text-white leading-tight tracking-tight">
               {t.greeting}, {displayName} {"\ud83d\udc4b"}
